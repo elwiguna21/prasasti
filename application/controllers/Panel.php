@@ -1,21 +1,21 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('Asia/Jakarta');
-class Dashboard extends CI_Controller {
+class Panel extends CI_Controller {
 
 	public function __construct()
     {
         parent::__construct();
         $this->load->helper('url','xss');
-        $this->load->model('M_data','model');
-        if($this->session->userdata('nomor_skpd') != null && $this->session->userdata('status') != "login" ){
+        $this->load->model('M_admin','model');
+        if($this->session->userdata('status') != "login" && $this->session->userdata('level') != 'admin' ){
 			redirect(base_url("Front"));
         }
 	}
 	
-	public function index(){
-
-		$this->load->view('Admin/home');
+    public function index()
+    {
+		$this->load->view('Panel/home');
 	}
 
     public function arsip()
@@ -58,8 +58,8 @@ class Dashboard extends CI_Controller {
             
             }
         }
-
-        $this->load->view('Admin/arsip');
+        $data['skpd'] = $this->model->getdata('skpd');
+        $this->load->view('Panel/arsip',$data);
     }
 
 
@@ -70,7 +70,7 @@ class Dashboard extends CI_Controller {
             'id' => $id
         );
         $data['detail'] = $this->model->getone($table,$where);
-        $this->load->view('Admin/arsipdetail',$data);
+        $this->load->view('Panel/arsipdetail',$data);
    }
 
 	public function ajax_list()
@@ -83,21 +83,39 @@ class Dashboard extends CI_Controller {
         $no = $_POST['start'];
         $nomor=1;
         foreach ($lists as $list) {
+            if ($list->lokasi_berkas == null || $list->ruang_penyimpanan== null){
+                $status = '<span class="badge badge-danger">
+                not verified</span>';
+            }else{
+                $status = '<span class="badge badge-success">
+                verified</span>';
+            }
             $no++;
             $row = array();
             $row[] = $nomor++;
+            $row[] = $list->tanggal;
+            $row[] = $list->nama_skpd;
             $row[] = $list->kode_klsf;
             $row[] = $list->indek;
+            $row[] = $list->deskripsi;
             $row[] = $list->tahun;
             $row[] = $list->unit_kerja_pencipta;
-           
+            $row[] = $list->lokasi_sampul;
+            $row[] = $list->lokasi_berkas;
+            $row[] = $list->lokasi_box;
+            $row[] = $list->lokasi_rak;
+            $row[] = $list->keterangan_tk_perkembangan;
+            $row[] = $list->ruang_penyimpanan;
+            $row[] = $status;
            
             //add html for action
-            $row[] = '<a href="'.base_url().'Dashboard/arsipdetail/'.$list->id.'" title="Detail"><i class="fa fa-search" aria-hidden="true"></i></a> | 
+            $row[] = '
+            <a href="'.base_url().'Dashboard/arsipdetail/'.$list->id.'" title="Detail"><i class="fa fa-search" aria-hidden="true"></i></a> | 
             <a href="'.base_url().'Dashboard/arsipedit/'.$list->id.'" title="Edit"><i class="fa fa-check" aria-hidden="true"></i></a> | 
             <a href="'.base_url().'Dashboard/arsiphapus/'.$list->id.'" title="hapus"  onclick="return confirm('."'Anda yakin mau menghapus item ini ?'".')"><i class="fa fa-trash" aria-hidden="true"></i></a>
             '
             ;
+
          
             $data[] = $row;
         }
@@ -119,7 +137,7 @@ class Dashboard extends CI_Controller {
             'id' => $id
         );
         $data['berkas'] = $this->model->getone($table,$where);
-       $this->load->view('Admin/arsip2',$data);
+       $this->load->view('Panel/arsip2',$data);
     }
 
     public function arsipupdate()
@@ -208,7 +226,7 @@ class Dashboard extends CI_Controller {
         'nomor_skpd' => $this->session->userdata('nomor_skpd')
         );
         $data['akun'] = $this->model->getone($table,$where);
-        $this->load->view('Admin/akun',$data);
+        $this->load->view('Panel/akun',$data);
     }
 
     function akunupdate()

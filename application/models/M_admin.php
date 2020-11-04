@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
-class M_data extends CI_Model {
+class M_admin extends CI_Model {
  
     var $table = 'berkas';
     var $column_order = array('tanggal','tahun',null); //set column field database for datatable orderable
-    var $column_search = array('indek','tahun','kode_klsf','unit_kerja_pencipta'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_search = array('indek','tahun','kode_klsf','nama_skpd','unit_kerja_pencipta'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('tanggal' => 'DESC'); // default order 
  
     public function __construct()
@@ -16,7 +16,7 @@ class M_data extends CI_Model {
  
     private function _get_datatables_query()
     {
-         
+        $this->db->join('skpd','berkas.nomor_skpd = skpd.nomor_skpd','inner');
         $this->db->from($this->table);
  
         $i = 0;
@@ -51,13 +51,13 @@ class M_data extends CI_Model {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
-        $this->db->order_by('tanggal','DESC');
+        
        
     }
  
     function get_datatables()
     {
-        $this->db->where('nomor_skpd',$this->session->userdata('nomor_skpd'));
+        $this->db->order_by('tanggal','DESC');
         $this->_get_datatables_query();
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
@@ -86,6 +86,10 @@ class M_data extends CI_Model {
 
     function getone($table,$where){		
         return $this->db->get_where($table,$where)->result();
+    }
+
+    function getdata($table){		
+        return $this->db->get($table)->result();
     }
 
     public function update($data, $where)

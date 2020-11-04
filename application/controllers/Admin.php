@@ -48,7 +48,7 @@ class Admin extends CI_Controller {
 		
 					$this->session->set_userdata($data_session);
 		
-					redirect(base_url("Dashboard"));
+					redirect("Panel");
 		
 				}elseif($cek == 0){
 					$query = $this->M_login_admin->cek_login("skpd",$where);
