@@ -117,7 +117,7 @@ if($uri != 'arsip'){
       <div class="card-body">
         
         <div class="table-responsive">
-                <table class="table table-bordered mt-2 mb-2" id="dataTable" width="100%" cellspacing="0">
+                <table class="table  table-hover table-bordered mt-2 mb-2" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>No</th>

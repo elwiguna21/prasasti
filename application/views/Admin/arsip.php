@@ -15,7 +15,7 @@
   <div class="col-md-12">
   <div role="alert" class="alert alert-success">
     <button data-dismiss="alert" class="close" type="button">
-      <span aria-hidden="true">x</span><span class="only">Close</span></button>
+      <span aria-hidden="true">x</span></button>
     <?= $this->session->flashdata('SUCCESS') ?>
   </div>
 </div>
@@ -25,7 +25,7 @@
   <div class="col-md-12">
   <div role="alert" class="alert alert-warning">
     <button data-dismiss="alert" class="close" type="button">
-      <span aria-hidden="true">x</span><span class="only">Close</span></button>
+      <span aria-hidden="true">x</span></button>
     <?= $this->session->flashdata('GAGAL') ?>
   </div>
 </div>
@@ -91,7 +91,7 @@
       <div class="card-body">
         
         <div class="table-responsive">
-                <table class="table table-bordered mt-2 mb-2" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-hover table-bordered mt-2 mb-2" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>No</th>

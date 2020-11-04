@@ -71,6 +71,8 @@ class Admin extends CI_Controller {
 							$this->session->set_userdata($data_session);
 				
 							redirect(base_url("Dashboard"));
+						}else{
+							redirect("Admin");
 						}
 				}
 				else{

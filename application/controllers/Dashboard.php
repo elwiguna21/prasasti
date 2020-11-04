@@ -94,7 +94,7 @@ class Dashboard extends CI_Controller {
            
             //add html for action
             $row[] = '<a href="'.base_url().'Dashboard/arsipdetail/'.$list->id.'" title="Detail"><i class="fa fa-search" aria-hidden="true"></i></a> | 
-            <a href="'.base_url().'Dashboard/arsipedit/'.$list->id.'" title="Detail"><i class="fa fa-check" aria-hidden="true"></i></a> | 
+            <a href="'.base_url().'Dashboard/arsipedit/'.$list->id.'" title="Edit"><i class="fa fa-check" aria-hidden="true"></i></a> | 
             <a href="'.base_url().'Dashboard/arsiphapus/'.$list->id.'" title="hapus"  onclick="return confirm('."'Anda yakin mau menghapus item ini ?'".')"><i class="fa fa-trash" aria-hidden="true"></i></a>
             '
             ;
@@ -171,10 +171,10 @@ class Dashboard extends CI_Controller {
                 $data['file']=$fileold;
                 $insert = $this->model->update($data,$where);
                 if ($insert){
-                    $this->session->set_flashdata('SUCCESS','Yes berhasil input data');
+                    $this->session->set_flashdata('SUCCESS','Yes berhasil update data');
                     
                 }else{
-                    $this->session->set_flashdata('GAGAL','Yah gagal input data');
+                    $this->session->set_flashdata('GAGAL','Yah gagal update data');
                 }
                 redirect(base_url("Dashboard/arsip"));
             }
@@ -183,7 +183,93 @@ class Dashboard extends CI_Controller {
     }
 
 
+    function arsiphapus($id = true)
+    {
+        $table = 'berkas' ;
+        $where = array(
+            'id' => $id
+        );
+        $query = $this->model->getone($table,$where);
+        foreach($query as $x){
+            $file = $x->file;
+        }
+        unlink("./assets/data/".$file);
+        $hapus = $this->model->hapus($table,$where);
+        if($hapus){
+           
+            redirect(base_url("Dashboard/arsip"));
+        }
+    }
 
+    function akun()
+    {
+        $table = 'skpd' ;
+        $where = array(
+        'nomor_skpd' => $this->session->userdata('nomor_skpd')
+        );
+        $data['akun'] = $this->model->getone($table,$where);
+        $this->load->view('Admin/akun',$data);
+    }
+
+    function akunupdate()
+    {
+        if(isset($_POST['update']))
+        {
+            $data = array(
+               
+                'nama_skpd' => htmlentities($this->input->post('nama_skpd')),
+                'alamat_skpd' => htmlentities($this->input->post('alamat_skpd')),
+                'nama_operator' => htmlentities($this->input->post('nama_operator')),
+                'kontak_operator' => htmlentities($this->input->post('kontak_operator')),
+            
+            );
+         $where = array(
+             'nomor_skpd' => htmlentities($this->input->post('nomor_skpd'))
+         );
+            $insert = $this->model->updateakun($data,$where);
+            if ($insert){
+                $this->session->set_flashdata('SUCCESS','Yes berhasil update data');
+                
+            }else{
+                $this->session->set_flashdata('GAGAL','Yah gagal update data');
+            }
+         redirect(base_url("Dashboard/akun"));
+
+        }
+    }
+
+    function gantipassword()
+    {
+        $table = 'skpd';
+        $password_old= md5(htmlentities($this->input->post('password')));
+        $where = array(
+            'nomor_skpd' => $this->session->userdata('nomor_skpd')
+            );
+        $data = array( 
+            'password' => md5(htmlentities($this->input->post('password_new')))
+        );
+       
+        $cek = $this->model->getone($table,$where);
+        foreach($cek as $x){
+             $password = $x->password;
+        }
+        if($password_old != $password){
+            $this->session->set_flashdata('GAGAL','Password lama salah!');
+            redirect(base_url("Dashboard/akun"));
+        }
+
+        $updatepassword = $this->model->updateakun($data,$where);
+        if ($updatepassword){
+            $this->session->set_flashdata('SUCCESS','Yes berhasil update data');
+            
+        }else{
+            $this->session->set_flashdata('GAGAL','Yah gagal update data');
+        }
+         redirect(base_url("Dashboard/akun"));
+
+        
+
+    }
 
 
 

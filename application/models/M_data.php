@@ -93,4 +93,14 @@ class M_data extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    function hapus($table,$where){		
+        return $this->db->delete($table,$where);
+    }
+
+    public function updateakun($data, $where)
+    {
+        $this->db->update('skpd', $data, $where);
+        return $this->db->affected_rows();
+    }
+
 }
