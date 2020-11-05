@@ -75,9 +75,9 @@ class Panel extends CI_Controller {
 
 	public function ajax_list()
     {
-        // if (!$this->input->is_ajax_request()) {
-        //     redirect('Web');
-        // }
+        if (!$this->input->is_ajax_request()) {
+            redirect('Front');
+        }
         $lists = $this->model->get_datatables();
         $data = array();
         $no = $_POST['start'];
@@ -110,9 +110,9 @@ class Panel extends CI_Controller {
            
             //add html for action
             $row[] = '
-            <a href="'.base_url().'Dashboard/arsipdetail/'.$list->id.'" title="Detail"><i class="fa fa-search" aria-hidden="true"></i></a> | 
-            <a href="'.base_url().'Dashboard/arsipedit/'.$list->id.'" title="Edit"><i class="fa fa-check" aria-hidden="true"></i></a> | 
-            <a href="'.base_url().'Dashboard/arsiphapus/'.$list->id.'" title="hapus"  onclick="return confirm('."'Anda yakin mau menghapus item ini ?'".')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            <a href="'.base_url().'#'.$list->id.'" title="Detail"><i class="fa fa-search" aria-hidden="true"></i></a> | 
+            <a href="'.base_url().'#'.$list->id.'" title="Edit"><i class="fa fa-check" aria-hidden="true"></i></a> | 
+            <a href="'.base_url().'#'.$list->id.'" title="hapus"  onclick="return confirm('."'Anda yakin mau menghapus item ini ?'".')"><i class="fa fa-trash" aria-hidden="true"></i></a>
             '
             ;
 
