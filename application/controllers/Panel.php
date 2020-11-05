@@ -8,7 +8,7 @@ class Panel extends CI_Controller {
         parent::__construct();
         $this->load->helper('url','xss');
         $this->load->model('M_admin','model');
-        if($this->session->userdata('status') != "login" && $this->session->userdata('level') != 'admin' ){
+        if($this->session->userdata('status') != "login" || $this->session->userdata('level') != 'admin' ){
 			redirect(base_url("Front"));
         }
 	}

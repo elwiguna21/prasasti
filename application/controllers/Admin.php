@@ -43,6 +43,7 @@ class Admin extends CI_Controller {
 					$data_session = array(
 						'nama' => $username,
 						'status' => "login",
+						'nomor_skpd' => null,
 						'level' => "admin"
 						);
 		
@@ -64,6 +65,7 @@ class Admin extends CI_Controller {
 								'nama' => $nama_operator,
 								'status' => "login",
 								'skpd' => $nama_skpd,
+								'level' => 'user',
 								'nomor_skpd' => $nomor_skpd
 							
 								);

@@ -100,7 +100,7 @@ $this->load->view('Panel/nav');?>
 <div class="modal fade" id="arsipmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        
+      <div class="modal-body">
         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
 
        
@@ -134,7 +134,8 @@ $this->load->view('Panel/nav');?>
          
           <button class="btn btn-outline-info btn-block" type="reset" name="batal">BATAL</button>
          
-        </form>  
+        </form> 
+      </div> 
         </div>    
       </div>
 
@@ -192,7 +193,7 @@ $this->load->view('Panel/nav');?>
             
             table = $('#dataTable').DataTable({ 
               dom: "lfBrtip",
-              buttons: [ {
+              buttons: ['excel',{
                 extend: 'pdfHtml5',
                 orientation: 'landscape',
                 title: 'DAFTAR PERTELAAN BERKAS ARSIP STATIS',
@@ -201,9 +202,14 @@ $this->load->view('Panel/nav');?>
           
                   dinas = $("#table-filter option:selected" ).text();
                   alamat = $("#table-filter option:selected").attr("alamat");
-                        // return ' Nama dinas  : '+ dinas +' ';
-                        return  '\r\n Nama SKPD    : ' + dinas + '' +
+
+                  if ( dinas === 'Semua' ) {
+                    return  ' ';
+                        
+                  } else {
+                    return  '\r\n Nama SKPD    : ' + dinas + '' +
                                 '\r\n Alamat SKPD  : ' + alamat + '';
+                  }
                     
                 },
                 exportOptions: {

@@ -8,7 +8,7 @@ class Dashboard extends CI_Controller {
         parent::__construct();
         $this->load->helper('url','xss');
         $this->load->model('M_data','model');
-        if($this->session->userdata('nomor_skpd') != null && $this->session->userdata('status') != "login" ){
+        if($this->session->userdata('nomor_skpd') == null || $this->session->userdata('status') != "login" ){
 			redirect(base_url("Front"));
         }
 	}
