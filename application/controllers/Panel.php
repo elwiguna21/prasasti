@@ -15,7 +15,9 @@ class Panel extends CI_Controller {
 	
     public function index()
     {
-		$this->load->view('Panel/home');
+        $data['verifikasi'] = $this->model->getverifikasi();
+        $data['perskpd'] = $this->model->getperskpd();
+		$this->load->view('Panel/home',$data);
 	}
 
     public function arsip()
@@ -64,14 +66,40 @@ class Panel extends CI_Controller {
 
 
    function arsipdetail($id = true)
-   {
+    {
+            $table = 'berkas' ;
+            $where = array(
+                'id' => $id
+            );
+            $data['detail'] = $this->model->getone($table,$where);
+            $this->load->view('Panel/arsipdetail',$data);
+    }
+
+    public function ajax_edit($id = true)
+    {
         $table = 'berkas' ;
         $where = array(
             'id' => $id
         );
-        $data['detail'] = $this->model->getone($table,$where);
-        $this->load->view('Panel/arsipdetail',$data);
-   }
+        $data = $this->model->getone2($table,$where);
+        echo json_encode($data);
+    }
+    
+    public function ajax_update()
+    {
+     
+            $data = array(
+                'lokasi_sampul' => htmlentities($this->input->post('lokasi_sampul')),
+                'lokasi_berkas' => htmlentities($this->input->post('lokasi_berkas')),
+                'lokasi_box' => htmlentities($this->input->post('lokasi_box')),
+                'lokasi_rak' => htmlentities($this->input->post('lokasi_rak')),
+                'keterangan_tk_perkembangan' => htmlentities($this->input->post('keterangan_tk_perkembangan')),
+                'ruang_penyimpanan' => htmlentities($this->input->post('ruang_penyimpanan')),     
+            );
+  
+        $this->model->update($data,array('id' => htmlentities($this->input->post('id'))),);
+        echo json_encode(array("status" => TRUE));
+    }
 
 	public function ajax_list()
     {
@@ -110,9 +138,12 @@ class Panel extends CI_Controller {
            
             //add html for action
             $row[] = '
-            <a href="'.base_url().'#'.$list->id.'" title="Detail"><i class="fa fa-search" aria-hidden="true"></i></a> | 
-            <a href="'.base_url().'#'.$list->id.'" title="Edit"><i class="fa fa-check" aria-hidden="true"></i></a> | 
-            <a href="'.base_url().'#'.$list->id.'" title="hapus"  onclick="return confirm('."'Anda yakin mau menghapus item ini ?'".')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            <a href="'.base_url().'Panel/arsipdetail/'.$list->id.'" title="Detail"><span class="badge badge-info">
+            Detail</span></a> | 
+            <a href="javascript:void(0)" title="Edit" onclick="edit_arsip('."'".$list->id."'".')" title="Edit"><span class="badge badge-success">
+            Update</span></a> | 
+            <a href="'.base_url().'Panel/arsiphapus/'.$list->id.'" title="hapus"  onclick="return confirm('."'Anda yakin mau menghapus item ini ?'".')"><span class="badge badge-danger">
+            Hapus</span></a>
             '
             ;
 
@@ -130,77 +161,6 @@ class Panel extends CI_Controller {
         echo json_encode($output);
     }
 
-    public function arsipedit($id = true)
-    {
-        $table = 'berkas' ;
-        $where = array(
-            'id' => $id
-        );
-        $data['berkas'] = $this->model->getone($table,$where);
-       $this->load->view('Panel/arsip2',$data);
-    }
-
-    public function arsipupdate()
-    {
-        if(isset($_POST['update'])){
-            $data = array(
-               
-                'kode_klsf' => htmlentities($this->input->post('kode_klsf')),
-                'indek' => htmlentities($this->input->post('indek')),
-                'deskripsi' => htmlentities($this->input->post('deskripsi')),
-                'tahun' => htmlentities($this->input->post('tahun')),
-                'unit_kerja_pencipta' => htmlentities($this->input->post('unit_kerja_pencipta'))
-            
-            );
-
-            $where = array(
-                'id' => htmlentities($this->input->post('id'))
-            );
-            $fileold= htmlentities($this->input->post('fileold'));
-
-            $config['upload_path'] = './assets/data/'; //path folder
-            $config['allowed_types'] = 'rar|zip|pdf'; //type yang dapat diakses bisa anda sesuaikan
-            $config['encrypt_name'] = TRUE; //nama yang terupload nantinya
-     
-            $this->upload->initialize($config);
-            if(!empty($_FILES['file']['name']))
-            {
-                if ($this->upload->do_upload('file'))
-                {
-                unlink("./assets/data/".$fileold);
-                $gbr = $this->upload->data();
-                $data['file']=$gbr['file_name'];
-                
-                     $insert = $this->model->update($data,$where);
-                        if ($insert){
-                            $this->session->set_flashdata('SUCCESS','Yes berhasil input data');
-                            
-                        }else{
-                            $this->session->set_flashdata('GAGAL','Yah gagal input data');
-                        }
-                     redirect(base_url("Dashboard/arsip"));
-                }
-    
-            
-            }
-            else
-            {
-              
-                $data['file']=$fileold;
-                $insert = $this->model->update($data,$where);
-                if ($insert){
-                    $this->session->set_flashdata('SUCCESS','Yes berhasil update data');
-                    
-                }else{
-                    $this->session->set_flashdata('GAGAL','Yah gagal update data');
-                }
-                redirect(base_url("Dashboard/arsip"));
-            }
-        }
-
-    }
-
-
     function arsiphapus($id = true)
     {
         $table = 'berkas' ;
@@ -215,46 +175,21 @@ class Panel extends CI_Controller {
         $hapus = $this->model->hapus($table,$where);
         if($hapus){
            
-            redirect(base_url("Dashboard/arsip"));
+            redirect(base_url("Panel/arsip"));
         }
     }
 
     function akun()
     {
-        $table = 'skpd' ;
+        $table = 't_admin' ;
         $where = array(
-        'nomor_skpd' => $this->session->userdata('nomor_skpd')
+        'nama' => $this->session->userdata('nama')
         );
         $data['akun'] = $this->model->getone($table,$where);
         $this->load->view('Panel/akun',$data);
     }
 
-    function akunupdate()
-    {
-        if(isset($_POST['update']))
-        {
-            $data = array(
-               
-                'nama_skpd' => htmlentities($this->input->post('nama_skpd')),
-                'alamat_skpd' => htmlentities($this->input->post('alamat_skpd')),
-                'nama_operator' => htmlentities($this->input->post('nama_operator')),
-                'kontak_operator' => htmlentities($this->input->post('kontak_operator')),
-            
-            );
-         $where = array(
-             'nomor_skpd' => htmlentities($this->input->post('nomor_skpd'))
-         );
-            $insert = $this->model->updateakun($data,$where);
-            if ($insert){
-                $this->session->set_flashdata('SUCCESS','Yes berhasil update data');
-                
-            }else{
-                $this->session->set_flashdata('GAGAL','Yah gagal update data');
-            }
-         redirect(base_url("Dashboard/akun"));
-
-        }
-    }
+   
 
     function gantipassword()
     {
@@ -290,6 +225,46 @@ class Panel extends CI_Controller {
     }
 
 
+    function dataskpd()
+    {
+        $this->load->view('Panel/data_akun');
+    }
+
+    function faq()
+    {
+        $this->load->view('Panel/data_faq');
+    }
+
+    
+    function link()
+    {
+        $this->load->view('Panel/data_link');
+    }
+
+    function artikel()
+    {
+        $this->load->view('Panel/data_artikel');
+    }
+
+    function berita()
+    {
+        $this->load->view('Panel/data_berita');
+    }
+
+    function banner()
+    {
+        $this->load->view('Panel/data_banner');
+    }
+
+    function galeri()
+    {
+        $this->load->view('Panel/data_galeri');
+    }
+
+    function peraturan()
+    {
+        $this->load->view('Panel/data_peraturan');
+    }
 
     
 

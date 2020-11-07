@@ -62,8 +62,37 @@
       <li class="nav-item">
         <a class="nav-link" href="<?php echo base_url('Panel/arsip');?>">
         <i class="fas fa-clipboard-list"></i>
-          <span>Data Master</span></a>
+          <span>Data Arsip</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo base_url('Panel/dataskpd');?>">
+        <i class="fas fa-clipboard-list"></i>
+          <span>Data SKPD</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-list"></i>
+          <span>Data Dinas</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Data Peserta:</h6>
+           
+            <a class="collapse-item" href="<?php echo base_url('Panel/artikel');?>">Artikel</a>
+            <a class="collapse-item" href="<?php echo base_url('Panel/berita');?>">Berita</a>
+            <a class="collapse-item" href="<?php echo base_url('Panel/banner');?>">Banner</a>
+            <a class="collapse-item" href="<?php echo base_url('Panel/faq');?>">FAQ</a>
+            <a class="collapse-item" href="<?php echo base_url('Panel/galeri');?>">Galeri</a>
+            <a class="collapse-item" href="<?php echo base_url('Panel/link');?>">Link</a>
+            <a class="collapse-item" href="<?php echo base_url('Panel/peraturan');?>">Peraturan</a>
+            <a class="collapse-item" href="<?php echo base_url('Panel/profil');?>">Profil</a>
+            
+          </div>
+        </div>
+      </li>
+
+
+
       <li class="nav-item">
         <a class="nav-link" href="<?php echo base_url('Admin/logout');?>">
         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-white-400"></i>

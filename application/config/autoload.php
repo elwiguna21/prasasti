@@ -8,7 +8,7 @@ $autoload['libraries'] = array('upload','session','database','form_validation');
 $autoload['drivers'] = array();
 
 
-$autoload['helper'] = array('form','url','xss');
+$autoload['helper'] = array('form','url','xss','slug');
 
 /*
 | -------------------------------------------------------------------

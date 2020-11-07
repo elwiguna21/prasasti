@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
-class M_admin extends CI_Model {
+class M_peraturan extends CI_Model {
  
-    var $table = 'berkas';
-    var $column_order = array('tanggal','tahun',null); //set column field database for datatable orderable
-    var $column_search = array('indek','tahun','kode_klsf','nama_skpd','unit_kerja_pencipta'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('tanggal' => 'DESC'); // default order 
+    var $table = 'peraturan';
+    var $column_order = array('caption','id',null); //set column field database for datatable orderable
+    var $column_search = array('caption','id'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $order = array('id' => 'asc'); // default order 
  
     public function __construct()
     {
@@ -16,8 +16,7 @@ class M_admin extends CI_Model {
  
     private function _get_datatables_query()
     {
-       
-        $this->db->join('skpd','berkas.nomor_skpd = skpd.nomor_skpd','inner');
+         
         $this->db->from($this->table);
  
         $i = 0;
@@ -52,13 +51,10 @@ class M_admin extends CI_Model {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
-        
-       
     }
  
     function get_datatables()
     {
-        $this->db->order_by('tanggal','DESC');
         $this->_get_datatables_query();
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
@@ -78,52 +74,36 @@ class M_admin extends CI_Model {
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
-
-
-    function simpandata($data)
+ 
+    public function get_by_id($id)
     {
-        return $this->db->insert('berkas', $data);
+        $this->db->from($this->table);
+        $this->db->where('id',$id);
+        $query = $this->db->get();
+ 
+        return $query->row();
     }
-
-    function getone($table,$where){		
-        return $this->db->get_where($table,$where)->result();
+ 
+    public function save($data)
+    {
+        $this->db->insert($this->table, $data);
+        return $this->db->insert_id();
     }
-
-    function getone2($table,$where){		
-        return $this->db->get_where($table,$where)->row();
-    }
-
-    function getdata($table){		
-        return $this->db->get($table)->result();
-    }
-
-    public function update($data, $where)
+ 
+    public function update($where, $data)
     {
         $this->db->update($this->table, $data, $where);
         return $this->db->affected_rows();
     }
-
-    function hapus($table,$where){		
-        return $this->db->delete($table,$where);
-    }
-
-    public function updateakun($data, $where)
+ 
+    public function delete_by_id($id)
     {
-        $this->db->update('skpd', $data, $where);
-        return $this->db->affected_rows();
+        $this->db->where('id', $id);
+        $this->db->delete($this->table);
     }
 
-    function getverifikasi()
-    {		 
-        $this->db->select('COUNT(id) as total');
-        $this->db->where('ruang_penyimpanan !=',null);
-        return $this->db->get('berkas');
-    }
 
-    function getperskpd()
-    {		 
-        $query="SELECT skpd.nama_skpd as skpd, count(berkas.id) as jml from berkas inner join skpd on berkas.nomor_skpd=skpd.nomor_skpd group by berkas.nomor_skpd";
-        return  $this->db->query($query)->result();
-    }
-
+    
+ 
+ 
 }

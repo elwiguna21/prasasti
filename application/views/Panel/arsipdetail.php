@@ -111,7 +111,7 @@
                           echo 'data tidak ada';
                       }
                       ?>
-        <a class="btn btn-outline-success btn-block mt-4" href="<?= base_url()?>Dashboard/arsip" >Kembali</a>
+        <a class="btn btn-outline-success btn-block mt-4" href="<?= base_url()?>Panel/arsip" >Kembali</a>
        </div>  
     </div>
   </div>

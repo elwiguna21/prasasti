@@ -54,7 +54,7 @@ class Dashboard extends CI_Controller {
                         }
                      redirect(base_url("Dashboard/arsip"));
                 }
-    
+                
             
             }
         }
@@ -269,11 +269,5 @@ class Dashboard extends CI_Controller {
 
         
 
-    }
-
-
-
-    
-
-	
+    }	
 }

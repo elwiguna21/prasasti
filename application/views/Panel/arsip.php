@@ -40,8 +40,7 @@ $this->load->view('Panel/nav');?>
       <!-- Card Header - Dropdown -->
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Data Arsip Statis</h6>
-        <a class="btn btn-dark" href="" data-toggle="modal" data-target="#arsipmodal">EDit data</a>
-      </div>
+          </div>
       <!-- Card Body -->
       <div class="card-body">
       Pilih SKPD : 
@@ -98,43 +97,96 @@ $this->load->view('Panel/nav');?>
 </div>
 
 <div class="modal fade" id="arsipmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
       <div class="modal-body">
-        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-
-       
+        <div class="container">
+        <form class="form-horizontal" id="form">
+     
+            <input type="text" name="id" id="id">
           <div class="form-group">
-            <label>Kode Klasifikasi</label>
-            <input type="text" class="form-control" name="kode_klsf">
-          </div>
-          <div class="form-group">
-            <label>Indek</label>
-            <input type="text" class="form-control" name="indek" >
-          </div>
-          <div class="form-group">
-            <label>Deskripsi</label>
-            <textarea class="form-control" name="deskripsi" rows="10" ></textarea>
-          </div>
-          <div class="form-group">
-            <label>Tahun</label>
-            <input type="number" class="form-control" name="tahun">
-          </div>
-          <div class="form-group">
-            <label>Unit Kerja Pencipta</label>
-            <input type="text" class="form-control" name="unit_kerja_pencipta" >
-          </div>
-          <div class="form-group">
-            <label>File</label>
-   
-            <input type="file" class="form-control dropify" name="file" data-height="200" >
-          </div>
-
-          <button class="btn btn-outline-success btn-block mt-4" type="submit" name="simpan">SIMPAN</button>
+             <div class="row">
          
-          <button class="btn btn-outline-info btn-block" type="reset" name="batal">BATAL</button>
-         
+            <label class="col-md-2">Kode Klasifikasi</label>
+            <input type="text" class="form-control col-md-10" name="kode_klsf" readonly>
+            
+          </div>
+            </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Indek</label>
+            <input type="text" class="form-control col-md-10" name="indek" readonly>
+          </div>
+            </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Deskripsi</label>
+            <textarea class="form-control col-md-10" name="deskripsi" rows="5"readonly ></textarea>
+          </div>
+            </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Tahun</label>
+            <input type="number" class="form-control col-md-10" name="tahun" readonly>
+          </div>
+            </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Unit Kerja Pencipta</label>
+            <input type="text" class="form-control col-md-10" name="unit_kerja_pencipta" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Lokasi Sampul</label>
+            <input type="number" class="form-control col-md-10" name="lokasi_sampul">
+           </div>
+          </div>
+          <div class="form-group">
+          <div class="row">
+            <label class="col-md-2">Lokasi Berkas</label>
+            <input type="number" class="form-control col-md-10" name="lokasi_berkas">
+           </div>
+          </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Lokasi Box</label>
+            <input type="number" class="form-control col-md-10" name="lokasi_box">
+           </div>
+          </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Lokasi Rak</label>
+            <input type="number" class="form-control col-md-10" name="lokasi_rak">
+           </div>
+          </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Tingkat Perkembangan</label>
+            <select class="form-control col-md-10" name="keterangan_tk_perkembangan">
+              <option>Pilih</option>
+              <option value="Asli">Asli</option>
+              <option value="Copy">Copy</option>
+             </select>
+           </div>
+          </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">Ruang Penyimpanan</label>
+            <select class="form-control col-md-10" name="ruang_penyimpanan">
+            <option>Pilih</option>
+              <option value="Depo 1">Depo 1</option>
+              <option value="Depo 2">Depo 2</option>
+              <option value="Depo 3">Depo 3</option>
+             </select>
+           </div>
+          </div>
+
+          <button class="btn btn-outline-success btn-block mt-4" type="submit"  id="btnSave" onclick="save()">SIMPAN</button>
+          <button class="btn btn-outline-info btn-block" data-dismiss="modal">BATAL</button>
+          
         </form> 
+        </div>
       </div> 
         </div>    
       </div>
@@ -148,7 +200,7 @@ $this->load->view('Panel/nav');?>
       }
   </style>
 <?php $this->load->view('Admin/foot');?>
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+
 
     <!-- datatable -->
     <!-- css -->
@@ -193,7 +245,7 @@ $this->load->view('Panel/nav');?>
             
             table = $('#dataTable').DataTable({ 
               dom: "lfBrtip",
-              buttons: ['excel',{
+              buttons: [{
                 extend: 'pdfHtml5',
                 orientation: 'landscape',
                 title: 'DAFTAR PERTELAAN BERKAS ARSIP STATIS',
@@ -253,5 +305,93 @@ $this->load->view('Panel/nav');?>
 
    
           }); 
+
+          function edit_arsip(id)
+        {
+           
+            $('#form')[0].reset(); // reset form on modals
+      
+            //Ajax Load data from ajax
+            $.ajax({
+                url : "<?php echo site_url('Panel/ajax_edit/')?>/" + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data)
+                {
+                
+                    $('#id').val(data.id);
+                    $('[name="kode_klsf"]').val(data.kode_klsf);
+                    $('[name="indek"]').val(data.indek);
+                    $('[name="tahun"]').val(data.tahun);
+                    $('[name="deskripsi"]').val(data.deskripsi);
+                    $('[name="unit_kerja_pencipta"]').val(data.unit_kerja_pencipta);
+                    $('[name="lokasi_sampul"]').val(data.lokasi_sampul);
+                    $('[name="lokasi_berkas"]').val(data.lokasi_berkas);
+                    $('[name="lokasi_box"]').val(data.lokasi_box);
+                    $('[name="lokasi_rak"]').val(data.lokasi_rak);
+                    $('[name="keterangan_tk_perkembangan"]').val(data.keterangan_tk_perkembangan);
+                    $('[name="ruang_penyimpanan"]').val(data.ruang_penyimpanan );
+                 
+                    $('#arsipmodal').modal('show'); // show bootstrap modal when complete loaded
+                    $('.modal-title').text('Edit arsip'); // Set title to Bootstrap modal title
+        
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error get data from ajax');
+                }
+            });
+        }
+        
+        function reload_table()
+        {
+            table.ajax.reload(null,false); //reload datatable ajax 
+        }
+        
+        function save()
+        {
+            $('#btnSave').text('saving...'); //change button text
+            $('#btnSave').attr('disabled',true); //set button disable 
+            var url;
+        
+            
+            url = "<?php echo site_url('Panel/ajax_update')?>";
+            
+        
+            // ajax adding data to database
+            $.ajax({
+                url : url,
+                type: "POST",
+                data: $('#form').serialize(),
+                dataType: "JSON",
+                success: function(data)
+                {
+        
+                    if(data.status) //if success close modal and reload ajax table
+                    {
+                        $('#arsipmodal').modal('hide');
+                        reload_table();
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.inputerror.length; i++) 
+                        {
+                            $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                            $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                        }
+                    }
+                  
+        
+        
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error adding / update data');
+                    $('#btnSave').text('save'); //change button text
+                    $('#btnSave').attr('disabled',false); //set button enable 
+        
+                }
+            });
+        }
 
 </script>
