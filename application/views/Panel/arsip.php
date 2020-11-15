@@ -103,7 +103,7 @@ $this->load->view('Panel/nav');?>
         <div class="container">
         <form class="form-horizontal" id="form">
      
-            <input type="text" name="id" id="id">
+            <input type="hidden" name="id" id="id">
           <div class="form-group">
              <div class="row">
          

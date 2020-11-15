@@ -12,7 +12,7 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		redirect('Admin');
+		redirect('Front');
 	}
 
 

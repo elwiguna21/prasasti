@@ -85,7 +85,7 @@
             <a class="collapse-item" href="<?php echo base_url('Panel/galeri');?>">Galeri</a>
             <a class="collapse-item" href="<?php echo base_url('Panel/link');?>">Link</a>
             <a class="collapse-item" href="<?php echo base_url('Panel/peraturan');?>">Peraturan</a>
-            <a class="collapse-item" href="<?php echo base_url('Panel/profil');?>">Profil</a>
+            <a class="collapse-item" href="javascript:void(0)" title="Edit Porfil" onclick="edit_profil('1')">Profil</a>
             
           </div>
         </div>
