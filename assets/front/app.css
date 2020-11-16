@@ -160,7 +160,7 @@ section .section-title {
 }
 #footer {
     background: #f5f5f5 !important;
-    position: fixed;
+
     bottom: 0;
 }
 #footer h5{
