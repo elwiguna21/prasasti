@@ -82,6 +82,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 			throw new PHPExcel_Reader_Exception("Could not open " . $pFilename . " for reading! File does not exist.");
 		}
 
+		PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
         $zipClass = PHPExcel_Settings::getZipClass();
 
 		// Check if zip class exists
@@ -128,7 +129,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 		}
 
 		$worksheetNames = array();
-
+		PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
         $zipClass = PHPExcel_Settings::getZipClass();
 
 		$zip = new $zipClass;
@@ -174,7 +175,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 		}
 
 		$worksheetInfo = array();
-
+		PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
         $zipClass = PHPExcel_Settings::getZipClass();
 
 		$zip = new $zipClass;
@@ -356,6 +357,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 			$excel->removeCellXfByIndex(0); // remove the default style
 		}
 
+		PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
         $zipClass = PHPExcel_Settings::getZipClass();
 
 		$zip = new $zipClass;
