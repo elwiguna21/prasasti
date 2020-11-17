@@ -11,28 +11,6 @@ $this->load->view('Panel/nav');?>
 
 <!-- Content Row -->
 
-<div class="row">
-<?php if ($this->session->flashdata('SUCCESS')) { ?>
-  <div class="col-md-12">
-  <div role="alert" class="alert alert-success">
-    <button data-dismiss="alert" class="close" type="button">
-      <span aria-hidden="true">x</span></button>
-    <?= $this->session->flashdata('SUCCESS') ?>
-  </div>
-</div>
-<?php
- }
- if ($this->session->flashdata('GAGAL')) { ?>
-  <div class="col-md-12">
-  <div role="alert" class="alert alert-warning">
-    <button data-dismiss="alert" class="close" type="button">
-      <span aria-hidden="true">x</span></button>
-    <?= $this->session->flashdata('GAGAL') ?>
-  </div>
-</div>
-<?php } 
-
-?>
 
 
   <div class="col-md-12">
@@ -43,6 +21,10 @@ $this->load->view('Panel/nav');?>
           </div>
       <!-- Card Body -->
       <div class="card-body">
+
+			<a href="<?= base_url()?>Excel/form"  class="btn btn-info">Import Data Excel</a>
+
+		<hr>
       Pilih SKPD : 
             <select id="table-filter" class="form-control col-md-6 mt-2 mb-3">
             <option value="">Semua</option>
@@ -394,4 +376,25 @@ $this->load->view('Panel/nav');?>
             });
         }
 
+</script>
+<script>
+$(document).ready(function(){
+
+	$('#import_form').on('submit', function(event){
+		event.preventDefault();
+		$.ajax({
+			url:"<?php echo base_url(); ?>excel/import",
+			method:"POST",
+			data:new FormData(this),
+			contentType:false,
+			cache:false,
+			processData:false,
+			success:function(data){
+				$('#file').val('');
+				alert(data);
+			}
+		})
+	});
+
+});
 </script>
