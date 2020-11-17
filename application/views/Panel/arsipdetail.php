@@ -1,4 +1,4 @@
-<?php $this->load->view('Admin/nav');?>
+<?php $this->load->view('Panel/nav');?>
 
 
 <div class="container-fluid">

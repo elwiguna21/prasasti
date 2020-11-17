@@ -191,7 +191,7 @@
                             <ul class="post-bar">
                                 <li><i class="fa fa-calendar"></i> <?= $data->tanggal?></li>
                             </ul>
-                            <a href="<?= base_url() ?>Front/beritadetail/<?= $data->slug?>" class="read-more">Selengkapnya</a>
+                            <a href="<?= base_url() ?>Front/artikeldetail/<?= $data->slug?>" class="read-more">Selengkapnya</a>
                         </div>
                     </div>
                     <?php }?>
