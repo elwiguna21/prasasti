@@ -56,7 +56,7 @@ class Excel extends CI_Controller
 		// Buat sebuah variabel array untuk menampung array data yg akan kita insert ke database
 		$data = array();
 		
-		$numrow = 1;
+		$numrow = 2;
 		foreach($sheet as $row){
 			// Cek $numrow apakah lebih dari 1
 			// Artinya karena baris pertama adalah nama-nama kolom
