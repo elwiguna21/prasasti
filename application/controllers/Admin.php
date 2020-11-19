@@ -30,10 +30,6 @@ class Admin extends CI_Controller {
 			'password' => md5($password)
 			);
 
-			if($username==null && $password==null ){
-				die();	
-			}
-
 			
 			if ($response['success'] == TRUE) {
 				$this->session->unset_userdata('kode_captcha');

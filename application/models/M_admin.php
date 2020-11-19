@@ -135,7 +135,7 @@ class M_admin extends CI_Model {
 		$this->load->library('upload'); // Load librari upload
 		
 		$config['upload_path'] = './assets/upload';
-		$config['allowed_types'] = 'xlsx';
+		$config['allowed_types'] = 'xlsx|xls';
 		$config['max_size']	= '10048';
 		$config['overwrite'] = true;
 		$config['file_name'] = $filename;
