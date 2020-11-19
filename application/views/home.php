@@ -26,9 +26,8 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-    <div class="container">
-        <img src="<?= base_url() ?>assets/image/logo.gif" alt="" height="30"> 
-        <a class="navbar-brand" href="<?= base_url() ?>"> SISEMAR</a>
+    <div class="container-fluid">
+        <img src="<?= base_url() ?>assets/image/logo.png" alt="" height="100"> 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile_nav" aria-controls="mobile_nav" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span> 
         </button>

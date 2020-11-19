@@ -1,4 +1,5 @@
 <?php 
+error_reporting(0);
 $this->load->view('Panel/nav');?>
 
 <div class="container-fluid">
@@ -81,7 +82,7 @@ $this->load->view('Panel/nav');?>
                     </tr>
                   </thead>";
 
-		$numrow = 1;
+		$numrow = 2;
 		$kosong = 0;
 
 		// Lakukan perulangan dari data yang ada di excel
@@ -105,7 +106,7 @@ $this->load->view('Panel/nav');?>
 			// Cek $numrow apakah lebih dari 1
 			// Artinya karena baris pertama adalah nama-nama kolom
 			// Jadi dilewat saja, tidak usah diimport
-			if($numrow > 1){
+			if($numrow > 3){
 				// Validasi apakah semua data telah diisi
 		
 
