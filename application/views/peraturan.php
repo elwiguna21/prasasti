@@ -24,15 +24,21 @@
  <script src="<?= base_url() ?>assets/front/app.js" type="text/javascript"></script>
 </head>
 <body>
-
+<style>
+.nav-img{
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    max-height: 100px;
+}
+</style>
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-    <div class="container">
-        <img src="<?= base_url() ?>assets/image/logo.gif" alt="" height="30"> 
-        <a class="navbar-brand" href="<?= base_url() ?>"> SISEMAR</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile_nav" aria-controls="mobile_nav" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="container-fluid">
+        <img src="<?= base_url() ?>assets/image/logo.png" alt="" class="nav-img"> 
+        <button class="navbar-toggler mb-2" type="button" data-toggle="collapse" data-target="#mobile_nav" aria-controls="mobile_nav" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span> 
         </button>
-        <div class="collapse navbar-collapse" id="mobile_nav">
+        <div class="collapse navbar-collapse mb-2" id="mobile_nav">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 float-md-right">
         </ul>
         <ul class="navbar-nav navbar-light">
