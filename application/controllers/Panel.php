@@ -107,13 +107,13 @@ class Panel extends CI_Controller
         $no = $_POST['start'];
         $nomor = 1;
         foreach ($lists as $list) {
-            // if ($list->lokasi_berkas == null || $list->ruang_penyimpanan == null) {
-            //     $status = '<span class="badge badge-danger">
-            //     not verified</span>';
-            // } else {
-            //     $status = '<span class="badge badge-success">
-            //     verified</span>';
-            // }
+            if ($list->lokasi_berkas == null || $list->ruang_penyimpanan == null) {
+                $status = '<span class="badge badge-danger">
+                not verified</span>';
+            } else {
+                $status = '<span class="badge badge-success">
+                verified</span>';
+            }
             $no++;
             $row = array();
             $row[] = $nomor++;
@@ -130,7 +130,7 @@ class Panel extends CI_Controller
             // $row[] = $list->lokasi_rak;
             // $row[] = $list->keterangan_tk_perkembangan;
             // $row[] = $list->ruang_penyimpanan;
-            // $row[] = $status;
+            $row[] = $status;
 
             //add html for action
             $row[] = '
