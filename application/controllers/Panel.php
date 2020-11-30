@@ -99,9 +99,9 @@ class Panel extends CI_Controller
 
     public function ajax_list()
     {
-        if (!$this->input->is_ajax_request()) {
-            redirect('Front');
-        }
+//        if (!$this->input->is_ajax_request()) {
+  //          redirect('Front');
+    //    }
         $lists = $this->model->get_datatables();
         $data = array();
         $no = $_POST['start'];
