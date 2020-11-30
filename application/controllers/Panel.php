@@ -107,30 +107,30 @@ class Panel extends CI_Controller
         $no = $_POST['start'];
         $nomor = 1;
         foreach ($lists as $list) {
-            if ($list->lokasi_berkas == null || $list->ruang_penyimpanan == null) {
-                $status = '<span class="badge badge-danger">
-                not verified</span>';
-            } else {
-                $status = '<span class="badge badge-success">
-                verified</span>';
-            }
+            // if ($list->lokasi_berkas == null || $list->ruang_penyimpanan == null) {
+            //     $status = '<span class="badge badge-danger">
+            //     not verified</span>';
+            // } else {
+            //     $status = '<span class="badge badge-success">
+            //     verified</span>';
+            // }
             $no++;
             $row = array();
             $row[] = $nomor++;
             $row[] = $list->tanggal;
-            $row[] = $list->nama_skpd;
-            $row[] = $list->kode_klsf;
-            $row[] = $list->indek;
-            $row[] = $list->deskripsi;
-            $row[] = $list->tahun;
-            $row[] = $list->unit_kerja_pencipta;
-            $row[] = $list->lokasi_sampul;
-            $row[] = $list->lokasi_berkas;
-            $row[] = $list->lokasi_box;
-            $row[] = $list->lokasi_rak;
-            $row[] = $list->keterangan_tk_perkembangan;
-            $row[] = $list->ruang_penyimpanan;
-            $row[] = $status;
+            // $row[] = $list->nama_skpd;
+            // $row[] = $list->kode_klsf;
+            // $row[] = $list->indek;
+            // $row[] = $list->deskripsi;
+            // $row[] = $list->tahun;
+            // $row[] = $list->unit_kerja_pencipta;
+            // $row[] = $list->lokasi_sampul;
+            // $row[] = $list->lokasi_berkas;
+            // $row[] = $list->lokasi_box;
+            // $row[] = $list->lokasi_rak;
+            // $row[] = $list->keterangan_tk_perkembangan;
+            // $row[] = $list->ruang_penyimpanan;
+            // $row[] = $status;
 
             //add html for action
             $row[] = '
