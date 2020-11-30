@@ -88,7 +88,7 @@
                    data-target="#image-gallery">
                     <img class="img-thumbnail"
                          src="<?= base_url()?>assets/upload/<?= $data->file ?>"
-                         alt="Another alt text">
+                         alt="Another alt text" width="300px" height="300px">
                 </a>
             </div>
         
