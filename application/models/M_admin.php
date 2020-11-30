@@ -17,7 +17,7 @@ class M_admin extends CI_Model {
     private function _get_datatables_query()
     {
        
-        // $this->db->join('skpd','berkas.nomor_skpd = skpd.nomor_skpd','inner');
+        $this->db->join('skpd','berkas.nomor_skpd = skpd.nomor_skpd','inner');
         $this->db->from($this->table);
  
         $i = 0;
