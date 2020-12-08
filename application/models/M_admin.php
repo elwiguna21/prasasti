@@ -131,12 +131,17 @@ class M_admin extends CI_Model {
     {
         return $this->db->insert_batch('berkas', $data);
     } 
+
     public function upload_file($filename){
 		$this->load->library('upload'); // Load librari upload
 		
 		$config['upload_path'] = './assets/upload';
 		$config['allowed_types'] = 'xlsx|xls';
+<<<<<<< HEAD
 		$config['max_size']	= '10048';
+=======
+	
+>>>>>>> b25d91a3870d6d6d9dd2ed71ad6ab29f21d80e25
 		$config['overwrite'] = true;
 		$config['file_name'] = $filename;
 	
