@@ -67,6 +67,7 @@ class M_data extends CI_Model {
  
     function count_filtered()
     {
+        $this->db->where('nomor_skpd',$this->session->userdata('nomor_skpd'));
         $this->_get_datatables_query();
         $query = $this->db->get();
         return $query->num_rows();
@@ -74,6 +75,7 @@ class M_data extends CI_Model {
  
     public function count_all()
     {
+        $this->db->where('nomor_skpd',$this->session->userdata('nomor_skpd'));
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
