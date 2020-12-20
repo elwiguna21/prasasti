@@ -5,7 +5,7 @@ class M_admin extends CI_Model {
  
     var $table = 'berkas';
     var $column_order = array('tanggal','tahun',null); //set column field database for datatable orderable
-    var $column_search = array('indek','tahun','kode_klsf','nama_skpd','unit_kerja_pencipta'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_search = array('indek','tahun','kode_klsf','deskripsi','nama_skpd','unit_kerja_pencipta'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('tanggal' => 'DESC'); // default order 
  
     public function __construct()
