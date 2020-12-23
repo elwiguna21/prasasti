@@ -24,7 +24,7 @@ class Panel extends CI_Controller
     public function arsip()
     {
         if (isset($_POST['simpan'])) {
-            $data = array(
+            $data = array(                                                                                                                  
                 'tanggal' => DATE('d-m-Y H:i:s'),
                 'nomor_skpd' => $this->session->userdata('nomor_skpd'),
                 'kode_klsf' => htmlentities($this->input->post('kode_klsf')),
@@ -92,8 +92,31 @@ class Panel extends CI_Controller
             'keterangan_tk_perkembangan' => htmlentities($this->input->post('keterangan_tk_perkembangan')),
             'ruang_penyimpanan' => htmlentities($this->input->post('ruang_penyimpanan')),
         );
+        $fileold= htmlentities($this->input->post('fileold'));
+        $config['upload_path'] = './assets/data/'; //path folder
+        $config['allowed_types'] = 'rar|zip|pdf'; //type yang dapat diakses bisa anda sesuaikan
+        $config['encrypt_name'] = TRUE; //nama yang terupload nantinya
 
-        $this->model->update($data, array('id' => htmlentities($this->input->post('id'))));
+        $this->upload->initialize($config);
+        if (!empty($_FILES['file']['name'])) {
+            if ($this->upload->do_upload('file')) {
+                unlink("./assets/data/".$fileold);
+                $gbr = $this->upload->data();
+                
+                $data['file'] = $gbr['file_name'];
+
+                $this->model->update($data, array('id' => htmlentities($this->input->post('id'))));
+                // redirect(base_url("Panel/arsip"));
+            }
+        }
+        else
+        {
+            $data['file']=$fileold;
+            $this->model->update($data, array('id' => htmlentities($this->input->post('id'))));
+            
+        }
+        // $this->model->update($data, array('id' => htmlentities($this->input->post('id'))));
+
         echo json_encode(array("status" => TRUE));
     }
 

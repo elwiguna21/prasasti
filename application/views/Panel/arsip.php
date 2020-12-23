@@ -83,9 +83,9 @@ $this->load->view('Panel/nav');?>
       <div class="modal-content">
       <div class="modal-body">
         <div class="container">
-        <form class="form-horizontal" id="form">
+        <form class="form-horizontal" id="form" action="#">
      
-            <input type="hidden" name="id" id="id">
+            <input type="text" name="id" id="id">
           <div class="form-group">
              <div class="row">
          
@@ -163,7 +163,18 @@ $this->load->view('Panel/nav');?>
              </select>
            </div>
           </div>
-
+          <div class="form-group" id="photo-preview">
+                            <div class="col-md-9">
+                               
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+          <div class="form-group">
+             <div class="row">
+            <label class="col-md-2">File</label>
+            <input type="file" class="form-control col-md-10" name="file">
+           </div>
+          </div>
           <button class="btn btn-outline-success btn-block mt-4" type="submit"  id="btnSave" onclick="save()">SIMPAN</button>
           <button class="btn btn-outline-info btn-block" data-dismiss="modal">BATAL</button>
           
@@ -210,6 +221,7 @@ $this->load->view('Panel/nav');?>
         
         var save_method; //for save method string
         var table;
+        var base_url = '<?php echo base_url();?>';
         
         $(document).ready(function() {
         
@@ -312,11 +324,19 @@ $this->load->view('Panel/nav');?>
                     $('[name="lokasi_box"]').val(data.lokasi_box);
                     $('[name="lokasi_rak"]').val(data.lokasi_rak);
                     $('[name="keterangan_tk_perkembangan"]').val(data.keterangan_tk_perkembangan);
-                    $('[name="ruang_penyimpanan"]').val(data.ruang_penyimpanan );
+                    $('[name="ruang_penyimpanan"]').val(data.ruang_penyimpanan);
                  
                     $('#arsipmodal').modal('show'); // show bootstrap modal when complete loaded
                     $('.modal-title').text('Edit arsip'); // Set title to Bootstrap modal title
-        
+                    $('#photo-preview').show(); // show photo preview modal
+                    
+                    if(data.file)
+                    {
+                     
+                        $('#photo-preview div').html('File lama: <a href="'+base_url+'assets/data/'+data.file+'" id="imgold"  alt="" target="_blank">Lihat File</a><input type="text" name="fileold" class="form-control" value="' + data.file + '">'); 
+                       // remove photo
+
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
@@ -341,10 +361,13 @@ $this->load->view('Panel/nav');?>
             
         
             // ajax adding data to database
+            var formData = new FormData($('#form')[0]);
             $.ajax({
-                url : url,
+              url : url,
                 type: "POST",
-                data: $('#form').serialize(),
+                data: formData,
+                contentType: false,
+                processData: false,
                 dataType: "JSON",
                 success: function(data)
                 {
@@ -353,6 +376,7 @@ $this->load->view('Panel/nav');?>
                     {
                         $('#arsipmodal').modal('hide');
                         reload_table();
+                        // location.reload();
                     }
                     else
                     {
