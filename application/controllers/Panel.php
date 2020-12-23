@@ -96,7 +96,7 @@ class Panel extends CI_Controller
         $config['upload_path'] = './assets/data/'; //path folder
         $config['allowed_types'] = 'rar|zip|pdf'; //type yang dapat diakses bisa anda sesuaikan
         $config['encrypt_name'] = TRUE; //nama yang terupload nantinya
-        $config['max_size'] = 2000000;
+        // $config['max_size'] = 2000000;
 
         $this->upload->initialize($config);
         if (!empty($_FILES['file']['name'])) {
