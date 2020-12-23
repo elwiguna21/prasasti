@@ -85,7 +85,7 @@ $this->load->view('Panel/nav');?>
         <div class="container">
         <form class="form-horizontal" id="form" action="#">
      
-            <input type="text" name="id" id="id">
+            <input type="hidden" name="id" id="id">
           <div class="form-group">
              <div class="row">
          
@@ -333,7 +333,7 @@ $this->load->view('Panel/nav');?>
                     if(data.file)
                     {
                      
-                        $('#photo-preview div').html('File lama: <a href="'+base_url+'assets/data/'+data.file+'" id="imgold"  alt="" target="_blank">Lihat File</a><input type="text" name="fileold" class="form-control" value="' + data.file + '">'); 
+                        $('#photo-preview div').html('File lama: <a href="'+base_url+'assets/data/'+data.file+'" id="imgold"  alt="" target="_blank">Lihat File</a><input type="hidden" name="fileold" class="form-control" value="' + data.file + '">'); 
                        // remove photo
 
                     }
