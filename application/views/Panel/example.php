@@ -32,39 +32,7 @@ foreach($css_files as $file): ?>
    
  
      
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Data Dinas <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-          <li><a href="<?php echo base_url('Datamasterweb/banner');?>">Slide Web</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/galeri');?>">Galeri</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/layanan');?>">Layanan</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/link');?>">Link</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/profil');?>">Profil</a></li>
-          </ul>
-      </li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Download <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="<?php echo base_url('Datamasterweb/agregat');?>">Download Agregat</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/lain');?>">Download Lain-lain</a></li>
-          </ul>
-      </li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informasi <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="<?php echo base_url('Datamasterweb/artikel');?>">Artikel</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/berita');?>">Berita</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/pengumuman');?>">Pengumuman</a></li>
-           </ul>
-      </li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Kependudukan <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="<?php echo base_url('Datamasterweb/peragama');?>">Per Agama</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/perkecamatan');?>">Per Kecamatan</a></li>
-            <li><a href="<?php echo base_url('Datamasterweb/perpendidikan');?>">Per Pendidikan</a></li>
-          </ul>
-      </li>
+     
       </ul>
  
 		<ul class="nav navbar-nav navbar-right">
