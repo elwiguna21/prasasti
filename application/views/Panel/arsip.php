@@ -83,7 +83,7 @@ $this->load->view('Panel/nav');?>
       <div class="modal-content">
       <div class="modal-body">
         <div class="container">
-        <form class="form-horizontal" id="form" action="#">
+        <form class="form-horizontal" id="form" action="#" enctype="multipart/form-data">
      
             <input type="hidden" name="id" id="id">
           <div class="form-group">
