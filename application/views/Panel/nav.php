@@ -64,11 +64,11 @@
         <i class="fas fa-clipboard-list"></i>
           <span>Data Arsip</span></a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="<?php echo base_url('Datamasterweb/updatedata');?>">
         <i class="fas fa-clipboard-list"></i>
           <span>Data Arsip (Percobaan)</span></a>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link" href="<?php echo base_url('Panel/dataskpd');?>">
         <i class="fas fa-clipboard-list"></i>
