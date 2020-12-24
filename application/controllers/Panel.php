@@ -162,6 +162,8 @@ class Panel extends CI_Controller
             Detail</span></a> | 
             <a href="javascript:void(0)" title="Edit" onclick="edit_arsip(' . "'" . $list->id . "'" . ')" title="Edit"><span class="badge badge-success">
             Update</span></a> | 
+            <a href="' . base_url() . 'Datamasterweb/updatedata/edit/' . $list->id . '" title="edit"  ><span class="badge badge-danger">
+            Edit</span></a>
             <a href="' . base_url() . 'Panel/arsiphapus/' . $list->id . '" title="hapus"  onclick="return confirm(' . "'Anda yakin mau menghapus item ini ?'" . ')"><span class="badge badge-danger">
             Hapus</span></a>
             ';
