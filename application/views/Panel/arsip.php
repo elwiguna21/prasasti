@@ -38,6 +38,7 @@ $this->load->view('Panel/nav');?>
                 <table class="table table-hover table-bordered mt-2 mb-2" id="dataTable" width="100%" cellspacing="0">
                   <thead align="center">
                     <tr>
+                    <th width="5%" rowspan="2"><button type="button" name="delete_all" id="delete_all" class="btn btn-danger btn-xs">Delete</button></th>
                       <th rowspan="2">No</th>
                       <th rowspan="2">Tanggal<br>Entry</th>
                       <th rowspan="2">Nama SKPD</th>
@@ -419,6 +420,44 @@ $(document).ready(function(){
 			}
 		})
 	});
+
+});
+$(document).ready(function(){
+ 
+ $('.delete_checkbox').click(function(){
+  if($(this).is(':checked'))
+  {
+   $(this).closest('tr').addClass('removeRow');
+  }
+  else
+  {
+   $(this).closest('tr').removeClass('removeRow');
+  }
+ });
+
+ $('#delete_all').click(function(){
+  var checkbox = $('.delete_checkbox:checked');
+  if(checkbox.length > 0)
+  {
+   var checkbox_value = [];
+   $(checkbox).each(function(){
+    checkbox_value.push($(this).val());
+   });
+   $.ajax({
+    url:"<?php echo base_url(); ?>Panel/delete_all",
+    method:"POST",
+    data:{checkbox_value:checkbox_value},
+    success:function()
+    {
+     $('.removeRow').fadeOut(1500);
+    }
+   })
+  }
+  else
+  {
+   alert('Select atleast one records');
+  }
+ });
 
 });
 </script>

@@ -140,6 +140,7 @@ class Panel extends CI_Controller
             }
             $no++;
             $row = array();
+            $row[] = ' <td><input type="checkbox" class="delete_checkbox" value="'.$list->id.'" /></td>';
             $row[] = $nomor++;
             $row[] = $list->tanggal;
             $row[] = $list->nama_skpd;
@@ -197,6 +198,31 @@ class Panel extends CI_Controller
 
             redirect(base_url("Panel/arsip"));
         }
+    }
+
+    function delete_all()
+    {
+        if($this->input->post('checkbox_value'))
+            {
+            $id = $this->input->post('checkbox_value');
+            for($count = 0; $count < count($id); $count++)
+            {
+                
+                
+                $table = 'berkas';
+                $where = array(
+                    'id' => $id[$count]
+                );
+                $query = $this->model->getone($table, $where);
+                foreach ($query as $x) {
+                    $file = $x->file;
+                }
+                unlink("./assets/data/" . $file);
+                $this->model->delete($id[$count]);
+                
+            }
+            }
+ 
     }
 
     function akun()

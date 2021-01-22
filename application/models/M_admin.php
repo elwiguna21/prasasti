@@ -4,9 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class M_admin extends CI_Model {
  
     var $table = 'berkas';
-    var $column_order = array('tanggal','tahun',null); //set column field database for datatable orderable
-    var $column_search = array('indek','tahun','kode_klsf','deskripsi','nama_skpd','unit_kerja_pencipta'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('tanggal' => 'DESC'); // default order 
+    var $column_order = array('berkas.tanggal','berkas.tahun',null); //set column field database for datatable orderable
+    var $column_search = array('berkas.indek','berkas.tahun','berkas.kode_klsf','berkas.deskripsi','skpd.nama_skpd','berkas.unit_kerja_pencipta'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $order = array('berkas.tanggal' => 'DESC'); // default order 
  
     public function __construct()
     {
@@ -17,8 +17,9 @@ class M_admin extends CI_Model {
     private function _get_datatables_query()
     {
        
+        $this->db->select('berkas.* , skpd.*');
+        $this->db->from($this->table);  
         $this->db->join('skpd','berkas.nomor_skpd = skpd.nomor_skpd');
-        $this->db->from($this->table);
  
         $i = 0;
      
@@ -150,6 +151,12 @@ class M_admin extends CI_Model {
 			$return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
 			return $return;
 		}
-	}
+    }
+    
+    function delete($id)
+    {
+     $this->db->where('id', $id);
+     $this->db->delete('berkas');
+    }
 
 }
