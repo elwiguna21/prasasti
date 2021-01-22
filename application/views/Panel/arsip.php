@@ -283,6 +283,7 @@ $this->load->view('Panel/nav');?>
 
            
                   });
+                  
              table.buttons().container()
                     .appendTo( $('div.eight.column:eq(0)', table.table().container()) );
 
@@ -295,7 +296,56 @@ $this->load->view('Panel/nav');?>
                            }
                });
               
-           
+               $('#import_form').on('submit', function(event){
+                  event.preventDefault();
+                  $.ajax({
+                    url:"<?php echo base_url(); ?>excel/import",
+                    method:"POST",
+                    data:new FormData(this),
+                    contentType:false,
+                    cache:false,
+                    processData:false,
+                    success:function(data){
+                      $('#file').val('');
+                      alert(data);
+                    }
+                  })
+                });
+              
+              $('.delete_checkbox').click(function(){
+                if($(this).is(':checked'))
+                {
+                $(this).closest('tr').addClass('removeRow');
+                }
+                else
+                {
+                $(this).closest('tr').removeClass('removeRow');
+                }
+              });
+
+              $('#delete_all').click(function(){
+                var checkbox = $('.delete_checkbox:checked');
+                if(checkbox.length > 0)
+                {
+                var checkbox_value = [];
+                $(checkbox).each(function(){
+                  checkbox_value.push($(this).val());
+                });
+                $.ajax({
+                  url:"<?php echo base_url(); ?>Panel/delete_all",
+                  method:"POST",
+                  data:{checkbox_value:checkbox_value},
+                  success:function()
+                  {
+                  $('.removeRow').fadeOut(1500);
+                  }
+                })
+                }
+                else
+                {
+                alert('Select atleast one records');
+                }
+              });
             
 
    
@@ -401,63 +451,4 @@ $this->load->view('Panel/nav');?>
             });
         }
 
-</script>
-<script>
-$(document).ready(function(){
-
-	$('#import_form').on('submit', function(event){
-		event.preventDefault();
-		$.ajax({
-			url:"<?php echo base_url(); ?>excel/import",
-			method:"POST",
-			data:new FormData(this),
-			contentType:false,
-			cache:false,
-			processData:false,
-			success:function(data){
-				$('#file').val('');
-				alert(data);
-			}
-		})
-	});
-
-});
-$(document).ready(function(){
- 
- $('.delete_checkbox').click(function(){
-  if($(this).is(':checked'))
-  {
-   $(this).closest('tr').addClass('removeRow');
-  }
-  else
-  {
-   $(this).closest('tr').removeClass('removeRow');
-  }
- });
-
- $('#delete_all').click(function(){
-  var checkbox = $('.delete_checkbox:checked');
-  if(checkbox.length > 0)
-  {
-   var checkbox_value = [];
-   $(checkbox).each(function(){
-    checkbox_value.push($(this).val());
-   });
-   $.ajax({
-    url:"<?php echo base_url(); ?>Panel/delete_all",
-    method:"POST",
-    data:{checkbox_value:checkbox_value},
-    success:function()
-    {
-     $('.removeRow').fadeOut(1500);
-    }
-   })
-  }
-  else
-  {
-   alert('Select atleast one records');
-  }
- });
-
-});
 </script>
