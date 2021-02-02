@@ -307,4 +307,14 @@ class Panel extends CI_Controller
     {
         $this->load->view('Panel/data_peraturan');
     }
+
+    function skpd_masuk()
+    {
+        $this->load->view('Panel/skpd_masuk');
+    }
+
+    function skpd_keluar()
+    {
+        $this->load->view('Panel/skpd_keluar');
+    }
 }
