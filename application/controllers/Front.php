@@ -136,7 +136,6 @@ class Front extends CI_Controller {
 	function download($file = true)
 	{
 		$this->load->helper('download');
-		
 		$path = file_get_contents(base_url()."assets/upload/".$file); // get file name
 		force_download($file, $path); 
 	}

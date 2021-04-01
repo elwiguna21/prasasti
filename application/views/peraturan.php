@@ -96,7 +96,7 @@
        <tr>
          <td width="100" align="center"><?= $no++ ?></td>
          <td width="800"><?= $data->caption?></td>
-         <td  class="text-center"><a href="<?= base_url()?>Front/download/<?= $data->file?>"
+         <td  class="text-center"><a href="<?= base_url()?>assets/upload/<?= $data->file?>"
                       class="btn btn-outline btn-info btn-block">Download
                       <i class="fa fa-download ml-2"></i>
                     </a></td>
