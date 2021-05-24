@@ -273,18 +273,7 @@ $this->load->view('Panel/nav');?>
                     "type": "POST"
                 },
         
-                //Set column definition initialisation properties.
-                "columnDefs": [
-                { 
-                
-               
-                   "targets": [ -1 ], //last column
-                    "orderable": false, //set not orderable
-                },],
-                "aoColumnDefs": [
-                  { "bSearchable": false, "aTargets": [ -1 , 8 ] }
-                ],
-
+         
 
                 
            

@@ -4,9 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class M_admin extends CI_Model {
  
     var $table = 'berkas';
-    var $column_order = array('berkas.tanggal','berkas.tahun',null); //set column field database for datatable orderable
+    var $column_order = array('berkas.id','berkas.tanggal','berkas.tahun',null); //set column field database for datatable orderable
     var $column_search = array('berkas.indek','berkas.tahun','berkas.kode_klsf','berkas.deskripsi','skpd.nama_skpd'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('berkas.id' => 'DESC'); // default order 
+    var $order = array('berkas.id' => 'DESC','berkas.tanggal'=>'DESC'); // default order 
  
     public function __construct()
     {
@@ -59,7 +59,7 @@ class M_admin extends CI_Model {
  
     function get_datatables()
     {
-        $this->db->order_by('tanggal','DESC');
+        $this->db->order_by('berkas.id','DESC');
         $this->_get_datatables_query();
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
