@@ -236,8 +236,8 @@ $this->load->view('Panel/nav');?>
                alamat = $("#table-filter option:selected").attr("alamat");
                
               });
-              
-            
+
+
             table = $('#dataTable').DataTable({ 
               dom: "lfBrtip",
               buttons: [{
@@ -276,11 +276,17 @@ $this->load->view('Panel/nav');?>
                 //Set column definition initialisation properties.
                 "columnDefs": [
                 { 
-                    "targets": [ -1 ], //last column
+                
+               
+                   "targets": [ -1 ], //last column
                     "orderable": false, //set not orderable
-                },
+                },],
+                "aoColumnDefs": [
+                  { "bSearchable": false, "aTargets": [ -1 , 8 ] }
                 ],
 
+
+                
            
                   });
                   
@@ -347,6 +353,8 @@ $this->load->view('Panel/nav');?>
                 }
               });
             
+              
+
 
    
           }); 

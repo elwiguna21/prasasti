@@ -19,7 +19,15 @@
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Arsip Total</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+            <?php
+           
+              $this->db->select('COUNT(id) as total');
+          
+              $query =  $this->db->get('berkas')->row_object();
+              echo $query->total;
+            ?>
+            </div>
           </div>
           <div class="col-auto">
           <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -36,7 +44,15 @@
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Arsip Terupload</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+            <?php
+           
+           $this->db->select('COUNT(id) as total');
+           $this->db->where('nomor_skpd',$this->session->userdata('nomor_skpd'));
+           $query =  $this->db->get('berkas')->row_object();
+           echo $query->total;
+         ?>
+            </div>
           </div>
           <div class="col-auto">
           <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -54,14 +70,14 @@
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Arsip Terverifikasi</div>
             <div class="row no-gutters align-items-center">
-              <div class="col-auto">
-                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-              </div>
-              <div class="col">
-                <div class="progress progress-sm mr-2">
-                  <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
+            <?php
+           
+           $this->db->select('COUNT(id) as total');
+           $this->db->where('nomor_skpd',$this->session->userdata('nomor_skpd'));
+           $this->db->where('ruang_penyimpanan !=',null);
+           $query =  $this->db->get('berkas')->row_object();
+           echo $query->total;
+         ?>
             </div>
           </div>
           <div class="col-auto">
@@ -88,7 +104,14 @@
       </div>
       <!-- Card Body -->
       <div class="card-body">
-       
+       <?php 
+       $query = $this->db->get('berita', 0, 5);
+       foreach ($query->result() as $data){
+         echo '
+         <li><a href="'. base_url() .'Front/berita/detail/'.$data->slug.'">'.$data->judul.'</a></li>
+         ';
+       }
+       ?>
       </div>
     </div>
   </div>
