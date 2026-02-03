@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Front extends CI_Controller {
 
 
-	function __construct() 
+	function __construct()
     {
         parent::__construct();
 		$this->load->model('M_front','model');
@@ -103,7 +103,7 @@ class Front extends CI_Controller {
 
 	function beritadetail($slug = true)
 	{
-		
+
 		$tabel='berita';
 		$data['data'] = $this->model->getdata($tabel,$slug);
 		$data ['link'] = $this->model->getlink();
@@ -113,7 +113,7 @@ class Front extends CI_Controller {
 
 	function artikeldetail($slug = true)
 	{
-	
+
 		$tabel='artikel';
 		$data['data'] = $this->model->getdata($tabel,$slug);
 		$data ['link'] = $this->model->getlink();
@@ -124,7 +124,7 @@ class Front extends CI_Controller {
 
 	function peraturan()
 	{
-	
+
 		$data['judul']='peraturan';
 		$data['data'] = $this->model->getperaturan();
 		$data ['link'] = $this->model->getlink();
@@ -137,7 +137,7 @@ class Front extends CI_Controller {
 	{
 		$this->load->helper('download');
 		$path = file_get_contents(base_url()."assets/upload/".$file); // get file name
-		force_download($file, $path); 
+		force_download($file, $path);
 	}
 
 
