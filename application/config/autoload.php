@@ -10,7 +10,7 @@ $autoload['drivers'] = array();
 
 
 // $autoload['helper'] = array('form', 'url', 'xss', 'slug');
-$autoload['helper'] = array('form', 'url', 'slug');
+$autoload['helper'] = array('form', 'url', 'slug', 'hashing');
 
 /*
 | -------------------------------------------------------------------

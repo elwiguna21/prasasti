@@ -34,7 +34,7 @@ class Authentications extends CI_Controller
           $password      = trim(htmlentities($this->input->post('password')));
 
           $this->load->model('v2/User', 'user');
-          $user          = $this->user->get_single_where(array('username' => $username, 'password' => md5($password)));
+          $user          = $this->user->get_single_where(array('username' => $username, 'password' => hashing_password('sha512', $password, KEY_ENCRYPT)));
           if (empty($user)) {
                $this->session->set_flashdata(array('status' => 500, 'message' => 'Pengguna tidak dapat ditemukan!'));
                redirect('v2/authentications');
@@ -56,5 +56,25 @@ class Authentications extends CI_Controller
           $this->session->unset_userdata($data_session);
           session_destroy();
           redirect('v2/authentications');
+     }
+
+     public function reset_pwds()
+     {
+          $new_pwd       = 'Sumedang123#';
+          $new_pwd_hash  = hashing_password('sha512', $new_pwd, KEY_ENCRYPT);
+
+          $this->db->set('password', $new_pwd_hash);
+          $this->db->where('role', 'operator');
+          $reset_op      = $this->db->update('user');
+
+          $this->db->set('password', hashing_password('sha512', 'Sumedang2020@', KEY_ENCRYPT));
+          $this->db->where(array('username' => 'Admin', 'role' => 'admin'));
+          $reset_adm     = $this->db->update('user');
+
+          if ($reset_op && $reset_adm) {
+               echo true;
+          } else {
+               echo false;
+          }
      }
 }

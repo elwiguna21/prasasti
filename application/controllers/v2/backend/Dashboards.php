@@ -14,30 +14,26 @@ class Dashboards extends MY_Controller
                show_error('Not Authorize! Please signin again.', 403);
                die;
           } else {
-               $user                    = $this->user->get_single_where(
+               $user                    = $this->employee->get_single_where(
                     array(
-                         'id'           => $this->encryption->decrypt($this->session->userdata('next-uid')),
-                         'username'     => $this->session->userdata('next-uname')
+                         'user.id'           => $this->encryption->decrypt($this->session->userdata('next-uid')),
+                         'user.username'     => $this->session->userdata('next-uname')
                     )
                );
 
-               if (!empty($user) && $user->role != 'admin') {
-                    $this->employee_auth = $this->employee->get_single_where(array(
-                         'company'      => $user->company,
-                         'user'         => $this->encryption->decrypt($user->id)
-                    ));
-               } else {
-                    $this->employee_auth               = new stdClass();
-                    $this->employee_auth->fullname     = 'Admin';
+               if (empty($user)) {
+                    redirect('v2/authentications/signout');
                }
-               $this->employee_auth->avatar     = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
+
+               $this->user_auth              = $user;
+               $this->user_auth->avatar      = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
           }
      }
 
      public function index()
      {
           $data['title']      = 'Dashboard';
-          $data['employee']   = $this->employee_auth;
+          $data['employee']   = $this->user_auth;
 
           $this->backend('v2/backend/dashboard', $data);
      }

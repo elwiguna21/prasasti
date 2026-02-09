@@ -36,7 +36,7 @@
                                              <li>
                                                   <div class="timeline-panel">
                                                        <div class="media me-2">
-                                                            <img alt="image" width="50" src="images/avatar/1.jpg">
+                                                            <img alt="image" width="50" src="<?= base_url('assets/v3/backend/') ?>images/avatar/1.jpg">
                                                        </div>
                                                        <div class="media-body">
                                                             <h6 class="mb-1">Dr sultads Send you Photo</h6>
@@ -69,7 +69,7 @@
                                              <li>
                                                   <div class="timeline-panel">
                                                        <div class="media me-2">
-                                                            <img alt="image" width="50" src="images/avatar/1.jpg">
+                                                            <img alt="image" width="50" src="<?= base_url('assets/v3/backend/') ?>images/avatar/1.jpg">
                                                        </div>
                                                        <div class="media-body">
                                                             <h6 class="mb-1">Dr sultads Send you Photo</h6>
@@ -113,19 +113,19 @@
                                    <img src="<?= $employee->avatar; ?>" width="20" alt="Avatar">
                               </a>
                               <div class="dropdown-menu dropdown-menu-right">
-                                   <a href="./app-profile.html" class="dropdown-item ai-icon">
+                                   <a href="<?= base_url('v2/backend/users/profiles') ?>" class="dropdown-item ai-icon <?= ($this->uri->segment(4) == 'profiles') ? 'active' : ''; ?>">
                                         <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                              <circle cx="12" cy="7" r="4"></circle>
                                         </svg>
-                                        <span class="ms-2">Profile </span>
+                                        <span class="ms-2">Profil </span>
                                    </a>
-                                   <a href="./email-inbox.html" class="dropdown-item ai-icon">
+                                   <a href="<?= base_url('v2/backend/services/requests') ?>" class="dropdown-item ai-icon <?= ($this->uri->segment(4) == 'requires') ? 'active' : ''; ?>">
                                         <svg id="icon-inbox" xmlns="http://www.w3.org/2000/svg" class="text-success" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                              <polyline points="22,6 12,13 2,6"></polyline>
                                         </svg>
-                                        <span class="ms-2">Inbox </span>
+                                        <span class="ms-2">Kotak Masuk </span>
                                    </a>
                                    <a href="<?= base_url('v2/authentications/signout') ?>" class="dropdown-item ai-icon">
                                         <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -24,10 +24,14 @@
      <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/v3/backend/') ?>images/favicon.png">
      <link href="<?= base_url('assets/v3/backend/') ?>vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
      <link rel="stylesheet" href="<?= base_url('assets/v3/backend/') ?>vendor/chartist/css/chartist.min.css">
+
+     <!-- Datatable -->
+     <link href="<?= base_url('assets/v3/backend/') ?>vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+
+     <link rel="stylesheet" href="<?= base_url('assets/v3/backend/') ?>vendor/select2/css/select2.min.css">
      <link href="<?= base_url('assets/v3/backend/') ?>vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
      <link href="<?= base_url('assets/v3/backend/') ?>css/style.css" rel="stylesheet">
-     <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
-
+     <!-- <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet"> -->
 </head>
 
 <body>
