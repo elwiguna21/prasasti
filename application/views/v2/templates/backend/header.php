@@ -30,8 +30,13 @@
 
      <link rel="stylesheet" href="<?= base_url('assets/v3/backend/') ?>vendor/select2/css/select2.min.css">
      <link href="<?= base_url('assets/v3/backend/') ?>vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+     <!-- SweetAlert2 -->
+     <link href="<?= base_url('assets/v3/backend/') ?>vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet">
      <link href="<?= base_url('assets/v3/backend/') ?>css/style.css" rel="stylesheet">
      <!-- <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet"> -->
+
+     <!-- jQuery (must load before content scripts) -->
+     <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
 </head>
 
 <body>

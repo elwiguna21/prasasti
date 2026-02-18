@@ -35,7 +35,17 @@
         Scripts
     ***********************************-->
 
+<!-- Plugins -->
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
+<!-- Datatable -->
+<script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="<?= base_url('assets/v3/backend/') ?>vendor/sweetalert2/sweetalert2.min.js"></script>
+
+
+
 <script src="<?= base_url('assets/v3/backend/') ?>js/custom.min.js"></script>
 <script src="<?= base_url('assets/v3/backend/') ?>js/deznav-init.js"></script>
 
