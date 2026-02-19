@@ -18,32 +18,34 @@
                          <li><a href="page-general-customers.html">General Customers</a></li>
                     </ul>
                </li>
-               <li>
-                    <a class="ai-icon" href="<?= base_url('v2/backend/users') ?>">
-                         <i class="flaticon-381-user-9"></i>
-                         <span class="nav-text">Daftar Pengguna</span>
-                         <span class="badge badge-xs badge-success">New</span>
-                    </a>
-               </li>
-               <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                         <i class="flaticon-381-notepad"></i>
-                         <span class="nav-text">Data Umum</span>
-                    </a>
-                    <ul aria-expanded="false">
-                         <li><a href="<?= base_url('v2/backend/artikels') ?>">Artikel</a></li>
-                         <li><a href="<?= base_url('v2/backend/beritas') ?>">Berita</a></li>
-                         <li><a href="<?= base_url('v2/backend/banners') ?>">Banner</a></li>
-                         <li><a href="<?= base_url('v2/backend/galeris') ?>">Galeri</a></li>
-                         <li><a href="<?= base_url('v2/backend/faqs') ?>">FAQ</a></li>
-                         <li><a href="<?= base_url('v2/backend/links') ?>">Link</a></li>
-                         <li><a href="<?= base_url('v2/backend/peraturans') ?>">Peraturan</a></li>
-                         <li><a href="<?= base_url('v2/backend/inventarisarsips') ?>">Inventaris Arsip</a></li>
-                         <li><a href="<?= base_url('v2/backend/arsipstatiss') ?>">Daftar Arsip Statis</a></li>
-                         <li><a href="<?= base_url('v2/backend/guidearsips') ?>">Guide Arsip</a></li>
-                         <li><a href="<?= base_url('v2/backend/materipaparans') ?>">Materi/Paparan</a></li>
-                         <li><a href="<?= base_url('v2/backend/profils') ?>">Profil</a></li>
-                    </ul>
-               </li>
+               <?php if ($this->session->userdata('next-role') === 'admin') : ?>
+                    <li>
+                         <a class="ai-icon" href="<?= base_url('v2/backend/users') ?>">
+                              <i class="flaticon-381-user-9"></i>
+                              <span class="nav-text">Daftar Pengguna</span>
+                              <span class="badge badge-xs badge-success">New</span>
+                         </a>
+                    </li>
+                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                              <i class="flaticon-381-notepad"></i>
+                              <span class="nav-text">Data Umum</span>
+                         </a>
+                         <ul aria-expanded="false">
+                              <li><a href="<?= base_url('v2/backend/artikels') ?>">Artikel</a></li>
+                              <li><a href="<?= base_url('v2/backend/beritas') ?>">Berita</a></li>
+                              <li><a href="<?= base_url('v2/backend/banners') ?>">Banner</a></li>
+                              <li><a href="<?= base_url('v2/backend/galeris') ?>">Galeri</a></li>
+                              <li><a href="<?= base_url('v2/backend/faqs') ?>">FAQ</a></li>
+                              <li><a href="<?= base_url('v2/backend/links') ?>">Link</a></li>
+                              <li><a href="<?= base_url('v2/backend/peraturans') ?>">Peraturan</a></li>
+                              <li><a href="<?= base_url('v2/backend/inventarisarsips') ?>">Inventaris Arsip</a></li>
+                              <li><a href="<?= base_url('v2/backend/arsipstatiss') ?>">Daftar Arsip Statis</a></li>
+                              <li><a href="<?= base_url('v2/backend/guidearsips') ?>">Guide Arsip</a></li>
+                              <li><a href="<?= base_url('v2/backend/materipaparans') ?>">Materi/Paparan</a></li>
+                              <li><a href="<?= base_url('v2/backend/profils') ?>">Profil</a></li>
+                         </ul>
+                    </li>
+               <?php endif; ?>
                <li>
                     <a href="<?= base_url('v2/backend/users/profiles') ?>" class="ai-icon"><i class="flaticon-381-user-4"></i>
                          <span class="nav-text">Profil</span>

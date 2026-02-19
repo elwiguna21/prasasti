@@ -36,6 +36,7 @@
     ***********************************-->
 
 <!-- Plugins -->
+<script src="<?= base_url('assets/v3/backend/') ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
 <!-- Datatable -->
