@@ -11,16 +11,16 @@
      <meta name="author" content="DexignZone">
      <meta name="robots" content="">
 
-     <meta name="keywords" content="agency, business, company, corporate, creative, finance, multipurpose, one page, parallax, personal, portfolio, responsive, resume, template, unique">
-     <meta name="description" content="Agency : is a unique design template which is crafted specially for creative agency, corporate firms, professional businesses. Template theme is specially design for all types of business and have multiple color theme for different types of people.">
-     <meta property="og:title" content="Agency | Creative Multipurpose HTML with RTL Ready">
-     <meta property="og:description" content="Agency : is a unique design template which is crafted specially for creative agency, corporate firms, professional businesses. Template theme is specially design for all types of business and have multiple color theme for different types of people.">
-     <meta property="og:image" content="https://agency.dexignzone.com/xhtml/social-image.png">
+     <meta name="keywords" content="prasasti, lembaga kearsipan daerah kabupaten sumedang, LKD Kabupaten Sumedang, arsip daerah kabupaten sumedang, arsip, kearsipan, kabupaten sumedang, sumedang">
+     <meta name="description" content="PRASASTI : Sistem pengelolaan dan pencatatan Kearsipan Daerah Kabupaten Sumedang oleh Dinas Arsip dan Perpustakaan Kabupaten Sumedang.">
+     <meta property="og:title" content="PRASASTI | Pengelolaan dan Pencatatan Kearsipan Terintegrasi">
+     <meta property="og:description" content="PRASASTI : Sistem pengelolaan dan pencatatan Kearsipan Daerah Kabupaten Sumedang oleh Dinas Arsip dan Perpustakaan Kabupaten Sumedang.">
+     <meta property="og:image" content="https://sisemar.sumedangkab.go.id/assets/image/logo.gif">
      <meta name="format-detection" content="telephone=no">
 
      <!-- FAVICONS ICON -->
-     <link rel="icon" href="<?= base_url('assets/v3/frontend/') ?>images/favicon.ico" type="image/x-icon">
-     <link rel="shortcut icon" type="image/x-icon" href="<?= base_url('assets/v3/frontend/') ?>images/favicon.png">
+     <link rel="icon" href="https://sisemar.sumedangkab.go.id/assets/image/logo.gif" type="image/x-icon">
+     <link rel="shortcut icon" type="image/x-icon" href="https://sisemar.sumedangkab.go.id/assets/image/logo.gif">
 
      <!-- MOBILE SPECIFIC -->
      <meta name="viewport" content="width=device-width, initial-scale=1">
