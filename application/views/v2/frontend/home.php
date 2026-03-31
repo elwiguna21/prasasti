@@ -107,7 +107,7 @@
                <div class="section-head text-black text-center wow fadeIn" data-wow-delay="0.4s">
                     <h4 class="text-gray-dark m-b10">Layanan</h4>
                     <h2 class="box-title m-tb0">Perbaikan <span class="text-primary">Arsip</span></h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                    <p>Ikuti langkah dibawah ini untuk menggunakan layanan perbaikan arsip anda yang rusak.</p>
                </div>
           </div>
           <div class="development-box">
@@ -116,8 +116,8 @@
                          <div class="item">
                               <div class="box-item-service text-center">
                                    <div class="item-service-content m-b40">
-                                        <h5>Web Design</h5>
-                                        <p class="m-b0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                        <h5>Ajukan Permohonan</h5>
+                                        <p class="m-b0">Ajukan permohonan perbaikan arsip dengan melengkapi form yang telah disediakan.</p>
                                    </div>
                                    <div class="clearfix">
                                         <span class="text-primary round-center"></span>
@@ -125,7 +125,7 @@
                                    <div class="icon-bx-md radius border-1 m-t40 m-b20">
                                         <span class="icon-cell"><i class="flaticon-devices"></i></span>
                                    </div>
-                                   <a href="" class="site-button outline outline-2"><span class="font-weight-500">Read More</span></a>
+                                   <a href="<?= base_url('v2/services') ?>" class="site-button outline outline-2"><span class="font-weight-500">Selengkapnya</span></a>
                               </div>
                          </div>
                          <div class="item">
@@ -133,21 +133,21 @@
                                    <div class="icon-bx-md radius border-1 m-b20 m-t0">
                                         <span class="icon-cell"><i class="flaticon-pen"></i></span>
                                    </div>
-                                   <a href="" class="site-button outline outline-2 m-b40"><span class="font-weight-500">Read More</span></a>
+                                   <a href="<?= base_url('v2/services') ?>" class="site-button outline outline-2 m-b40"><span class="font-weight-500">Selengkapnya</span></a>
                                    <div class="clearfix">
                                         <span class="text-primary round-center"></span>
                                    </div>
                                    <div class="item-service-content m-t40">
-                                        <h5>Web Development</h5>
-                                        <p class="m-b0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                        <h5>Verifikasi Permohonan</h5>
+                                        <p class="m-b0">Ajuan permohonan perbaikan arsip anda akan segera kami verifikasi.</p>
                                    </div>
                               </div>
                          </div>
                          <div class="item">
                               <div class="box-item-service text-center">
                                    <div class="item-service-content m-b40">
-                                        <h5>Mobile Applications</h5>
-                                        <p class="m-b0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                        <h5>Proses Permohonan</h5>
+                                        <p class="m-b0">Setelah diverifikasi, kami akan segera menghubungi anda untuk proses lebih lanjut.</p>
                                    </div>
                                    <div class="clearfix">
                                         <span class="text-primary round-center"></span>
@@ -155,7 +155,7 @@
                                    <div class="icon-bx-md radius border-1 m-t40 m-b20">
                                         <span class="icon-cell"><i class="flaticon-smartphone"></i></span>
                                    </div>
-                                   <a href="" class="site-button outline outline-2"><span class="font-weight-500">Read More</span></a>
+                                   <a href="<?= base_url('v2/services') ?>" class="site-button outline outline-2"><span class="font-weight-500">Selengkapnya</span></a>
                               </div>
                          </div>
                          <div class="item">
@@ -168,8 +168,8 @@
                                         <span class="text-primary round-center"></span>
                                    </div>
                                    <div class="item-service-content m-t40">
-                                        <h5>Internet marketing</h5>
-                                        <p class="m-b0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                        <h5>Layanan Selesai</h5>
+                                        <p class="m-b0">Setelah kami proses, anda akan menerima arsip terbaru dan layanan terselesaikan.</p>
                                    </div>
                               </div>
                          </div>
@@ -194,8 +194,8 @@
                               </div>
                          </div>
                          <div class="icon-content">
-                              <h4 class="dlab-tilte">Ensure Security</h4>
-                              <p>Perspiciatis unde omnis ist natus error sit voluptatem accusantium loremque tium totam rem aperiam eaque</p>
+                              <h4 class="dlab-tilte">Cepat &amp; Mudah</h4>
+                              <p>Dapatkan informasi kearsipan daerah dengan mudah dan cepat serta dapat diakses kapanpun dan dimanapun.</p>
                          </div>
                     </div>
                </div>
@@ -212,8 +212,8 @@
                               </div>
                          </div>
                          <div class="icon-content">
-                              <h4 class="dlab-tilte">expert team</h4>
-                              <p>Perspiciatis unde omnis ist natus error sit voluptatem accusantium loremque tium totam rem aperiam eaque</p>
+                              <h4 class="dlab-tilte">Tim Kearsipan</h4>
+                              <p>Kami memiliki tim yang handal untuk mengelola kearsipan daerah serta menangani layanan perbaikan arsip yang rusak.</p>
                          </div>
                     </div>
                </div>
@@ -230,8 +230,8 @@
                               </div>
                          </div>
                          <div class="icon-content">
-                              <h4 class="dlab-tilte">24/7 SUPPORT</h4>
-                              <p>Perspiciatis unde omnis ist natus error sit voluptatem accusantium loremque tium totam rem aperiam eaque</p>
+                              <h4 class="dlab-tilte">24/7 Bantuan</h4>
+                              <p>Jika anda mengalami kesulitan atau memiliki pertanyaan, kami akan segera membantu anda.</p>
                          </div>
                     </div>
                </div>
@@ -249,28 +249,28 @@
                          <div class="row">
                               <div class="col-lg-4 col-md-4 col-sm-6 wow fadeIn" data-wow-delay="0.2s">
                                    <div class="icon-bx-wraper bx-style-1 p-tb30 p-lr20 m-b30 center br-col-b1 bg-white">
-                                        <h2 class="counter font-45">768</h2>
+                                        <h2 class="counter font-45"><?= number_format($archieve_total, 0, ',', '.'); ?></h2>
                                         <div class="icon-content">
                                              <h5 class="font-weight-500">Arsip</h5>
-                                             <p class="m-b0 font-14">Take a trivial example, which seds ever undertakes laborious.</p>
+                                             <p class="m-b0 font-14">Total arsip di Kabupaten Sumedang.</p>
                                         </div>
                                    </div>
                               </div>
                               <div class="col-lg-4 col-md-4 col-sm-6 wow fadeIn" data-wow-delay="0.4s">
                                    <div class="icon-bx-wraper bx-style-1 p-tb30 p-lr20 m-b30 center br-col-b1 bg-white">
-                                        <h2 class="counter font-45">128</h2>
+                                        <h2 class="counter font-45"><?= number_format($archieve_vital, 0, ',', '.'); ?></h2>
                                         <div class="icon-content">
                                              <h5 class="font-weight-500">Arsip Vital</h5>
-                                             <p class="m-b0 font-14">Take a trivial example, which seds ever undertakes laborious.</p>
+                                             <p class="m-b0 font-14">Total arsip vital di Kabupaten Sumedang.</p>
                                         </div>
                                    </div>
                               </div>
                               <div class="col-lg-4 col-md-4 col-sm-12 wow fadeIn" data-wow-delay="0.6s">
                                    <div class="icon-bx-wraper bx-style-1 p-tb30 p-lr20 m-b30 center br-col-b1 bg-white">
-                                        <h2 class="counter font-45">654</h2>
+                                        <h2 class="counter font-45"><?= number_format($archieve_usul, 0, ',', '.'); ?></h2>
                                         <div class="icon-content">
                                              <h5 class="font-weight-500">Arsip Usul Serah</h5>
-                                             <p class="m-b0 font-14">Take a trivial example, which seds ever undertakes laborious.</p>
+                                             <p class="m-b0 font-14">Total arsip usul serah di Kabupaten Sumedang.</p>
                                         </div>
                                    </div>
                               </div>
@@ -288,102 +288,27 @@
           </div>
      </div>
 
-     <!-- <div class="section-full content-inner-2 bg-primary bg-img-fix overlay-primary tax-info-chart" style="background-image:url(<?= base_url('assets/v3/frontend/') ?>images/background/bg3.jpg);" data-wow-delay="0.4s"> -->
-     <div class="section-full content-inner-2 bg-primary bg-img-fix overlay-primary tax-info-chart wow fadeInRight" style="background-image:url(https://sisemar.sumedangkab.go.id/assets/upload/dfb48aa48022cfb8c22bc0bad2974f0c.jpg);" data-wow-delay="0.4s">
-          <div class="container">
-               <div class="row dzseth">
-                    <div class="col-lg-6 col-md-12 col-sm-12 d-flex mb-4 mb-md-4 mb-lg-0 wow fadeInLeft" data-wow-delay="0.4s">
-                         <div class="chart-box align-self-stretch d-flex">
-                              <canvas id="canvas" style="height:200px;" class="align-self-center"></canvas>
-                         </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 dis-tbl d-flex">
-                         <div class="bg-white text-black p-a30 p-t40 form-tax align-self-center wow fadeInRight" data-wow-delay="0.4s">
-                              <div class="row">
-                                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-4">
-                                        <div class="form-group">
-                                             <label>choose your business</label>
-                                             <select class="form-control">
-                                                  <option>Select Your Business</option>
-                                                  <option>Marketing</option>
-                                                  <option>IT Industries</option>
-                                                  <option>Management Industries</option>
-                                                  <option>Property Business</option>
-                                             </select>
-                                        </div>
-                                   </div>
-                                   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-4">
-                                        <div class="form-group">
-                                             <label>Country of residence</label>
-                                             <select class="form-control">
-                                                  <option>Australia</option>
-                                                  <option>United State</option>
-                                                  <option>United Kingdom</option>
-                                                  <option>Germany</option>
-                                                  <option>Netherland</option>
-                                             </select>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="row">
-                                   <div class="col-xl-4 col-lg-6 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="form-group">
-                                             <label>employees</label>
-                                             <select class="form-control">
-                                                  <option>Select Here</option>
-                                                  <option>0-20</option>
-                                                  <option>21-50</option>
-                                                  <option>51-150</option>
-                                                  <option>151-500</option>
-                                                  <option>500+</option>
-                                             </select>
-                                        </div>
-                                   </div>
-                                   <div class="col-xl-3 col-lg-6 col-md-3 col-sm-6 col-12 mb-4">
-                                        <div class="form-group">
-                                             <label>Tax Year</label>
-                                             <select class="form-control">
-                                                  <option>2000-2005</option>
-                                                  <option>2006-2010</option>
-                                                  <option>2011-2024</option>
-                                                  <option>2025-2020</option>
-                                             </select>
-                                        </div>
-                                   </div>
-                                   <div class="col-xl-5 col-lg-12 col-md-5 col-sm-12 col-12 mb-4">
-                                        <div class="form-group">
-                                             <label>Yearly total income</label>
-                                             <select class="form-control">
-                                                  <option>Select Range</option>
-                                                  <option>0 - 1 Million</option>
-                                                  <option>1 Million - 3 Million</option>
-                                                  <option>3 Million - 10 Million</option>
-                                                  <option>10 Million - 20 Million</option>
-                                                  <option>20Million+</option>
-                                             </select>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="row">
-                                   <div class="col-xl-4 col-lg-5 col-md-3 col-sm-12 col-12 mb-4 d-flex">
-                                        <div class="calculate align-self-end btn-block">
-                                             <button class="site-button btn-block" type="button">Calculate</button>
-                                        </div>
-                                   </div>
-                                   <div class="col-xl-8 col-lg-7 col-md-9 col-sm-12 col-12 mb-4">
-                                        <div class="calculate">
-                                             <div class="">
-                                                  <label>Total Payable Tax</label>
-                                                  <input type="text" class="form-control" placeholder="$000.00">
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
+     <div class="section-full m-t50 bg-gray wow fadeInRight" data-wow-delay="0.4s">
+          <div class="row dzseth">
+               <div class="col-lg-12 d-flex mb-4 mb-md-4 mb-lg-0 wow fadeInLeft" data-wow-delay="0.4s">
+                    <div class="chart-box align-self-stretch d-flex">
+                         <canvas id="archieve-canvas" style="height:500px;" class="align-self-center"></canvas>
                     </div>
                </div>
           </div>
      </div>
+
+     <!-- <div class="section-full content-inner-2 bg-primary bg-img-fix overlay-primary tax-info-chart wow fadeInRight" style="background-image:url(https://sisemar.sumedangkab.go.id/assets/upload/dfb48aa48022cfb8c22bc0bad2974f0c.jpg);" data-wow-delay="0.4s">
+          <div class="container">
+               <div class="row dzseth">
+                    <div class="col-lg-12 d-flex mb-4 mb-md-4 mb-lg-0 wow fadeInLeft" data-wow-delay="0.4s">
+                         <div class="chart-box align-self-stretch d-flex">
+                              <canvas id="archieve-canvas" style="height:500px;" class="align-self-center"></canvas>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div> -->
 
      <div class="section-full content-inner bg-img-fix wow fadeInRight" style="background-image:url(<?= base_url('assets/v3/frontend/') ?>images/background/bg14.jpg);" data-wow-delay="0.4s">
           <div class="container">
@@ -557,9 +482,55 @@
           <div class="container">
                <div class="d-lg-flex d-sm-block justify-content-between align-items-center">
                     <h2 class="m-b10 m-t10 text-white">Ajukan perbaikan arsip yang rusak</h2>
-                    <div><a href="<?= base_url('v2/frontend/services') ?>" class="site-button button-md white">Sekarang</a></div>
+                    <div><a href="<?= base_url('v2/frontend/services') ?>" class="site-button button-md white">Ajukan Sekarang <i class="fa fa-upload ms-2"></i></a></div>
                </div>
           </div>
      </div>
 </div>
 <!-- contact area END -->
+
+<script src="<?= base_url('assets/v3/frontend/') ?>plugins/chart/Chart.bundle.js"></script>
+<!-- <script src="<?= base_url('assets/v3/frontend/') ?>plugins/chart/charts.js"></script> -->
+<script src="<?= base_url('assets/v3/frontend/') ?>plugins/chart/utils.js"></script>
+<script>
+     var config = {
+          type: 'bar',
+          data: {
+               labels: <?= json_encode($archieve_arr['labels']) ?>,
+               datasets: [{
+                    label: 'Jumlah Arsip',
+                    fill: false,
+                    borderColor: window.chartColors.red,
+                    backgroundColor: window.chartColors.red,
+                    data: <?= json_encode($archieve_arr['datasets']) ?>
+               }]
+          },
+          options: {
+               responsive: true,
+               title: {
+                    display: true,
+                    text: 'Grafik Total Arsip Berdasarkan SKPD'
+               },
+               scales: {
+                    xAxes: [{
+                         display: true,
+                         ticks: {
+                              callback: function(dataLabel, index) {
+                                   // Hide the label of every 2nd dataset. return null to hide the grid line too
+                                   return index % 2 === 0 ? dataLabel : '';
+                              }
+                         }
+                    }],
+                    yAxes: [{
+                         display: true,
+                         beginAtZero: false
+                    }]
+               }
+          }
+     };
+
+     window.onload = function() {
+          var ctx = document.getElementById('archieve-canvas').getContext('2d');
+          window.myLine = new Chart(ctx, config);
+     };
+</script>

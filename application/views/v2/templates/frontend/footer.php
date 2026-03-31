@@ -10,11 +10,11 @@
                          <div class="widget widget_services border-0">
                               <h5 class="m-b30 text-white">Informasi</h5>
                               <ul>
-                                   <li><a href="about-1.html">Gambaran Umum </a></li>
-                                   <li><a href="index.html">Tugas &amp; Fungsi </a></li>
-                                   <li><a href="contact.html">Sejarah</a></li>
-                                   <li><a href="about-1.html">Berita</a></li>
-                                   <li><a href="service.html">Peraturan</a></li>
+                                   <li><a href="<?= base_url('v2/frontend/profiles/about') ?>">Gambaran Umum </a></li>
+                                   <li><a href="<?= base_url('v2/frontend/profiles/jobdesc') ?>">Tugas &amp; Fungsi </a></li>
+                                   <li><a href="<?= base_url('v2/frontend/profiles/history') ?>">Sejarah</a></li>
+                                   <li><a href="<?= base_url('v2/frontend/news') ?>">Berita</a></li>
+                                   <li><a href="<?= base_url('v2/frontend/regulations') ?>">Peraturan</a></li>
                               </ul>
                          </div>
                     </div>
@@ -22,7 +22,7 @@
                          <div class="widget widget_services border-0">
                               <h5 class="m-b30 text-white">Link Terkait</h5>
                               <ul>
-                                   <li><a href="index.html">Lokasi Depo Arsip Sumedang</a></li>
+                                   <li><a href="https://goo.gl/maps/ipGn1bfYdFrj4VGj9" target="_blank">Lokasi Depo Arsip Sumedang</a></li>
                                    <li><a href="https://anri.go.id" target="_blank">Arsip Nasional Republik Indonesia (ANRI) </a></li>
                                    <li><a href="https://dispusipda.jabarprov.go.id" target="_blank">Dinas Perpustakaan dan Kearsipan Daerah Provinsi Jawa Barat (DISPUSIPDA JABAR)</a></li>
                                    <li><a href="https://sumedangkab.go.id" target="_blank">Pemerintah Daerah Kabupaten Sumedang</a></li>
@@ -110,7 +110,7 @@
 
 <script src="<?= base_url('assets/v3/frontend/') ?>plugins/chart/Chart.bundle.js"></script>
 <script src="<?= base_url('assets/v3/frontend/') ?>plugins/chart/utils.js"></script>
-<script src="<?= base_url('assets/v3/frontend/') ?>plugins/chart/chart-script.js"></script>
+<!-- <script src="<?= base_url('assets/v3/frontend/') ?>plugins/chart/chart-script.js"></script> -->
 </body>
 
 </html>

@@ -37,4 +37,20 @@ class Dashboards extends MY_Controller
 
           $this->backend('v2/backend/dashboard', $data);
      }
+
+     public function archieves()
+     {
+          $data['title']      = 'Daftar Arsip';
+          $data['employee']   = $this->user_auth;
+
+          $this->backend('v2/backend/archieves/static/index', $data);
+     }
+
+     public function add_static_archieves()
+     {
+          $data['title']      = 'Tambah Arsip Statis';
+          $data['employee']   = $this->user_auth;
+
+          $this->backend('v2/backend/archieves/static/add', $data);
+     }
 }

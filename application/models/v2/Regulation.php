@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Newslatter extends CI_Model
+class Regulation extends CI_Model
 {
      public function __construct()
      {
@@ -17,8 +17,14 @@ class Newslatter extends CI_Model
                unset($where['starts']);
           }
 
+          if (!empty($where['orders']) or !empty($where['dirs'])) {
+               $this->db->order_by($where['orders'], $where['dirs']);
+               unset($where['orders']);
+               unset($where['dirs']);
+          }
+
           if (!empty($where['search'])) {
-               $this->db->like('judul', $where['search']);
+               $this->db->like('caption', $where['search']);
                unset($where['search']);
           }
 
@@ -26,36 +32,27 @@ class Newslatter extends CI_Model
                $this->db->where($where);
           }
 
-          $this->db->order_by('idberita', 'desc');
-          $results   = $this->db->get('berita')->result();
+          $results       = $this->db->get('peraturan')->result();
           return $results;
      }
 
      public function get_all_where_count($where = null)
      {
-          if (!empty($where['limits']) or !empty($where['starts'])) {
-               unset($where['limits']);
-               unset($where['starts']);
-          }
-
           if (!empty($where['search'])) {
-               $this->db->like('judul', $where['search']);
-               unset($where['search']);
+               $this->db->like('caption', $where['search']);
           }
+
+          unset($where['limits']);
+          unset($where['starts']);
+          unset($where['orders']);
+          unset($where['dirs']);
+          unset($where['search']);
 
           if (!empty($where)) {
                $this->db->where($where);
           }
 
-          return $this->db->count_all_results('berita');
-     }
-
-     public function get_single_where($where = null)
-     {
-          if (!empty($where)) {
-               $this->db->where($where);
-          }
-
-          return $this->db->get('berita')->row();
+          $results       = $this->db->count_all_results('peraturan');
+          return $results;
      }
 }

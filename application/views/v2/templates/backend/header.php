@@ -36,7 +36,7 @@
      <!-- <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet"> -->
 
      <!-- jQuery (must load before content scripts) -->
-     <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
+     <!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
 </head>
 
 <body>

@@ -25,6 +25,12 @@ class Company extends CI_Model
                unset($where['starts']);
           }
 
+          if (!empty($where['orderBy']) or !empty($where['orderDir'])) {
+               $this->db->order_by($where['orderBy'], $where['orderDir']);
+               unset($where['orderBy']);
+               unset($where['orderDir']);
+          }
+
           if (!empty($where)) {
                $this->db->where($where);
           }
