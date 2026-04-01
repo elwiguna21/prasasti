@@ -25,7 +25,7 @@
                <div class="container clearfix">
                     <!-- website logo -->
                     <div class="logo-header mostion logo-dark">
-                         <a href="<?= base_url('v2'); ?>" class="dez-page"><img src="<?= base_url('assets/v3/frontend/') ?>images/logo.png" alt=""></a>
+                         <a href="<?= base_url('v2'); ?>" class="dez-page"><img src="<?= base_url('assets/v3/frontend/') ?>images/teks-prasasti2.png" alt=""></a>
                     </div>
                     <!-- nav toggle button -->
                     <button class="navbar-toggler collapsed navicon justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

@@ -21,7 +21,7 @@
                                         <tr>
                                              <th>No</th>
                                              <th>Judul</th>
-                                             <th>Tanggal</th>
+                                             <th class="text-nowrap">Tanggal</th>
                                              <th>Isi</th>
                                              <th>Action</th>
                                         </tr>
@@ -94,10 +94,16 @@ $(document).ready(function() {
                "url": "<?php echo base_url('v2/backend/beritas/ajax_list') ?>",
                "type": "POST"
           },
-          "columnDefs": [{
-               "targets": [-1],
-               "orderable": false,
-          }],
+          "columnDefs": [
+               {
+                    "targets": [-1],
+                    "orderable": false,
+               },
+               {
+                    "targets": 2,
+                    "className": "text-nowrap"
+               }
+          ],
      });
 
      $("input, textarea, select").change(function() {

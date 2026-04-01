@@ -15,7 +15,7 @@
      <meta name="format-detection" content="telephone=no">
      <title>Davur - Restaurant Bootstrap Admin Dashboard + FrontEnd </title>
      <!-- Favicon icon -->
-     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/v3/backend/') ?>images/favicon.png">
+     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/v3/backend/') ?>images/icon-prasasti.png">
      <link href="<?= base_url('assets/v3/backend/') ?>vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
      <link href="<?= base_url('assets/v3/backend/') ?>css/style.css" rel="stylesheet">
 
@@ -32,7 +32,7 @@
                                         <div class="row">
                                              <div class="col-xl-6">
                                                   <div class="text-center my-5">
-                                                       <a href="<?= base_url('v2'); ?>"><img src="<?= base_url('assets/v3/backend/') ?>images/logo-full.png" alt=""></a>
+                                                       <a href="<?= base_url('v2'); ?>"><img src="<?= base_url('assets/v3/backend/') ?>images/logo-full-prasasti.png" alt=""></a>
                                                   </div>
                                                   <div class="media-login">
                                                        <img src="<?= base_url('assets/v3/backend/') ?>images/svg/student.svg" class="w-100" alt="">

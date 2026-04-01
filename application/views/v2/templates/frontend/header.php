@@ -19,8 +19,8 @@
      <meta name="format-detection" content="telephone=no">
 
      <!-- FAVICONS ICON -->
-     <link rel="icon" href="<?= base_url('assets/v3/frontend/') ?>images/favicon.ico" type="image/x-icon">
-     <link rel="shortcut icon" type="image/x-icon" href="<?= base_url('assets/v3/frontend/') ?>images/favicon.png">
+     <link rel="icon" href="<?= base_url('assets/v3/frontend/') ?>images/icon-prasasti.png" type="image/x-icon">
+     <link rel="shortcut icon" type="image/x-icon" href="<?= base_url('assets/v3/frontend/') ?>images/icon-prasasti.png">
 
      <!-- MOBILE SPECIFIC -->
      <meta name="viewport" content="width=device-width, initial-scale=1">
