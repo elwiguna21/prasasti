@@ -21,11 +21,9 @@
                          <div class="widget-post clearfix">
                               <div class="dlab-post-media">
                                    <?php
-                                   // $file_name = "https://sisemar.sumedangkab.go.id/assets/upload/" . $article_last->gambar;
-                                   // $file_name_headers = @get_headers($file_name);
                                    $file_name = base_url('assets/upload/') . $article_last->gambar;
                                    ?>
-                                   <?php if (file_exists($file_name)) { ?>
+                                   <?php if (file_exists('./assets/upload/' . $article_last->gambar)) { ?>
                                         <img src="<?= $file_name; ?>" width="200" height="143" alt="<?= $article_last->judul ?>">
                                    <?php } else { ?>
                                         <img src="<?= base_url('assets/v3/frontend/') ?>images/blog/recent-blog/pic1.jpg" width="200" height="143" alt="<?= $article_last->judul; ?>">
@@ -86,12 +84,12 @@
                                    <div class="dlab-media dlab-img-effect dlab-img-overlay1">
                                         <?php
                                         if (file_exists('./assets/upload/' . $news->gambar)) {
-                                             $news_file     = base_url('./assets/upload/') . $news->gambar;
+                                             $news_file     = base_url('assets/upload/') . $news->gambar;
                                         } else {
                                              $news_file     = base_url('assets/v3/frontend/images/our-services/pic1.jpg');
                                         }
                                         ?>
-                                        <img src="<?= $news_file; ?>" alt="<?= $news->judul; ?>">
+                                        <img src="<?= $news_file; ?>" alt="<?= $news->judul; ?>" style="max-height: 200px !important;">
                                         <div class="overlay-bx">
                                              <div class="overlay-icon text-white">
                                                   <h5><?= $news->judul; ?></h5>

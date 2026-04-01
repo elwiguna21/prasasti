@@ -126,6 +126,8 @@ class News extends MY_Controller
           $data['article']         = $article;
           $data['articles_last']   = $this->article->get_all_where(array('limits' => 3));
           $data['title']           = 'Detail Artikel - ' . $article->judul;
+
+          $data['news_last']            = $this->newslatter->get_all_where(array('limits' => 3));
           // echo json_encode($data);
           // die;
 

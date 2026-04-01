@@ -28,10 +28,9 @@
                                    <div class="dlab-post-media dlab-img-effect zoom-slow">
                                         <a href="<?= base_url('v2/frontend/news/articles_detail?slug=' . $article->slug); ?>">
                                              <?php
-                                             // $filename = "https://sisemar.sumedangkab.go.id/assets/upload/" . $article->gambar;
-                                             $filename = base_url('./assets/upload/') . $article->gambar;
-                                             if (file_exists($filename)) { ?>
-                                                  <img src="<?= $filename; ?>" alt="<?= $article->judul; ?>">
+                                             $filename = base_url('assets/upload/') . $article->gambar;
+                                             if (file_exists('./assets/upload/' . $article->gambar)) { ?>
+                                                  <img src="<?= $filename; ?>" alt="<?= $article->judul; ?>" style="max-height: 250px !important;">
                                              <?php } else { ?>
                                                   <img src="<?= base_url('assets/v3/frontend/') ?>images/blog/grid/pic1.jpg" alt="<?= $article->judul; ?>">
                                              <?php } ?>
