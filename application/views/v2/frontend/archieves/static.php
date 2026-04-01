@@ -53,7 +53,7 @@
                <div class="row">
                     <?php if (!empty($archieves)) {
                          foreach ($archieves as $archieve) { ?>
-                              <div class="col-lg-3 col-md-6 col-sm-12">
+                              <!-- <div class="col-lg-3 col-md-6 col-sm-12">
                                    <div class="blog-post blog-grid blog-rounded blog-effect1">
                                         <div class="dlab-info p-a20 border-1">
                                              <div class="dlab-post-title ">
@@ -68,6 +68,26 @@
                                              <div class="dlab-post-text">
                                                   <p><?= $archieve->deskripsi; ?></p>
                                              </div>
+                                        </div>
+                                   </div>
+                              </div> -->
+                              <div class="col-lg-4 col-md-4 col-sm-6 m-b30 wow fadeInUp" data-wow-delay="0.3s">
+                                   <div class="icon-bx-wraper bx-style-1 p-a30 center fly-box-ho">
+                                        <!-- <div class="icon-sm m-b20">
+                                             <a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>" class="icon-cell">
+                                                  <i class="ti-headphone-alt"></i>
+                                             </a>
+                                        </div> -->
+                                        <div class="icon-content">
+                                             <h5 class="dlab-tilte text-uppercase"><a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>"><?= $archieve->indek; ?></a></h5>
+                                             <div class="text-left">
+                                                  <ul>
+                                                       <li class="post-date"> <i class="fa fa-calendar text-primary me-2"></i><strong><?= $archieve->tahun; ?></strong></li>
+                                                       <li class="post-author"><i class="fa fa-user text-primary me-2"></i> <?= $archieve->name; ?></li>
+                                                  </ul>
+                                             </div>
+                                             <p><?= $archieve->deskripsi; ?></p>
+                                             <a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>" class="site-button">Detail</a>
                                         </div>
                                    </div>
                               </div>
@@ -85,7 +105,7 @@
      </div>
 </div>
 
-<div class="section-full p-t50 p-b20 bg-primary-dark text-white shop-action">
+<div class="section-full p-t50 bg-primary-dark text-white shop-action">
      <div class="container">
           <div class="row">
                <div class="col-lg-4 col-md-4 col-sm-4">
@@ -94,19 +114,8 @@
                               <a href="javascript:void(0);" class="icon-cell text-white"><i class="fa fa-gift"></i></a>
                          </div>
                          <div class="icon-content">
-                              <h5 class="dlab-tilte">Free shipping on orders $60+</h5>
-                              <p>Order more than 60$ and you will get free shippining Worldwide. More info.</p>
-                         </div>
-                    </div>
-               </div>
-               <div class="col-lg-4 col-md-4 col-sm-4">
-                    <div class="icon-bx-wraper left m-b30">
-                         <div class="icon-md text-black radius">
-                              <a href="javascript:void(0);" class="icon-cell text-white"><i class="fa fa-plane"></i></a>
-                         </div>
-                         <div class="icon-content">
-                              <h5 class="dlab-tilte">Worldwide delivery</h5>
-                              <p>We deliver to the following countries: USA, Canada, Europe, Australia</p>
+                              <h5 class="dlab-tilte">Pengelolaan Arsip</h5>
+                              <p>Pengelolaan arsip dari setiap Satuan Kerja Perangkat Daerah di Kabupaten Sumedang.</p>
                          </div>
                     </div>
                </div>
@@ -116,8 +125,19 @@
                               <a href="javascript:void(0);" class="icon-cell text-white"><i class="fa fa-history"></i></a>
                          </div>
                          <div class="icon-content">
-                              <h5 class="dlab-tilte">60 days money back guranty!</h5>
-                              <p>Not happy with our product, feel free to return it, we will refund 100% your money!</p>
+                              <h5 class="dlab-tilte">Mudah & Cepat</h5>
+                              <p>Pengelolaan arsip dengan mudah dan cepat dari manapun secara online.</p>
+                         </div>
+                    </div>
+               </div>
+               <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="icon-bx-wraper left m-b30">
+                         <div class="icon-md text-black radius">
+                              <a href="javascript:void(0);" class="icon-cell text-white"><i class="fa fa-chart-line"></i></a>
+                         </div>
+                         <div class="icon-content">
+                              <h5 class="dlab-tilte">Monitoring Arsip</h5>
+                              <p>Monitoring berkala dalam pengelolaan arsip pada Satuan Kerja Perangkat Kerja.</p>
                          </div>
                     </div>
                </div>

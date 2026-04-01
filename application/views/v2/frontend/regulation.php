@@ -1,4 +1,11 @@
 <link rel="stylesheet" href="<?= base_url() ?>assets/v3/backend/vendor/datatables/css/jquery.dataTables.min.css">
+<style>
+     .dataTables_filter input {
+          width: 300px !important;
+          /* Or any specific pixel or percentage value (e.g., 50%) */
+     }
+</style>
+
 <div class="dlab-bnr-inr overlay-primary" style="background-image:url(<?= base_url('assets/v3/frontend/') ?>images/banner/bnr5.jpg);">
      <div class="container">
           <div class="dlab-bnr-inr-entry">
@@ -63,7 +70,7 @@
                processing: '<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Mohon tunggu ...',
                infoEmpty: '<strong>Tidak ada data</strong>',
                zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
-               searchPlaceholder: 'Cari nama atau ticket pengaduan...',
+               searchPlaceholder: 'Cari nama peraturan ...',
                sSearch: '',
                paginate: {
                     next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',

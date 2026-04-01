@@ -29,7 +29,7 @@
                                         <a href="<?= base_url('v2/frontend/news/articles_detail?slug=' . $article->slug); ?>">
                                              <?php
                                              // $filename = "https://sisemar.sumedangkab.go.id/assets/upload/" . $article->gambar;
-                                             $filename = base_url('assets/upload/') . $article->gambar;
+                                             $filename = base_url('./assets/upload/') . $article->gambar;
                                              if (file_exists('./assets/upload' . $article->gambar)) { ?>
                                                   <img src="<?= $filename; ?>" alt="<?= $article->judul; ?>">
                                              <?php } else { ?>

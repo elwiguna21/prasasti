@@ -27,7 +27,7 @@
                                              <div class="dlab-post-media dlab-img-effect zoom-slow">
                                                   <a href="<?= base_url('v2/frontend/news/detail?slug=' . $news->slug); ?>">
                                                        <?php if (file_exists('./assets/upload/' . $news->gambar)) { ?>
-                                                            <img src="<?= base_url('assets/upload/' . $news->judul); ?>" alt="<?= $news->judul; ?>">
+                                                            <img src="<?= base_url('./assets/upload/' . $news->judul); ?>" alt="<?= $news->judul; ?>">
                                                        <?php } else { ?>
                                                             <img src="<?= base_url('assets/v3/frontend/') ?>images/blog/default/thum1.jpg" alt="<?= $news->judul; ?>">
                                                        <?php } ?>

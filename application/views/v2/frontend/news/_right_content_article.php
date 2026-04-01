@@ -85,8 +85,8 @@
                               <div class="dlab-box portfolio-box">
                                    <div class="dlab-media dlab-img-effect dlab-img-overlay1">
                                         <?php
-                                        if (file_exists(base_url('assets/upload' . $news->gambar))) {
-                                             $news_file     = base_url('assets/upload/') . $news->gambar;
+                                        if (file_exists('./assets/upload/' . $news->gambar)) {
+                                             $news_file     = base_url('./assets/upload/') . $news->gambar;
                                         } else {
                                              $news_file     = base_url('assets/v3/frontend/images/our-services/pic1.jpg');
                                         }

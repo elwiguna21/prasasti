@@ -25,7 +25,7 @@ class Regulations extends MY_Controller
 
           $columns        = array(
                0 => 'id',
-               1 => 'judul',
+               1 => 'caption',
           );
 
           $limit      = $this->input->post('length');
