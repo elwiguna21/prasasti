@@ -66,6 +66,8 @@ class Archieves extends MY_Controller
 
           $data['archieve']   = $archieves;
 
+          // echo json_encode($data);
+          // die;
           $this->frontend('v2/frontend/archieves/detail', $data);
      }
 

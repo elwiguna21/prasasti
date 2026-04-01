@@ -21,7 +21,14 @@
                <div class="col-lg-6 col-xl-6 ">
                     <div class="sticky-top">
                          <div class="dlab-post-media dlab-img-effect zoom-slow wow fadeIn " data-wow-delay="0.2s">
-                              <a href="javascript:void(0);"><img class="fullscreen-cover" src="<?= base_url('assets/v3/frontend/') ?>images/blog/default/thum1.jpg" alt=""></a>
+                              <a href="javascript:void(0);">
+                                   <!-- <img class="fullscreen-cover" src="<?= base_url('assets/v3/frontend/') ?>images/blog/default/thum1.jpg" alt=""> -->
+                                   <?php if ($archieve->tte_status == 'Y' and !empty($archieve->tte_dokumen)) { ?>
+                                        <iframe src="<?= base_url('./assets/data/signed/') . $archieve->tte_dokumen; ?>" frameborder="0" class="fullscreen-cover"></iframe>
+                                   <?php } else { ?>
+                                        <iframe src="<?= base_url('./assets/upload/') . $archieve->file; ?>" frameborder="0" class="fullscreen-cover"></iframe>
+                                   <?php } ?>
+                              </a>
                          </div>
                     </div>
                </div>
