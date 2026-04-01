@@ -11,11 +11,11 @@
      <meta name="author" content="DexignZone">
      <meta name="robots" content="">
 
-     <meta name="keywords" content="agency, business, company, corporate, creative, finance, multipurpose, one page, parallax, personal, portfolio, responsive, resume, template, unique">
-     <meta name="description" content="Agency : is a unique design template which is crafted specially for creative agency, corporate firms, professional businesses. Template theme is specially design for all types of business and have multiple color theme for different types of people.">
-     <meta property="og:title" content="Agency | Creative Multipurpose HTML with RTL Ready">
-     <meta property="og:description" content="Agency : is a unique design template which is crafted specially for creative agency, corporate firms, professional businesses. Template theme is specially design for all types of business and have multiple color theme for different types of people.">
-     <meta property="og:image" content="https://agency.dexignzone.com/xhtml/social-image.png">
+     <meta name="keywords" content="prasasti, lembaga kearsipan daerah kabupaten sumedang, LKD Kabupaten Sumedang, arsip daerah kabupaten sumedang, arsip, kearsipan, kabupaten sumedang, sumedang">
+     <meta name="description" content="PRASASTI : Sistem pengelolaan dan pencatatan Kearsipan Daerah Kabupaten Sumedang oleh Dinas Arsip dan Perpustakaan Kabupaten Sumedang.">
+     <meta property="og:title" content="PRASASTI | Pengelolaan dan Pencatatan Kearsipan Terintegrasi">
+     <meta property="og:description" content="PRASASTI : Sistem pengelolaan dan pencatatan Kearsipan Daerah Kabupaten Sumedang oleh Dinas Arsip dan Perpustakaan Kabupaten Sumedang.">
+     <meta property="og:image" content="https://sisemar.sumedangkab.go.id/assets/image/logo.gif">
      <meta name="format-detection" content="telephone=no">
 
      <!-- FAVICONS ICON -->
@@ -34,15 +34,14 @@
 </head>
 
 <body id="bg">
-     <div id="loading-area" class="loading-page-1">
-          <div class="spinner">
-               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="8" cy="8" r="7" stroke-width="1" />
-               </svg>
-          </div>
-     </div>
-
      <div class="page-wraper">
+          <div id="loading-area" class="loading-page-1">
+               <div class="spinner">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <circle cx="8" cy="8" r="7" stroke-width="1" />
+                    </svg>
+               </div>
+          </div>
 
           <?php require_once('_topbar.php'); ?>
 

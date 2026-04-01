@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Banner extends CI_Model
+class Profile extends CI_Model
 {
      public function __construct()
      {
@@ -9,7 +9,7 @@ class Banner extends CI_Model
           date_default_timezone_set("Asia/Jakarta");
      }
 
-     public function get_all_where($where = null)
+     public function get_all_where($where = null, $table)
      {
           if (!empty($where['limits']) or !empty($where['starts'])) {
                $this->db->limit($where['limits'], $where['starts']);
@@ -21,14 +21,15 @@ class Banner extends CI_Model
                $this->db->where($where);
           }
 
-          $this->db->order_by('id', 'desc');
-          $results  = $this->db->get('banner')->result();
-          if (!empty($results)) {
-               foreach ($results as $res) {
-                    $res->file     = 'https://sisemar.sumedangkab.go.id/assets/upload/' . $res->file;
-               }
+          return $this->db->get($table)->result();
+     }
+
+     public function get_single_where($where = null, $table)
+     {
+          if (!empty($where)) {
+               $this->db->where($where);
           }
 
-          return $results;
+          return $this->db->get($table)->row();
      }
 }

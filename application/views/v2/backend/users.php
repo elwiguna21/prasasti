@@ -181,7 +181,7 @@
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/select2/js/select2.full.min.js"></script>
 <script src="<?= base_url('assets/v3/backend/') ?>js/plugins-init/select2-init.js"></script>
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
-<script src="<?= base_url('assets/v3/backend/') ?>vendor/sweetalert2/sweetalert2.min.js"></script>
+<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/sweetalert2/sweetalert2.min.js"></script> -->
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/bundle/popular.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/plugin-bootstrap5/index.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/plugin-auto-focus/index.js') ?>"></script>
