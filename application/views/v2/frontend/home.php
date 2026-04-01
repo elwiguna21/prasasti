@@ -372,7 +372,7 @@
                                    <li class="advertising branding photography card-container col-lg-3 col-md-6 col-xs-6 col-sm-6 p-a0 wow zoomIn" data-wow-delay="0.2s">
                                         <div class="dlab-box dlab-gallery-box">
                                              <div class="dlab-media dlab-img-overlay1 dlab-img-effect dlab-img-effect ">
-                                                  <a href="<?= base_url('v2/frontend/articles/detail?=slug' . $article->slug); ?>"> <img src="https://sisemar.sumedangkab.go.id/assets/upload/<?= $article->gambar; ?>" alt="<?= $article->judul; ?>" style="width: 100%; height: 360px !important; object-fit: cover;">
+                                                  <a href="<?= base_url('v2/frontend/news/articles_detail?=slug' . $article->slug); ?>"> <img src="https://sisemar.sumedangkab.go.id/assets/upload/<?= $article->gambar; ?>" alt="<?= $article->judul; ?>" style="width: 100%; height: 360px !important; object-fit: cover;">
                                                        <div class="overlay-bx">
                                                             <div class="overlay-icon align-b text-white">
                                                                  <div class="text-white text-left port-box">
