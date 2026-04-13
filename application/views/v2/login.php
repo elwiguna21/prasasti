@@ -68,25 +68,25 @@
                                                                       Mohon masukan password anda!
                                                                  </div>
                                                             </div>
-                                                            <div class="form-row d-flex justify-content-between mt-4 mb-2">
-                                                                 <div class="form-group">
-                                                                      <div class=" form-check ms-1 mb-2">
-                                                                           <input type="checkbox" class="form-check-input" id="basic_checkbox_1">
-                                                                           <label class="custom-control-label ms-1" for="basic_checkbox_1">I agree with Davur <a href="javascript:void(0);">Terms & Conditions</a></label>
-                                                                      </div>
-                                                                      <div class=" form-check ms-1">
-                                                                           <input type="checkbox" class="form-check-input" id="basic_checkbox_2">
-                                                                           <label class="custom-control-label ms-1" for="basic_checkbox_2">Remember my preference</label>
-                                                                      </div>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="text-center">
+<!--                                                            <div class="form-row d-flex justify-content-between mt-4 mb-2">-->
+<!--                                                                 <div class="form-group">-->
+<!--                                                                      <div class=" form-check ms-1 mb-2">-->
+<!--                                                                           <input type="checkbox" class="form-check-input" id="basic_checkbox_1">-->
+<!--                                                                           <label class="custom-control-label ms-1" for="basic_checkbox_1">I agree with Davur <a href="javascript:void(0);">Terms & Conditions</a></label>-->
+<!--                                                                      </div>-->
+<!--                                                                      <div class=" form-check ms-1">-->
+<!--                                                                           <input type="checkbox" class="form-check-input" id="basic_checkbox_2">-->
+<!--                                                                           <label class="custom-control-label ms-1" for="basic_checkbox_2">Remember my preference</label>-->
+<!--                                                                      </div>-->
+<!--                                                                 </div>-->
+<!--                                                            </div>-->
+                                                            <div class="text-center mt-2">
                                                                  <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                                                             </div>
                                                        </form>
                                                        <div class="new-account mt-3 d-flex align-items-center justify-content-between flex-wrap">
                                                             <small class="mb-0">Kembali ke <a class="text-primary" href="<?= base_url('v2') ?>">Halaman Utama</a></small>
-                                                            <small href="page-forgot-password.html">Forgot Password?</small>
+                                                            <a href="javascript:void(0);" class="small" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Silahkan hubungi administrator PRASASTI pada Dinas Arsip dan Perpustakaan Kabupaten Sumedang." title="Lupa Password">Lupa Password?</a>
                                                        </div>
                                                   </div>
                                              </div>

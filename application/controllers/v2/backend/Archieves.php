@@ -54,13 +54,15 @@ class Archieves extends MY_Controller
 			$where['nomor_skpd !='] = null;
 		}
 
-		$data['total_archieves'] = $this->archieve->get_all_where_count($where);
-		$where['verifikasi_status'] = 'Y';
-		$data['total_verification'] = $this->archieve->get_all_where_count($where);
+		$data['total_archieves']      = $this->archieve->get_all_where_count($where);
+		$where['verifikasi_status']   = 'Y';
+		$where["tte_status IN ('N', 'R')"]      = null;
+		$data['total_verification']   = $this->archieve->get_all_where_count($where);
 		unset($where['verifikasi_status']);
-		$where['tte_status'] = 'Y';
-		$data['total_signed'] = $this->archieve->get_all_where_count($where);
-		$where['tte_status'] = 'N';
+		unset($where["tte_status IN ('N', 'R')"]);
+		$where['tte_status']          = 'Y';
+		$data['total_signed']         = $this->archieve->get_all_where_count($where);
+		$where['tte_status']          = 'N';
 		$data['total_unsigned'] = $this->archieve->get_all_where_count($where);
 
 		$this->backend('v2/backend/archieves/vital/index', $data);
@@ -106,6 +108,11 @@ class Archieves extends MY_Controller
 			   'deskripsi' => htmlentities($this->input->post('keterangan')),
 			   'nomor_skpd' => $this->user_auth->no_company,
 			   'unit_kerja_pencipta' => htmlentities($this->input->post('unit_kerja_pencipta')),
+			   'lokasi_sampul'  => $this->input->post('lokasi_sampul'),
+			   'lokasi_berkas'  => $this->input->post('lokasi_berkas'),
+			   'lokasi_box'  => $this->input->post('lokasi_box'),
+			   'lokasi_rak'  => $this->input->post('lokasi_rak'),
+			   'ruang_penyimpanan'  => $this->input->post('ruang_penyimpanan'),
 			   'tte_posisi' => $this->input->post('tte_posisi'),
 			   'user' => $this->encryption->decrypt($this->user_auth->user_id),
 			   'verifikator' => 'SKPD',

@@ -37,7 +37,7 @@
                               <i class="ti-archive"></i>
                          </span>
                          <div class="media-body">
-                              <p class="mb-1">Total Arsip</p>
+                              <p class="mb-1">Arsip Vital</p>
                               <h4 class="mb-0"><?= number_format($total_archieves, 0, ',', '.'); ?></h4>
                          </div>
                     </div>

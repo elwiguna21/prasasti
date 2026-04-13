@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/styles/index.min.css') ?>"/>
 <style>
     /* ===== PDF Viewer + Watermark TTE ===== */
     #pdf-viewer-container {
@@ -578,20 +579,22 @@ if ($archieve->verifikasi_status == 'Y') {
                               <button type="button" class="btn-close" style="color: #fff;" data-bs-dismiss="modal">
                               </button>
                          </div>
-                         <form action="<?= base_url('v2/backend/archieves/signed') ?>" method="post">
+                         <form id="passphrase-form" action="<?= base_url('v2/backend/archieves/signed') ?>" method="post">
                               <div class="modal-body">
                                    <div class="row">
                                         <input type="hidden" class="form-control" name="archieve"
                                                value="<?= $archieve->id; ?>" required readonly>
                                         <input type="hidden" class="form-control" name="company"
                                                value="<?= $archieve->nomor_skpd; ?>" required readonly>
-                                        <div class="col-md-12">
-                                             <label class="form-label">Password <span
+
+                                        <div class="mb-0 col-md-12">
+                                             <label class="form-label">Passphrase TTE <span
                                                           class="text-danger">*</span></label>
-                                             <div class="input-group mb-0">
+                                             <div class="input-group">
                                                   <input type="password" class="form-control" name="passphrase"
                                                          id="passphrase"
-                                                         placeholder="Password" required autocomplete="off">
+                                                         placeholder="Masukan passphrase anda" required
+                                                         autocomplete="off">
                                                   <a href="javascript:void(0);"
                                                      class="btn btn-primary waves-effect waves-light"
                                                      id="password-addon" onclick="createpassword('passphrase', this)"><i
@@ -603,7 +606,7 @@ if ($archieve->verifikasi_status == 'Y') {
                               <div class="modal-footer">
                                    <button type="button" class="btn btn-danger light me-3" data-bs-dismiss="modal">Batal
                                    </button>
-                                   <button type="submit" class="btn btn-primary btn-save">Simpan</button>
+                                   <button type="submit" class="btn btn-primary btn-submit">Simpan</button>
                               </div>
                          </form>
                     </div>
@@ -614,6 +617,9 @@ if ($archieve->verifikasi_status == 'Y') {
 
 <!-- PDF.js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/bundle/popular.js') ?>"></script>
+<script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/plugin-bootstrap5/index.js') ?>"></script>
+<script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/plugin-auto-focus/index.js') ?>"></script>
 
 <script>
     (function () {
@@ -621,6 +627,10 @@ if ($archieve->verifikasi_status == 'Y') {
 
         var pdfUrl = '<?= $pdfProxyUrl ?>';
         var ttePosisi = '<?= $ttePosisi ?>';
+        if (ttePosisi != '' || ttePosisi != null) {
+            ttePosisi = JSON.parse(ttePosisi);
+        }
+
         var pdfDoc = null;
         var pageNum = 1;
         var pageScale = 1.0;
@@ -960,55 +970,72 @@ if ($archieve->verifikasi_status == 'Y') {
         $('.passphrase-modal').modal('show');
     });
 
-    const formPassphrase = document.getElementById('passphrase-form');
-    const passphraseFv = FormValidation.formValidation(formPassphrase, {
-        fields: {
-            passphrase: {
-                validators: {
-                    notEmpty: {
-                        message: 'Passphrase harus diisi dan tidak boleh kosong!'
-                    },
-                    stringLength: {
-                        min: 3,
-                        max: 50,
-                        message: 'Passphrase harus lebih dari 3 karakter dan kurang dari 50 karakter',
-                    },
-                }
-            },
-        },
-        plugins: {
-            trigger: new FormValidation.plugins.Trigger(),
-            bootstrap5: new FormValidation.plugins.Bootstrap5({
-                eleValidClass: '',
-                rowSelector: '.col-md-12'
-            }),
-            submitButton: new FormValidation.plugins.SubmitButton(),
-            defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-            autoFocus: new FormValidation.plugins.AutoFocus()
-        },
-        init: instance => {
-            instance.on('plugins.message.placed', function (e) {
-                if (e.element.parentElement.classList.contains('input-group')) {
-                    e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
-                }
-
-                if (e.element.parentElement.parentElement.classList.contains('custom-option')) {
-                    e.element.closest('.row').insertAdjacentElement('afterend', e.messageElement);
-                }
-            });
-        }
-    }).on('core.form.valid', function () {
-        Swal.fire({
-            title: "Mohon tunggu",
-            text: "Sedang mengirim data...",
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            didOpen: function () {
-                Swal.showLoading();
-            }
-        });
+    $('.passphrase-modal').on('hide.bs.modal', function () {
+        $('input[name="passphrase"]').val(null);
     });
     <?php } ?>
+
+    const formPassphrase = document.getElementById('passphrase-form');
+    if (formPassphrase) {
+        FormValidation.formValidation(formPassphrase, {
+            fields: {
+                passphrase: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Passphrase harus diisi dan tidak boleh kosong!'
+                        },
+                        stringLength: {
+                            min: 3,
+                            max: 50,
+                            message: 'Passphrase harus lebih dari 3 karakter dan kurang dari 50 karakter',
+                        },
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap5: new FormValidation.plugins.Bootstrap5({
+                    eleValidClass: '',
+                    rowSelector: function(field, ele) {
+                        switch (field) {
+                            case 'passphrase':
+                                return '.col-md-12';
+                            default:
+                                return '.mb-0';
+                        }
+                    }
+                }),
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                autoFocus: new FormValidation.plugins.AutoFocus()
+            },
+            init: instance => {
+                instance.on('plugins.message.placed', function (e) {
+                    if (e.element.parentElement.classList.contains('input-group')) {
+                        e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+                    }
+
+                    if (e.element.parentElement.parentElement.classList.contains('custom-option')) {
+                        e.element.closest('.row').insertAdjacentElement('afterend', e.messageElement);
+                    }
+                });
+            }
+        }).on('core.form.valid', function () {
+            Swal.fire({
+                title: "Mohon tunggu",
+                text: "Sedang mengirim data...",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: function () {
+                    Swal.showLoading();
+                }
+            });
+        })
+
+        // $('#passphrase-form').on('submit', function () {
+        //     console.log('form submit');
+        // })
+    }
 
     <?php if (in_array($employee->user_role, array('operator', 'verifikator_skpd'))) { ?>
     $('.btn-resend').click(function () {
@@ -1018,7 +1045,7 @@ if ($archieve->verifikasi_status == 'Y') {
 
         Swal.fire({
             title: "Kirim Ulang ke " + role,
-            text: "Apakah anda akan mengirim ulang ke "+role+" arsip tersebut?",
+            text: "Apakah anda akan mengirim ulang ke " + role + " arsip tersebut?",
             icon: "warning",
             showCancelButton: !0,
             confirmButtonText: "Ya, Kirim!",
@@ -1081,15 +1108,15 @@ if ($archieve->verifikasi_status == 'Y') {
     })
     <?php } ?>
 
-    $('.btn-save').click(function () {
-        Swal.fire({
-            title: "Mohon tunggu...",
-            text: "Sedang mengirim data...",
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            didOpen: function () {
-                Swal.showLoading();
-            }
-        });
-    });
+    // $('.btn-save').click(function () {
+    //     Swal.fire({
+    //         title: "Mohon tunggu...",
+    //         text: "Sedang mengirim data...",
+    //         allowOutsideClick: false,
+    //         allowEscapeKey: false,
+    //         didOpen: function () {
+    //             Swal.showLoading();
+    //         }
+    //     });
+    // });
 </script>
