@@ -105,6 +105,11 @@ class Regulations extends MY_Controller
 
 	public function list()
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			show_error('Not Authorize!', 401);
+			die;
+		}
+
 		$data['title']    = 'Peraturan';
 		$data['employee'] = $this->user_auth;
 
@@ -113,6 +118,11 @@ class Regulations extends MY_Controller
 
 	public function ajax_list()
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		if (!$this->input->is_ajax_request()) {
 			redirect('v2/backend/dashboards');
 		}
@@ -140,12 +150,22 @@ class Regulations extends MY_Controller
 
 	public function ajax_edit($id)
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		$data = $this->peraturan->get_by_id($id);
 		echo json_encode($data);
 	}
 
 	public function ajax_add()
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		$this->_validate();
 		$data = array(
 			   'caption' => htmlentities($this->input->post('judul')),
@@ -168,6 +188,11 @@ class Regulations extends MY_Controller
 
 	public function ajax_update()
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		$this->_validate();
 		$data = array(
 			   'caption' => htmlentities($this->input->post('judul')),
@@ -199,6 +224,11 @@ class Regulations extends MY_Controller
 
 	public function ajax_delete($id)
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		$table = 'peraturan';
 		$where = array('id' => $id);
 		$query = $this->model->getone($table, $where);

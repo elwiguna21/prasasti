@@ -317,6 +317,11 @@ class Archieves extends MY_Controller
 	// ====== BACKEND ======
 	public function vital_list()
 	{
+		if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
+			show_error('Not Authorize!', 401);
+			die;
+		}
+
 		$data['title'] = 'Daftar Arsip Vital';
 		$data['employee'] = $this->user_auth;
 
@@ -344,6 +349,11 @@ class Archieves extends MY_Controller
 
 	public function vital_add()
 	{
+		if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
+			show_error('Not Authorize!', 401);
+			die;
+		}
+
 		$data['title'] = 'Tambah Arsip Vital';
 		$data['employee'] = $this->user_auth;
 
@@ -352,10 +362,10 @@ class Archieves extends MY_Controller
 
 	public function vital_save()
 	{
-		if (empty($this->session->userdata('next-uid')) && $this->session->userdata('next-state') != 'logged_in') {
+		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
 			show_error('Not Authorize!', 401);
 			die;
-		} else if ($this->session->userdata('next-role') != 'operator') {
+		} else if ($this->user_auth->user_role != 'operator') {
 			show_error('Anda tidak dapat mengakses halaman ini!', 401);
 			die;
 		}
@@ -364,7 +374,7 @@ class Archieves extends MY_Controller
 			show_error('Maaf permintaan anda tidak dapat kami layani!', 405);
 			die;
 		} else if (!$this->input->is_ajax_request()) {
-			redirect('v2/backend/dashboards');
+			redirect('v2/dashboards');
 		}
 
 		if (!is_dir('./assets/upload/berkas/')) {
@@ -427,7 +437,7 @@ class Archieves extends MY_Controller
 
 	public function vital_detail()
 	{
-		if (empty($this->session->userdata('next-uid')) && $this->session->userdata('next-state') != 'logged_in') {
+		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
 			show_error('Not Authorize!', 401);
 			die;
 		}
@@ -436,8 +446,8 @@ class Archieves extends MY_Controller
 		//      die;
 		// }
 
-		$id = $this->encryption->decrypt($_GET['archieve']);
-		$company = $_GET['company'];
+		$id       = $this->encryption->decrypt($_GET['archieve']);
+		$company  = $_GET['company'];
 		if (empty($id) or empty($company)) {
 			show_error('Mohon pilih arsip terlebih dahulu!', 500);
 			die;
@@ -463,7 +473,7 @@ class Archieves extends MY_Controller
 
 	public function vital_reject()
 	{
-		if (empty($this->session->userdata('next-uid')) && $this->session->userdata('next-state') != 'logged_in') {
+		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
 			show_error('Not Authorize!', 401);
 			die;
 		} else if (!in_array($this->user_auth->user_role, array('verifikator_skpd', 'kepala_skpd'))) {
@@ -521,7 +531,7 @@ class Archieves extends MY_Controller
 
 	public function vital_signed()
 	{
-		if (empty($this->session->userdata('next-uid')) && $this->session->userdata('next-state') != 'logged_in') {
+		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
 			show_error('Not Authorize!', 401);
 			die;
 		} else if (!in_array($this->user_auth->user_role, array('kepala_skpd'))) {
@@ -717,7 +727,7 @@ class Archieves extends MY_Controller
 
 	public function get_archieves_vital_json()
 	{
-		if (empty($this->session->userdata('next-uid')) && $this->session->userdata('next-state') != 'logged_in') {
+		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
 			show_error('Not Authorize!', 401);
 			die;
 		}
@@ -842,8 +852,13 @@ class Archieves extends MY_Controller
 
 	public function upload_pdf_temp()
 	{
+		if (empty($this->user_auth) and $this->session->userdata('next-state') != 'logged_in') {
+			show_error('Not Authorize!', 401);
+			die;
+		}
+
 		if (!$this->input->is_ajax_request()) {
-			redirect('v2/backend/alih_media_arsip_vital');
+			redirect('v2/alih_media_arsip_vital');
 		}
 
 		if (!is_dir('./assets/upload/berkas/temp/')) {
@@ -869,8 +884,13 @@ class Archieves extends MY_Controller
 
 	public function view_pdf()
 	{
+		if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
+			show_error('Not Authorize!', 401);
+			die;
+		}
+
 		if (empty($_GET['archieve'])) {
-			redirect('v2/backend/alih_media_arsip_vital');
+			redirect('v2/alih_media_arsip_vital');
 		}
 
 		$archieve = $this->archieve->get_single_where(array('berkas.id' => $this->encryption->decrypt($_GET['archieve'])));
@@ -921,9 +941,9 @@ class Archieves extends MY_Controller
 
 	public function vital_delete()
 	{
-		if (empty($this->session->userdata('next-uid')) && $this->session->userdata('next-state') != 'logged_in') {
+		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
 			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
-			show_error('Not Authorize!', 401);
+//			show_error('Not Authorize!', 401);
 			die;
 		}
 
@@ -971,9 +991,9 @@ class Archieves extends MY_Controller
 
 	public function vital_verification()
 	{
-		if (empty($this->session->userdata('next-uid')) && $this->session->userdata('next-state') != 'logged_in') {
+		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
 			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
-			show_error('Not Authorize!', 401);
+//			show_error('Not Authorize!', 401);
 			die;
 		}
 
@@ -1024,9 +1044,9 @@ class Archieves extends MY_Controller
 
 	public function vital_resend()
 	{
-		if (empty($this->session->userdata('next-uid')) && $this->session->userdata('next-state') != 'logged_in') {
+		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
 			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
-			show_error('Not Authorize!', 401);
+//			show_error('Not Authorize!', 401);
 			die;
 		}
 
@@ -1085,6 +1105,11 @@ class Archieves extends MY_Controller
 
 	public function guide_list()
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			show_error('Not Authorize!', 401);
+			die;
+		}
+
 		$data['title']    = 'Guide Arsip';
 		$data['employee'] = $this->user_auth;
 
@@ -1093,6 +1118,11 @@ class Archieves extends MY_Controller
 
 	public function guide_list_ajax()
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		if (!$this->input->is_ajax_request()) {
 			redirect('v2/backend/dashboards');
 		}
@@ -1120,12 +1150,22 @@ class Archieves extends MY_Controller
 
 	public function guide_edit($id)
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		$data = $this->guide_arsip->get_by_id($id);
 		echo json_encode($data);
 	}
 
 	public function guide_add()
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		$this->_validate();
 		$data = array(
 			   'caption' => htmlentities($this->input->post('judul')),
@@ -1154,6 +1194,11 @@ class Archieves extends MY_Controller
 
 	public function guide_update()
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		$this->_validate();
 		$data = array(
 			   'caption' => htmlentities($this->input->post('judul')),
@@ -1185,6 +1230,11 @@ class Archieves extends MY_Controller
 
 	public function guide_delete($id)
 	{
+		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
+			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			die;
+		}
+
 		$table = 'guide_arsip';
 		$where = array('id' => $id);
 		$query = $this->model->getone($table, $where);
