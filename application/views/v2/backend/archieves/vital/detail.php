@@ -322,7 +322,7 @@ if ($archieve->verifikasi_status == 'Y') {
                          </a>
 				<?php } ?>
 
-				<?php if ($archieve->tte_status == 'Y' and !empty($archieve->tte_dokumen)) { ?>
+				<?php if ($archieve->tte_status == 'Y' and file_exists('./assets/upload/berkas/' . $archieve->tte_dokumen)) { ?>
                          <a href="<?= base_url('assets/upload/berkas/' . $archieve->tte_dokumen) ?>" target="_blank"
                             class="btn light btn-success btn-sm w-100 mb-3">
                               <i class="fas fa-file-pdf me-1"></i> Unduh Dokumen TTE
