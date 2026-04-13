@@ -109,7 +109,7 @@ class Users extends MY_Controller
 
           // echo json_encode($data);
           // die;
-          $this->backend('v2/backend/profile', $data);
+          $this->backend('v2/backend/users_profile', $data);
      }
 
      // JSON OUTPUT

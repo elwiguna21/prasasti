@@ -2,7 +2,7 @@
 <div class="row page-titles">
      <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
-          <li class="breadcrumb-item active"><a href="javascript:void(0)">Profil</a></li>
+          <li class="breadcrumb-item active"><a href="javascript:void(0)">Profil Pengguna</a></li>
      </ol>
 </div>
 <!-- row -->
