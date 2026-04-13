@@ -318,7 +318,7 @@ class Archieves extends MY_Controller
 	public function vital_list()
 	{
 		if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		}
 
@@ -350,7 +350,7 @@ class Archieves extends MY_Controller
 	public function vital_add()
 	{
 		if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		}
 
@@ -363,10 +363,10 @@ class Archieves extends MY_Controller
 	public function vital_save()
 	{
 		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		} else if ($this->user_auth->user_role != 'operator') {
-			show_error('Anda tidak dapat mengakses halaman ini!', 401);
+			show_error('Anda tidak dapat mengakses halaman ini!', 403);
 			die;
 		}
 
@@ -438,11 +438,11 @@ class Archieves extends MY_Controller
 	public function vital_detail()
 	{
 		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		}
 		// else if ($this->session->userdata('next-role') != 'operator') {
-		//      show_error('Anda tidak dapat mengakses halaman ini!', 401);
+		//      show_error('Anda tidak dapat mengakses halaman ini!', 403);
 		//      die;
 		// }
 
@@ -474,10 +474,10 @@ class Archieves extends MY_Controller
 	public function vital_reject()
 	{
 		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		} else if (!in_array($this->user_auth->user_role, array('verifikator_skpd', 'kepala_skpd'))) {
-			show_error('Anda tidak dapat mengakses halaman ini!', 401);
+			show_error('Anda tidak dapat mengakses halaman ini!', 403);
 			die;
 		}
 
@@ -532,10 +532,10 @@ class Archieves extends MY_Controller
 	public function vital_signed()
 	{
 		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		} else if (!in_array($this->user_auth->user_role, array('kepala_skpd'))) {
-			show_error('Anda tidak dapat mengakses halaman ini!', 401);
+			show_error('Anda tidak dapat mengakses halaman ini!', 403);
 			die;
 		}
 
@@ -728,7 +728,7 @@ class Archieves extends MY_Controller
 	public function get_archieves_vital_json()
 	{
 		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		}
 
@@ -853,7 +853,7 @@ class Archieves extends MY_Controller
 	public function upload_pdf_temp()
 	{
 		if (empty($this->user_auth) and $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		}
 
@@ -885,7 +885,7 @@ class Archieves extends MY_Controller
 	public function view_pdf()
 	{
 		if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		}
 
@@ -942,7 +942,7 @@ class Archieves extends MY_Controller
 	public function vital_delete()
 	{
 		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 //			show_error('Not Authorize!', 401);
 			die;
 		}
@@ -992,7 +992,7 @@ class Archieves extends MY_Controller
 	public function vital_verification()
 	{
 		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 //			show_error('Not Authorize!', 401);
 			die;
 		}
@@ -1045,7 +1045,7 @@ class Archieves extends MY_Controller
 	public function vital_resend()
 	{
 		if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 //			show_error('Not Authorize!', 401);
 			die;
 		}
@@ -1106,7 +1106,7 @@ class Archieves extends MY_Controller
 	public function guide_list()
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		}
 
@@ -1119,7 +1119,7 @@ class Archieves extends MY_Controller
 	public function guide_list_ajax()
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
@@ -1151,7 +1151,7 @@ class Archieves extends MY_Controller
 	public function guide_edit($id)
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
@@ -1162,7 +1162,7 @@ class Archieves extends MY_Controller
 	public function guide_add()
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
@@ -1195,7 +1195,7 @@ class Archieves extends MY_Controller
 	public function guide_update()
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
@@ -1231,7 +1231,7 @@ class Archieves extends MY_Controller
 	public function guide_delete($id)
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 

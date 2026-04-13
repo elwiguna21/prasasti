@@ -106,7 +106,7 @@ class Regulations extends MY_Controller
 	public function list()
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			show_error('Not Authorize!', 401);
+			show_error('Not Authorize!', 403);
 			die;
 		}
 
@@ -119,7 +119,7 @@ class Regulations extends MY_Controller
 	public function ajax_list()
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
@@ -151,7 +151,7 @@ class Regulations extends MY_Controller
 	public function ajax_edit($id)
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
@@ -162,7 +162,7 @@ class Regulations extends MY_Controller
 	public function ajax_add()
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
@@ -189,7 +189,7 @@ class Regulations extends MY_Controller
 	public function ajax_update()
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
@@ -225,7 +225,7 @@ class Regulations extends MY_Controller
 	public function ajax_delete($id)
 	{
 		if (empty($this->user_auth) or $this->user_auth->user_role != 'admin') {
-			echo json_encode(array('status' => 401, 'message' => 'Not Authorize!'));
+			echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
 			die;
 		}
 
