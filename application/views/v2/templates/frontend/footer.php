@@ -87,7 +87,6 @@
 <button class="scroltop fa fa-chevron-up"></button>
 </div>
 <!-- JAVASCRIPT FILES ========================================= -->
-<script src="<?= base_url('assets/v3/frontend/') ?>js/jquery.min.js"></script><!-- JQUERY.MIN JS -->
 <script src="<?= base_url('assets/v3/frontend/') ?>plugins/wow/wow.js"></script><!-- WOW JS -->
 
 <script src="<?= base_url('assets/v3/frontend/') ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script><!-- BOOTSTRAP.MIN JS -->

@@ -44,7 +44,7 @@ class Authentications extends CI_Controller
           $this->session->set_userdata('next-uname', $user->username);
           $this->session->set_userdata('next-role', $user->role);
           $this->session->set_userdata('next-state', 'logged_in');
-          redirect('v2/backend/dashboards');
+          redirect('v2/dashboards');
      }
 
      public function signout()

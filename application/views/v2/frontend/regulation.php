@@ -45,7 +45,6 @@
      </div>
 </div>
 
-<script src="<?= base_url() ?>assets/v3/backend/vendor/global/global.min.js"></script>
 <script src="<?= base_url() ?>assets/v3/backend/vendor/datatables/js/jquery.dataTables.min.js"></script>
 <script>
      let regulations_table = $('#regulations-table').DataTable({

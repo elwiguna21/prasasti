@@ -1,12 +1,11 @@
-<link href="<?= base_url('assets/v3/backend/') ?>vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/styles/index.min.css') ?>" />
 
 <div class="row">
      <div class="col-xl-12">
           <div class="page-titles">
                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Pengguna</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Daftar</a></li>
+                    <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Daftar Pengguna</a></li>
                </ol>
           </div>
           <div class="filter cm-content-box box-primary">
@@ -26,7 +25,7 @@
                               </div>
                               <div class="col-xl-3 col-sm-6 mb-3 mb-xl-0">
                                    <select id="role">
-                                        <option value="">SEMUA</option>
+                                        <option value="">Pilih Hak Akses</option>
                                         <option value="admin">ADMIN</option>
                                         <option value="verifikator_skpd">VERIFIKATOR SKPD</option>
                                         <option value="verifikator_lkd">VERIFIKATOR LKD</option>
@@ -48,7 +47,8 @@
           </div>
           <div class="mb-3">
                <ul class="d-flex align-items-center flex-wrap">
-                    <li><a href="javascript:void(0);" class="btn btn-primary btn-add">Tambah Pengguna</a></li>
+                    <li><a href="javascript:void(0);" class="btn btn-primary btn-sm btn-add">
+                              <i class="fas fa-user-plus me-2"></i>Tambah Pengguna</a></li>
                     <!-- <li><a href="blog-category.html" class="btn btn-primary mx-1">Blog Category</a></li> -->
                </ul>
           </div>
@@ -110,7 +110,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal">
                     </button>
                </div>
-               <form action="<?= base_url('v2/backend/users/save') ?>" id="add-form" method="post">
+               <form action="<?= base_url('v2/users/save') ?>" id="add-form" method="post">
                     <div class="modal-body">
                          <div class="row">
                               <input type="hidden" class="form-control" name="user" id="user" readonly>
@@ -128,7 +128,7 @@
                               </div>
                               <div class="mb-5 col-md-12">
                                    <label>SKPD <span class="text-danger">*</span></label>
-                                   <select name="skpd" id="add_skpd" class="form-control" required></select>
+                                   <select name="skpd" id="add_skpd" class="" required></select>
                               </div>
                          </div>
                          <div class="row">
@@ -155,7 +155,7 @@
                               <small class="text-danger mb-3" id="note-pwd">*) Kosongkan <strong>Password & Konfirmasi Password</strong> apabila tidak akan diubah!</small>
                               <div class="mb-3 col-md-12">
                                    <label>Hak Akses <span class="text-danger">*</span></label>
-                                   <select name="role" id="add_role" class="form-control-sm" required>
+                                   <select name="role" id="add_role" class="" required>
                                         <option value="">Pilih Hak Akses</option>
                                         <option value="admin">ADMIN</option>
                                         <option value="verifikator_skpd">VERIFIKATOR SKPD</option>
@@ -164,6 +164,20 @@
                                         <option value="kepala_lkd">KEPALA LKD</option>
                                         <option value="operator">OPERATOR</option>
                                    </select>
+                              </div>
+                         </div>
+                         <div class="row" id="profile-employee">
+                              <div class="mb-3 col-md-6">
+                                   <label class="form-label">NIK <span class="text-danger">*</span></label>
+                                   <input type="text" name="nik" class="form-control" placeholder="Masukan NIK" required autocomplete="off">
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                   <label class="form-label">NIP <span class="text-danger">*</span></label>
+                                   <input type="text" name="nip" class="form-control" placeholder="Masukan NIP" required autocomplete="off">
+                              </div>
+                              <div class="mb-3 col-md-12">
+                                   <label class="form-label">Jabatan <span class="text-danger">*</span></label>
+                                   <input type="text" name="position" class="form-control" placeholder="Masukan jabatan" required autocomplete="off">
                               </div>
                          </div>
                     </div>
@@ -176,32 +190,35 @@
      </div>
 </div>
 <!-- REQUIRED VENDORS! -->
-<script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
+<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
 
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/select2/js/select2.full.min.js"></script>
-<script src="<?= base_url('assets/v3/backend/') ?>js/plugins-init/select2-init.js"></script>
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
-<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/sweetalert2/sweetalert2.min.js"></script> -->
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/bundle/popular.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/plugin-bootstrap5/index.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/plugin-auto-focus/index.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/plugin-password-strength/index.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/zxcvbn.js') ?>"></script>
 <script>
+     $('#profile-employee').hide();
      var edit_modal = false;
-     $('#role').select2({
+     let filter_role = $('#role').select2({
           width: "100%",
+          debug: true,
+          placeholder: 'Pilih Hak Akses'
      });
 
-     $('#add_role').select2({
+     let add_role = $('#add_role').select2({
           width: "100%",
           dropdownParent: $('#add-user-modal .modal-content'),
+          placeholder: 'Pilih Hak Akses'
      });
 
-     $('#skpd').select2({
+     let filter_skpd = $('#skpd').select2({
           width: "100%",
+          debug: true,
           ajax: {
-               url: "<?= base_url('v2/backend/users/get_skpd_json') ?>",
+               url: "<?= base_url('v2/users/get_skpd_json') ?>",
                dataType: 'json',
                delay: 250,
                type: 'post',
@@ -223,7 +240,7 @@
                },
                cache: true
           },
-          placeholder: 'Cari SKPD',
+          placeholder: 'Pilih SKPD',
           templateResult: function(data) {
                // Check if the data object represents a loading or searching message
                if (data.loading) {
@@ -243,11 +260,11 @@
           }
      });
 
-     $('#add_skpd').select2({
+     let add_skpd = $('#add_skpd').select2({
           width: "100%",
-          dropdownParent: $('#add-user-modal .modal-content'),
+          dropdownParent: $('.add-user-modal .modal-content'),
           ajax: {
-               url: "<?= base_url('v2/backend/users/get_skpd_json') ?>",
+               url: "<?= base_url('v2/users/get_skpd_json') ?>",
                dataType: 'json',
                delay: 250,
                type: 'post',
@@ -269,7 +286,7 @@
                },
                cache: true
           },
-          placeholder: 'Cari SKPD',
+          placeholder: 'Pilih SKPD',
           templateResult: function(data) {
                // Check if the data object represents a loading or searching message
                if (data.loading) {
@@ -308,7 +325,7 @@
           processing: true,
           serverSide: true,
           ajax: {
-               url: "<?= base_url('v2/backend/users/get_users_json') ?>",
+               url: "<?= base_url('v2/users/get_users_json') ?>",
                type: "post",
                data: {
                     search: function() {
@@ -373,7 +390,7 @@
                }
           });
 
-          $.post("<?= base_url('v2/backend/users/get_user_json') ?>", {
+          $.post("<?= base_url('v2/users/get_user_json') ?>", {
                user: $(this).data('user'),
                uname: $(this).data('uname')
           }, function(data, status) {
@@ -390,8 +407,13 @@
 
                          var companyOpt = new Option(dao.data.company_name, dao.data.company_id, true, true);
                          $('select[name="skpd"]').append(companyOpt).trigger('change');
-                         $('select[name="role"]').val(dao.data.user_role).trigger('change');
-
+                         add_role.val(dao.data.user_role).trigger('change');
+                         if (dao.data.user_role == 'kepala_skpd' || dao.data.user_role == 'kepala_lkd') {
+                              $('input[name="nik"]').val(dao.data.nik);
+                              $('input[name="nip"]').val(dao.data.nip);
+                              $('input[name="position"]').val(dao.data.jabatan);
+                              $('#profile-employee').show();
+                         }
                          document.querySelector('#modal-title').innerHTML = 'Ubah Pengguna';
                          $('.add-user-modal').modal('show');
                     } else {
@@ -417,8 +439,8 @@
 
      $('.btn-reset').click(function() {
           $('#search').val(null);
-          $('#role').val(null).trigger('change');
-          $('#skpd').val(null).trigger('change');
+          filter_role.val(null).trigger('change');
+          filter_skpd.val(null).trigger('change');
           users_table.ajax.reload();
      });
 
@@ -596,7 +618,7 @@
                          },
                          remote: {
                               method: 'POST',
-                              url: '<?= base_url("v2/backend/users/find_exists_user_json") ?>',
+                              url: '<?= base_url("v2/users/find_exists_user_json") ?>',
                               delay: 2000,
                               data: function() {
                                    return {
@@ -618,12 +640,12 @@
                               message: 'Panjang minimal 6 karakter dan maksimal 20 karakter'
                          },
                          regexp: {
-                              regexp: /^[a-zA-Z0-9]+$/,
-                              message: 'Hanya huruf dan angka yang diperbolehkan!'
+                              regexp: /^[a-zA-Z0-9_-]+$/,
+                              message: 'Hanya huruf, angka, garis bawah dan garis tengah yang diperbolehkan!'
                          },
                          remote: {
                               method: 'POST',
-                              url: '<?= base_url("v2/backend/users/find_exists_user_json") ?>',
+                              url: '<?= base_url("v2/users/find_exists_user_json") ?>',
                               delay: 2000,
                               data: function() {
                                    return {
@@ -680,7 +702,55 @@
                               message: 'SKPD harus dipilih dan tidak boleh kosong!'
                          },
                     }
-               }
+               },
+               nik: {
+                    validators: {
+                         notEmpty: {
+                              message: 'NIK harus diisi dan tidak boleh kosong!'
+                         },
+                         stringLength: {
+                              min: 10,
+                              max: 16,
+                              message: 'NIK harus lebih dari 10 karakter dan kurang dari 16 karakter.',
+                         },
+                         regexp: {
+                              regexp: /^[0-9+]+$/,
+                              message: 'Hanya angka yang diperbolehkan.'
+                         },
+                    }
+               },
+               nip: {
+                    validators: {
+                         notEmpty: {
+                              message: 'NIP harus diisi dan tidak boleh kosong!'
+                         },
+                         stringLength: {
+                              min: 10,
+                              max: 20,
+                              message: 'NIP harus lebih dari 10 karakter dan kurang dari 20 karakter.',
+                         },
+                         regexp: {
+                              regexp: /^[0-9+]+$/,
+                              message: 'Hanya angka yang diperbolehkan.'
+                         },
+                    }
+               },
+               position: {
+                    validators: {
+                         notEmpty: {
+                              message: 'Jabatan harus diisi dan tidak boleh kosong!'
+                         },
+                         stringLength: {
+                              min: 5,
+                              max: 50,
+                              message: 'Jabatan harus lebih dari 5 karakter dan kurang dari 50 karakter.',
+                         },
+                         regexp: {
+                              regexp: /^[a-zA-Z. ]+$/,
+                              message: 'Hanya huruf, titik dan spasi yang diperbolehkan.'
+                         },
+                    }
+               },
           },
           plugins: {
                trigger: new FormValidation.plugins.Trigger(),
@@ -693,11 +763,14 @@
                               case 'phone':
                               case 'password':
                               case 'conf_password':
+                              case 'nik':
+                              case 'nip':
                                    return '.col-md-6';
                               case 'fullname':
                               case 'skpd':
                               case 'username':
                               case 'role':
+                              case 'position':
                                    return '.col-md-12';
                               default:
                                    return '.mb-3';
@@ -755,6 +828,16 @@
                     progressBar.style.width = '0%';
                }
           }
+     }).on('core.form.valid', function() {
+          Swal.fire({
+               title: "Mohon tunggu",
+               text: "Sedang mengirim data...",
+               allowOutsideClick: false,
+               allowEscapeKey: false,
+               didOpen: function() {
+                    Swal.showLoading();
+               }
+          });
      });
 
      formAdd.querySelector('[name="password"]').addEventListener('input', function() {
@@ -771,8 +854,34 @@
           }
      });
 
-     $('.add-user-modal').on('hidden.bs.modal', function() {
-          $('#add_role, #add_skpd').val(null).trigger('change');
+     add_role.change(function() {
+          if (this.value == 'kepala_skpd' || this.value == 'kepala_lkd') {
+               addFv.enableValidator('nik');
+               addFv.enableValidator('nip');
+               addFv.enableValidator('position');
+               $('input[name="nik"]').prop('required', true);
+               $('input[name="nip"]').prop('required', true);
+               $('input[name="position"]').prop('required', true);
+               $('#profile-employee').show();
+          } else {
+               addFv.disableValidator('nik');
+               addFv.disableValidator('nip');
+               addFv.disableValidator('position');
+               $('#profile-employee').hide();
+               $('input[name="nik"]').val(null);
+               $('input[name="nip"]').val(null);
+               $('input[name="position"]').val(null);
+          }
+
+          addFv.revalidateField('nik');
+          addFv.revalidateField('nip');
+          addFv.revalidateField('position');
+     });
+
+     let add_company_modal = document.querySelector('.add-user-modal');
+     add_company_modal.addEventListener('hide.bs.modal', function(e) {
+          add_role.val(null).trigger('change');
+          add_skpd.val(null).trigger('change');
           $('#add-form')[0].reset();
           addFv.resetField('fullname', true);
           addFv.resetField('phone', true);
@@ -782,8 +891,18 @@
           addFv.resetField('conf_password', true);
           addFv.resetField('role', true);
           addFv.resetField('skpd', true);
+          addFv.resetField('nik', true);
+          addFv.resetField('nip', true);
+          addFv.resetField('position', true);
           addFv.enableValidator('password');
           addFv.enableValidator('conf_password');
+          $('#profile-employee').hide();
+          addFv.disableValidator('nik');
+          addFv.disableValidator('nip');
+          addFv.disableValidator('position');
+          $('input[name="nik"]').prop('required', false);
+          $('input[name="nip"]').prop('required', false);
+          $('input[name="position"]').prop('required', false);
           document.querySelector('#modal-title').innerHTML = 'Tambah Pengguna Baru';
           progressBar.style.opacity = 0;
           progressBar.style.width = '0%';
@@ -795,7 +914,7 @@
           document.querySelector('#note-pwd').innerHTML = '';
      });
 
-     $('.add-user-modal').on('shown.bs.modal', function() {
+     add_company_modal.addEventListener('show.bs.modal', function(e) {
           if (edit_modal) {
                $('input[name="password"]').prop('required', false);
                $('input[name="conf_password"]').prop('required', false);
@@ -817,7 +936,7 @@
                }
           });
 
-          $.post("<?= base_url('v2/backend/users/get_user_json') ?>", {
+          $.post("<?= base_url('v2/users/get_user_json') ?>", {
                     user: $(this).data('user'),
                     uname: $(this).data('uname')
                }, function(data, status) {
@@ -851,7 +970,7 @@
                                              }
                                         });
 
-                                        $.post("<?= base_url('v2/backend/users/deleted') ?>", {
+                                        $.post("<?= base_url('v2/users/deleted') ?>", {
                                              user: dao.data.user_id,
                                              uname: dao.data.user_username,
                                              emp: dao.data.id
@@ -891,5 +1010,5 @@
                .fail(function() {
                     Swal.fire('Kesalahan', 'Terjadi kesalahan saat menghubungkan ke server...', 'error');
                });
-     })
+     });
 </script>

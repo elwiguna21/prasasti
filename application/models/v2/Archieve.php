@@ -16,7 +16,7 @@ class Archieve extends CI_Model
           if (!empty($where['search'])) {
                $this->db->like('berkas.indek', $where['search']);
                $this->db->or_like('berkas.deskripsi', $where['search']);
-               // $this->db->or_like('deskripsi', $where['search']);
+               $this->db->or_like('berkas.kode_klsf', $where['search']);
                unset($where['search']);
           }
 
@@ -26,12 +26,19 @@ class Archieve extends CI_Model
                unset($where['starts']);
           }
 
+          if (!empty($where['dirs']) or !empty($where['orders'])) {
+               $this->db->order_by($where['orders'], $where['dirs']);
+               unset($where['orders']);
+               unset($where['dirs']);
+          } else {
+               $this->db->order_by('berkas.id', 'desc');
+          }
+
           if (!empty($where)) {
                $this->db->where($where);
           }
 
           $this->db->select('berkas.*, company.name');
-          $this->db->order_by('berkas.id', 'desc');
           $this->db->join('company', 'company.no_company = berkas.nomor_skpd', 'left');
           return $this->db->get('berkas')->result();
      }
@@ -46,7 +53,33 @@ class Archieve extends CI_Model
 
           $this->db->select('berkas.*, company.name');
           $this->db->join('company', 'company.no_company = berkas.nomor_skpd', 'left');
-          return $this->db->get('berkas')->row();
+          // $this->db->join('employee', 'employee.user = berkas.tte_user', 'left');
+          // return $this->db->get('berkas')->row();
+          $result = $this->db->get('berkas')->row();
+          if (!empty($result)) {
+               $result->creator              = $this->db->get_where('employee', array('user' => $result->user))->row();
+               if (!empty($result->creator)) {
+                    unset($result->creator->id);
+                    unset($result->creator->user);
+               }
+               if (in_array($result->verifikasi_status, ['Y', 'R'])) {
+                    $result->verificator     = $this->db->get_where('employee', array('user' => $result->verifikasi_user))->row();
+                    unset($result->verificator->id);
+                    unset($result->verificator->user);
+               } else {
+                    $result->verificator     = null;
+               }
+
+               if (in_array($result->tte_status, ['Y', 'R'])) {
+                    $result->signer          = $this->db->get_where('employee', array('user' => $result->tte_user))->row();
+                    unset($result->signer->id);
+                    unset($result->signer->user);
+               } else {
+                    $result->signer          = null;
+               }
+          }
+
+          return $result;
      }
 
      public function get_all_where_count($where = null)
@@ -55,13 +88,15 @@ class Archieve extends CI_Model
 
           if (!empty($where['search'])) {
                $this->db->like('indek', $where['search']);
+               $this->db->or_like('kode_klsf', $where['search']);
                $this->db->or_like('deskripsi', $where['search']);
-               // $this->db->or_like('deskripsi', $where['search']);
                unset($where['search']);
           }
 
           unset($where['limits']);
           unset($where['starts']);
+          unset($where['orders']);
+          unset($where['dirs']);
 
           if (!empty($where)) {
                $this->db->where($where);
@@ -125,5 +160,37 @@ class Archieve extends CI_Model
           $data['datasets'] = $jumlah_berkas;
 
           return $data;
+     }
+
+     public function insert_entry($data)
+     {
+          $this->db->insert('berkas', $data);
+          return $this->db->insert_id();
+     }
+
+     public function update_entry($data, $where)
+     {
+          if (empty($data) or empty($where)) {
+               return false;
+          }
+
+          $data['updated_at']      = date('Y-m-d H:i:s');
+          $this->db->set($data);
+          $this->db->where($where);
+          $this->db->update('berkas');
+          return $this->db->affected_rows();
+     }
+
+     public function delete_entry($where)
+     {
+          if (empty($where)) {
+               return false;
+          }
+
+          $data['updated_at']      = date('Y-m-d H:i:s');
+          $data['deleted_at']      = date('Y-m-d H:i:s');
+          $this->db->where($where);
+          $this->db->update('berkas', $data);
+          return $this->db->affected_rows();
      }
 }

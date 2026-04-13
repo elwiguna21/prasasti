@@ -37,7 +37,7 @@
                     <div class="extra-nav">
                          <div class="extra-cell">
                               <?php if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-uname'))) { ?>
-                                   <a href="<?= base_url('v2/backend/dashboards') ?>" class="dez-page site-button white">Ke Dashboard </a>
+                                   <a href="<?= base_url('v2/dashboards') ?>" class="dez-page site-button white">Ke Dashboard </a>
                               <?php } else { ?>
                                    <a href="<?= base_url('v2/authentications') ?>" class="dez-page site-button white">Sign In </a>
                               <?php } ?>
@@ -66,7 +66,7 @@
                               </li>
                               <li class="sub-menu-down <?= ($current_uri == 'services') ? 'active' : ''; ?>"><a href="javascript:void(0);">Layanan <i class="fa fa-chevron-down"></i></a>
                                    <ul class="sub-menu">
-                                        <li><a href="<?= base_url('v2/frontend/services') ?>" class="dez-page">Perbaikan Arsip</a></li>
+                                        <li><a href="<?= base_url('v2/services') ?>" class="dez-page">Perbaikan Arsip</a></li>
                                    </ul>
                               </li>
                               <li class="sub-menu-down <?= ($current_uri == 'archieves') ? 'active' : ''; ?>">

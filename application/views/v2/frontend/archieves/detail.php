@@ -23,10 +23,15 @@
                          <div class="dlab-post-media dlab-img-effect zoom-slow wow fadeIn " data-wow-delay="0.2s">
                               <a href="javascript:void(0);">
                                    <!-- <img class="fullscreen-cover" src="<?= base_url('assets/v3/frontend/') ?>images/blog/default/thum1.jpg" alt=""> -->
-                                   <?php if ($archieve->tte_status == 'Y' and !empty($archieve->tte_dokumen)) { ?>
+                                   <!-- <?php if ($archieve->tte_status == 'Y' and !empty($archieve->tte_dokumen)) { ?>
                                         <iframe src="<?= base_url('./assets/data/signed/') . $archieve->tte_dokumen; ?>" frameborder="0" class="fullscreen-cover"></iframe>
                                    <?php } else { ?>
                                         <iframe src="<?= base_url('./assets/upload/') . $archieve->file; ?>" frameborder="0" class="fullscreen-cover"></iframe>
+                                   <?php } ?> -->
+                                   <?php if (file_exists('./assets/upload/berkas/' . $archieve->tte_dokumen)) { ?>
+                                        <iframe src="<?= $archieve->tte_dokumen; ?>" frameborder="0" class="fullscreen-cover"></iframe>
+                                   <?php } else { ?>
+                                        <iframe src="<?= $archieve->file; ?>" frameborder="0" class="fullscreen-cover"></iframe>
                                    <?php } ?>
                               </a>
                          </div>
@@ -108,15 +113,30 @@
                                    </table>
                               </div>
                               <div class="dlab-divider bg-gray-dark"></div>
-                              <a href="<?= base_url('./') . 'assets/upload/' . $archieve->file; ?>" class="site-button primary" target="_blank"><i class="ti-download me-2"></i> Download</a>
-                              <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
-                              ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only
-                              five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
-                              of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
-                              Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                              has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-                              type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                              It was popularised in the 1960s with the release</p> -->
+                              <?php if ($archieve->tte_status == 'Y' and !file_exists('./assets/upload/berkas/' . $archieve->tte_dokumen)) { ?>
+                                   <div class="testimonial-8 p-0">
+                                        <div class="testimonial-detail clearfix p-0">
+                                             <div class="testimonial-pic">
+                                                  <img src="<?= base_url('assets/v3/frontend/images/icon/verify.png') ?>" width="100" height="100" alt="">
+                                             </div>
+                                             <h5 class="testimonial-name m-t0 m-b5">Dokumen arsip telah ditandatangani oleh:</h5>
+                                             <span><?= $archieve->e_fullname; ?> pada <?= date("d-m-Y", strtotime($archieve->tte_tanggal)) ?></span>
+                                        </div>
+                                   </div>
+
+                                   <div class="dlab-divider bg-gray-dark"></div>
+                                   <a href="<?= base_url('./') . 'assets/upload/berkas/' . $archieve->tte_dokumen; ?>" class="site-button primary" target="_blank"><i class="ti-download me-2"></i> Download</a>
+                              <?php } else { ?>
+                                   <div class="testimonial-8 p-0">
+                                        <div class="testimonial-detail clearfix p-0">
+                                             <div class="testimonial-pic">
+                                                  <img src="<?= base_url('assets/v3/frontend/images/icon/alert.png') ?>" width="100" height="100" alt="">
+                                             </div>
+                                             <h5 class="testimonial-name m-t0 m-b5 text-danger">Dokumen pada arsip masih berupa draf.</h5>
+                                             <span>Silahkan hubungi administrator</span>
+                                        </div>
+                                   </div>
+                              <?php } ?>
                          </div>
                          <div class="dlab-divider bg-gray-dark op4"><i class="icon-dot c-square"></i></div>
                          <div class="share-details-btn">

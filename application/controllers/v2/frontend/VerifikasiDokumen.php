@@ -31,9 +31,11 @@ class VerifikasiDokumen extends MY_Controller
 
             // Ambil data penanda tangan jika sudah di-TTE
             if (!empty($berkas->tte_user)) {
-                $data['penandatangan'] = $this->db->get_where('users', ['username' => $berkas->tte_user])->row();
+                $data['penandatangan'] = $this->db->get_where('employee', ['user' => $berkas->tte_user])->row();
             }
         }
+
+//	   echo json_encode($data);die;
 
         $this->frontend('v2/frontend/verifikasi_dokumen', $data);
     }

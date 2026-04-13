@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="prasasti">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/index.php.zip!/" />
+      <root url="jar://$PROJECT_DIR$/system.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

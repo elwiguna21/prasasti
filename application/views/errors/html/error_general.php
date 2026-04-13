@@ -6,7 +6,6 @@ switch ($status_code) {
           require_once('error_400.php');
           break;
      case '403':
-          // $this->load->view('errors/html/error_400');
           require_once('error_403.php');
           break;
      case '503':

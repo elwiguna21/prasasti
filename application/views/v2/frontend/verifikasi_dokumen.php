@@ -1,3 +1,19 @@
+<div class="dlab-bnr-inr overlay-primary" style="background-image:url(<?= base_url('assets/v3/frontend/') ?>images/banner/bnr5.jpg);">
+     <div class="container">
+          <div class="dlab-bnr-inr-entry">
+               <h1 class="text-white">Verifikasi Dokumen</h1>
+               <!-- Breadcrumb row -->
+               <div class="breadcrumb-row">
+                    <ul class="list-inline">
+                         <li><a href="<?= base_url('/') ?>">Beranda</a></li>
+                         <li>Verifikasi Dokumen</li>
+                    </ul>
+               </div>
+               <!-- Breadcrumb row END -->
+          </div>
+     </div>
+</div>
+
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -18,7 +34,7 @@
                 <!-- Header Verifikasi -->
                 <div class="text-center mb-4">
                     <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle mb-3" style="width:64px;height:64px;">
-                        <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                        <i class="fas fa-shield-alt fa-2x text-white"></i>
                     </div>
                     <h4 class="fw-bold mb-1">Verifikasi Dokumen Elektronik</h4>
                     <p class="text-muted small mb-0">Halaman ini membuktikan keaslian dokumen yang telah ditandatangani secara elektronik</p>
@@ -57,7 +73,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-muted">Uraian Informasi Arsip</td>
-                                    <td class="fw-semibold"><?= htmlspecialchars($berkas->uraian_informasi_arsip ?? '-') ?></td>
+                                    <td class="fw-semibold"><?= htmlspecialchars( !empty($berkas->uraian_informasi_arsip)) ? $berkas->uraian_informasi_arsip : (!empty($berkas->deskripsi) ? $berkas->deskripsi : '-') ?></td>
                                 </tr>
                                 <tr>
                                     <td class="text-muted">Kurun Waktu (Tahun)</td>

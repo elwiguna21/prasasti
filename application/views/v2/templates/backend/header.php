@@ -5,13 +5,13 @@
      <!-- All Meta -->
      <meta charset="utf-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="author" content="DexignZone">
+     <meta name="author" content="PRASASTI">
      <meta name="robots" content="">
-     <meta name="keywords" content="admin dashboard, admin template, administration, analytics, bootstrap, cafe admin, elegant, food, health, kitchen, modern, responsive admin dashboard, restaurant dashboard">
-     <meta name="description" content="Discover Davur - the ultimate admin dashboard and Bootstrap 5 template. Specially designed for professionals, and for business. Davur provides advanced features and an easy-to-use interface for creating a top-quality website with frontend">
-     <meta property="og:title" content="Davur : Restaurant Admin Dashboard + FrontEnd">
-     <meta property="og:description" content="Discover Davur - the ultimate admin dashboard and Bootstrap 5 template. Specially designed for professionals, and for business. Davur provides advanced features and an easy-to-use interface for creating a top-quality website with frontend">
-     <meta property="og:image" content="https://davur.dexignzone.com/dashboard/social-image.png">
+     <meta name="keywords" content="prasasti, lembaga kearsipan daerah kabupaten sumedang, LKD Kabupaten Sumedang, arsip daerah kabupaten sumedang, arsip, kearsipan, kabupaten sumedang, sumedang">
+     <meta name="description" content="PRASASTI : Sistem pengelolaan dan pencatatan Kearsipan Daerah Kabupaten Sumedang oleh Dinas Arsip dan Perpustakaan Kabupaten Sumedang.">
+     <meta property="og:title" content="PRASASTI | Pengelolaan dan Pencatatan Kearsipan Terintegrasi">
+     <meta property="og:description" content="PRASASTI : Sistem pengelolaan dan pencatatan Kearsipan Daerah Kabupaten Sumedang oleh Dinas Arsip dan Perpustakaan Kabupaten Sumedang.">
+     <meta property="og:image" content="<?= base_url('assets/v3/frontend/images/icon-prasasti.png') ?>">
      <meta name="format-detection" content="telephone=no">
 
      <!-- Mobile Specific -->
@@ -21,9 +21,7 @@
      <title><?= (!empty($title)) ? $title : 'PRASASTI'; ?></title>
 
      <!-- Favicon icon -->
-     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/v3/backend/') ?>images/favicon.png">
-     <link href="<?= base_url('assets/v3/backend/') ?>vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
-     <link rel="stylesheet" href="<?= base_url('assets/v3/backend/') ?>vendor/chartist/css/chartist.min.css">
+     <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/v3/backend/') ?>images/icon-prasasti.png">
 
      <!-- Datatable -->
      <link href="<?= base_url('assets/v3/backend/') ?>vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -33,10 +31,10 @@
      <!-- SweetAlert2 -->
      <link href="<?= base_url('assets/v3/backend/') ?>vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet">
      <link href="<?= base_url('assets/v3/backend/') ?>css/style.css" rel="stylesheet">
-     <!-- <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet"> -->
+     <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
 
      <!-- jQuery (must load before content scripts) -->
-     <!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
+     <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
 </head>
 
 <body>
@@ -65,9 +63,9 @@
         ***********************************-->
           <div class="nav-header">
                <a href="<?= base_url('v2/backend/dashboards') ?>" class="brand-logo">
-                    <img class="logo-abbr" src="<?= base_url('assets/v3/backend/') ?>images/logo.png" alt="">
-                    <img class="logo-compact" src="<?= base_url('assets/v3/backend/') ?>images/logo-text.png" alt="">
-                    <img class="brand-title" src="<?= base_url('assets/v3/backend/') ?>images/logo-text.png" alt="">
+                    <img class="logo-abbr" src="<?= base_url('assets/v3/backend/') ?>images/logo-prasasti.png" alt="">
+                    <img class="logo-compact" src="<?= base_url('assets/v3/backend/') ?>images/logo-text-prasasti.png" alt="">
+                    <img class="brand-title" src="<?= base_url('assets/v3/backend/') ?>images/logo-text-prasasti.png" alt="">
                </a>
 
                <div class="nav-control">

@@ -126,7 +126,7 @@
                <div class="section-head text-white text-center">
                     <h2 class="box-title m-tb0 max-w800 m-auto">Layanan Perbaikan Arsip<span class="bg-primary"></span></h2>
                     <p>Berikut ini merupakan data statistik dari layanan perbaikan arsip.</p>
-                    <form class="row text-white dezPlaceAni justify-content-center align-items-center" action="<?= base_url('v2/frontend/services') ?>" method="get">
+                    <form class="row text-white dezPlaceAni justify-content-center align-items-center" action="<?= base_url('v2/services') ?>" method="get">
                          <div class="col-lg-7 contact-form-bx text-center">
                               <div class="form-group">
                                    <div class="input-group">
@@ -193,7 +193,7 @@
                          </ul>
                     </div>
                     <div class="col-lg-7 col-md-7 m-b30">
-                         <form class="inquiry-form wow fadeInUp" method="post" data-wow-delay="0.2s" action="<?= base_url('v2/frontend/services/add') ?>" enctype="multipart/form-data">
+                         <form class="inquiry-form wow fadeInUp" method="post" data-wow-delay="0.2s" action="<?= base_url('v2/services/add') ?>" enctype="multipart/form-data">
                               <h3 class="box-title m-t0 m-b10">Lengkapi <span class="text-primary">form</span></h3>
                               <p>Gunakan email dan kontak yang aktif agar mudah dihubungi! Pastikan foto arsip pada bagian yang rusak terlihat jelas.</p>
                               <div class="row">

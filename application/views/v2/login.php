@@ -8,12 +8,13 @@
      <meta name="keywords" content="" />
      <meta name="author" content="" />
      <meta name="robots" content="" />
-     <meta name="description" content="Davur - Restaurant Bootstrap Admin Dashboard + FrontEnd" />
-     <meta property="og:title" content="Davur - Restaurant Bootstrap Admin Dashboard + FrontEnd" />
-     <meta property="og:description" content="Davur - Restaurant Bootstrap Admin Dashboard + FrontEnd" />
-     <meta property="og:image" content="https://davur.dexignzone.com/dashboard/social-image.png" />
+     <meta name="keywords" content="prasasti, lembaga kearsipan daerah kabupaten sumedang, LKD Kabupaten Sumedang, arsip daerah kabupaten sumedang, arsip, kearsipan, kabupaten sumedang, sumedang">
+     <meta name="description" content="PRASASTI : Sistem pengelolaan dan pencatatan Kearsipan Daerah Kabupaten Sumedang oleh Dinas Arsip dan Perpustakaan Kabupaten Sumedang.">
+     <meta property="og:title" content="PRASASTI | Pengelolaan dan Pencatatan Kearsipan Terintegrasi">
+     <meta property="og:description" content="PRASASTI : Sistem pengelolaan dan pencatatan Kearsipan Daerah Kabupaten Sumedang oleh Dinas Arsip dan Perpustakaan Kabupaten Sumedang.">
+     <meta property="og:image" content="<?= base_url('assets/v3/frontend/images/icon-prasasti.png') ?>">
      <meta name="format-detection" content="telephone=no">
-     <title>Davur - Restaurant Bootstrap Admin Dashboard + FrontEnd </title>
+     <title>Autentikasi - PRASASTI </title>
      <!-- Favicon icon -->
      <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/v3/backend/') ?>images/icon-prasasti.png">
      <link href="<?= base_url('assets/v3/backend/') ?>vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">

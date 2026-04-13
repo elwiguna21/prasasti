@@ -26,6 +26,10 @@
 <div class="section-full content-inner">
      <!-- Product -->
      <div class="container">
+          <div class="section-head text-black text-center">
+               <h2 class="text-uppercase m-b10">Arsip Statis</h2>
+               <p>Arsip yang memiliki nilai guna kesejarahan, telah habis masa retensinya, dan ditetapkan permanen setelah diverifikasi oleh lembaga kearsipan. Arsip ini tidak lagi digunakan secara langsung dalam administrasi sehari-hari, melainkan disimpan untuk kepentingan penelitian, sejarah, dan memori kolektif bangsa.</p>
+          </div>
           <div>
                <form class="shop-form row">
                     <div class="row">
@@ -79,14 +83,14 @@
                                              </a>
                                         </div> -->
                                         <div class="icon-content">
-                                             <h5 class="dlab-tilte text-uppercase"><a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>"><?= $archieve->indek; ?></a></h5>
+                                             <h5 class="dlab-tilte text-uppercase"><a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>"><?= (!empty($archieve->indek)) ? $archieve->indek : '-'; ?></a></h5>
                                              <div class="text-left">
                                                   <ul>
                                                        <li class="post-date"> <i class="fa fa-calendar text-primary me-2"></i><strong><?= $archieve->tahun; ?></strong></li>
-                                                       <li class="post-author"><i class="fa fa-user text-primary me-2"></i> <?= $archieve->name; ?></li>
+                                                       <li class="post-author"><i class="fa fa-user text-primary me-2"></i> <?= !empty($archieve->name) ? $archieve->name : ((!empty($archieve->unit_kerja_pencipta)) ? $archieve->unit_kerja_pencipta : '-'); ?></li>
                                                   </ul>
                                              </div>
-                                             <p><?= $archieve->deskripsi; ?></p>
+                                             <p><?= (!empty($archieve->deskripsi)) ? $archieve->deskripsi : '-'; ?></p>
                                              <a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>" class="site-button">Detail</a>
                                         </div>
                                    </div>

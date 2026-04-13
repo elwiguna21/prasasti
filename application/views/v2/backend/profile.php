@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/styles/index.min.css') ?>" />
 <div class="row page-titles">
      <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="javascript:void(0)">Pengguna</a></li>
+          <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
           <li class="breadcrumb-item active"><a href="javascript:void(0)">Profil</a></li>
      </ol>
 </div>
@@ -135,6 +135,30 @@
                                                   <div class="col-sm-9 col-7"><span><?= $employee->phone; ?></span>
                                                   </div>
                                              </div>
+
+                                             <?php if (in_array($employee->user_role, array('kepala_skpd', 'kepala_lkd'))) { ?>
+                                                  <div class="row mb-2">
+                                                       <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">NIK <span class="pull-end">:</span></h5>
+                                                       </div>
+                                                       <div class="col-sm-9 col-7"><span><?= $employee->nik; ?></span>
+                                                       </div>
+                                                  </div>
+                                                  <div class="row mb-2">
+                                                       <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">NIP <span class="pull-end">:</span></h5>
+                                                       </div>
+                                                       <div class="col-sm-9 col-7"><span><?= $employee->nip; ?></span>
+                                                       </div>
+                                                  </div>
+                                                  <div class="row mb-2">
+                                                       <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">Jabatan <span class="pull-end">:</span></h5>
+                                                       </div>
+                                                       <div class="col-sm-9 col-7"><span><?= $employee->jabatan; ?></span>
+                                                       </div>
+                                                  </div>
+                                             <?php } ?>
                                              <div class="row mb-2">
                                                   <div class="col-sm-3 col-5">
                                                        <h5 class="f-w-500">Username <span class="pull-end">:</span></h5>
@@ -163,7 +187,7 @@
                                         <div class="pt-3">
                                              <div class="settings-form">
                                                   <h4 class="text-primary">Pengaturan Profil</h4>
-                                                  <form action="<?= base_url('v2/backend/users/save') ?>" id="add-form" method="post">
+                                                  <form action="<?= base_url('v2/users/save') ?>" id="add-form" method="post">
                                                        <div hidden>
                                                             <input type="text" name="user" class="form-control" value="<?= $employee->user_id ?>" required readonly>
                                                             <input type="text" name="skpd" class="form-control" value="<?= $this->encryption->decrypt($employee->company_id); ?>" required readonly>
@@ -184,6 +208,20 @@
                                                                  <label class="form-label">Telepon / No.HP</label>
                                                                  <input type="text" placeholder="Telepon / No.HP" class="form-control" name="phone" value="<?= $employee->phone ?>" required autocomplete="off">
                                                             </div>
+                                                       </div>
+                                                       <div class="row">
+                                                            <div class="mb-3 col-md-6">
+                                                                 <label class="form-label">NIK</label>
+                                                                 <input type="text" placeholder="NIK" class="form-control" name="nik" value="<?= $employee->nik; ?>" maxlength="16" required autocomplete="off">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                 <label class="form-label">NIP</label>
+                                                                 <input type="text" placeholder="NIP" class="form-control" name="nip" value="<?= $employee->nip; ?>" maxlength="20" required autocomplete="off">
+                                                            </div>
+                                                       </div>
+                                                       <div class="mb-3 col-md-12">
+                                                            <label class="form-label">Jabatan</label>
+                                                            <input type="text" placeholder="Masukan jabatan" class="form-control" name="position" value="<?= $employee->jabatan; ?>" maxlength="100" required autocomplete="off">
                                                        </div>
 
                                                        <h4 class="text-primary mt-3">Pengaturan Akun</h4>
@@ -222,7 +260,7 @@
 </div>
 
 <!-- REQUIRED VENDORS! -->
-<script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
+<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
 
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/bundle/popular.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/plugin-bootstrap5/index.js') ?>"></script>
@@ -402,7 +440,7 @@
                          },
                          remote: {
                               method: 'POST',
-                              url: '<?= base_url("v2/backend/users/find_exists_user_json") ?>',
+                              url: '<?= base_url("v2/users/find_exists_user_json") ?>',
                               delay: 2000,
                               data: function() {
                                    return {
@@ -424,12 +462,12 @@
                               message: 'Panjang minimal 6 karakter dan maksimal 20 karakter'
                          },
                          regexp: {
-                              regexp: /^[a-zA-Z0-9]+$/,
-                              message: 'Hanya huruf dan angka yang diperbolehkan!'
+                              regexp: /^[a-zA-Z0-9_]+$/,
+                              message: 'Hanya huruf, angka dan garis bawah yang diperbolehkan!'
                          },
                          remote: {
                               method: 'POST',
-                              url: '<?= base_url("v2/backend/users/find_exists_user_json") ?>',
+                              url: '<?= base_url("v2/users/find_exists_user_json") ?>',
                               delay: 2000,
                               data: function() {
                                    return {
@@ -485,9 +523,12 @@
                               case 'phone':
                               case 'password':
                               case 'conf_password':
+                              case 'nip':
+                              case 'nik':
                                    return '.col-md-6';
                               case 'fullname':
                               case 'username':
+                              case 'position':
                                    return '.col-md-12';
                               default:
                                    return '.mb-3';

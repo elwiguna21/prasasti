@@ -11,7 +11,7 @@ class Company extends CI_Model
 
      public function get_all_where($where = null)
      {
-          $this->db->order_by('name', 'asc');
+          // $this->db->order_by('name', 'asc');
           $this->db->where('deleted_at is null');
 
           if (!empty($where['search'])) {
@@ -25,10 +25,10 @@ class Company extends CI_Model
                unset($where['starts']);
           }
 
-          if (!empty($where['orderBy']) or !empty($where['orderDir'])) {
-               $this->db->order_by($where['orderBy'], $where['orderDir']);
-               unset($where['orderBy']);
-               unset($where['orderDir']);
+          if (!empty($where['orders']) or !empty($where['dirs'])) {
+               $this->db->order_by($where['orders'], $where['dirs']);
+               unset($where['orders']);
+               unset($where['dirs']);
           }
 
           if (!empty($where)) {
@@ -50,6 +50,8 @@ class Company extends CI_Model
 
           unset($where['limits']);
           unset($where['starts']);
+          unset($where['orders']);
+          unset($where['dirs']);
 
           if (!empty($where)) {
                $this->db->where($where);
@@ -72,5 +74,33 @@ class Company extends CI_Model
           }
 
           return $result;
+     }
+
+     public function insert_entry($data)
+     {
+          $this->db->insert('company', $data);
+          return $this->db->insert_id();
+     }
+
+     public function update_entry($data, $where)
+     {
+          if (empty($where)) {
+               return false;
+          }
+
+          $data['updated_at']      = date('Y-m-d H:i:s');
+          $this->db->where($where);
+          return $this->db->update('company', $data);
+     }
+
+     public function delete_entry($where)
+     {
+          if (empty($where)) {
+               return false;
+          }
+
+          $data['deleted_at']      = date('Y-m-d H:i:s');
+          $this->db->where($where);
+          return $this->db->update('company', $data);
      }
 }

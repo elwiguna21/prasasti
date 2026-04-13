@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="visual-editor-extension">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/assets/v3/frontend/plugins/revolution/addon-visual-editor/visual-editor-extension.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

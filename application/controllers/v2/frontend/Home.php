@@ -26,10 +26,10 @@ class Home extends MY_Controller
 
           // echo json_encode($data);
           // die;
-          $data['banners']              = $this->banner->get_all_where(array('limits' => 8));
+          $data['banners']              = $this->banner->get_all_where(array('limits' => 8, 'starts' => 0));
 
-          $data['news']                 = $this->news->get_all_where(array('limits' => 8));
-          $data['articles']             = $this->article->get_all_where(array('limits' => 8));
+          $data['news']                 = $this->news->get_all_where(array('limits' => 8, 'starts' => 0));
+          $data['articles']             = $this->article->get_all_where(array('limits' => 8, 'starts' => 0));
           $this->frontend('v2/frontend/home', $data);
      }
 }

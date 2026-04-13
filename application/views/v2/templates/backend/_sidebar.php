@@ -5,25 +5,23 @@
      <div class="deznav-scroll">
           <ul class="metismenu" id="menu">
                <li>
-                    <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <a class="ai-icon" href="<?= base_url('v2/dashboards') ?>">
                          <i class="flaticon-381-networking"></i>
                          <span class="nav-text">Dashboard</span>
+                         <!-- <span class="badge badge-xs badge-success">New</span> -->
                     </a>
-                    <ul aria-expanded="false">
-                         <li><a href="<?= base_url('v2/backend/dashboards') ?>">Dashboard</a></li>
-                         <li><a href="page-analytics.html">Analytics</a></li>
-                         <li><a href="page-review.html">Review</a></li>
-                         <li><a href="page-order.html">Order</a></li>
-                         <li><a href="page-order-list.html">Order List</a></li>
-                         <li><a href="page-general-customers.html">General Customers</a></li>
-                    </ul>
                </li>
                <?php if ($this->session->userdata('next-role') === 'admin') : ?>
                     <li>
-                         <a class="ai-icon" href="<?= base_url('v2/backend/users') ?>">
+                         <a class="ai-icon" href="<?= base_url('v2/users') ?>">
                               <i class="flaticon-381-user-9"></i>
                               <span class="nav-text">Daftar Pengguna</span>
-                              <span class="badge badge-xs badge-success">New</span>
+                         </a>
+                    </li>
+                    <li>
+                         <a class="ai-icon" href="<?= base_url('v2/companies') ?>">
+                              <i class="flaticon-381-map-2"></i>
+                              <span class="nav-text">Daftar SKPD</span>
                          </a>
                     </li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
@@ -45,7 +43,14 @@
                               <li><a href="<?= base_url('v2/backend/profils') ?>">Profil</a></li>
                          </ul>
                     </li>
+                    <li>
+                         <a class="ai-icon" href="<?= base_url('v2/services/list') ?>">
+                              <i class="fas fa-file-upload"></i>
+                              <span class="nav-text">Permohonan Perbaikan</span>
+                         </a>
+                    </li>
                <?php endif; ?>
+
                <li>
                     <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                          <i class="flaticon-381-folder-14"></i>
@@ -57,26 +62,26 @@
                     </ul>
                </li>
                <?php if (in_array($this->session->userdata('next-role'), ['kepala_lkd', 'verifikator_lkd'])): ?>
-               <li>
-                    <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                         <i class="flaticon-381-folder-14"></i>
-                         <span class="nav-text">Arsip Usul Serah</span>
-                    </a>
-                    <ul aria-expanded="false">
-                         <li><a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah') ?>">Daftar Berkas</a></li>
-                         <?php if ($this->session->userdata('next-role') === 'kepala_lkd'): ?>
-                         <li>
-                              <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/tanda_tangan') ?>">
-                                   <i class="fas fa-pen-nib me-1 text-primary"></i> Tanda Tangan
-                                   <span class="badge badge-xs badge-primary ms-1">TTE</span>
-                              </a>
-                         </li>
-                         <?php endif; ?>
-                    </ul>
-               </li>
+                    <li>
+                         <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                              <i class="flaticon-381-folder-14"></i>
+                              <span class="nav-text">Arsip Usul Serah</span>
+                         </a>
+                         <ul aria-expanded="false">
+                              <li><a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah') ?>">Daftar Berkas</a></li>
+                              <?php if ($this->session->userdata('next-role') === 'kepala_lkd'): ?>
+                                   <li>
+                                        <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/tanda_tangan') ?>">
+                                             <i class="fas fa-pen-nib me-1 text-primary"></i> Tanda Tangan
+                                             <span class="badge badge-xs badge-primary ms-1">TTE</span>
+                                        </a>
+                                   </li>
+                              <?php endif; ?>
+                         </ul>
+                    </li>
                <?php endif; ?>
                <li>
-                    <a href="<?= base_url('v2/backend/users/profiles') ?>" class="ai-icon"><i class="flaticon-381-user-4"></i>
+                    <a href="<?= base_url('v2/users/profiles') ?>" class="ai-icon"><i class="flaticon-381-user-4"></i>
                          <span class="nav-text">Profil</span>
                          <span class="badge badge-xs badge-success">New</span>
                     </a>

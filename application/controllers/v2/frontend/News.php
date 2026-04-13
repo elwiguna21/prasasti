@@ -35,8 +35,8 @@ class News extends MY_Controller
           $data['newslatters_total']    = $config['total_rows'];
           $data['pagination']           = $this->pagination->create_links();
 
-          $data['newslatters_last']     = $this->newslatter->get_all_where(array('limits' => 3));
-          $data['articles_last']        = $this->article->get_all_where(array('limits' => 3));
+          $data['newslatters_last']     = $this->newslatter->get_all_where(array('limits' => 3, 'starts' => $pages));
+          $data['articles_last']        = $this->article->get_all_where(array('limits' => 3, 'starts' => $pages));
 
           $data['title']                = 'Berita';
 
@@ -65,8 +65,8 @@ class News extends MY_Controller
           $data['newslatter']           = $newslatter;
           $data['title']                = 'Detail Berita - ' . $newslatter->judul;
 
-          $data['newslatters_last']     = $this->newslatter->get_all_where(array('limits' => 3));
-          $data['articles_last']        = $this->article->get_all_where(array('limits' => 3));
+          $data['newslatters_last']     = $this->newslatter->get_all_where(array('limits' => 3, 'starts' => 0));
+          $data['articles_last']        = $this->article->get_all_where(array('limits' => 3, 'starts' => 0));
 
           $this->frontend('v2/frontend/news/detail', $data);
      }
@@ -96,10 +96,10 @@ class News extends MY_Controller
           $data['articles_total']       = $config['total_rows'];
           $data['pagination']           = $this->pagination->create_links();
 
-          $data['articles_last']        = $this->article->get_all_where(array('limits' => 3));
+          $data['articles_last']        = $this->article->get_all_where(array('limits' => 3, 'starts' => $pages));
           $data['title']                = 'Artikel';
 
-          $data['news_last']            = $this->newslatter->get_all_where(array('limits' => 3));
+          $data['news_last']            = $this->newslatter->get_all_where(array('limits' => 3, 'starts' => $pages));
 
           $this->frontend('v2/frontend/news/article', $data);
      }
@@ -124,10 +124,10 @@ class News extends MY_Controller
           }
 
           $data['article']         = $article;
-          $data['articles_last']   = $this->article->get_all_where(array('limits' => 3));
+          $data['articles_last']   = $this->article->get_all_where(array('limits' => 3, 'starts' => 0));
           $data['title']           = 'Detail Artikel - ' . $article->judul;
 
-          $data['news_last']            = $this->newslatter->get_all_where(array('limits' => 3));
+          $data['news_last']            = $this->newslatter->get_all_where(array('limits' => 3, 'starts' => 0));
           // echo json_encode($data);
           // die;
 
