@@ -53,7 +53,7 @@
           processing: true,
           serverSide: true,
           ajax: {
-               url: "<?= base_url('v2/frontend/regulations/get_regulations_json') ?>",
+               url: "<?= base_url('v2/regulations/get_regulations_json') ?>",
                type: "post",
                // data: {
                //      search: function() {

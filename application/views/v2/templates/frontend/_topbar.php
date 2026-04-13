@@ -46,22 +46,22 @@
                     <!-- main nav -->
                     <div class="header-nav navbar-collapse collapse justify-content-end" id="navbarNavDropdown">
                          <ul class="nav navbar-nav">
-                              <?php $current_uri = $this->uri->segment(3); ?>
+                              <?php $current_uri = $this->uri->segment(2); ?>
                               <li class="<?= ($current_uri == 'home' || $current_uri == '') ? 'active' : ''; ?>"><a href="<?= base_url('v2') ?>">Beranda</a></li>
                               <li class="<?= ($current_uri == 'profiles') ? 'active' : ''; ?>"><a href="javascript:void(0);">Profil <i class="fa fa-chevron-down"></i></a>
                                    <ul class="sub-menu">
-                                        <!-- <li><a href="<?= base_url('v2/frontend/profiles') ?>" class="dez-page">Sambutan </a></li> -->
-                                        <li><a href="<?= base_url('v2/frontend/profiles/vision') ?>" class="dez-page">Visi &amp; Misi </a></li>
-                                        <li><a href="<?= base_url('v2/frontend/profiles/about') ?>" class="dez-page">Gambaran Umum </a></li>
-                                        <li><a href="<?= base_url('v2/frontend/profiles/jobdesc') ?>" class="dez-page">Tugas &amp; Fungsi</a></li>
-                                        <li><a href="<?= base_url('v2/frontend/profiles/history') ?>" class="dez-page">Sejarah</a></li>
-                                        <li><a href="<?= base_url('v2/frontend/profiles/structure') ?>" class="dez-page">Struktur Organisasi</a></li>
+                                        <!-- <li><a href="<?= base_url('v2/profiles') ?>" class="dez-page">Sambutan </a></li> -->
+                                        <li><a href="<?= base_url('v2/profiles/vision') ?>" class="dez-page">Visi &amp; Misi </a></li>
+                                        <li><a href="<?= base_url('v2/profiles/about') ?>" class="dez-page">Gambaran Umum </a></li>
+                                        <li><a href="<?= base_url('v2/profiles/jobdesc') ?>" class="dez-page">Tugas &amp; Fungsi</a></li>
+                                        <li><a href="<?= base_url('v2/profiles/history') ?>" class="dez-page">Sejarah</a></li>
+                                        <li><a href="<?= base_url('v2/profiles/structure') ?>" class="dez-page">Struktur Organisasi</a></li>
                                    </ul>
                               </li>
-                              <li class="sub-menu-down <?= ($current_uri == 'news') ? 'active' : ''; ?>"><a href="javascript:void(0);">Informasi <i class="fa fa-chevron-down"></i></a>
+                              <li class="sub-menu-down <?= ($current_uri == 'news' or $current_uri == 'articles') ? 'active' : ''; ?>"><a href="javascript:void(0);">Informasi <i class="fa fa-chevron-down"></i></a>
                                    <ul class="sub-menu">
-                                        <li><a href="<?= base_url('v2/frontend/news/articles') ?>" class="dez-page">Artikel</a></li>
-                                        <li><a href="<?= base_url('v2/frontend/news') ?>" class="dez-page">Berita </a></li>
+                                        <li><a href="<?= base_url('v2/articles') ?>" class="dez-page">Artikel</a></li>
+                                        <li><a href="<?= base_url('v2/news') ?>" class="dez-page">Berita </a></li>
                                    </ul>
                               </li>
                               <li class="sub-menu-down <?= ($current_uri == 'services') ? 'active' : ''; ?>"><a href="javascript:void(0);">Layanan <i class="fa fa-chevron-down"></i></a>
@@ -72,13 +72,13 @@
                               <li class="sub-menu-down <?= ($current_uri == 'archieves') ? 'active' : ''; ?>">
                                    <a href="javascript:void(0);">Arsip Statis <i class="fa fa-chevron-down"></i></a>
                                    <ul class="sub-menu">
-                                        <li><a href="<?= base_url('v2/frontend/archieves') ?>" class="dez-page">Arsip Statis</a></li>
-                                        <li><a href="<?= base_url('v2/frontend/archieves/inventory') ?>" class="dez-page">Inventaris Arsip</a></li>
-                                        <li><a href="<?= base_url('v2/frontend/archieves/guide') ?>" class="dez-page">Guide Arsip</a></li>
+                                        <li><a href="<?= base_url('v2/archieves') ?>" class="dez-page">Arsip Statis</a></li>
+                                        <li><a href="<?= base_url('v2/archieves/inventory') ?>" class="dez-page">Inventaris Arsip</a></li>
+                                        <li><a href="<?= base_url('v2/archieves/guide') ?>" class="dez-page">Guide Arsip</a></li>
                                    </ul>
                               </li>
-                              <li class="<?= ($current_uri == 'regulations') ? 'active' : ''; ?>"><a href="<?= base_url('v2/frontend/regulations') ?>" class="dez-page">Peraturan</a></li>
-                              <li class="<?= ($current_uri == 'galleries') ? 'active' : ''; ?>"><a href="<?= base_url('v2/frontend/galleries'); ?>" class="dez-page">Galeri</a></li>
+                              <li class="<?= ($current_uri == 'regulations') ? 'active' : ''; ?>"><a href="<?= base_url('v2/regulations') ?>" class="dez-page">Peraturan</a></li>
+                              <li class="<?= ($current_uri == 'galleries') ? 'active' : ''; ?>"><a href="<?= base_url('v2/galleries'); ?>" class="dez-page">Galeri</a></li>
                          </ul>
                     </div>
                </div>

@@ -937,7 +937,7 @@
         }
 
         $.ajax({
-            url: '<?= base_url("v2/backend/alih_media_arsip_vital/save") ?>',
+            url: '<?= base_url("v2/alih_media_arsip_vital/save") ?>',
             type: 'POST',
             data: formData,
             contentType: false,

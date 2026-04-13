@@ -8,7 +8,7 @@ class Welcome extends CI_Controller
      function __construct()
      {
           parent::__construct();
-          redirect('v2/frontend/home');
+          redirect('v2/home');
      }
 
      public function index()

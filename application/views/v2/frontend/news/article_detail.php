@@ -6,7 +6,7 @@
                <div class="breadcrumb-row">
                     <ul class="list-inline">
                          <li><a href="<?= base_url('/') ?>">Beranda</a></li>
-                         <li><a href="<?= base_url('v2/frontend/news/articles') ?>">Artikel</a></li>
+                         <li><a href="<?= base_url('v2/articles') ?>">Artikel</a></li>
                          <li>Detail</li>
                     </ul>
                </div>

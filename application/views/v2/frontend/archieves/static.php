@@ -56,34 +56,18 @@
           <div class="wow fadeIn m-t20" data-wow-delay="0.5s">
                <div class="row">
                     <?php if (!empty($archieves)) {
-                         foreach ($archieves as $archieve) { ?>
-                              <!-- <div class="col-lg-3 col-md-6 col-sm-12">
-                                   <div class="blog-post blog-grid blog-rounded blog-effect1">
-                                        <div class="dlab-info p-a20 border-1">
-                                             <div class="dlab-post-title ">
-                                                  <h5 class="post-title font-weight-500"><a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>"><?= $archieve->indek; ?></a></h5>
-                                             </div>
-                                             <div class="dlab-post-meta">
-                                                  <ul>
-                                                       <li class="post-date"> <i class="fa fa-calendar"></i><strong><?= $archieve->tahun; ?></strong></li>
-                                                       <li class="post-author"><i class="fa fa-user"></i><a href="javascript:void(0);"><?= $archieve->name; ?></a> </li>
-                                                  </ul>
-                                             </div>
-                                             <div class="dlab-post-text">
-                                                  <p><?= $archieve->deskripsi; ?></p>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div> -->
+                         foreach ($archieves as $archieve) {
+                              $params = array('archieve' => $this->encryption->encrypt($archieve->id), 'company' => $archieve->nomor_skpd);
+                              ?>
                               <div class="col-lg-4 col-md-4 col-sm-6 m-b30 wow fadeInUp" data-wow-delay="0.3s">
                                    <div class="icon-bx-wraper bx-style-1 p-a30 center fly-box-ho">
                                         <!-- <div class="icon-sm m-b20">
-                                             <a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>" class="icon-cell">
+                                             <a href="<?= base_url('v2/frontend/archieves/detail?' . http_build_query($params)); ?>" class="icon-cell">
                                                   <i class="ti-headphone-alt"></i>
                                              </a>
                                         </div> -->
                                         <div class="icon-content">
-                                             <h5 class="dlab-tilte text-uppercase"><a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>"><?= (!empty($archieve->indek)) ? $archieve->indek : '-'; ?></a></h5>
+                                             <h5 class="dlab-tilte text-uppercase"><a href="<?= base_url('v2/archieves/detail?' . http_build_query($params)); ?>"><?= (!empty($archieve->indek)) ? $archieve->indek : '-'; ?></a></h5>
                                              <div class="text-left">
                                                   <ul>
                                                        <li class="post-date"> <i class="fa fa-calendar text-primary me-2"></i><strong><?= $archieve->tahun; ?></strong></li>
@@ -91,7 +75,7 @@
                                                   </ul>
                                              </div>
                                              <p><?= (!empty($archieve->deskripsi)) ? $archieve->deskripsi : '-'; ?></p>
-                                             <a href="<?= base_url('v2/frontend/archieves/detail?archieve=' . $archieve->id . '&company=' . $archieve->nomor_skpd); ?>" class="site-button">Detail</a>
+                                             <a href="<?= base_url('v2/archieves/detail?' . http_build_query($params)); ?>" class="site-button">Detail</a>
                                         </div>
                                    </div>
                               </div>
@@ -154,6 +138,6 @@
      $('.btn-reset').click(function() {
           $('input[name="title"]').val(null);
           $('select[name="company"]').val(null).trigger('change');
-          window.location.href = '<?= base_url('v2/frontend/archieves') ?>';
+          window.location.href = '<?= base_url('v2/archieves') ?>';
      })
 </script>

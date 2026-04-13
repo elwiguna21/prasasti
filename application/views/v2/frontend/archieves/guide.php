@@ -8,7 +8,7 @@
                <div class="breadcrumb-row">
                     <ul class="list-inline">
                          <li><a href="<?= base_url('/') ?>">Beranda</a></li>
-                         <li><a href="<?= base_url('v2/frontend/archieves') ?>">Arsip Statis</a></li>
+                         <li><a href="<?= base_url('v2/archieves') ?>">Arsip Statis</a></li>
                          <li>Guide Arsip</li>
                     </ul>
                </div>
@@ -145,7 +145,7 @@
                }
           });
 
-          $.post("<?= base_url('v2/frontend/archieves/get_guide_json') ?>", {
+          $.post("<?= base_url('v2/archieves/get_guide_json') ?>", {
                guide: guide,
                file: file
           }, function(data, status) {

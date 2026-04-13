@@ -8,7 +8,7 @@
                <div class="breadcrumb-row">
                     <ul class="list-inline">
                          <li><a href="<?= base_url('/') ?>">Beranda</a></li>
-                         <li><a href="<?= base_url('v2/frontend/archieves') ?>">Arsip Statis</a></li>
+                         <li><a href="<?= base_url('v2/archieves') ?>">Arsip Statis</a></li>
                          <li>Inventaris Arsip</li>
                     </ul>
                </div>
@@ -69,11 +69,6 @@
 </div>
 
 <!-- REQUIRED VENDORS! -->
-<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
-
-<!-- SweetAlert2 -->
-<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/sweetalert2/sweetalert2.min.js"></script> -->
-
 <script src="<?= base_url() ?>assets/v3/backend/vendor/datatables/js/jquery.dataTables.min.js"></script>
 
 <script>
@@ -83,7 +78,7 @@
           processing: true,
           serverSide: true,
           ajax: {
-               url: "<?= base_url('v2/frontend/archieves/get_inventories_json') ?>",
+               url: "<?= base_url('v2/archieves/get_inventories_json') ?>",
                type: "post",
                data: {
                     search: function() {
@@ -142,7 +137,6 @@
           $('#company').val("").trigger('change');
           $('#form-filter')[0].reset();
           $('#form-filter').find('input:text, input:password, input:file, select, textarea').val('');
-          console.log($('#company').val());
 
           inventory_table.ajax.reload();
      })

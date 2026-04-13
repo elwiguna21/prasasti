@@ -24,7 +24,7 @@ $base_url = load_class('Config')->config['base_url'];
      <meta name="viewport" content="width=device-width, initial-scale=1">
 
      <!-- Title -->
-     <title>Davur : Restaurant Admin Dashboard + FrontEnd</title>
+     <title>Error 404</title>
 
      <!-- Favicon icon -->
      <link rel="icon" type="image/png" sizes="16x16" href="<?= $base_url . 'assets/v3/backend/' ?>images/icon-prasasti.png">

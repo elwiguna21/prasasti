@@ -25,7 +25,7 @@
                                    <div class="col-lg-6 col-12">
                                         <div class="blog-post blog-lg wow fadeIn" data-wow-delay="0.2s">
                                              <div class="dlab-post-media dlab-img-effect zoom-slow">
-                                                  <a href="<?= base_url('v2/frontend/news/detail?slug=' . $news->slug); ?>">
+                                                  <a href="<?= base_url('v2/news/detail?slug=' . $news->slug); ?>">
                                                        <?php if (file_exists('./assets/upload/' . $news->gambar)) { ?>
                                                             <img src="<?= base_url('assets/upload/' . $news->gambar); ?>" alt="<?= $news->judul; ?>" style="max-height: 175px !important; ;">
                                                        <?php } else { ?>
@@ -35,7 +35,7 @@
                                              </div>
                                              <div class="dlab-post-info">
                                                   <div class="dlab-post-title ">
-                                                       <h4 class="post-title"><a href="<?= base_url('v2/frontend/news/detail?slug=' . $news->slug); ?>"><?= $news->judul; ?></a></h4>
+                                                       <h4 class="post-title"><a href="<?= base_url('v2/news/detail?slug=' . $news->slug); ?>"><?= $news->judul; ?></a></h4>
                                                   </div>
                                                   <div class="dlab-post-meta">
                                                        <ul class="d-flex align-items-center">
@@ -48,7 +48,7 @@
                                                        <p><?= substr($news->isi, 0, 200) . ' ...'; ?></p>
                                                   </div>
                                                   <div class="dlab-post-readmore blog-share">
-                                                       <a href="<?= base_url('v2/frontend/news/detail?slug=' . $news->slug); ?>" title="READ MORE" rel="bookmark" class="site-button outline outline-1">Selengkapnya
+                                                       <a href="<?= base_url('v2/news/detail?slug=' . $news->slug); ?>" title="READ MORE" rel="bookmark" class="site-button outline outline-1">Selengkapnya
                                                             <i class="fas fa-long-arrow-alt-right"></i>
                                                        </a>
                                                        <div class="share-btn">

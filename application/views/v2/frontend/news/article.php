@@ -38,7 +38,7 @@
                                    </div>
                                    <div class="dlab-post-info">
                                         <div class="dlab-post-title ">
-                                             <h4 class="post-title"><a href="<?= base_url('v2/frontend/news/articles_detail?slug=' . $article->slug); ?>"><?= $article->judul; ?></a></h4>
+                                             <h4 class="post-title"><a href="<?= base_url('v2/articles/detail?slug=' . $article->slug); ?>"><?= $article->judul; ?></a></h4>
                                         </div>
                                         <div class="dlab-post-meta">
                                              <ul class="d-flex align-items-center">
@@ -51,7 +51,7 @@
                                              <p><?= substr($article->isi, 0, 100) . '...' ?></p>
                                         </div>
                                         <div class="dlab-post-readmore blog-share">
-                                             <a href="<?= base_url('v2/frontend/news/articles_detail?slug=' . $article->slug); ?>" title="READ MORE" rel="bookmark" class="site-button outline outline-1">Selengkapnya
+                                             <a href="<?= base_url('v2/articles/detail?slug=' . $article->slug); ?>" title="READ MORE" rel="bookmark" class="site-button outline outline-1">Selengkapnya
                                                   <i class="fas fa-long-arrow-alt-right"></i>
                                              </a>
                                              <div class="share-btn">

@@ -131,8 +131,8 @@ if ($archieve->verifikasi_status == 'Y') {
 ?>
 <div class="page-titles">
      <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?= base_url('v2/backend/dashboards') ?>">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="<?= base_url('v2/backend/alih_media_arsip_vital') ?>">Daftar Arsip
+          <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="<?= base_url('v2/alih_media_arsip_vital') ?>">Daftar Arsip
                     Vital</a></li>
           <li class="breadcrumb-item active"><a href="javascript:void(0)">Detail</a></li>
      </ol>
@@ -160,7 +160,7 @@ if ($archieve->verifikasi_status == 'Y') {
 <div class="media mb-2 mt-3">
      <div class="media-body">
           <div class="pull-end">
-               <a href="<?= base_url('v2/backend/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm">
+               <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm">
                     <i class="fas fa-arrow-left me-1"></i> Kembali
                </a>
           </div>
@@ -270,7 +270,7 @@ if ($archieve->verifikasi_status == 'Y') {
 				<?php if (($archieve->verifikasi_status != 'Y' or $archieve->verifikasi_status == null) and $this->session->userdata('next-role') == 'operator') {
 					$params = array('archieve' => $archieve->id, 'company' => $archieve->nomor_skpd);
 					?>
-                         <a href="<?= base_url('v2/backend/alih_media_arsip_vital/edit?' . http_build_query($params)); ?>"
+                         <a href="<?= base_url('v2/alih_media_arsip_vital/edit?' . http_build_query($params)); ?>"
                             class="btn btn-sm btn-warning w-100 mb-3">
                               <i class="fas fa-edit me-1"></i> Ubah Arsip
                          </a>
@@ -449,7 +449,7 @@ if ($archieve->verifikasi_status == 'Y') {
 				$pdfProxyUrl = base_url('assets/upload/berkas/' . $archieve->tte_dokumen);
 				$namaFilePdf = $archieve->tte_dokumen;
 			} else {
-				$pdfProxyUrl = base_url('v2/backend/alih_media_arsip_vital/view_pdf?' . http_build_query(array('archieve' => $archieve->id)));
+				$pdfProxyUrl = base_url('v2/alih_media_arsip_vital/view_pdf?' . http_build_query(array('archieve' => $archieve->id)));
 				$namaFilePdf = $archieve->file;
 			}
 			$ttePosisi = !empty($archieve->tte_posisi) ? $archieve->tte_posisi : null;
@@ -531,7 +531,7 @@ if ($archieve->verifikasi_status == 'Y') {
                          <button type="button" class="btn-close" data-bs-dismiss="modal">
                          </button>
                     </div>
-                    <form action="<?= base_url('v2/backend/archieves/reject') ?>" method="post">
+                    <form action="<?= base_url('v2/archieves/vital_reject') ?>" method="post">
                          <div class="modal-body">
                               <input type="hidden" class="form-control" name="archieve" value="<?= $archieve->id; ?>"
                                      readonly
@@ -579,7 +579,7 @@ if ($archieve->verifikasi_status == 'Y') {
                               <button type="button" class="btn-close" style="color: #fff;" data-bs-dismiss="modal">
                               </button>
                          </div>
-                         <form id="passphrase-form" action="<?= base_url('v2/backend/archieves/signed') ?>" method="post">
+                         <form id="passphrase-form" action="<?= base_url('v2/alih_media_arsip_vital/signed') ?>" method="post">
                               <div class="modal-body">
                                    <div class="row">
                                         <input type="hidden" class="form-control" name="archieve"
@@ -778,7 +778,7 @@ if ($archieve->verifikasi_status == 'Y') {
                     }
                 });
 
-                $.post("<?= base_url('v2/backend/archieves/delete') ?>", {
+                $.post("<?= base_url('v2/alih_media_arsip_vital/delete') ?>", {
                     archieve: archieve,
                     company: company,
                 }, function (data, status) {
@@ -794,7 +794,7 @@ if ($archieve->verifikasi_status == 'Y') {
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
                             }).then(function () {
-                                window.location.href = "<?= base_url('v2/backend/alih_media_arsip_vital') ?>";
+                                window.location.href = "<?= base_url('v2/alih_media_arsip_vital') ?>";
                             });
                         } else {
                             Swal.fire({
@@ -848,7 +848,7 @@ if ($archieve->verifikasi_status == 'Y') {
                     }
                 });
 
-                $.post("<?= base_url('v2/backend/archieves/verification') ?>", {
+                $.post("<?= base_url('v2/alih_media_arsip_vital/verification') ?>", {
                     status: 'Y',
                     archieve: archieve,
                     company: company,
@@ -1068,7 +1068,7 @@ if ($archieve->verifikasi_status == 'Y') {
                     }
                 });
 
-                $.post("<?= base_url('v2/backend/archieves/resend') ?>", {
+                $.post("<?= base_url('v2/alih_media_arsip_vital/resend') ?>", {
                     archieve: archieve,
                     company: company,
                 }, function (data, status) {
@@ -1082,7 +1082,7 @@ if ($archieve->verifikasi_status == 'Y') {
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
                             }).then(function () {
-                                window.location.href = "<?= base_url('v2/backend/alih_media_arsip_vital') ?>";
+                                window.location.href = "<?= base_url('v2/alih_media_arsip_vital') ?>";
                             });
                         } else {
                             Swal.fire({

@@ -14,9 +14,11 @@ class Archieve extends CI_Model
           $this->db->where('berkas.deleted_at', null);
 
           if (!empty($where['search'])) {
+			$this->db->group_start();
                $this->db->like('berkas.indek', $where['search']);
                $this->db->or_like('berkas.deskripsi', $where['search']);
                $this->db->or_like('berkas.kode_klsf', $where['search']);
+			$this->db->group_end();
                unset($where['search']);
           }
 
@@ -87,9 +89,11 @@ class Archieve extends CI_Model
           $this->db->where('deleted_at', null);
 
           if (!empty($where['search'])) {
+	          $this->db->group_start();
                $this->db->like('indek', $where['search']);
                $this->db->or_like('kode_klsf', $where['search']);
                $this->db->or_like('deskripsi', $where['search']);
+	          $this->db->group_end();
                unset($where['search']);
           }
 
@@ -111,9 +115,11 @@ class Archieve extends CI_Model
           $this->db->where('berkas.nomor_skpd !=', null);
 
           if (!empty($where['search'])) {
+	          $this->db->group_start();
                $this->db->like('berkas.indek', $where['search']);
                $this->db->or_like('berkas.deskripsi', $where['search']);
                // $this->db->or_like('deskripsi', $where['search']);
+	          $this->db->group_end();
                unset($where['search']);
           }
 

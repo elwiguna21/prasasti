@@ -1,7 +1,7 @@
 <!-- Page Title -->
 <div class="page-titles">
      <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?= base_url('v2/backend/dashboards') ?>">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
           <li class="breadcrumb-item active">Guide Arsip</li>
      </ol>
 </div>
@@ -54,7 +54,7 @@
                          </div>
                          <div class="mb-3">
                               <label class="form-label">File PDF</label>
-                              <input type="file" class="form-control dropify" name="file" data-height="200" data-allowed-file-extensions="pdf">
+                              <input type="file" class="dropify" name="file" data-height="200" data-allowed-file-extensions=".pdf">
                          </div>
                     </form>
                </div>
@@ -65,9 +65,6 @@
           </div>
      </div>
 </div>
-
-<!-- Required vendors -->
-<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
 
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 
@@ -85,7 +82,7 @@
           "serverSide": true,
           "order": [1, 'asc'],
           "ajax": {
-               "url": "<?php echo base_url('v2/backend/guidearsips/ajax_list') ?>",
+               "url": "<?php echo base_url('v2/guides/list/ajax') ?>",
                "type": "POST"
           },
           "columnDefs": [{
@@ -129,7 +126,7 @@
           $('#form')[0].reset();
           $('.help-block').empty();
           $.ajax({
-               url: "<?php echo site_url('v2/backend/guidearsips/ajax_edit/') ?>" + id,
+               url: "<?php echo site_url('v2/guides/manage/edit/') ?>" + id,
                type: "GET",
                dataType: "JSON",
                success: function(data) {
@@ -154,7 +151,7 @@
 
      function save() {
           $('#btnSave').text('Menyimpan...').attr('disabled', true);
-          var url = (save_method == 'add') ? "<?php echo site_url('v2/backend/guidearsips/ajax_add') ?>" : "<?php echo site_url('v2/backend/guidearsips/ajax_update') ?>";
+          var url = (save_method == 'add') ? "<?php echo site_url('v2/guides/manage/add') ?>" : "<?php echo site_url('v2/guides/manage/update') ?>";
           var formData = new FormData($('#form')[0]);
           $.ajax({
                url: url,
@@ -194,7 +191,7 @@
           }).then((result) => {
                if (result.isConfirmed) {
                     $.ajax({
-                         url: "<?php echo site_url('v2/backend/guidearsips/ajax_delete/') ?>" + id,
+                         url: "<?php echo site_url('v2/guides/manage/delete/') ?>" + id,
                          type: "POST",
                          dataType: "JSON",
                          success: function() {

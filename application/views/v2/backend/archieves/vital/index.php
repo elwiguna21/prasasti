@@ -132,8 +132,8 @@
                     </div>
                     <div class="align-middle">
                          <?php if ($this->session->userdata('next-role') == 'operator') { ?>
-                              <a href="<?= base_url('v2/backend/alih_media_arsip_vital/berita_acara') ?>" class="btn btn-info btn-sm"><i class="fas fa-file-signature me-1"></i> Berita Acara (BAST)</a>
-                              <a href="<?= base_url('v2/backend/alih_media_arsip_vital/add') ?>" class="btn btn-primary btn-sm"><i class="fal fa-plus me-1"></i> Tambah Arsip Vital</a>
+                              <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara') ?>" class="btn btn-info btn-sm"><i class="fas fa-file-signature me-1"></i> Berita Acara (BAST)</a>
+                              <a href="<?= base_url('v2/alih_media_arsip_vital/add') ?>" class="btn btn-primary btn-sm"><i class="fal fa-plus me-1"></i> Tambah Arsip Vital</a>
                          <?php } ?>
                     </div>
                </div>
@@ -166,12 +166,8 @@
      </div>
 </div>
 
-<!-- Required vendors -->
-<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
-
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/select2/js/select2.full.min.js') ?>"></script>
-<script src="<?= base_url('assets/v3/backend/') ?>js/plugins-init/select2-init.js"></script>
 <script>
      <?php if ($employee->user_role == 'admin') { ?>
           let company = $('#company').select2({
@@ -221,7 +217,7 @@
           processing: true,
           serverSide: true,
           ajax: {
-               url: "<?= base_url('v2/backend/archieves/get_archieves_vital_json') ?>",
+               url: "<?= base_url('v2/archieves/get_archieves_vital_json') ?>",
                type: "post",
                data: {
                     search: function() {

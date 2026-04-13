@@ -24,7 +24,7 @@
                                    <li class="web design card-container col-lg-4 col-md-6 col-sm-6 p-a0 wow zoomIn" data-wow-delay="0.2s">
                                         <div class="dlab-box dlab-gallery-box">
                                              <div class="dlab-media dlab-img-overlay1 dlab-img-effect">
-                                                  <a href="javascript:void(0);"> <img src="<?= $gallery->file; ?>" alt=""> </a>
+                                                  <a href="javascript:void(0);"> <img src="<?= $gallery->file; ?>" alt="<?= $gallery->caption; ?>" width="310px" height="310px"> </a>
                                                   <div class="overlay-bx">
                                                        <div class="overlay-icon align-b text-white">
                                                             <div class="text-white text-left port-box">
