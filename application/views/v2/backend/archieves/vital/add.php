@@ -664,7 +664,7 @@
         formData.append('file_pdf', file);
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '<?= base_url(); ?>v2/alih_media_arsip_vital/upload_pdf_temp');
+        xhr.open('POST', '<?= base_url(); ?>v2/alih_media_arsip_vital/upload_pdf');
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
         xhr.upload.onprogress = function (e) {
