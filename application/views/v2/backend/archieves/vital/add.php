@@ -465,8 +465,6 @@
      </div>
 </div>
 
-<!-- Required vendors -->
-<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
 <script src="<?= base_url('assets/v3/backend/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.min.js') ?>"></script>
 
 <!-- PDF.js via CDN -->
@@ -666,7 +664,7 @@
         formData.append('file_pdf', file);
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '<?= base_url(); ?>v2/backend/archieves/upload_pdf_temp');
+        xhr.open('POST', '<?= base_url(); ?>v2/alih_media_arsip_vital/upload_pdf_temp');
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
         xhr.upload.onprogress = function (e) {

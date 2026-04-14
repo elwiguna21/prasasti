@@ -84,3 +84,4 @@ $route['v2/alih_media_arsip_vital/signed']                              = 'v2/ar
 $route['v2/alih_media_arsip_vital/verification']                        = 'v2/archieves/vital_verification';
 $route['v2/alih_media_arsip_vital/resend']                              = 'v2/archieves/vital_resend';
 $route['v2/alih_media_arsip_vital/view_pdf']                            = 'v2/archieves/view_pdf';
+$route['v2/alih_media_arsip_vital/upload_pdf']                          = 'v2/archieves/upload_pdf_temp';
