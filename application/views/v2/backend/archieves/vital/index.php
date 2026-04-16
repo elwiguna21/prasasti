@@ -136,9 +136,11 @@
                          <i class="fa-sharp fa-solid fa-file-alt me-2"></i>Daftar Arsip Vital
                     </div>
                     <div class="align-middle">
+                         <?php if ($employee->user_role == 'verifikator_skpd') { ?>
                          <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara') ?>"
                             class="btn btn-info btn-sm"><i class="fas fa-file-signature me-1"></i> Berita Acara
                               (BAST)</a>
+                         <?php } ?>
 
 					<?php if ($employee->user_role == 'operator') { ?>
                               <a href="<?= base_url('v2/alih_media_arsip_vital/add') ?>" class="btn btn-primary btn-sm"><i
