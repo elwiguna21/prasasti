@@ -929,9 +929,9 @@ class Archieves extends MY_Controller
 			ob_end_clean();
 		}
 
-		// Stream PDF inline — IDM tidak intercept
-		header('Content-Type: application/pdf');
-		header('Content-Disposition: inline; filename="dokumen"');
+		// Stream PDF inline untuk dicustom via AJAX PDF.js
+		// IDM akan mengabaikan karena bukan application/pdf dan tidak ada header attachment/inline
+		header('Content-Type: application/octet-stream');
 		header('Content-Length: ' . filesize($filepath));
 		header('Cache-Control: private, max-age=0, must-revalidate');
 		header('Pragma: public');
