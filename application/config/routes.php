@@ -74,14 +74,24 @@ $route['v2/backend/alih_media_arsip_usul_serah/ajax_unlink_berkas/(:num)/(:num)'
 $route['v2/frontend/verifikasi_dokumen/index/(:num)']                           = 'v2/frontend/VerifikasiDokumen/index/$1';
 
 // Alih Media Arsip Vital Route
-$route['v2/alih_media_arsip_vital']                                     = 'v2/archieves/vital_list';
-$route['v2/alih_media_arsip_vital/add']                                 = 'v2/archieves/vital_add';
-$route['v2/alih_media_arsip_vital/save']                                = 'v2/archieves/vital_save';
-$route['v2/alih_media_arsip_vital/detail']                              = 'v2/archieves/vital_detail';
-$route['v2/alih_media_arsip_vital/edit']                                = 'v2/archieves/vital_edit';
-$route['v2/alih_media_arsip_vital/delete']                              = 'v2/archieves/vital_delete';
-$route['v2/alih_media_arsip_vital/signed']                              = 'v2/archieves/vital_signed';
-$route['v2/alih_media_arsip_vital/verification']                        = 'v2/archieves/vital_verification';
-$route['v2/alih_media_arsip_vital/resend']                              = 'v2/archieves/vital_resend';
-$route['v2/alih_media_arsip_vital/view_pdf']                            = 'v2/archieves/view_pdf';
-$route['v2/alih_media_arsip_vital/upload_pdf']                          = 'v2/archieves/upload_pdf_temp';
+$route['v2/alih_media_arsip_vital']                                             = 'v2/archieves/vital_list';
+$route['v2/alih_media_arsip_vital/add']                                         = 'v2/archieves/vital_add';
+$route['v2/alih_media_arsip_vital/save']                                        = 'v2/archieves/vital_save';
+$route['v2/alih_media_arsip_vital/detail']                                      = 'v2/archieves/vital_detail';
+$route['v2/alih_media_arsip_vital/edit']                                        = 'v2/archieves/vital_edit';
+$route['v2/alih_media_arsip_vital/delete']                                      = 'v2/archieves/vital_delete';
+$route['v2/alih_media_arsip_vital/signed']                                      = 'v2/archieves/vital_signed';
+$route['v2/alih_media_arsip_vital/verification']                                = 'v2/archieves/vital_verification';
+$route['v2/alih_media_arsip_vital/resend']                                      = 'v2/archieves/vital_resend';
+$route['v2/alih_media_arsip_vital/view_pdf']                                    = 'v2/archieves/view_pdf';
+$route['v2/alih_media_arsip_vital/upload_pdf']                                  = 'v2/archieves/upload_pdf_temp';
+$route['v2/alih_media_arsip_vital/berita_acara']                                = 'v2/archieves/berita_acara';
+$route['v2/alih_media_arsip_vital/berita_acara_add']                            = 'v2/archieves/berita_acara_add';
+$route['v2/alih_media_arsip_vital/berita_acara_save']                           = 'v2/archieves/berita_acara_save';
+$route['v2/alih_media_arsip_vital/bast_detail']                                 = 'v2/archieves/berita_acara_detail';
+$route['v2/alih_media_arsip_vital/get_bast_json']                               = 'v2/archieves/get_bast_json';
+$route['v2/alih_media_arsip_vital/get_bast_linked_json']                        = 'v2/archieves/get_bast_linked_json';
+$route['v2/alih_media_arsip_vital/get_archieve_not_exists_bast']                = 'v2/archieves/get_archieve_not_exist_bast';
+$route['v2/alih_media_arsip_vital/berita_acara_detail_save']                    = 'v2/archieves/berita_acara_detail_save';
+$route['v2/alih_media_arsip_vital/berita_acara_detail_unlink']                  = 'v2/archieves/berita_acara_detail_unlink';
+$route['v2/alih_media_arsip_vital/berita_acara_deleted']                        = 'v2/archieves/berita_acara_delete';

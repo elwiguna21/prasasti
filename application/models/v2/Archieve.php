@@ -63,7 +63,10 @@ class Archieve extends CI_Model
                if (!empty($result->creator)) {
                     unset($result->creator->id);
                     unset($result->creator->user);
+               } else {
+				$result->creator         = null;
                }
+
                if (in_array($result->verifikasi_status, ['Y', 'R'])) {
                     $result->verificator     = $this->db->get_where('employee', array('user' => $result->verifikasi_user))->row();
                     unset($result->verificator->id);

@@ -632,6 +632,7 @@
     // File input change
     document.getElementById('file_pdf_input').addEventListener('change', function () {
         if (this.files.length) handlePdfFile(this.files[0]);
+        console.log(this.files.length);
     });
 
     // ===== Handle PDF file upload =====
@@ -952,7 +953,7 @@
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                     }).then(function () {
-                        window.location.href = '<?= base_url("v2/backend/alih_media_arsip_vital") ?>';
+                        window.location.href = '<?= base_url("v2/alih_media_arsip_vital") ?>';
                     });
                 } else {
                     Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat mengirim data arsip...', 'error');

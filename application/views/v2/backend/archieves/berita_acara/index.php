@@ -23,10 +23,30 @@
 <div class="page-titles">
      <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
-          <li class="breadcrumb-item active"><a href="javascript:void(0);">Daftar Arsip Vital</a></li>
+          <li class="breadcrumb-item active"><a href="javascript:void(0);">Daftar Berita Acara Arsip Vital</a></li>
      </ol>
 </div>
 
+<?php if (!empty($this->session->flashdata('status'))) {
+	$status = $this->session->flashdata('status');
+	?>
+     <div class="col-xl-12">
+          <div class="alert alert-<?= ($status == 200) ? 'success' : 'danger'; ?> left-icon-big alert-dismissible fade show">
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"><span><i
+                                 class="mdi mdi-btn-close"></i></span>
+               </button>
+               <div class="media">
+                    <div class="alert-left-icon-big">
+                         <span><i class="mdi mdi-<?= ($status == 200) ? 'check-circle-outline' : 'alert'; ?>"></i></span>
+                    </div>
+                    <div class="media-body">
+                         <h5 class="mt-1 mb-2"><?= ($status == 200) ? 'Berhasil' : 'Gagal' ?>!</h5>
+                         <p class="mb-0"><?= $this->session->flashdata('message'); ?></p>
+                    </div>
+               </div>
+          </div>
+     </div>
+<?php } ?>
 
 <div class="row">
      <div class="col-xxl-3 col-lg-3 col-sm-6">
@@ -49,11 +69,11 @@
                <div class="card-body p-4">
                     <div class="media ai-icon">
                          <span class="me-3 bgl-warning text-warning">
-                              <i class="fas fa-check-circle"></i>
+                              <i class="ti-archive"></i>
                          </span>
                          <div class="media-body">
-                              <p class="mb-1">Diverifikasi</p>
-                              <h4 class="mb-0"><?= number_format($total_verification, 0, ',', '.'); ?></h4>
+                              <p class="mb-1">Berita Acara</p>
+                              <h4 class="mb-0"><?= number_format($total_bast, 0, ',', '.'); ?></h4>
                          </div>
                     </div>
                </div>
@@ -63,12 +83,12 @@
           <div class="widget-stat card">
                <div class="card-body  p-4">
                     <div class="media ai-icon">
-                         <span class="me-3 bgl-danger text-danger">
-                              <i class="fas fa-file-signature"></i>
+                         <span class="me-3 bgl-success text-success">
+                              <i class="fas fa-link"></i>
                          </span>
                          <div class="media-body">
-                              <p class="mb-1">Menunggu TTE</p>
-                              <h4 class="mb-0"><?= number_format($total_unsigned, 0, ',', '.'); ?></h4>
+                              <p class="mb-1">Tertaut Berita Acara</p>
+                              <h4 class="mb-0"><?= number_format($total_archieve_linked, 0, ',', '.'); ?></h4>
                          </div>
                     </div>
                </div>
@@ -78,12 +98,12 @@
           <div class="widget-stat card">
                <div class="card-body p-4">
                     <div class="media ai-icon">
-                         <span class="me-3 bgl-success text-success">
-                              <i class="las la-signature"></i>
+                         <span class="me-3 bgl-danger text-danger">
+                              <i class="fas fa-unlink"></i>
                          </span>
                          <div class="media-body">
-                              <p class="mb-1">Di TTE</p>
-                              <h4 class="mb-0"><?= number_format($total_signed, 0, ',', '.'); ?></h4>
+                              <p class="mb-1">Belum Tertaut Berita Acara</p>
+                              <h4 class="mb-0"><?= number_format($total_archieve_unlinked, 0, ',', '.'); ?></h4>
                          </div>
                     </div>
                </div>
@@ -98,18 +118,15 @@
                     <div class="cpa">
                          <i class="fa-sharp fa-solid fa-filter me-2"></i>Filter
                     </div>
-                    <div class="tools">
-                         <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
-                    </div>
                </div>
                <div class="cm-content-body form excerpt">
                     <div class="card-body">
                          <div class="row">
-                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-5' : 'col-xl-9' ?> col-sm-12">
+                              <div class="<?= ($employee->user_role == 'admin') ? 'col-xl-5' : 'col-xl-9' ?> col-sm-12">
                                    <input type="text" class="form-control mb-xl-0 mb-3" id="search"
-                                          placeholder="Cari kode klasifikasi atau indeks arsip..." autocomplete="off">
+                                          placeholder="Cari nama atau nomor berita acara..." autocomplete="off">
                               </div>
-						<?php if ($this->session->userdata('next-role') == 'admin') { ?>
+						<?php if ($employee->user_role == 'admin') { ?>
                                    <div class="col-xl-4 col-sm-12">
                                         <select id="company"></select>
                                    </div>
@@ -133,36 +150,31 @@
           <div class="filter cm-content-box box-primary pt-3">
                <div class="content-title mb-2">
                     <div class="cpa">
-                         <i class="fa-sharp fa-solid fa-file-alt me-2"></i>Daftar Arsip Vital
+                         <i class="fa-sharp fa-solid fa-file-alt me-2"></i>Daftar Berita Acara Arsip Vital
                     </div>
-                    <div class="align-middle">
-                         <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara') ?>"
-                            class="btn btn-info btn-sm"><i class="fas fa-file-signature me-1"></i> Berita Acara
-                              (BAST)</a>
-
-					<?php if ($employee->user_role == 'operator') { ?>
-                              <a href="<?= base_url('v2/alih_media_arsip_vital/add') ?>" class="btn btn-primary btn-sm"><i
-                                           class="fal fa-plus me-1"></i> Tambah Arsip Vital</a>
-					<?php } ?>
-                    </div>
+				<?php if ($employee->user_role == 'verifikator_skpd') { ?>
+                         <div class="align-middle">
+                              <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara_add') ?>"
+                                 class="btn btn-primary btn-sm"><i
+                                           class="fal fa-plus me-1"></i> Tambah Berita Acara</a>
+                         </div>
+				<?php } ?>
                </div>
                <div class="cm-content-body form excerpt">
                     <div class="card-body">
                          <div class="table-responsive">
-                              <table id="archieve-vital-table" class="display" style="min-width: 845px">
+                              <table id="bast-table" class="display" style="min-width: 845px">
                                    <thead>
                                    <tr>
-                                        <th class="text-center">No.</th>
-                                        <th class="text-center">Klasifikasi</th>
-                                        <th class="text-start">Uraian Informasi Arsip / Deskripsi</th>
-                                        <th class="text-center">Kurun Waktu</th>
-                                        <th class="text-center">Jumlah</th>
-                                        <th class="text-center">Waktu</th>
-                                        <th class="text-center">Status</th>
+                                        <th style="width: 10%" class="text-center">No.</th>
+                                        <th class="text-start">Nama / Nomor BAST</th>
+                                        <th class="text-center">Waktu Upload</th>
+                                        <th class="text-center">Arsip Tertaut</th>
 								<?php if ($employee->user_role == 'admin') { ?>
+                                                <th class="text-center">Pembuat</th>
                                              <th class="text-center">SKPD</th>
 								<?php } ?>
-                                        <th class="text-center">Aksi</th>
+                                        <th style="width: 5%;" class="text-center">Aksi</th>
                                    </tr>
                                    </thead>
                                    <tbody>
@@ -177,6 +189,7 @@
 
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/select2/js/select2.full.min.js') ?>"></script>
+
 <script>
 	<?php if ($employee->user_role == 'admin') { ?>
      let company = $('#company').select2({
@@ -209,24 +222,24 @@
 	<?php } ?>
 
      $('.btn-reset').click(function () {
-         if (company) {
-             company.val(null).trigger('change');
-         }
+		<?php if ($employee->user_role == 'admin') { ?>
+         company.val(null).trigger('change');
+		<?php } ?>
          $('#search').val(null);
-         archieve_table.ajax.reload();
+         bast_table.ajax.reload();
      });
 
      $('.btn-filter').click(function () {
-         archieve_table.ajax.reload();
-     })
+         bast_table.ajax.reload();
+     });
 
-     var archieve_table = $('#archieve-vital-table').DataTable({
+     var bast_table = $('#bast-table').DataTable({
          // responsive: false,
          searching: true,
          processing: true,
          serverSide: true,
          ajax: {
-             url: "<?= base_url('v2/archieves/get_archieves_vital_json') ?>",
+             url: "<?= base_url('v2/alih_media_arsip_vital/get_bast_json') ?>",
              type: "post",
              data: {
                  search: function () {
@@ -237,7 +250,6 @@
                  },
              }
          },
-         // bLengthChange: !1,
          order: [
              [0, "desc"]
          ],
@@ -260,23 +272,20 @@
                  return "<span class='d-flex justify-content-center'>" + number + "</span>";
              }
          }, {
-             data: "klasifikasi",
+             data: "name",
          }, {
-             bSortable: !1,
-             data: "deskripsi"
+             data: "created_at",
+             className: "text-center"
          }, {
-             data: "tahun"
-         }, {
-             bSortable: !1,
-             data: "jumlah"
-         },
-             {
-                 data: "tanggal"
-             }, {
-                 bSortable: !1,
-                 data: "status",
+                 data: "total_archieve",
+                 className: "text-center"
              },
-		    <?php if ($employee->user_role == 'admin') { ?> {
+		    <?php if ($employee->user_role == 'admin') { ?>
+             {
+                 bSortable: !1,
+                 data: "creator",
+             },
+             {
                  bSortable: !1,
                  data: "company",
              },
@@ -288,4 +297,80 @@
      });
      $(".dataTables_paginate").addClass("pagination-rounded");
      $(".dataTables_filter").hide();
+
+     bast_table.on('click', '.btn-delete', function () {
+         let bast = $(this).data('bast');
+         let company = $(this).data('company');
+
+         Swal.fire({
+             title: "Hapus Berita Acara",
+             text: "Apakah anda akan menghapus berita acara tersebut?",
+             icon: "warning",
+             showCancelButton: !0,
+             confirmButtonText: "Ya, Hapus!",
+             cancelButtonText: "Batal",
+             allowOutsideClick: false,
+             allowEscapeKey: false,
+             customClass: {
+                 confirmButton: "btn btn-danger mt-2",
+                 cancelButton: "btn light btn-warning ms-3 mt-2"
+             },
+             buttonsStyling: !1
+         }).then(function (t) {
+             if (t.isConfirmed) {
+                 Swal.fire({
+                     title: "Mohon tunggu",
+                     text: "Sedang mengirim data...",
+                     allowOutsideClick: false,
+                     allowEscapeKey: false,
+                     didOpen: function () {
+                         Swal.showLoading();
+                     }
+                 });
+
+                 $.post("<?= base_url('v2/alih_media_arsip_vital/berita_acara_deleted') ?>", {
+                     bast: bast,
+                     company: company,
+                 }, function (data, status) {
+                     if (status == 'success') {
+                         let dao = JSON.parse(data);
+                         Swal.fire({
+                             title: (dao.status == 200) ? 'Berhasil' : 'Gagal',
+                             text: dao.message,
+                             icon: (dao.status == 200) ? 'success' : 'error',
+                             allowOutsideClick: false,
+                             allowEscapeKey: false,
+                         }).then(function () {
+                             // bast_table.ajax.reload();
+                             window.location.reload();
+                         });
+                     } else {
+                         Swal.fire({
+                             title: "Kesalahan",
+                             text: "Terjadi kesalahan saat mengirim data ke server...",
+                             icon: "error",
+                             allowOutsideClick: false,
+                             allowEscapeKey: false,
+                         });
+                     }
+                 }).fail(function () {
+                     Swal.fire({
+                         title: "Kesalahan",
+                         text: "Terjadi kesalahan saat menghubungkan ke server...",
+                         icon: "error",
+                         allowOutsideClick: false,
+                         allowEscapeKey: false,
+                     });
+                 })
+
+             } else if (t.dismiss === Swal.DismissReason.cancel) {
+                 Swal.fire({
+                     title: "Batal",
+                     text: "Anda membatalkan penghapusan berita acara :)",
+                     icon: "error"
+                 });
+             }
+         });
+
+     });
 </script>
