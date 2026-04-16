@@ -9,6 +9,7 @@ class Berkas extends CI_Model
     var $order        = array('id' => 'desc');
     var $jenis_arsip  = null;
     var $filter_skpd  = null;
+    var $search_keyword = null;
 
     public function __construct()
     {
@@ -25,6 +26,11 @@ class Berkas extends CI_Model
     public function set_filter_skpd($skpd)
     {
         $this->filter_skpd = $skpd;
+    }
+
+    public function set_search($keyword)
+    {
+        $this->search_keyword = $keyword;
     }
 
     private function _get_datatables_query()
@@ -46,13 +52,15 @@ class Berkas extends CI_Model
         }
 
         $i = 0;
+        $search_value = !empty($this->search_keyword) ? $this->search_keyword
+            : (isset($_POST['search']['value']) ? $_POST['search']['value'] : '');
         foreach ($this->column_search as $item) {
-            if (isset($_POST['search']['value']) && $_POST['search']['value']) {
+            if ($search_value) {
                 if ($i === 0) {
                     $this->db->group_start();
-                    $this->db->like($item, $_POST['search']['value']);
+                    $this->db->like($item, $search_value);
                 } else {
-                    $this->db->or_like($item, $_POST['search']['value']);
+                    $this->db->or_like($item, $search_value);
                 }
                 if (count($this->column_search) - 1 == $i)
                     $this->db->group_end();
@@ -103,8 +111,17 @@ class Berkas extends CI_Model
 
     public function get_by_id($id)
     {
+        $this->db->select('berkas.*, 
+                           pembuat.fullname as operator_name, 
+                           penilai.fullname as penilai_name, 
+                           verifikator.fullname as verifikator_name, 
+                           signer.fullname as signer_name');
         $this->db->from($this->table);
-        $this->db->where('id', $id);
+        $this->db->join('employee as pembuat', 'pembuat.user = berkas.user', 'left');
+        $this->db->join('employee as penilai', 'penilai.user = berkas.penilaian_user', 'left');
+        $this->db->join('employee as verifikator', 'verifikator.user = berkas.verifikasi_user', 'left');
+        $this->db->join('employee as signer', 'signer.user = berkas.tte_user', 'left');
+        $this->db->where('berkas.id', $id);
         $query = $this->db->get();
         return $query->row();
     }

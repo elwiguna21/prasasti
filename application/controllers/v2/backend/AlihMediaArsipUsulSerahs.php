@@ -15,6 +15,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $this->load->model('v2/Employee', 'employee');
           $this->load->model('v2/User', 'user_model');
           $this->load->model('v2/BeritaAcara', 'berita_acara');
+          $this->load->model('v2/Monitoring', 'monitoring');
           $this->load->library('upload');
 
           $this->berkas->set_jenis_arsip($this->jenis_arsip);
@@ -56,6 +57,28 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $this->db->order_by('name', 'ASC');
           $data['list_skpd'] = $this->db->get()->result();
 
+          // Statistik berkas
+          $base_where = array(
+               'jenis_arsip' => $this->jenis_arsip,
+               'deleted_at'  => null,
+          );
+
+          // Total semua arsip usul serah
+          $data['total_arsip'] = $this->db->where($base_where)->count_all_results('berkas');
+
+          // Sudah diverifikasi (verifikasi_status = Y)
+          $where_verif = array_merge($base_where, array('verifikasi_status' => 'Y'));
+          $data['total_diverifikasi'] = $this->db->where($where_verif)->count_all_results('berkas');
+
+          // Menunggu TTE (verifikasi Y, tte belum Y)
+          $this->db->where($where_verif);
+          $this->db->where('(tte_status IS NULL OR tte_status != \'Y\')', null, false);
+          $data['total_menunggu_tte'] = $this->db->count_all_results('berkas');
+
+          // Sudah di TTE
+          $where_tte = array_merge($base_where, array('tte_status' => 'Y'));
+          $data['total_tte'] = $this->db->where($where_tte)->count_all_results('berkas');
+
           $data['title']    = 'Alih Media Arsip Usul Serah';
           $data['employee'] = $this->user_auth;
           $this->backend('v2/backend/data_alih_media_arsip_usul_serah', $data);
@@ -74,10 +97,11 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           if (empty($berkas)) {
                show_404();
           }
-          $data['title']    = 'Detail Alih Media Arsip Usul Serah';
-          $data['employee'] = $this->user_auth;
-          $data['berkas']   = $berkas;
-          $data['role']     = $this->session->userdata('next-role');
+          $data['title']       = 'Detail Alih Media Arsip Usul Serah';
+          $data['employee']    = $this->user_auth;
+          $data['berkas']      = $berkas;
+          $data['role']        = $this->session->userdata('next-role');
+          $data['monitorings'] = $this->monitoring->get_all_where(array('monitoring.berkas' => $id));
           $this->backend('v2/backend/detail_alih_media_arsip_usul_serah', $data);
      }
 
@@ -185,6 +209,18 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
           $this->berkas->update_by_id($id, array(
                'penilaian_arsip_statis' => $nilai,
+               'penilaian_user'         => $this->encryption->decrypt($this->session->userdata('next-uid')),
+               'penilaian_tanggal'      => date('Y-m-d H:i:s'),
+          ));
+
+          $monitoring_msg = ($aksi === 'disetujui')
+               ? 'Berkas disetujui oleh Admin dan diteruskan ke Verifikator LKD.'
+               : 'Berkas ditolak oleh Admin.';
+          $this->monitoring->insert_entry(array(
+               'berkas'  => $id,
+               'title'   => ($aksi === 'disetujui') ? 'process' : 'reject',
+               'message' => $monitoring_msg,
+               'user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
           ));
 
           echo json_encode(array(
@@ -215,7 +251,19 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $nilai = ($aksi === 'terverifikasi') ? 'Y' : 'N';
 
           $this->berkas->update_by_id($id, array(
-               'verifikasi_status' => $nilai,
+               'verifikasi_status'  => $nilai,
+               'verifikasi_user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
+               'verifikasi_tanggal' => date('Y-m-d H:i:s'),
+          ));
+
+          $monitoring_msg = ($aksi === 'terverifikasi')
+               ? 'Berkas diverifikasi dan diteruskan ke Kepala LKD untuk ditandatangani.'
+               : 'Berkas ditolak oleh Verifikator LKD.';
+          $this->monitoring->insert_entry(array(
+               'berkas'  => $id,
+               'title'   => ($aksi === 'terverifikasi') ? 'process' : 'reject',
+               'message' => $monitoring_msg,
+               'user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
           ));
 
           echo json_encode(array(
@@ -374,7 +422,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           if ($result['error']) {
                // Catat log TTE gagal
                $this->db->insert('log_tte', array(
-                    'user'        => $this->session->userdata('next-uid'),
+                    'user'        => $uid,
                     'ip_address'  => $this->input->ip_address(),
                     'signed'      => date('Y-m-d H:i:s'),
                     'action'      => 'sign',
@@ -393,18 +441,27 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $this->berkas->update_by_id($id, array(
                'tte_status'   => 'Y',
                'tte_tanggal'  => date('Y-m-d H:i:s'),
-               'tte_user'     => $this->session->userdata('next-uid'),
+               'tte_user'     => $uid,
                'tte_dokumen'  => $result['file_ttd'],
           ));
 
           // Catat log TTE
           $this->db->insert('log_tte', array(
-               'user'        => $this->session->userdata('next-uid'),
+               'user'        => $uid,
                'ip_address'  => $this->input->ip_address(),
                'signed'      => date('Y-m-d H:i:s'),
                'action'      => 'sign',
                'status'      => 'success',
                'description' => 'TTE dokumen berkas ID #' . $id . ' (' . ($berkas->uraian_informasi_arsip ?? '') . ') - File: ' . $result['file_ttd'],
+          ));
+
+          // Catat monitoring TTE
+          $emp_for_mon = $this->db->get_where('employee', array('user' => $uid))->row();
+          $this->monitoring->insert_entry(array(
+               'berkas'  => $id,
+               'title'   => 'done',
+               'message' => 'Berkas berhasil ditandatangani secara elektronik oleh ' . (!empty($emp_for_mon->fullname) ? $emp_for_mon->fullname : 'Kepala LKD') . '.',
+               'user'    => $uid,
           ));
 
           echo json_encode(array(
@@ -456,10 +513,14 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                redirect('v2/backend/dashboards');
           }
 
-          $filter_skpd = $this->input->post('filter_skpd');
+          $filter_skpd    = $this->input->post('filter_skpd');
+          $search_keyword = $this->input->post('search_keyword');
 
           $this->berkas->set_jenis_arsip($this->jenis_arsip);
           $this->berkas->set_filter_skpd($filter_skpd);
+          if (!empty($search_keyword)) {
+               $this->berkas->set_search($search_keyword);
+          }
           $list  = $this->berkas->get_datatables();
           $data  = array();
           $nomor = $_POST['start'] + 1;
@@ -531,6 +592,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'nomor_skpd'             => htmlentities($this->input->post('nomor_skpd')),
                'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
                'tte_posisi'             => $this->input->post('tte_posisi'),
+               'user'                   => $this->encryption->decrypt($this->session->userdata('next-uid')),
                'verifikator'            => 'LKD',
                'verifikasi_status'      => 'N',
           );
@@ -551,7 +613,16 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                }
           }
 
-          $this->berkas->save($data);
+          $insert_id = $this->berkas->save($data);
+          if ($insert_id) {
+               $monitoring = array(
+                    'berkas'  => $insert_id,
+                    'title'   => 'start',
+                    'message' => 'Arsip baru berhasil dibuat dan menunggu penilaian.',
+                    'user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
+               );
+               $this->monitoring->insert_entry($monitoring);
+          }
           echo json_encode(array('status' => TRUE));
      }
 

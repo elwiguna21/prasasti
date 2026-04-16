@@ -1,3 +1,25 @@
+<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/select2/css/select2.min.css') ?>">
+<style>
+     .select2-container--default .select2-selection--single {
+          border-radius: 0.5rem;
+          border: 0.0625rem solid #c8c8c8;
+          height: 3.5rem;
+          background: #fff;
+     }
+
+     .select2-container--default .select2-selection--single .select2-selection__rendered {
+          line-height: 3.5rem;
+          color: #7e7e7e;
+          padding-left: 0.9375rem;
+          min-height: 3.5rem;
+     }
+
+     .select2-container--default .select2-selection--single .select2-selection__arrow {
+          top: 1.075rem;
+          right: 0.9375rem;
+     }
+</style>
+
 <!-- Page Title -->
 <div class="page-titles">
      <ol class="breadcrumb">
@@ -6,52 +28,149 @@
      </ol>
 </div>
 
+<!-- Statistik Cards -->
 <div class="row">
+     <div class="col-xxl-3 col-lg-3 col-sm-6">
+          <div class="widget-stat card">
+               <div class="card-body p-4">
+                    <div class="media ai-icon">
+                         <span class="me-3 bgl-primary text-primary">
+                              <i class="ti-archive"></i>
+                         </span>
+                         <div class="media-body">
+                              <p class="mb-1">Arsip Usul Serah</p>
+                              <h4 class="mb-0"><?= number_format($total_arsip, 0, ',', '.'); ?></h4>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     <div class="col-xxl-3 col-lg-3 col-sm-6">
+          <div class="widget-stat card">
+               <div class="card-body p-4">
+                    <div class="media ai-icon">
+                         <span class="me-3 bgl-warning text-warning">
+                              <i class="fas fa-check-circle"></i>
+                         </span>
+                         <div class="media-body">
+                              <p class="mb-1">Diverifikasi</p>
+                              <h4 class="mb-0"><?= number_format($total_diverifikasi, 0, ',', '.'); ?></h4>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     <div class="col-xxl-3 col-lg-3 col-sm-6">
+          <div class="widget-stat card">
+               <div class="card-body p-4">
+                    <div class="media ai-icon">
+                         <span class="me-3 bgl-danger text-danger">
+                              <i class="fas fa-file-signature"></i>
+                         </span>
+                         <div class="media-body">
+                              <p class="mb-1">Menunggu TTE</p>
+                              <h4 class="mb-0"><?= number_format($total_menunggu_tte, 0, ',', '.'); ?></h4>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     <div class="col-xxl-3 col-lg-3 col-sm-6">
+          <div class="widget-stat card">
+               <div class="card-body p-4">
+                    <div class="media ai-icon">
+                         <span class="me-3 bgl-success text-success">
+                              <i class="las la-signature"></i>
+                         </span>
+                         <div class="media-body">
+                              <p class="mb-1">Di TTE</p>
+                              <h4 class="mb-0"><?= number_format($total_tte, 0, ',', '.'); ?></h4>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+
+<div class="row">
+     <!-- Filter -->
+     <div class="col-lg-12 mb-4">
+          <div class="filter cm-content-box box-primary">
+               <div class="content-title">
+                    <div class="cpa">
+                         <i class="fa-sharp fa-solid fa-filter me-2"></i>Filter
+                    </div>
+                    <div class="tools">
+                         <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                    </div>
+               </div>
+               <div class="cm-content-body form excerpt">
+                    <div class="card-body">
+                         <div class="row">
+                              <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+                                   <div class="col-xl-5 col-sm-12">
+                                        <input type="text" class="form-control mb-xl-0 mb-3" id="search" placeholder="Cari kode klasifikasi atau indeks arsip..." autocomplete="off">
+                                   </div>
+                                   <div class="col-xl-4 col-sm-12">
+                                        <select id="filter_skpd_adv">
+                                             <option value="">-- Pilih SKPD --</option>
+                                             <?php if (!empty($list_skpd)): foreach ($list_skpd as $skpd): ?>
+                                                  <option value="<?= htmlspecialchars($skpd->id) ?>"><?= htmlspecialchars($skpd->nama_skpd) ?></option>
+                                             <?php endforeach; endif; ?>
+                                        </select>
+                                   </div>
+                              <?php else: ?>
+                                   <div class="col-xl-9 col-sm-12">
+                                        <input type="text" class="form-control mb-xl-0 mb-3" id="search" placeholder="Cari kode klasifikasi atau indeks arsip..." autocomplete="off">
+                                   </div>
+                              <?php endif; ?>
+                              <div class="col-xl-3 col-sm-12">
+                                   <button class="btn btn-primary btn-filter" title="Klik disini untuk mencari" type="button"><i class="fa fa-search me-1"></i>Filter</button>
+                                   <button class="btn btn-danger light btn-reset" title="Klik disini untuk menghapus filter" type="button">Reset</button>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <!-- Tabel Data -->
      <div class="col-12">
-          <div class="card">
-               <div class="card-header">
-                    <h4 class="card-title">Data Alih Media Arsip Usul Serah</h4>
-                    <div>
+          <div class="filter cm-content-box box-primary pt-3">
+               <div class="content-title mb-2">
+                    <div class="cpa">
+                         <i class="fa-sharp fa-solid fa-file-alt me-2"></i>Daftar Alih Media Arsip Usul Serah
+                    </div>
+                    <div class="align-middle">
                          <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/berita_acara') ?>" class="btn btn-info btn-sm me-2">
                               <i class="fas fa-file-signature me-1"></i> Berita Acara (BAST)
                          </a>
-                         <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/tambah') ?>" class="btn btn-primary btn-sm">
-                              <i class="fas fa-plus me-1"></i> Tambah Data
-                         </a>
+                         <?php if ($this->session->userdata('next-role') == 'operator'): ?>
+                              <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/tambah') ?>" class="btn btn-primary btn-sm">
+                                   <i class="fas fa-plus me-1"></i> Tambah Data
+                              </a>
+                         <?php endif; ?>
                     </div>
                </div>
-               <div class="card-body">
-
-                    <!-- Filter SKPD -->
-                    <div class="row mb-3">
-                         <div class="col-md-4">
-                              <label class="form-label">Filter SKPD:</label>
-                              <select id="filter_skpd" class="form-control default-select">
-                                   <option value="">-- Semua SKPD --</option>
-                                   <?php if (!empty($list_skpd)): foreach ($list_skpd as $skpd): ?>
-                                             <option value="<?= htmlspecialchars($skpd->id) ?>"><?= htmlspecialchars($skpd->nama_skpd) ?></option>
-                                   <?php endforeach;
-                                   endif; ?>
-                              </select>
+               <div class="cm-content-body form excerpt">
+                    <div class="card-body">
+                         <div class="table-responsive">
+                              <table id="dataTable" class="display" style="min-width: 1200px">
+                                   <thead>
+                                        <tr>
+                                             <th width="40">No</th>
+                                             <th>Klasifikasi</th>
+                                             <th>Uraian Informasi Arsip</th>
+                                             <th>Kurun Waktu</th>
+                                             <th>Jumlah</th>
+                                             <th>Waktu</th>
+                                             <th width="150">Status</th>
+                                             <th width="120">Aksi</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody></tbody>
+                              </table>
                          </div>
-                    </div>
-
-                    <div class="table-responsive">
-                         <table id="dataTable" class="display" style="min-width: 1200px">
-                              <thead>
-                                   <tr>
-                                        <th width="40">No</th>
-                                        <th>Klasifikasi</th>
-                                        <th>Uraian Informasi Arsip</th>
-                                        <th>Kurun Waktu</th>
-                                        <th>Jumlah</th>
-                                        <th>Waktu</th>
-                                        <th width="150">Status</th>
-                                        <th width="120">Aksi</th>
-                                   </tr>
-                              </thead>
-                              <tbody></tbody>
-                         </table>
                     </div>
                </div>
           </div>
@@ -59,19 +178,20 @@
 </div>
 
 <!-- Required vendors -->
-<script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
-<script src="<?= base_url('assets/v3/backend/') ?>vendor/select2/js/select2.full.min.js"></script>
-<script src="<?= base_url('assets/v3/backend/') ?>js/plugins-init/select2-init.js"></script>
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="<?= base_url('assets/v3/backend/vendor/select2/js/select2.full.min.js') ?>"></script>
 
 <script type="text/javascript">
      var table;
      var base_url = '<?php echo base_url(); ?>';
 
-
-     $('#filter_skpd').select2({
-          width: "100%"
-     });
+     <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+          var skpdSelect = $('#filter_skpd_adv').select2({
+               width: '100%',
+               placeholder: 'Pilih SKPD',
+               allowClear: true
+          });
+     <?php endif; ?>
 
      table = $('#dataTable').DataTable({
           "processing": true,
@@ -83,7 +203,8 @@
                "url": "<?php echo base_url('v2/backend/alih_media_arsip_usul_serah/ajax_list') ?>",
                "type": "POST",
                "data": function(data) {
-                    data.filter_skpd = $('#filter_skpd').val();
+                    data.filter_skpd = $('#filter_skpd_adv').val() || '';
+                    data.search_keyword = $('#search').val() || '';
                }
           },
           "columnDefs": [{
@@ -96,24 +217,38 @@
                }
           ],
           "language": {
-               "processing": "Memproses...",
+               "processing": '<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Mohon tunggu ...',
                "search": "Cari:",
                "lengthMenu": "Tampilkan _MENU_ data",
                "info": "Menampilkan _START_ s/d _END_ dari _TOTAL_ data",
-               "infoEmpty": "Tidak ada data",
+               "infoEmpty": "<strong>Tidak ada data</strong>",
                "infoFiltered": "(dari _MAX_ total data)",
-               "zeroRecords": "Tidak ada data yang ditemukan",
+               "zeroRecords": '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
                "paginate": {
                     "first": "Pertama",
                     "last": "Terakhir",
-                    "next": "Selanjutnya",
-                    "previous": "Sebelumnya"
+                    "next": '<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                    "previous": '<i class="fa fa-angle-left" aria-hidden="true"></i>'
                }
           }
      });
 
-     // Reload table on dropdown change
-     $('#filter_skpd').on('change', function() {
+     $(".dataTables_paginate").addClass("pagination-rounded");
+     $(".dataTables_filter").hide();
+
+     // Filter button
+     $('.btn-filter').click(function() {
+          table.ajax.reload();
+     });
+
+     // Reset button
+     $('.btn-reset').click(function() {
+          $('#search').val('');
+          <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+               if (skpdSelect) {
+                    skpdSelect.val(null).trigger('change');
+               }
+          <?php endif; ?>
           table.ajax.reload();
      });
 

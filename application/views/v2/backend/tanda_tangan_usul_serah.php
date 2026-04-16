@@ -11,8 +11,10 @@
           <div class="card">
                <div class="card-header">
                     <div>
-                         <h4 class="card-title"><i class="fas fa-pen-nib me-2 text-primary"></i>Dokumen Alih Media Arsip Usul Serah</h4>
-                         <p class="text-muted small mb-0">Daftar berkas yang telah diverifikasi LKD beserta status tanda tangan elektroniknya.</p>
+                         <h4 class="card-title"><i class="fas fa-pen-nib me-2 text-primary"></i>Dokumen Alih Media Arsip
+                              Usul Serah</h4>
+                         <p class="text-muted small mb-0">Daftar berkas yang telah diverifikasi LKD beserta status tanda
+                              tangan elektroniknya.</p>
                     </div>
                </div>
                <div class="card-body">
@@ -38,11 +40,11 @@
 </div>
 
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
+<script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
-var base_url = '<?php echo base_url(); ?>';
+     var base_url = '<?php echo base_url(); ?>';
 
-$(document).ready(function() {
      $('#tteTable').DataTable({
           "processing": true,
           "serverSide": true,
@@ -66,5 +68,5 @@ $(document).ready(function() {
                "paginate": { "first": "Pertama", "last": "Terakhir", "next": "Selanjutnya", "previous": "Sebelumnya" }
           }
      });
-});
+
 </script>

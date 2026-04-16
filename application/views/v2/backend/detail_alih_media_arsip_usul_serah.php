@@ -160,15 +160,51 @@ if ($status_tte === 'Y') {
                          <div>
                               <div class="text-muted x-small mb-0" style="font-size:11px">Pembuat</div>
                               <div class="fw-semibold small"><?= htmlspecialchars($berkas->operator_name ?? ($berkas->created_by ?? '-')) ?></div>
-                              <?php if (!empty($berkas->created_at)): ?>
+                              <?php if (!empty($berkas->tanggal)): ?>
                               <div class="text-muted" style="font-size:11px">
-                                   <i class="far fa-clock me-1"></i><?= date('d F Y H:i', strtotime($berkas->created_at)) ?>
+                                   <i class="far fa-clock me-1"></i><?= date('d F Y', strtotime($berkas->tanggal)) ?>
                               </div>
                               <?php endif; ?>
                          </div>
                     </div>
 
-                    <?php if ($status_tte === 'Y' && !empty($berkas->tte_user)): ?>
+                    <?php if (in_array($status_pen, ['Y', 'N']) && !empty($berkas->penilai_name)): ?>
+                    <!-- Admin (Penilai) -->
+                    <div class="detail-info-row">
+                         <div class="detail-info-icon" style="background:rgba(23,162,184,.12); color:#17a2b8">
+                              <i class="fas fa-gavel"></i>
+                         </div>
+                         <div>
+                              <div class="text-muted" style="font-size:11px"><?= $status_pen === 'Y' ? 'Disetujui oleh' : 'Ditolak oleh' ?></div>
+                              <div class="fw-semibold small"><?= htmlspecialchars($berkas->penilai_name) ?></div>
+                              <?php if (!empty($berkas->penilaian_tanggal)): ?>
+                              <div class="text-muted" style="font-size:11px">
+                                   <i class="far fa-clock me-1"></i><?= date('d F Y H:i', strtotime($berkas->penilaian_tanggal)) ?>
+                              </div>
+                              <?php endif; ?>
+                         </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if (in_array($status_ver, ['Y', 'N']) && !empty($berkas->verifikator_name)): ?>
+                    <!-- Verifikator -->
+                    <div class="detail-info-row">
+                         <div class="detail-info-icon" style="background:rgba(255,193,7,.12); color:#ffc107">
+                              <i class="fas fa-user-check"></i>
+                         </div>
+                         <div>
+                              <div class="text-muted" style="font-size:11px"><?= $status_ver === 'Y' ? 'Diverifikasi oleh' : 'Ditolak (Verifikasi) oleh' ?></div>
+                              <div class="fw-semibold small"><?= htmlspecialchars($berkas->verifikator_name) ?></div>
+                              <?php if (!empty($berkas->verifikasi_tanggal)): ?>
+                              <div class="text-muted" style="font-size:11px">
+                                   <i class="far fa-clock me-1"></i><?= date('d F Y H:i', strtotime($berkas->verifikasi_tanggal)) ?>
+                              </div>
+                              <?php endif; ?>
+                         </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if ($status_tte === 'Y' && !empty($berkas->signer_name)): ?>
                     <!-- Penanda Tangan -->
                     <div class="detail-info-row">
                          <div class="detail-info-icon" style="background:rgba(40,167,69,.12); color:#28a745">
@@ -176,7 +212,7 @@ if ($status_tte === 'Y') {
                          </div>
                          <div>
                               <div class="text-muted" style="font-size:11px">Ditandatangani oleh</div>
-                              <div class="fw-semibold small"><?= htmlspecialchars($berkas->tte_user) ?></div>
+                              <div class="fw-semibold small"><?= htmlspecialchars($berkas->signer_name) ?></div>
                               <?php if (!empty($berkas->tte_tanggal)): ?>
                               <div class="text-muted" style="font-size:11px">
                                    <i class="far fa-clock me-1"></i><?= date('d F Y H:i', strtotime($berkas->tte_tanggal)) ?>
@@ -288,10 +324,55 @@ if ($status_tte === 'Y') {
 
           <!-- Download Draft PDF (hanya tampil jika belum TTE) -->
           <?php if (!empty($berkas->file) && empty($berkas->tte_dokumen)): ?>
-          <a href="<?= base_url('assets/upload/berkas/' . $berkas->file) ?>" target="_blank" class="btn btn-outline-danger w-100">
+          <a href="<?= base_url('assets/upload/berkas/' . $berkas->file) ?>" target="_blank" class="btn btn-outline-danger w-100 mb-3">
                <i class="fas fa-file-pdf me-1"></i> Unduh Draf Dokumen
           </a>
           <?php endif; ?>
+
+          <!-- Monitoring -->
+          <div class="card detail-status-card">
+               <div class="card-header border-0 pb-0">
+                    <h5 class="text-primary d-inline">Monitoring</h5>
+               </div>
+               <div class="card-body">
+                    <?php if (!empty($monitorings)):
+                         $isFirst = true; ?>
+                    <div class="widget-timeline">
+                         <ul class="timeline">
+                              <?php foreach ($monitorings as $monitoring):
+                                   switch ($monitoring->title) {
+                                        case 'process': $badge_color = 'warning'; break;
+                                        case 'reject':  $badge_color = 'danger';  break;
+                                        case 'done':    $badge_color = 'success'; break;
+                                        default:        $badge_color = 'primary'; break;
+                                   } ?>
+                              <li>
+                                   <?php if ($isFirst): ?>
+                                   <div class="timeline-badge <?= $badge_color; ?> pulse"></div>
+                                   <?php $isFirst = false; else: ?>
+                                   <div class="timeline-badge <?= $badge_color; ?>"></div>
+                                   <?php endif; ?>
+                                   <a class="timeline-panel text-<?= $badge_color; ?>" href="javascript:void(0);">
+                                        <span><?= tgl_indo(date('Y-m-d', strtotime($monitoring->created_at))) . ' - ' . jam_indo(date('H:i:s', strtotime($monitoring->created_at))); ?></span>
+                                        <h6 class="mb-0"><?= $monitoring->message; ?></h6>
+                                        <p class="mb-0"><?= $monitoring->employee_fullname; ?></p>
+                                   </a>
+                              </li>
+                              <?php endforeach; ?>
+                         </ul>
+                    </div>
+                    <?php else: ?>
+                    <div class="alert alert-warning fade show">
+                         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                              <line x1="12" y1="9" x2="12" y2="13"></line>
+                              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                         </svg>
+                         <strong>Maaf!</strong> Belum tersedia data monitoring.
+                    </div>
+                    <?php endif; ?>
+               </div>
+          </div>
 
      </div>
 
