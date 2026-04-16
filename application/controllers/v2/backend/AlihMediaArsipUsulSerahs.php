@@ -494,9 +494,9 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                ob_end_clean();
           }
 
-          // Stream PDF inline — IDM tidak intercept karena URL tanpa .pdf
+          // Stream PDF inline — IDM tidak intercept
           header('Content-Type: application/pdf');
-          header('Content-Disposition: inline; filename="dokumen.pdf"');
+          header('Content-Disposition: inline; filename="dokumen"');
           header('Content-Length: ' . filesize($filepath));
           header('Cache-Control: private, max-age=0, must-revalidate');
           header('Pragma: public');
