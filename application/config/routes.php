@@ -59,6 +59,7 @@ $route['v2/backend/alih_media_arsip_usul_serah/ajax_edit/(:num)']               
 $route['v2/backend/alih_media_arsip_usul_serah/ajax_update/(:num)']             = 'v2/backend/AlihMediaArsipUsulSerahs/ajax_update/$1';
 $route['v2/backend/alih_media_arsip_usul_serah/ajax_delete/(:num)']             = 'v2/backend/AlihMediaArsipUsulSerahs/ajax_delete/$1';
 $route['v2/backend/alih_media_arsip_usul_serah/view_pdf/(:num)']                = 'v2/backend/AlihMediaArsipUsulSerahs/view_pdf/$1';
+$route['v2/backend/alih_media_arsip_usul_serah/baca_dokumen/(:num)']            = 'v2/backend/AlihMediaArsipUsulSerahs/baca_dokumen/$1';
 
 // Berita Acara (BAST) Routes
 $route['v2/backend/alih_media_arsip_usul_serah/berita_acara']                    = 'v2/backend/AlihMediaArsipUsulSerahs/berita_acara';
@@ -84,6 +85,7 @@ $route['v2/alih_media_arsip_vital/signed']                                      
 $route['v2/alih_media_arsip_vital/verification']                                = 'v2/archieves/vital_verification';
 $route['v2/alih_media_arsip_vital/resend']                                      = 'v2/archieves/vital_resend';
 $route['v2/alih_media_arsip_vital/view_pdf']                                    = 'v2/archieves/view_pdf';
+$route['v2/alih_media_arsip_vital/baca_dokumen']                                = 'v2/archieves/baca_dokumen';
 $route['v2/alih_media_arsip_vital/upload_pdf']                                  = 'v2/archieves/upload_pdf_temp';
 $route['v2/alih_media_arsip_vital/berita_acara']                                = 'v2/archieves/berita_acara';
 $route['v2/alih_media_arsip_vital/berita_acara_add']                            = 'v2/archieves/berita_acara_add';

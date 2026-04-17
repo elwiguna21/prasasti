@@ -884,7 +884,8 @@ class Archieves extends MY_Controller
 		}
 	}
 
-	public function view_pdf()
+	// PHP Proxy Full Bypassing IDM
+	public function baca_dokumen()
 	{
 		if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
 			show_error('Not Authorize!', 403);
@@ -918,11 +919,6 @@ class Archieves extends MY_Controller
 			show_404();
 			return;
 		}
-		// $filepath = FCPATH . 'assets/upload/berkas/' . $archieve->file;
-		// if (!file_exists($filepath)) {
-		//      show_404();
-		//      return;
-		// }
 
 		// Bersihkan semua level output buffer CI
 		while (ob_get_level() > 0) {
@@ -930,8 +926,8 @@ class Archieves extends MY_Controller
 		}
 
 		// Stream PDF inline untuk dicustom via AJAX PDF.js
-		// IDM akan mengabaikan karena bukan application/pdf dan tidak ada header attachment/inline
-		header('Content-Type: application/octet-stream');
+		// Menggunakan tipe text/plain murni untuk full bypass IDM
+		header('Content-Type: text/plain');
 		header('Content-Length: ' . filesize($filepath));
 		header('Cache-Control: private, max-age=0, must-revalidate');
 		header('Pragma: public');

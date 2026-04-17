@@ -426,11 +426,12 @@ if ($status_tte === 'Y') {
           <!-- Pratinjau PDF via PDF.js Canvas + Watermark TTE -->
           <?php if (!empty($berkas->file) || !empty($berkas->tte_dokumen)): ?>
           <?php
+          // Gunakan URL single proxy (baca_dokumen) untuk memancing IDM ignore
+          $pdfProxyUrl = base_url('v2/backend/alih_media_arsip_usul_serah/baca_dokumen/' . $berkas->id);
+          
           if ($status_tte === 'Y' && !empty($berkas->tte_dokumen)) {
-              $pdfProxyUrl = base_url('assets/upload/berkas/' . $berkas->tte_dokumen);
               $namaFilePdf = $berkas->tte_dokumen;
           } else {
-              $pdfProxyUrl = base_url('v2/backend/alih_media_arsip_usul_serah/view_pdf/' . $berkas->id);
               $namaFilePdf = $berkas->file;
           }
           $ttePosisi = !empty($berkas->tte_posisi) ? $berkas->tte_posisi : 'null';

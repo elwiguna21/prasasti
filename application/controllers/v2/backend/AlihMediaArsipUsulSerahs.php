@@ -471,19 +471,28 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
      }
 
      /**
-      * PHP Proxy: Stream PDF inline tanpa ekstensi .pdf di URL
-      * URL: v2/backend/alih_media_arsip_usul_serah/view_pdf/{id}
-      * Tujuan: IDM tidak bisa intercept karena URL tidak mengandung .pdf
+      * PHP Proxy: Stream PDF inline (Full Bypass IDM)
+      * Mengubah metode streaming dengan full bypass IDM: tidak ada ekstensi di URL, 
+      * tidak ada keyword "pdf" di URL, dan dikirim sebagai tipe text/plain murni.
       */
-     public function view_pdf($id)
+     public function baca_dokumen($id)
      {
           $berkas = $this->berkas->get_by_id($id);
-          if (empty($berkas) || empty($berkas->file)) {
+          if (empty($berkas)) {
                show_404();
                return;
           }
 
-          $filepath = FCPATH . 'assets/upload/berkas/' . $berkas->file;
+          // Cek TTE otomatis di dalam proxy
+          if (($berkas->tte_status ?? null) === 'Y' && !empty($berkas->tte_dokumen)) {
+               $filepath = FCPATH . 'assets/upload/berkas/' . $berkas->tte_dokumen;
+          } elseif (!empty($berkas->file)) {
+               $filepath = FCPATH . 'assets/upload/berkas/' . $berkas->file;
+          } else {
+               show_404();
+               return;
+          }
+
           if (!file_exists($filepath)) {
                show_404();
                return;
@@ -495,8 +504,8 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
 
           // Stream PDF inline untuk dicustom via AJAX PDF.js
-          // IDM akan mengabaikan karena bukan application/pdf dan tidak ada header attachment/inline
-          header('Content-Type: application/octet-stream');
+          // Bypass IDM Mutlak: Kirim sebagai text polos
+          header('Content-Type: text/plain');
           header('Content-Length: ' . filesize($filepath));
           header('Cache-Control: private, max-age=0, must-revalidate');
           header('Pragma: public');

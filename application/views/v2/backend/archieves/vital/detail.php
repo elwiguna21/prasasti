@@ -445,11 +445,12 @@ if ($archieve->verifikasi_status == 'Y') {
 
 		<?php if (!empty($archieve->file) || !empty($archieve->tte_dokumen)) { ?>
 			<?php
+			// Selalu gunakan route proxy IDM bypass
+			$pdfProxyUrl = base_url('v2/alih_media_arsip_vital/baca_dokumen?' . http_build_query(array('archieve' => $archieve->id)));
+			
 			if ($archieve->tte_status === 'Y' && !empty($archieve->tte_dokumen)) {
-				$pdfProxyUrl = base_url('assets/upload/berkas/' . $archieve->tte_dokumen);
 				$namaFilePdf = $archieve->tte_dokumen;
 			} else {
-				$pdfProxyUrl = base_url('v2/alih_media_arsip_vital/view_pdf?' . http_build_query(array('archieve' => $archieve->id)));
 				$namaFilePdf = $archieve->file;
 			}
 			$ttePosisi = !empty($archieve->tte_posisi) ? $archieve->tte_posisi : null;
