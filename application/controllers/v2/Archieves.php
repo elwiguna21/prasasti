@@ -799,13 +799,14 @@ class Archieves extends MY_Controller
           );
 
 
-	     $where["berkas.jenis_arsip IN ('vital', 'usul_serah')"] = null;
+//	     $where["berkas.jenis_arsip IN ('vital', 'usul_serah')"] = null;
+	     $where["berkas.jenis_arsip IN ('vital')"] = null;
 
           switch ($this->session->userdata('next-role')) {
                case 'operator':
                     $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
                     break;
-               case 'verifikator_opd':
+               case 'verifikator_skpd':
                     $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
                     $where['berkas.verifikator'] = 'SKPD';
                     $where['berkas.verifikasi_status !='] = null;
