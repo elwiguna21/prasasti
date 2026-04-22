@@ -224,7 +224,7 @@
                          <div class="download-card">
                               <h4 class="mb-4 fw-bold">Download Dokumen</h4>
 
-                              <a target="_blank" href="<?= ($archieve->tte_status == 'Y') ? base_url('assets/upload/berkas/' . $archieve->tte_dokumen) : base_url('assets/data/' . $archieve->file); ?>" class="btn btn-primary w-100 mb-3">
+                              <a target="_blank" href="<?= ($archieve->tte_status == 'Y') ? base_url('assets/upload/berkas/' . $archieve->tte_dokumen) : base_url('assets/data/' . $archieve->file); ?>" class="btn <?= ($archieve->tte_status == 'Y' and file_exists('./assets/upload/berkas/' . $archieve->tte_dokumen)) ? 'btn-success' : 'btn-danger' ?> w-100 mb-3">
                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                         height="24" viewBox="0 0 24 24" fill="none">
                                         <path
@@ -239,7 +239,7 @@
                                                 d="M7.25 16.5V15.5M7.25 15.5V13.5H8.25C8.51522 13.5 8.76957 13.6054 8.95711 13.7929C9.14464 13.9804 9.25 14.2348 9.25 14.5C9.25 14.7652 9.14464 15.0196 8.95711 15.2071C8.76957 15.3946 8.51522 15.5 8.25 15.5H7.25ZM15.25 16.5V15.25M15.25 15.25V13.5H16.75M15.25 15.25H16.75M11.25 16.5V13.5H11.75C12.1478 13.5 12.5294 13.658 12.8107 13.9393C13.092 14.2206 13.25 14.6022 13.25 15C13.25 15.3978 13.092 15.7794 12.8107 16.0607C12.5294 16.342 12.1478 16.5 11.75 16.5H11.25Z"
                                                 stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
                                    </svg>
-                                   DOWNLOAD PDF <?= ($archieve->tte_status == 'Y') ? 'TTE' : 'DRAF' ?></a>
+                                   DOWNLOAD PDF <?= ($archieve->tte_status == 'Y' and file_exists('./assets/upload/berkas/' . $archieve->tte_dokumen)) ? 'TTE' : 'DRAF' ?></a>
                          </div>
                          <?php } ?>
 
