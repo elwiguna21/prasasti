@@ -11,6 +11,7 @@ class Home extends MY_Controller
           $this->load->model('v2/Article', 'article');
           $this->load->model('v2/Archieve', 'archieve');
           $this->load->model('v2/Company', 'company');
+          $this->load->model('M_faq', 'faq');
      }
 
      public function index()
@@ -29,7 +30,8 @@ class Home extends MY_Controller
 
           $data['news'] = $this->news->get_all_where(array('limits' => 8, 'starts' => 0));
           $data['articles'] = $this->article->get_all_where(array('limits' => 8, 'starts' => 0));
-          // $this->frontend('v2/frontend/home', $data);
+          $data['faqs']  = $this->faq->get_all_where();
+
           $this->frontend_new('v2/frontend/index', $data);
      }
 }

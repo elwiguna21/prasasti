@@ -102,7 +102,22 @@ class M_faq extends CI_Model {
         $this->db->delete($this->table);
     }
 
+    public function get_all_where($where = null)
+    {
+	    if (!empty($where)) {
+		    $this->db->where($where);
+	    }
 
+	    $this->db->order_by('id', 'asc');
+	    $results   = $this->db->get($this->table)->result();
+	    if (!empty($results)) {
+		    foreach ($results as $result) {
+			    $result->id     = $this->encryption->encrypt($result->id);
+		    }
+	    }
+
+	    return $results;
+    }
     
  
  

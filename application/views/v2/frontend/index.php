@@ -562,6 +562,72 @@
      <div class="divider"></div>
 </section>
 
+<!-- FAQ Wrapper -->
+<section class="faq-wrapper bg-secondary">
+     <!-- Background -->
+     <div class="bg-shape">
+          <img src="assets/img/core-img/shape12.png" alt="">
+     </div>
+
+     <!-- Divider -->
+     <div class="divider-sm"></div>
+
+     <div class="container">
+          <div class="row justify-content-center">
+               <!-- Section Heading -->
+               <div class="col-12 col-xl-7">
+                    <div class="section-heading text-center">
+                         <span class="sub-title">FAQ</span>
+                         <h2 class="mb-0">Pertanyaan sering diajukan</h2>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <div class="divider-sm"></div>
+
+     <div class="container">
+          <!-- FAQ Contact Card -->
+          <div class="faq-contact-card">
+               <!-- Contact Form -->
+               <div class="price-banner-card wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="400ms">
+                    <h4 class="mb-3 text-white">Anda memiliki pertanyaan?</h4>
+                    <p class="text-white">Berikut ini pertanyaan yang sering diajukan oleh pengunjung atau pengguna PRASASTI.</p>
+               </div>
+
+               <!-- FAQ Accordion -->
+               <div class="faq-accordion style-two">
+                    <div class="accordion gap-4" id="faqAccordion">
+
+                         <?php if (!empty($faqs)) {
+                              $no = 1;
+                              foreach ($faqs as $faq) { ?>
+                                   <div class="accordion-item">
+                                        <div class="accordion-header">
+                                             <button class="accordion-button <?= ($no != 1) ? 'collapsed' : ''; ?>" type="button" data-bs-toggle="collapse"
+                                                     data-bs-target="#faqQuestion<?= $no; ?>" aria-expanded="true" aria-controls="faqQuestion<?= $no; ?>">
+                                                  <?= $faq->pertanyaan; ?>
+                                             </button>
+                                        </div>
+                                        <div id="faqQuestion<?= $no; ?>" class="accordion-collapse collapse <?= ($no == 1) ? 'show' : ''; ?>" data-bs-parent="#faqAccordion">
+                                             <div class="accordion-body">
+                                                  <?= $faq->jawaban; ?>
+                                             </div>
+                                        </div>
+                                   </div>
+                              <?php
+                              $no++;
+                              }
+                         } ?>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <!-- Divider -->
+     <div class="divider-sm"></div>
+</section>
+
 <script src="<?= base_url('assets/v3/backend/vendor/jquery/jquery.min.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/apexchart/apexchart.js') ?>"></script>
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/chart-js/chart.bundle.min.js"></script>
