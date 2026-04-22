@@ -377,7 +377,7 @@
                                                             <div class="overlay-icon align-b text-white">
                                                                  <div class="text-white text-left port-box">
                                                                       <h5><?= $article->judul; ?></h5>
-                                                                      <p><?= mb_substr($new->isi, 0, 30) ?> ..</p>
+                                                                      <p><?= mb_substr($article->isi, 0, 30) ?> ..</p>
                                                                  </div>
                                                             </div>
                                                        </div>

@@ -12,3 +12,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |	https://codeigniter.com/user_guide/general/profiling.html
 |
 */
+
+$config['benchmarks']          = TRUE;
+$config['controller_info']         = TRUE;
+$config['get']         = FALSE;
+$config['http_headers']         = FALSE;
+$config['memory_usage']         = TRUE;
+$config['post']         = TRUE;
+$config['queries']         = TRUE;
+$config['uri_string']         = FALSE;
+$config['session_data']         = FALSE;

@@ -98,6 +98,15 @@
                          </ul>
                     </li>
 			<?php endif; ?>
+
+               <?php if ($this->session->userdata('next-role') == 'operator') { ?>
+                    <li>
+                         <a class="ai-icon" href="<?= base_url('v2/archieves/inactives') ?>">
+                              <i class="flaticon-381-folder-14"></i>
+                              <span class="nav-text">Arsip Inaktif</span>
+                         </a>
+                    </li>
+               <?php } ?>
                <li>
                     <a href="<?= base_url('v2/users/profiles') ?>" class="ai-icon"><i class="flaticon-381-user-4"></i>
                          <span class="nav-text">Profil</span>

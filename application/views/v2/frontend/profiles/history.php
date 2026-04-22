@@ -1,58 +1,74 @@
-<!-- inner page banner -->
-<div class="dlab-bnr-inr overlay-primary" style="background-image:url(<?= base_url('assets/v3/frontend/images/banner/bnr2.jpg') ?>);">
+<div class="breadcrumb-section bg-img" style="background-image: url('<?= base_url('assets/v3/frontend/v2/') ?>img/bg-img/90.jpg');">
      <div class="container">
-          <div class="dlab-bnr-inr-entry">
-               <h1 class="text-white">Sejarah</h1>
-               <!-- Breadcrumb row -->
-               <div class="breadcrumb-row">
-                    <ul class="list-inline">
-                         <li><a href="<?= base_url('/') ?>">Beranda</a></li>
-                         <li><a href="<?= base_url('v2/frontend/profiles/vision') ?>">Profil</a></li>
-                         <li>Sejarah</li>
-                    </ul>
-               </div>
-               <!-- Breadcrumb row END -->
+          <!-- Breadcrumb Content -->
+          <div class="breadcrumb-content">
+               <div class="divider"></div>
+               <h2>Sejarah</h2>
+               <ul class="list-unstyled">
+                    <li><a href="<?= base_url() ?>">Beranda</a></li>
+                    <li>Sejarah</li>
+               </ul>
           </div>
      </div>
+
+     <!-- Divider -->
+     <div class="divider"></div>
 </div>
-<!-- inner page banner END -->
 
-<div class="content-block">
-     <!-- Your Faq -->
-     <div class="section-full overlay-white-middle content-inner" style="background-image:url(images/pattern/pic1.jpg);">
-          <div class="container">
-               <div class="section-head text-black text-center">
-                    <h4 class="text-gray-dark m-b10">Sejarah</h4>
-                    <h2 class="box-title m-b10">Kearsipan Daerah Kabupaten Sumedang</h2>
-                    <div class="dlab-separator bg-primary"></div>
-               </div>
-          </div>
+<section class="about-section">
+     <!-- Right Shape -->
+     <div class="right-shape">
+          <img src="assets/img/core-img/shape.png" alt="">
      </div>
 
-     <div class="section-full overlay-primary-dark bg-img-fix" style="background-image:url(images/background/bg1.jpg);">
-          <div class="container">
-               <div class="row">
-                    <div class="col-lg-5 col-md-5 content-inner chosesus-content text-white">
-                         <h2 class="box-title m-b15 wow fadeInLeft" data-wow-delay="0.2s">Sejarah<span class="bg-primary"></span></h2>
-                         <p class="font-16 op8 wow fadeInLeft" data-wow-delay="0.4s">Lembaga Kearsipan Daerah Kabupaten Sumedang</p>
-                         <h3 class="font-weight-500 m-b50 op6 wow fadeInLeft" data-wow-delay="0.6s">Dinas Arsip dan Perpustakaan Kabupaten Sumedang.</h3>
-                         <div class="col-12 m-b30 wow fadeIn" data-wow-delay="0.2s">
-                              <div class="faq-video">
-                                   <a class="play-btn popup-youtube" href="https://www.youtube.com/embed/6lt2JfJdGSY">
-                                        <i class="flaticon-play-button text-white"></i></a>
-                                   <img src="<?= base_url('assets/v3/frontend/') ?>images/about/pic10.jpg" alt="" class="img-cover radius-sm">
+     <!-- Divider -->
+     <div class="divider"></div>
+
+     <div class="container">
+          <div class="row g-5 align-items-center">
+               <div class="col-12 col-lg-6">
+                    <!-- About Content -->
+                    <div class="about-content ps-md-4">
+                         <div class="section-heading">
+                              <span class="sub-title">Sejarah</span>
+                              <h2 class="mb-4">Lembaga Kearsipan Daerah <span class="text-blue">Kabupaten Sumedang</span></h2>
+                              <p class="text-justify mb-5"><?= nl2br($profile->sejarah); ?></p>
+                         </div>
+                    </div>
+               </div>
+
+               <div class="col-12 col-lg-6">
+                    <!-- About Video -->
+                    <div class="about-video-content wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="500ms">
+                         <img src="<?= base_url('assets/v3/frontend/v2/') ?>img/bg-img/25.jpg" alt="">
+
+                         <!-- Play Video -->
+                         <div class="play-video-btn video-btn" data-video="https://youtu.be/4GUFkrHvZdE">
+                              <div class="icon">
+                                   <i class="ti ti-player-play-filled"></i>
                               </div>
                          </div>
                     </div>
-                    <div class="col-lg-7 col-md-7 m-b30">
-                         <form class="inquiry-form wow fadeInUp dzForm" data-wow-delay="0.2s">
 
-                              <h3 class="box-title m-t0 m-b10">Sejarah <span class="text-primary">Lembaga Kearsipan Daerah</span></h3>
-                              <p><?= nl2br($profile->sejarah); ?></p>
-
-                         </form>
+                    <!-- About Images -->
+                    <div class="about-images d-flex px-5 mt-5 wow fadeInUp" data-wow-duration="1000ms"
+                         data-wow-delay="800ms">
+                         <div>
+                              <img class="w-100" src="<?= base_url('assets/v3/frontend/v2/') ?>img/bg-img/26.jpg" alt="">
+                         </div>
+                         <div>
+                              <svg class="rotatingImage" xmlns="http://www.w3.org/2000/svg" width="70" height="70"
+                                   viewBox="0 0 70 70" fill="none">
+                                   <path
+                                        d="M35 0L46.1369 23.8631L70 35L46.1369 46.1369L35 70L23.8631 46.1369L0 35L23.8631 23.8631L35 0Z"
+                                        fill="#222222" />
+                              </svg>
+                         </div>
                     </div>
                </div>
           </div>
      </div>
-</div>
+
+     <!-- Divider -->
+     <div class="divider"></div>
+</section>

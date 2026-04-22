@@ -14,9 +14,9 @@ class Service extends CI_Model
           $this->db->where('repair.deleted_at', null);
 
           if (!empty($where['search'])) {
-               $this->db->like('code', $where['search']);
-               $this->db->or_like('email', $where['search']);
-               $this->db->or_like('phone', $where['search']);
+               $this->db->like('repair.code', $where['search']);
+               $this->db->or_like('repair.email', $where['search']);
+               $this->db->or_like('repair.phone', $where['search']);
                unset($where['search']);
           }
 

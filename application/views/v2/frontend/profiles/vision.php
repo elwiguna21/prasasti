@@ -1,52 +1,58 @@
-<!-- inner page banner -->
-<div class="dlab-bnr-inr overlay-primary" style="background-image:url(<?= base_url('assets/v3/frontend/images/banner/bnr2.jpg') ?>);">
+<div class="breadcrumb-section bg-img" style="background-image: url('<?= base_url('assets/v3/frontend/v2/') ?>img/bg-img/90.jpg');">
      <div class="container">
-          <div class="dlab-bnr-inr-entry">
-               <h1 class="text-white">Visi & Misi</h1>
-               <!-- Breadcrumb row -->
-               <div class="breadcrumb-row">
-                    <ul class="list-inline">
-                         <li><a href="<?= base_url('/') ?>">Beranda</a></li>
-                         <li><a href="javascript:void(0);">Profil</a></li>
-                         <li>Visi & Misi</li>
-                    </ul>
-               </div>
-               <!-- Breadcrumb row END -->
+          <!-- Breadcrumb Content -->
+          <div class="breadcrumb-content">
+               <div class="divider"></div>
+               <h2>Visi &amp; Misi</h2>
+               <ul class="list-unstyled">
+                    <li><a href="<?= base_url() ?>">Beranda</a></li>
+                    <li>Visi & Misi</li>
+               </ul>
           </div>
      </div>
-</div>
-<!-- inner page banner END -->
 
-<div class="content-block">
-     <div class="section-ful our-about-info content-inner-1 wow fadeIn" data-wow-delay="0.4s" style="background-image:url(<?= base_url('assets/v3/frontend/') ?>images/background/bg-map.jpg); background-position:center; background-repeat:no-repeat;">
-          <div class="container">
-               <div class="section-head text-center">
-                    <h4 class="text-gray-dark m-b10">Visi & Misi</h4>
-                    <h2 class="box-title m-tb0">Kabupaten <span class="text-primary">Sumedang</span></h2>
-                    <p>Kabupaten Sumedang terdiri atas 26 kecamatan, 7 kelurahan, dan 270 desa. Sumedang, ibu kota kabupaten ini, terletak sekitar 45 km dari Kota Bandung. Kota ini meliputi kecamatan Sumedang Utara dan Sumedang Selatan. Sumedang dilintasi jalur utama Bandung - Cirebon.</p>
+     <!-- Divider -->
+     <div class="divider"></div>
+</div>
+
+<div class="team-details-section">
+     <!-- Divider -->
+     <div class="divider"></div>
+
+     <div class="row justify-content-center">
+          <div class="col-12 col-md-5 col-xl-7">
+               <div class="section-heading text-center">
+                    <span class="sub-title">Visi &amp; Misi</span>
+                    <h2 class="mb-0">Kabupaten Sumedang</h2>
+                    <p class="mb-5">Kabupaten Sumedang terdiri atas 26 kecamatan, 7 kelurahan, dan 270 desa. Sumedang, ibu kota kabupaten ini, terletak sekitar 45 km dari Kota Bandung. Kota ini meliputi kecamatan Sumedang Utara dan Sumedang Selatan. Sumedang dilintasi jalur utama Bandung - Cirebon.</p>
                </div>
-               <div class="row dzseth m-b30">
-                    <div class="col-lg-6 col-md-6 m-b30 about-img wow fadeIn" data-wow-delay="0.8s">
-                         <img src="<?= base_url('assets/v3/frontend/images/our-services/pic1.jpg') ?>" data-tilt alt="">
-                    </div>
-                    <div class="col-lg-6 col-md-6 m-b30 dis-tbl text-justify">
-                         <div class="dis-tbl-cell">
-                              <h3 class="box-title">Visi<span class="bg-primary"></span></h3>
-                              <p class="font-16"><?= $profile->visi; ?></p>
-                         </div>
+          </div>
+     </div>
+
+     <div class="divider-sm"></div>
+
+     <div class="container">
+          <div class="row g-5 align-items-center">
+               <div class="col-12 col-md-6">
+                    <div class="pe-lg-4">
+                         <img src="<?= base_url('assets/v3/frontend/v2/') ?>img/bg-img/127.jpg" alt="">
                     </div>
                </div>
-               <div class="row dzseth">
-                    <div class="col-lg-6 col-md-6 dis-tbl text-justify">
-                         <div class="dis-tbl-cell">
-                              <h3 class="box-title">Misi<span class="bg-primary"></span></h3>
-                              <p class="font-16"><?= nl2br($profile->misi); ?></p>
-                         </div>
+
+               <div class="col-12 col-md-6">
+                    <div class="ps-lg-4">
+                         <h2 class="mb-2 display-5 fw-semibold">Visi</h2>
+                         <p class="text-justify"><?= nl2br($profile->visi); ?></p>
                     </div>
-                    <div class="col-lg-6 col-md-6 about-img wow fadeIn" data-wow-delay="0.8s">
-                         <img src="<?= base_url('assets/v3/frontend/images/our-services/pic2.jpg') ?>" data-tilt alt="">
+
+                    <div class="ps-lg-4">
+                         <h2 class="mb-2 display-5 fw-semibold">Misi</h2>
+                         <p class="text-justify"><?= nl2br($profile->misi); ?></p>
                     </div>
                </div>
           </div>
      </div>
+
+     <!-- Divider -->
+     <div class="divider"></div>
 </div>

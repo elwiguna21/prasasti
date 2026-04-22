@@ -34,7 +34,7 @@ class Services extends MY_Controller
           $data['done']       = $this->service->get_all_where_count(array('status' => 'done', 'verification_user !=' => null));
           $data['reject']     = $this->service->get_all_where_count(array('status' => 'reject', 'verification_user !=' => null));
 
-          $this->frontend('v2/frontend/service', $data);
+          $this->frontend_new('v2/frontend/service', $data);
      }
 
      public function add()

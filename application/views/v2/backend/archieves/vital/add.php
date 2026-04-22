@@ -241,18 +241,12 @@
                               </li>
                               <li class="nav-item">
                                    <a class="nav-link" href="#step-2">
-                                        <span class="sw-icon"><i class="fas fa-box-archive"></i></span>
-                                        Data Penyimpanan Arsip
-                                   </a>
-                              </li>
-                              <li class="nav-item">
-                                   <a class="nav-link" href="#step-3">
                                         <span class="sw-icon"><i class="fas fa-file-pdf"></i></span>
                                         Upload Dokumen (PDF)
                                    </a>
                               </li>
                               <li class="nav-item">
-                                   <a class="nav-link" href="#step-4">
+                                   <a class="nav-link" href="#step-3">
                                         <span class="sw-icon"><i class="fas fa-signature"></i></span>
                                         Posisi TTE
                                    </a>
@@ -269,17 +263,23 @@
                                    </div>
                                    <div class="row g-3">
                                         <div class="col-12">
+									<?php if (!empty($archieve)) { ?>
+                                                  <input type="hidden" class="form-control" name="archieve"
+                                                         value="<?= $_GET['archieve']; ?>" required readonly>
+									<?php } ?>
                                              <label class="form-label fw-semibold">Kode Klasifikasi <span
                                                           class="text-danger">*</span></label>
                                              <input type="text" id="kode_klsf" name="kode_klsf" class="form-control"
-                                                    placeholder="Contoh: 900.1" autocomplete="off">
+                                                    placeholder="Contoh: 900.1" autocomplete="off"
+                                                    value="<?= (!empty($archieve)) ? $archieve->kode_klsf : '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
                                              <label class="form-label fw-semibold">Indeks <span
                                                           class="text-danger">*</span></label>
                                              <input type="text" id="indeks" name="indeks" class="form-control"
-                                                    placeholder="Masukan indeks arsip" autocomplete="off">
+                                                    placeholder="Masukan indeks arsip" autocomplete="off"
+                                                    value="<?= (!empty($archieve)) ? $archieve->indek : '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
@@ -287,14 +287,15 @@
                                                           class="text-danger">*</span></label>
                                              <textarea id="uraian_informasi_arsip" name="uraian_informasi_arsip"
                                                        class="form-control" rows="3"
-                                                       placeholder="Tuliskan uraian informasi arsip..."></textarea>
+                                                       placeholder="Tuliskan uraian informasi arsip..."><?= (!empty($archieve)) ? $archieve->uraian_informasi_arsip : '' ?></textarea>
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-md-4">
                                              <label class="form-label fw-semibold">Kurun Waktu (Tahun) <span
                                                           class="text-danger">*</span></label>
                                              <input type="number" id="tahun" name="tahun" class="form-control"
-                                                    placeholder="Contoh: 2024" min="1900" max="2100" autocomplete="off">
+                                                    placeholder="Contoh: 2024" min="1900" max="2100" autocomplete="off"
+                                                    value="<?= (!empty($archieve)) ? $archieve->tahun : '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-md-4">
@@ -302,7 +303,8 @@
                                                           class="text-danger">*</span></label>
                                              <div class="input-group">
                                                   <input type="number" id="jumlah" name="jumlah" class="form-control"
-                                                         placeholder="0" min="1" autocomplete="off">
+                                                         placeholder="0" min="1" autocomplete="off"
+                                                         value="<?= (!empty($archieve)) ? $archieve->jumlah : '' ?>">
                                                   <span class="input-group-text">dok</span>
                                              </div>
                                              <span class="help-block text-danger small"></span>
@@ -311,67 +313,27 @@
                                              <label class="form-label fw-semibold">Waktu (Tanggal) <span
                                                           class="text-danger">*</span></label>
                                              <input type="date" id="tanggal" name="tanggal" class="form-control"
-                                                    autocomplete="off">
+                                                    autocomplete="off"
+                                                    value="<?= (!empty($archieve)) ? $archieve->tanggal : '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
                                              <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta"
                                                     class="form-control" placeholder="Nama unit kerja pencipta arsip"
-                                                    autocomplete="off">
+                                                    autocomplete="off"
+                                                    value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>">
                                         </div>
                                         <div class="col-12">
                                              <label class="form-label fw-semibold">Keterangan</label>
                                              <textarea id="keterangan" name="keterangan" class="form-control" rows="2"
-                                                       placeholder="Keterangan tambahan (opsional)"></textarea>
+                                                       placeholder="Keterangan tambahan (opsional)"><?= (!empty($archieve)) ? $archieve->deskripsi : '' ?></textarea>
                                         </div>
                                    </div>
                               </div>
 
-                              <!-- STEP 2: Lokasi Penyimpanan Arsip -->
+                              <!-- STEP 2: Upload PDF -->
                               <div id="step-2" class="tab-pane" role="tabpanel">
-                                   <div class="py-3">
-                                        <h5 class="text-center mb-1">Data Penyimpanan Arsip</h5>
-                                        <p class="text-center text-muted small mb-4">Isi informasi penyimpanan arsip
-                                             vital</p>
-                                   </div>
-                                   <div class="row g-3">
-                                        <div class="col-md-6 col-12">
-                                             <label class="form-label fw-semibold">Lokasi Sampul </label>
-                                             <input type="text" id="lokasi_sampul" name="lokasi_sampul"
-                                                    class="form-control" placeholder="Masukan lokasi sampul">
-                                             <span class="help-block text-danger small"></span>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                             <label class="form-label fw-semibold">Lokasi Berkas </label>
-                                             <input type="text" id="lokasi_berkas" name="lokasi_berkas"
-                                                    class="form-control" placeholder="Masukan lokasi berkas / arsip">
-                                             <span class="help-block text-danger small"></span>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                             <label class="form-label fw-semibold">Lokasi Box </label>
-                                             <input type="text" id="lokasi_box" name="lokasi_box" class="form-control"
-                                                    placeholder="Masukan lokasi box">
-                                             <span class="help-block text-danger small"></span>
-                                        </div>
-                                        <div class="col-md-6 col-12">
-                                             <label class="form-label fw-semibold">Lokasi Rak </label>
-                                             <input type="text" id="lokasi_rak" name="lokasi_rak" class="form-control"
-                                                    placeholder="Masukan lokasi rak">
-                                             <span class="help-block text-danger small"></span>
-                                        </div>
-                                        <div class="col-12">
-                                             <label class="form-label fw-semibold">Ruang Penyimpanan </label>
-                                             <input type="text" id="ruang_penyimpanan" name="ruang_penyimpanan"
-                                                    class="form-control" placeholder="Masukan ruang penyimpanan arsip">
-                                             <span class="help-block text-danger small"></span>
-                                        </div>
-                                   </div>
-                              </div>
-
-
-                              <!-- STEP 3: Upload PDF -->
-                              <div id="step-3" class="tab-pane" role="tabpanel">
                                    <div class="py-3">
                                         <h5 class="text-center mb-1">Upload Dokumen PDF</h5>
                                         <p class="text-center text-muted small mb-4">Upload file PDF yang akan
@@ -385,7 +347,7 @@
                                                   <h6 id="upload-label">Klik atau drag file PDF ke sini</h6>
                                                   <p class="text-muted small mb-0">Format: PDF · Maksimal 10MB</p>
                                              </div>
-                                             <input type="file" id="file_pdf_input" accept=".pdf" class="d-none">
+                                             <input type="file" id="file_pdf_input" accept=".pdf" class="d-none" data-initial="<?= (!empty($archieve)) ? $archieve->file : null; ?>">
                                              <div id="upload-progress" class="mt-3 d-none">
                                                   <div class="progress">
                                                        <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -398,8 +360,8 @@
                                    </div>
                               </div>
 
-                              <!-- STEP 4: Posisi TTE -->
-                              <div id="step-4" class="tab-pane" role="tabpanel">
+                              <!-- STEP 3: Posisi TTE -->
+                              <div id="step-3" class="tab-pane" role="tabpanel">
                                    <div class="py-3">
                                         <h5 class="text-center mb-1">Atur Posisi Tanda Tangan Elektronik</h5>
                                         <p class="text-center text-muted small mb-4">Geser dan ubah ukuran kotak merah
@@ -481,6 +443,12 @@
     var pageNum = 1;
     var pageScale = 1.0;
     var tempFilename = '';
+    let is_exists = false;
+    let initial_file = $('#file_pdf_input').data('initial');
+    if (initial_file) {
+        is_exists = true;
+    }
+
 
     // ===== SmartWizard Init =====
     $('#smartwizard').smartWizard({
@@ -511,22 +479,35 @@
     $('#smartwizard').on('leaveStep', function (e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
         if (stepDirection === 'forward') {
             if (currentStepIndex === 0) {
-                return validateStep1();
-            }
-            // if (currentStepIndex === 1) {
-            //      return validateStep2();
-            // }
+                // return validateStep1();
+                if (is_exists) {
+                    tempFilename   = '<?= json_encode($archieve->file) ?>';
+                    let pathFile   = initialFile ? "https://sisemar.sumedangkab.go.id/assets/data/" + tempFilename : '';
+                    if (nextStepIndex === 1) {
+                        e.preventDefault(); // Batalkan pindah ke langkah 2
 
-            if (currentStepIndex === 2) {
-                return validateStep3();
+                        $('#smartwizard').smartWizard("goToStep", 2); // Paksa pindah ke langkah 3
+
+                        // 3. Muat PDF ke viewer
+                        if(typeof loadPdfFromUrl === 'function' && pathFile !== '') {
+                            loadPdfFromUrl(pathFile);
+                        }
+
+                        return false;
+                    }
+                }
+            }
+
+            if (currentStepIndex === 1) {
+                // return validateStep2();
             }
         }
         return true;
     });
 
-    // Saat masuk step 3: render PDF
+    // Saat masuk step 2: render PDF
     $('#smartwizard').on('showStep', function (e, anchorObject, stepIndex) {
-        if (stepIndex === 3) {
+        if (stepIndex === 2) {
             if (tempFilename) renderPdfPage(pageNum);
             $('#btnSimpan').removeClass('d-none');
         } else {
@@ -579,47 +560,6 @@
 
     // ===== Validasi Step 2 =====
     function validateStep2() {
-        var valid = true;
-
-        var fields = [
-            {
-                id: 'lokasi_sampul',
-                label: 'Lokasi Sampul'
-            },
-            {
-                id: 'lokasi_berkas',
-                label: 'Lokasi Berkas'
-            },
-            {
-                id: 'lokasi_box',
-                label: 'Lokasi Box'
-            },
-            {
-                id: 'lokasi_rak',
-                label: 'Lokasi Rak'
-            },
-            {
-                id: 'ruang_penyimpanan',
-                label: 'Ruang Penyimpanan'
-            },
-        ];
-        fields.forEach(function (f) {
-            var el = document.getElementById(f.id);
-            var helpBlock = el.closest('.col-md-4, .col-md-6, .col-12').querySelector('.help-block');
-            if (!el.value.trim()) {
-                if (helpBlock) helpBlock.textContent = f.label + ' harus diisi';
-                el.classList.add('is-invalid');
-                valid = false;
-            } else {
-                if (helpBlock) helpBlock.textContent = '';
-                el.classList.remove('is-invalid');
-            }
-        });
-        return valid;
-    }
-
-    // ===== Validasi Step 3 =====
-    function validateStep3() {
         if (!tempFilename) {
             document.getElementById('pdf-upload-error').textContent = 'File PDF wajib diupload terlebih dahulu.';
             document.getElementById('pdf-upload-error').classList.remove('d-none');
@@ -632,17 +572,16 @@
     // File input change
     document.getElementById('file_pdf_input').addEventListener('change', function () {
         if (this.files.length) handlePdfFile(this.files[0]);
-        console.log(this.files.length);
+        console.log(this.files[0]);
     });
 
     // ===== Handle PDF file upload =====
     function handlePdfFile(file) {
         if (file.type !== 'application/pdf') {
-            alert('Hanya file PDF yang diizinkan!');
+            Swal.fire('Kesalahan', 'Hanya file PDF yang diizinkan!', 'error');
             return;
         }
         if (file.size > 10 * 1024 * 1024) {
-            // alert('Ukuran file maksimal 10MB!');
             Swal.fire('Kesalahan', 'Ukuran file maksimal 10MB!', 'error');
             return;
         }
@@ -895,7 +834,7 @@
         //     });
         //     return;
         // }
-        if (!validateStep3()) {
+        if (!validateStep2()) {
             Swal.fire({
                 title: "Kesalahan",
                 text: "Mohon upload dokumen arsip terlebih dahulu (Step 3).",

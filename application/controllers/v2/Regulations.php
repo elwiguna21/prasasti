@@ -33,7 +33,7 @@ class Regulations extends MY_Controller
 	{
 		$data['title'] = 'Daftar Peraturan / Regulasi';
 
-		$this->frontend('v2/frontend/regulation', $data);
+		$this->frontend_new('v2/frontend/regulation', $data);
 	}
 
 	public function get_regulations_json()
@@ -79,13 +79,13 @@ class Regulations extends MY_Controller
 //					$regulation->file = 'javascript:void(0);';
 //				}
 
-				$nested['id'] = $regulation->id;
-				$nested['title'] = $regulation->caption;
+				$nested['id']       = $regulation->id;
+				$nested['title']    = $regulation->caption;
 
 				if (file_exists('./assets/upload/' . $regulation->file)) {
-					$nested['document'] = '<div class="text-center"><a class="site-button radius-no" href="' . $regulation->file . '" target="_blank"><i class="ti-download me-2"></i> Download</a></div>';
+					$nested['document'] = '<div class="text-center"><a class="btn btn-primary btn-sm" href="' . $regulation->file . '" target="_blank"><i class="ti ti-file-download me-2"></i> Download</a></div>';
 				} else {
-					$nested['document'] = '<div class="text-center"><button class="site-button radius-no" type="button" disabled><i class="ti-download me-2"></i> Download</button></div>';
+					$nested['document'] = '<div class="text-center"><button class="btn btn-outline-danger btn-sm" type="button"><i class="ti ti-file-alert"></i> Download</button></div>';
 				}
 
 				$data[] = $nested;

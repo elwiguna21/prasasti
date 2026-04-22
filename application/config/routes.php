@@ -97,3 +97,5 @@ $route['v2/alih_media_arsip_vital/get_archieve_not_exists_bast']                
 $route['v2/alih_media_arsip_vital/berita_acara_detail_save']                    = 'v2/archieves/berita_acara_detail_save';
 $route['v2/alih_media_arsip_vital/berita_acara_detail_unlink']                  = 'v2/archieves/berita_acara_detail_unlink';
 $route['v2/alih_media_arsip_vital/berita_acara_deleted']                        = 'v2/archieves/berita_acara_delete';
+$route['v2/alih_media_arsip_statis']                                            = 'v2/archieves/statis_list';
+$route['v2/alih_media_arsip_statis/add']                                        = 'v2/archieves/statis_add';

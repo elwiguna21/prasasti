@@ -29,6 +29,8 @@ class                                                                           
                $this->db->order_by($where['orders'], $where['dirs']);
                unset($where['orders']);
                unset($where['dirs']);
+          } else {
+			$this->db->order_by('name', 'asc');
           }
 
           if (!empty($where)) {
