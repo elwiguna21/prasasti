@@ -186,7 +186,7 @@
                                                   <td class="ps-0 fw-bold">Verifikator</td>
                                                   <td>:</td>
 										<?php if (!empty($archieve->verifikator)) {
-											if ($archieve->verifikator == 'skpd') { ?>
+											if ($archieve->verifikator == 'SKPD') { ?>
                                                             <td class="pe-0 text-primary">Satuan Kerja Perangkat Daerah</td>
 											<?php } else { ?>
                                                             <td class="pe-0 text-danger">Lembaga Kearsipan Daerah</td>
