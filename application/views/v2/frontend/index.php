@@ -329,8 +329,8 @@
                <!-- Section Heading -->
                <div class="col-12 col-md-6">
                     <div class="section-heading">
-                         <span class="sub-title">Berita Terbaru</span>
-                         <h2 class="mb-0">Lihat informasi berita selengkapnya</h2>
+                         <span class="sub-title">Berita</span>
+                         <h2 class="mb-0">Informasi berita terbaru</h2>
                     </div>
                </div>
 
@@ -361,32 +361,29 @@
                                    <div class="service-card">
                                         <div class="shape">
                                              <img src="<?= base_url('assets/v3/frontend/v2/') ?>img/core-img/shape4.png"
-                                                  alt="">
+                                                  alt="<?= $n->judul; ?>">
                                         </div>
                                         <div class="service-thumb">
                                              <a href="<?= base_url('v2/news/detail?slug=' . $n->slug); ?>" class="btn">Selengkapnya
                                                   <i class="ti ti-arrow-right"></i></a>
-                                             <img src="<?= $n->gambar; ?>" alt="<?= $n->judul; ?>">
+                                             <img src="<?= $n->gambar; ?>" alt="<?= $n->judul; ?>" style="max-height: 200px">
                                         </div>
                                         <div class="service-content">
                                              <a href="<?= base_url('v2/news/detail?slug=' . $n->slug); ?>">
-                                                  <h4
-                                                       class="service-title"><?= $n->judul; ?></h4>
+                                                  <h4 class="service-title" title="<?= $n->judul; ?>"><?= (strlen($n->judul) > 50) ? substr($n->judul, 0, 50) . '...' : $n->judul; ?></h4>
                                              </a>
-                                             <p class="mb-0"><?= mb_substr($n->isi, 0, 75) ?> ...</p>
+                                             <p class="mb-0"><?= mb_substr($n->isi, 0, 75) ?>...</p>
                                         </div>
                                         <div class="service-number"><?= $no++; ?></div>
                                    </div>
                               </div>
                          <?php } ?>
-
-
                     </div>
 
-                    <div class="divider-sm"></div>
+<!--                    <div class="divider-sm"></div>-->
 
                     <!-- Swiper Pagination -->
-                    <div class="service-pagination"></div>
+                    <div class="service-pagination mt-5"></div>
                </div>
           <?php } else { ?>
                <div class="alert alert-warning">
@@ -396,7 +393,7 @@
      </div>
 
      <!-- Divider -->
-     <div class="divider"></div>
+     <div class="divider-sm"></div>
 </section>
 
 <!-- Project Section -->
