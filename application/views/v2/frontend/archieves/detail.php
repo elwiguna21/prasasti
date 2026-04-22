@@ -83,6 +83,7 @@
                                              <div>
                                                   <p class="mb-0">Dokumen ini telah ditandatangani secara elektronik oleh:</p>
                                                   <h6 class="mb-1"><?= (!empty($archieve->signer)) ? $archieve->signer->fullname : '-'; ?></h6>
+                                                  <p>pada <?= tgl_indo(date('Y-m-d', strtotime($archieve->tte_tanggal))) . ' - ' . jam_indo(date('H:i:s', strtotime($archieve->tte_tanggal))) . ' WIB'; ?></p>
                                              </div>
                                         </div>
 							<?php } else if (file_exists('./assets/data/' . $archieve->file)) { ?>
