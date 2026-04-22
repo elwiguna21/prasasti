@@ -507,6 +507,23 @@ if ($archieve->verifikasi_status == 'Y') {
                          </div>
                     </div>
                </div>
+
+               <!-- Info Posisi TTE -->
+			<?php if (!empty($archieve->tte_posisi)): ?>
+				<?php $pos = json_decode($archieve->tte_posisi, true); ?>
+                    <div class="mt-2 p-3 rounded small" style="background:rgba(231,76,60,0.06); border:1px solid rgba(231,76,60,0.15);">
+                         <i class="fas fa-map-marker-alt me-1 text-danger"></i>
+                         <strong>Posisi TTE:</strong>
+                         Halaman <strong><?= $pos['page'] ?? '-' ?></strong> ·
+                         Koordinat: <strong><?= ($pos['x'] ?? '-') ?>, <?= ($pos['y'] ?? '-') ?></strong> ·
+                         Ukuran: <strong><?= ($pos['width'] ?? '-') ?> × <?= ($pos['height'] ?? '-') ?> px</strong>
+                    </div>
+			<?php else: ?>
+                    <div class="mt-2 p-3 rounded small bg-light text-muted">
+                         <i class="fas fa-info-circle me-1"></i>
+                         Posisi TTE belum ditentukan oleh operator. Tanda tangan akan disisipkan secara <em>invisible</em>.
+                    </div>
+			<?php endif; ?>
 		<?php } else { ?>
                <div class="alert alert-warning fade show">
                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
@@ -628,7 +645,7 @@ if ($archieve->verifikasi_status == 'Y') {
 
         var pdfUrl = '<?= $pdfProxyUrl ?>';
         var ttePosisi = '<?= $ttePosisi ?>';
-        if (ttePosisi != '' || ttePosisi != null) {
+        if (ttePosisi !== '' || ttePosisi != null) {
             ttePosisi = JSON.parse(ttePosisi);
         }
 

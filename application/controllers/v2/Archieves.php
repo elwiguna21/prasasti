@@ -941,7 +941,7 @@ class Archieves extends MY_Controller
           }
 
           $paths = [
-               './assets/upload/berkas/' . $archieve->file,
+               './assets/upload/berkas/' . $archieve->tte_dokumen,
                './assets/upload/' . $archieve->file,
           ];
 
