@@ -32,10 +32,10 @@ class MY_Controller extends CI_Controller
 
      public function frontend_new($content, $data = null)
      {
-          $data['header']     = $this->load->view('v2/templates/frontend/new/header', $data, true);
+          $data['header']     = $this->load->view('v2/templates/frontend/header', $data, true);
           $data['content']    = $this->load->view($content, $data, true);
-          $data['footer']     = $this->load->view('v2/templates/frontend/new/footer', $data, true);
+          $data['footer']     = $this->load->view('v2/templates/frontend/footer', $data, true);
 
-          $this->load->view('v2/templates/frontend/new/index', $data);
+          $this->load->view('v2/templates/frontend/index', $data);
      }
 }

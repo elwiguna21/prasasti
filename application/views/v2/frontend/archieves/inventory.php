@@ -112,7 +112,7 @@
                                    <th width="5%" class="text-center">Aksi</th>
                               </tr>
                               </thead>
-                              <tbody>
+                              <tbody class="align-middle">
                               </tbody>
                          </table>
                     </div>
@@ -166,19 +166,27 @@
             render: function (data, type, row, meta) {
                 let number = meta.row + meta.settings._iDisplayStart + 1;
                 return "<span class='d-flex justify-content-center'>" + number + "</span>";
-            }
+            },
+            className: 'text-center'
         }, {
             data: "klasifikasi",
+            className: 'text-center'
         }, {
             data: "indeks",
+            className: 'text-center'
         }, {
             data: "tahun",
+            className: 'text-center'
         }, {
             data: "skpd",
+            className: 'text-center'
         }, {
             data: "jenis",
+            bSortable: !1,
+            className: 'text-center'
         }, {
             data: "actions",
+            className: 'text-center',
             bSortable: !1,
         }]
     });

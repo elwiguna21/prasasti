@@ -312,11 +312,11 @@ class Archieves extends MY_Controller
                     $nested['tahun'] = $archieve->tahun ?? '-';
                     $nested['skpd'] = (!empty($archieve->name)) ? $archieve->name : (!empty($archieve->unit_kerja_pencipta) ? $archieve->unit_kerja_pencipta : '-');
                     if ($archieve->jenis_arsip == 'vital') {
-                         $nested['jenis'] = 'Arsip Vital';
+                         $nested['jenis'] = '<span class="text-blue">Arsip Vital</span>';
                     } else if ($archieve->jenis_arsip == 'usul_serah') {
-                         $nested['jenis'] = 'Arsip Usul Serah';
+                         $nested['jenis'] = '<span class="text-danger">Arsip Usul Serah</span>';
                     } else {
-                         $nested['jenis'] = '-';
+                         $nested['jenis'] = '<span class="text-warning">-</span>';
                     }
 
                     $params = array(

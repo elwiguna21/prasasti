@@ -1,6 +1,10 @@
-<!--<link rel="stylesheet" href="--><?php //= base_url('assets/v3/backend/')
-                                        ?><!--vendor/chartist/css/chartist.min.css">-->
-
+<style>
+     .btn-outline-success {
+         background-color: #ffffff;
+         background-image: none;
+         border: 1px solid #28a745 !important;
+     }
+</style>
 <!-- Hero Section -->
 <section class="hero-section style-four jarallax" data-jarallax="" data-speed="0.6"
      style="">
@@ -15,14 +19,11 @@
                <!-- Hero Content -->
                <div class="col-12 col-md-6">
                     <div class="hero-content">
-                         <h2 class="mb-4 wow fadeInUp text-white" data-wow-duration="1000ms" data-wow-delay="400ms">Big
-                              Data & Analytics</h2>
+                         <h2 class="mb-4 wow fadeInUp text-white" data-wow-duration="1000ms" data-wow-delay="400ms">PRASASTI</h2>
                          <p class="text-white mb-5 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="600ms">
-                              Leverage agile frameworks to provide a robust synopsis for high level
-                              overviews terative
-                              bring table survival.</p>
-                         <a class="btn btn-outline-light wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="800ms"
-                              href="about-us.html">Let's Talk With Us <i class="ti ti-arrow-up-right"></i></a>
+                              Selamat datang di portal resmi Penerapan Sistem Arsip Statis Terintegrasi (PRASASTI) di lingkungan Pemerintah Daerah Kabupaten Sumedang.</p>
+                         <a class="btn btn-outline-success wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="800ms"
+                              href="#about-section">Tentang PRASASTI <i class="ti ti-arrow-up-right"></i></a>
                     </div>
                </div>
 
@@ -44,7 +45,7 @@
      <div class="divider"></div>
 </div>
 
-<section class="about-section">
+<section class="about-section" id="about-section">
      <div class="container">
           <div class="row g-4 g-xl-5 align-items-center">
                <!-- About Thumbnail -->

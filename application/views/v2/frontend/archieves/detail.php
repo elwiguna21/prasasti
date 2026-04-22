@@ -132,7 +132,7 @@
                                    <!--                                   <div><span class="label">Website</span>: <a href="#">example.site.com</a></div>-->
 
                                    <div class="table-responsive">
-                                        <table class="table table-hover table-transparent">
+                                        <table class="table table-hover table-transparent align-middle">
                                              <tr>
                                                   <td class="ps-0 fw-bold">SKPD</td>
                                                   <td>:</td>
@@ -160,6 +160,16 @@
                                                   <td class="ps-0 fw-bold">Tahun</td>
                                                   <td>:</td>
                                                   <td class="pe-0"><?= $archieve->tahun; ?></td>
+                                             </tr>
+                                             <tr>
+                                                  <td class="ps-0 fw-bold">Indeks</td>
+                                                  <td>:</td>
+                                                  <td class="pe-0"><?= $archieve->indek; ?></td>
+                                             </tr>
+                                             <tr>
+                                                  <td class="ps-0 fw-bold">Kode Klasifikasi</td>
+                                                  <td>:</td>
+                                                  <td class="pe-0"><?= $archieve->kode_klsf; ?></td>
                                              </tr>
                                              <tr>
                                                   <td class="ps-0 fw-bold">Uraian Informasi</td>

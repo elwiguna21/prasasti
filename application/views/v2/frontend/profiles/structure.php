@@ -18,7 +18,7 @@
 <section class="service-section bg-secondary">
      <!-- Background Shape -->
      <div class="bg-shape">
-          <img src="assets/img/core-img/shape2.png" alt="">
+          <img src="<?= base_url('assets/v3/frontend/v2/') ?>img/core-img/shape2.png" alt="">
      </div>
 
      <!-- Divider -->

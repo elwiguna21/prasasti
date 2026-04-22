@@ -16,7 +16,7 @@ class Archieve extends CI_Model
           if (!empty($where['search'])) {
 			$this->db->group_start();
                $this->db->like('berkas.indek', $where['search']);
-               $this->db->or_like('berkas.deskripsi', $where['search']);
+               $this->db->or_like('berkas.uraian_informasi_arsip', $where['search']);
                $this->db->or_like('berkas.kode_klsf', $where['search']);
 			$this->db->group_end();
                unset($where['search']);
@@ -95,7 +95,7 @@ class Archieve extends CI_Model
 	          $this->db->group_start();
                $this->db->like('indek', $where['search']);
                $this->db->or_like('kode_klsf', $where['search']);
-               $this->db->or_like('deskripsi', $where['search']);
+               $this->db->or_like('uraian_informasi_arsip', $where['search']);
 	          $this->db->group_end();
                unset($where['search']);
           }
@@ -120,7 +120,8 @@ class Archieve extends CI_Model
           if (!empty($where['search'])) {
 	          $this->db->group_start();
                $this->db->like('berkas.indek', $where['search']);
-               $this->db->or_like('berkas.deskripsi', $where['search']);
+			$this->db->or_like('berkas.kode_klsf', $where['search']);
+               $this->db->or_like('berkas.uraian_informasi_arsip', $where['search']);
                // $this->db->or_like('deskripsi', $where['search']);
 	          $this->db->group_end();
                unset($where['search']);
@@ -143,7 +144,7 @@ class Archieve extends CI_Model
 
           // $this->db->select('COUNT(id) as total, nomor_skpd');
           $this->db->select('
-            COUNT(berkas.id) as total,
+            COUNT(*) as total,
             company.name as name,
             company.no_company
         ');

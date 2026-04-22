@@ -804,7 +804,8 @@ picture.jarallax-img img {
 
 /* Header CSS */
 .header-area {
-  background-color: transparent;
+  /*background-color: transparent;*/
+  background-color: #0A165E;
   position: fixed;
   width: 100%;
   top: 0;

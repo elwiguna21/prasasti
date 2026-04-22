@@ -49,7 +49,7 @@
                                    <div class="row">
                                         <div class="col-lg-5 col-12 mb-3">
                                              <input type="text" name="title" class="form-control"
-                                                    placeholder="Cari nama arsip" autocomplete="off"
+                                                    placeholder="Cari indeks / klasifikasi / uraian arsip" autocomplete="off"
                                                     value="<?= (!empty($_GET['title'])) ? $_GET['title'] : '' ?>">
                                         </div>
                                         <div class="col-lg-5 col-12 mb-3">

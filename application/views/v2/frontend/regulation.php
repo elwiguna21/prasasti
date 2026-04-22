@@ -15,19 +15,19 @@
     }
 
     .dt-paging .pagination .page-item .page-link {
-        border-radius: 50px !important;
+        border-radius: 10px !important;
         margin: 0 4px; /* Adds space between rounded buttons */
     }
 
     /* Optional: Keep the first and last buttons rounded specifically */
     .dt-paging .pagination .page-item:first-child .page-link {
-        border-top-left-radius: 50px !important;
-        border-bottom-left-radius: 50px !important;
+        border-top-left-radius: 10px !important;
+        border-bottom-left-radius: 10px !important;
     }
 
     .dt-paging .pagination .page-item:last-child .page-link {
-        border-top-right-radius: 50px !important;
-        border-bottom-right-radius: 50px !important;
+        border-top-right-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;
     }
 
     .btn-outline-danger {
@@ -119,8 +119,8 @@
             searchPlaceholder: 'Cari nama peraturan ...',
             sSearch: '',
             paginate: {
-                next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
-                previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
+                // next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                // previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
             }
         },
         columns: [{
@@ -137,6 +137,5 @@
             className: 'align-middle'
         }]
     });
-    $(".dataTables_paginate").addClass("radius-md");
     // $(".dataTables_filter").hide();
 </script>
