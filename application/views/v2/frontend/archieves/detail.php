@@ -82,8 +82,8 @@
                                              </div>
                                              <div>
                                                   <p class="mb-0">Dokumen ini telah ditandatangani secara elektronik oleh:</p>
-                                                  <h6 class="mb-1"><?= (!empty($archieve->signer)) ? $archieve->signer->fullname : '-'; ?></h6>
-                                                  <p>pada <?= tgl_indo(date('Y-m-d', strtotime($archieve->tte_tanggal))) . ' - ' . jam_indo(date('H:i:s', strtotime($archieve->tte_tanggal))) . ' WIB'; ?></p>
+                                                  <h5 class="mb-1"><?= (!empty($archieve->signer)) ? $archieve->signer->fullname : '-'; ?></h5>
+                                                  <h6 class="fw-normal" style="color: #585B6F !important;">pada <?= tgl_indo(date('Y-m-d', strtotime($archieve->tte_tanggal))) . ' - ' . jam_indo(date('H:i:s', strtotime($archieve->tte_tanggal))); ?></h6>
                                              </div>
                                         </div>
 							<?php } else if (file_exists('./assets/data/' . $archieve->file)) { ?>
