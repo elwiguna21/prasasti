@@ -322,7 +322,8 @@ class Archieves extends MY_Controller
                     $params = array(
                          'archieve' => $nested['id'],
                          'code' => $nested['klasifikasi'],
-                         'company' => $archieve->nomor_skpd
+                         'company' => $archieve->nomor_skpd,
+	                    'src'     => 'inventory'
                     );
                     $nested['actions'] = '<a class="btn btn-sm btn-primary" href="' . base_url("v2/archieves/detail?") . http_build_query($params) . '"><i class="ti ti-eye"></i></a>';
 

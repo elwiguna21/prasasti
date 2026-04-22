@@ -12,10 +12,15 @@
           <!-- Breadcrumb Content -->
           <div class="breadcrumb-content">
                <div class="divider"></div>
-               <h2>Detail Arsip Statis</h2>
+               <h2>Detail <?= ($_GET['src'] == 'static') ? 'Arsip Statis' : 'Inventaris Arsip' ?></h2>
                <ul class="list-unstyled">
                     <li><a href="<?= base_url() ?>">Beranda</a></li>
-                    <li><a href="<?= base_url('v2/archieves') ?>">Arsip Statis</a></li>
+                    <?php if ($_GET['src'] == 'static') { ?>
+	                    <li><a href="<?= base_url('v2/archieves') ?>">Arsip Statis</a></li>
+                    <?php } else { ?>
+	                    <li><a href="<?= base_url('v2/archieves/inventory') ?>">Inventaris Arsip</a></li>
+                    <?php } ?>
+
                     <li>Detail</li>
                </ul>
           </div>
@@ -96,7 +101,7 @@
                                                      style="font-size: 30px;"></i>
                                              </div>
                                              <div>
-                                                  <p class="mb-0 text-danger">Dokumen ini berupa draf dan belum ditandatangani!</p>
+                                                  <p class="mb-0 text-danger">Dokumen ini berupa draf dan belum ditandatangani oleh Kepala <?= ($archieve->penilaian_arsip_statis == 'Y') ? 'LEMBAGA KEARSIPAN DAERAH' : ucwords($archieve->name); ?>!</p>
                                              </div>
                                         </div>
 							<?php } else { ?>

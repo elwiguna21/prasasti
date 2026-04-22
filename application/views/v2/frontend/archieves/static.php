@@ -84,7 +84,7 @@
                <div class="pricing-card-two wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="400ms">
                     <div class="row">
 					<?php foreach ($archieves as $archieve) {
-						$params = array('archieve' => $this->encryption->encrypt($archieve->id), 'company' => $archieve->nomor_skpd);
+						$params = array('archieve' => $this->encryption->encrypt($archieve->id), 'company' => $archieve->nomor_skpd, 'src' => 'static');
 						?>
                               <div class="col-lg-4 col-md-6 col-12 mb-3">
                                    <div class="packgae-name-price wow fadeInUp" data-wow-duration="1000ms"
