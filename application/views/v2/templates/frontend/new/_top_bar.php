@@ -52,7 +52,7 @@
 
                <!-- Navbar Toggler -->
                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#softoraNav"
-                       aria-controls="softoraNav" aria-expanded="false" aria-label="Toggle navigation">
+                    aria-controls="softoraNav" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="ti ti-category"></i>
                </button>
 
@@ -66,15 +66,15 @@
                               <a href="javascript:void(0);">Profil <i class="ti ti-caret-down-filled"></i></a>
                               <ul class="softora-dd-menu">
                                    <li class="softora-dd"><a href="<?= base_url('v2/profiles/vision') ?>"
-                                                             class="dez-page">Visi &amp; Misi </a></li>
+                                             class="dez-page">Visi &amp; Misi </a></li>
                                    <li class="softora-dd"><a href="<?= base_url('v2/profiles/about') ?>"
-                                                             class="dez-page">Gambaran Umum </a></li>
+                                             class="dez-page">Gambaran Umum </a></li>
                                    <li class="softora-dd"><a href="<?= base_url('v2/profiles/jobdesc') ?>"
-                                                             class="dez-page">Tugas &amp; Fungsi</a></li>
+                                             class="dez-page">Tugas &amp; Fungsi</a></li>
                                    <li class="softora-dd"><a href="<?= base_url('v2/profiles/history') ?>"
-                                                             class="dez-page">Sejarah</a></li>
+                                             class="dez-page">Sejarah</a></li>
                                    <li class="softora-dd"><a href="<?= base_url('v2/profiles/structure') ?>"
-                                                             class="dez-page">Struktur Organisasi</a></li>
+                                             class="dez-page">Struktur Organisasi</a></li>
                                    <!-- <li class="softora-dd">
                                         <a href="#">Service <i class="ti ti-caret-right-filled"></i></a>
                                         <ul class="softora-dd-menu">
@@ -131,13 +131,13 @@
 
                     <div class="d-flex align-items-center mt-4 mt-lg-0">
                          <!-- Button -->
-	                    <?php if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-uname'))) { ?>
+                         <?php if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-uname'))) { ?>
                               <a href="<?= base_url('v2/dashboards') ?>" class="btn btn-primary align-middle">
                                    Dashboard <i class="ti ti-home-2 ms-2"></i>
                               </a>
-	                    <?php } else { ?>
-                              <a href="<?= base_url('v2/authentications') ?>" class="btn btn-primary">Sign In <i class="ti ti-login-2 ms-2"></i></a>
-	                    <?php } ?>
+                         <?php } else { ?>
+                              <a href="<?= base_url('v2/authentications') ?>" class="btn btn-primary btn-sm px-4">Sign In <i class="ti ti-login-2 ms-2"></i></a>
+                         <?php } ?>
 
                     </div>
                </div>

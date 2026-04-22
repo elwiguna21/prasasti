@@ -40,6 +40,10 @@
           .text-blue {
                color: #2B4DFF !important;
           }
+
+          .btn-sm {
+               min-width: 30px;
+          }
      </style>
 </head>
 
