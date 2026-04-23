@@ -352,7 +352,7 @@ class Archieves extends MY_Controller
           $data['title'] = 'Daftar Arsip Vital';
           $data['employee'] = $this->user_auth;
 
-          $kondisi_arsip = "(jenis_arsip = 'vital' OR jenis_arsip IS NULL)";
+          $kondisi_arsip = "(jenis_arsip = 'vital')";
           $where[$kondisi_arsip] = NULL;
           if ($this->session->userdata('next-role') != 'admin') {
                $where['nomor_skpd'] = $this->user_auth->no_company;
@@ -425,17 +425,12 @@ class Archieves extends MY_Controller
                'kode_klsf' => htmlentities($this->input->post('kode_klsf')),
                'indek' => htmlentities($this->input->post('indeks')),
                'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
-               'tahun' => (int)$this->input->post('tahun'),
+               'tahun' => $this->input->post('tahun'),
                'jumlah' => (int)$this->input->post('jumlah'),
                'tanggal' => htmlentities($this->input->post('tanggal')),
                'deskripsi' => htmlentities($this->input->post('keterangan')),
                'nomor_skpd' => $this->user_auth->no_company,
                'unit_kerja_pencipta' => htmlentities($this->input->post('unit_kerja_pencipta')),
-               'lokasi_sampul' => $this->input->post('lokasi_sampul'),
-               'lokasi_berkas' => $this->input->post('lokasi_berkas'),
-               'lokasi_box' => $this->input->post('lokasi_box'),
-               'lokasi_rak' => $this->input->post('lokasi_rak'),
-               'ruang_penyimpanan' => $this->input->post('ruang_penyimpanan'),
                'tte_posisi' => $this->input->post('tte_posisi'),
                'user' => $this->encryption->decrypt($this->user_auth->user_id),
                'verifikator' => 'SKPD',
@@ -451,27 +446,55 @@ class Archieves extends MY_Controller
                if ($this->upload->do_upload('file_pdf')) {
                     $upload_data = $this->upload->data();
                     $data['file'] = $upload_data['file_name'];
+				if (file_exists('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'))) {
+					unlink('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'));
+				}
                } else {
-                    echo json_encode(array('status' => false, 'message' => "Terjadi kesalahan saat menyimpan dokumen: " . $this->upload->display_errors('', '')));
+                    echo json_encode(array('status' => 500, 'message' => "Terjadi kesalahan saat menyimpan dokumen: " . $this->upload->display_errors('', '')));
                     die;
                }
           }
 
-          $save = $this->archieve->insert_entry($data);
-          if ($save and $save > 0) {
-               $monitoring = array(
-                    'berkas' => $save,
-                    'title' => 'start',
-                    'message' => 'Arsip baru berhasil dibuat dan menunggu verifikasi.',
-                    'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
-               );
-               $this->monitoring->insert_entry($monitoring);
-               echo json_encode(array('status' => true, 'message' => 'Data arsip baru berhasil disimpan.'));
-               die;
-          } else {
-               echo json_encode(array('status' => false, 'message' => 'Data arsip baru gagal disimpan! Silahkan coba kembali.'));
-               die;
-          }
+		if (!empty($_POST['archieve'])) {
+			$id       = $this->encryption->decrypt($this->input->post('archieve'));
+			$get_archieve  = $this->archieve->get_single_where(array('berkas.id' => $id));
+			if (empty($get_archieve)) {
+				echo json_encode(array('status' => 500, 'message' => 'Maaf, terjadi kesalahan saat memuat arsip yang akan diperbarui!'));
+				die;
+			}
+
+			$save     = $this->archieve->update_entry($data, array('id' => $id));
+			if ($save and $save > 0) {
+				$monitoring = array(
+					   'berkas' => $id,
+					   'title' => 'start',
+					   'message' => 'Arsip berhasil diperbarui dan menunggu verifikasi.',
+					   'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
+				);
+				$this->monitoring->insert_entry($monitoring);
+				echo json_encode(array('status' => 200, 'message' => 'Data arsip berhasil diperbarui.'));
+				die;
+			} else {
+				echo json_encode(array('status' => 500, 'message' => 'Data arsip gagal diperbarui! Silahkan coba kembali.'));
+				die;
+			}
+		} else {
+			$save = $this->archieve->insert_entry($data);
+			if ($save and $save > 0) {
+				$monitoring = array(
+					   'berkas' => $save,
+					   'title' => 'start',
+					   'message' => 'Arsip baru berhasil dibuat dan menunggu verifikasi.',
+					   'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
+				);
+				$this->monitoring->insert_entry($monitoring);
+				echo json_encode(array('status' => 200, 'message' => 'Data arsip baru berhasil disimpan.'));
+				die;
+			} else {
+				echo json_encode(array('status' => 500, 'message' => 'Data arsip baru gagal disimpan! Silahkan coba kembali.'));
+				die;
+			}
+		}
      }
 
      public function vital_detail()
@@ -842,10 +865,10 @@ class Archieves extends MY_Controller
           if (!empty($archieves)) {
                foreach ($archieves as $archieve) {
                     if ($archieve->verifikasi_status == 'R') {
-                         $status_color = 'warning';
+                         $status_color = 'danger';
                          $status_name = 'Verifikasi Ditolak';
                     } else if ($archieve->verifikasi_status == 'Y' and ($archieve->tte_status == 'N' or $archieve->tte_status == null)) {
-                         $status_color = 'info';
+                         $status_color = 'warning';
                          $status_name = 'Menunggu Ditandatangan';
                     } else if ($archieve->tte_status == 'R') {
                          $status_color = 'danger';
@@ -940,16 +963,22 @@ class Archieves extends MY_Controller
                return;
           }
 
-          $paths = [
-               './assets/upload/berkas/' . $archieve->tte_dokumen,
-               './assets/upload/' . $archieve->file,
-          ];
+		if (!empty($archieve->tte_dokumen)) {
+			$paths = [
+				   "./assets/upload/berkas/{$archieve->tte_dokumen}",
+			];
+		} else {
+			$paths = [
+				   "./assets/data/{$archieve->file}",
+				   "./assets/upload/berkas/{$archieve->file}",
+			];
+		}
 
           $filepath = null;
           foreach ($paths as $path) {
                if (file_exists($path)) {
                     $filepath = $path;
-                    break;
+				break;
                }
           }
 
@@ -1008,13 +1037,13 @@ class Archieves extends MY_Controller
           if ($delete > 0) {
                $paths = [
                     './assets/upload/berkas/' . $archieve->file,
-                    './assets/upload/' . $archieve->file,
+                    './assets/data/' . $archieve->file,
                ];
 
                foreach ($paths as $path) {
                     if (file_exists($path)) {
                          unlink($path);
-                         break;
+//                         break;
                     }
                }
 

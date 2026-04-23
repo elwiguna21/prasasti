@@ -329,14 +329,19 @@ if ($archieve->verifikasi_status == 'Y') {
                               <i class="fas fa-file-pdf me-1"></i> Unduh Dokumen TTE
                          </a>
 				<?php } else {
-					if (file_exists('./assets/upload/berkas/' . $archieve->file)) {
-						$url_file = base_url('assets/upload/berkas/') . $archieve->file;
-					} else {
-						$url_file = base_url('assets/upload/') . $archieve->file;
-					} ?>
-                         <a href="<?= $url_file; ?>" target="_blank" class="btn light btn-info btn-sm w-100 mb-3">
-                              <i class="fas fa-file-pdf me-1"></i> Unduh Draf
-                         </a>
+					if (file_exists('./assets/upload/berkas/' . $archieve->file)) { ?>
+                              <a href="<?= base_url('assets/upload/berkas/') . $archieve->file; ?>" target="_blank" class="btn light btn-info btn-sm w-100 mb-3">
+                                   <i class="fas fa-file-pdf me-1"></i> Unduh Draf
+                              </a>
+					<?php } else if (file_exists('./assets/data/' . $archieve->file)) { ?>
+                              <a href="<?= base_url('assets/data/') . $archieve->file; ?>" target="_blank" class="btn light btn-info btn-sm w-100 mb-3">
+                                   <i class="fas fa-file-pdf me-1"></i> Unduh Draf
+                              </a>
+					<?php } else { ?>
+                              <a href="javascript:void(0);" class="btn light btn-outline-danger btn-sm w-100 mb-3 disabled">
+                                   <i class="fas fa-exclamation-triangle me-1"></i> Unduh Draf
+                              </a>
+					<?php } ?>
 				<?php } ?>
                </div>
 
@@ -663,7 +668,7 @@ if ($archieve->verifikasi_status == 'Y') {
             document.getElementById('pdf-loading').classList.add('d-none');
             renderPage(pageNum);
         }).catch(function (err) {
-            console.error('PDF.js error:', err);
+            console.log("PDF.js error: " + err);
             document.getElementById('pdf-loading').innerHTML =
                 '<i class="fas fa-exclamation-triangle text-danger fa-2x mb-3 d-block"></i>' +
                 '<span class="text-danger">Gagal memuat PDF. Silakan coba refresh halaman.</span>';
@@ -752,19 +757,6 @@ if ($archieve->verifikasi_status == 'Y') {
             if (pdfDoc) renderPage(pageNum);
         });
     })();
-
-    let createpassword = (type, ele) => {
-        document.getElementById(type).type = document.getElementById(type).type == "password" ? "text" : "password"
-        let icon = ele.childNodes[0].classList
-        let stringIcon = icon.toString()
-        if (stringIcon.includes("mdi-eye-outline")) {
-            ele.childNodes[0].classList.remove("mdi-eye-outline")
-            ele.childNodes[0].classList.add("mdi-eye-off-outline")
-        } else {
-            ele.childNodes[0].classList.add("mdi-eye-outline")
-            ele.childNodes[0].classList.remove("mdi-eye-off-outline")
-        }
-    }
 
     <?php if ($employee->user_role == 'operator' and in_array($archieve->verifikasi_status, array('N', 'R', null))) { ?>
     $('.btn-delete').click(function () {
@@ -991,7 +983,18 @@ if ($archieve->verifikasi_status == 'Y') {
     $('.passphrase-modal').on('hide.bs.modal', function () {
         $('input[name="passphrase"]').val(null);
     });
-    <?php } ?>
+    let createpassword = (type, ele) => {
+        document.getElementById(type).type = document.getElementById(type).type == "password" ? "text" : "password"
+        let icon = ele.childNodes[0].classList
+        let stringIcon = icon.toString()
+        if (stringIcon.includes("mdi-eye-outline")) {
+            ele.childNodes[0].classList.remove("mdi-eye-outline")
+            ele.childNodes[0].classList.add("mdi-eye-off-outline")
+        } else {
+            ele.childNodes[0].classList.add("mdi-eye-outline")
+            ele.childNodes[0].classList.remove("mdi-eye-off-outline")
+        }
+    }
 
     const formPassphrase = document.getElementById('passphrase-form');
     if (formPassphrase) {
@@ -1054,6 +1057,7 @@ if ($archieve->verifikasi_status == 'Y') {
         //     console.log('form submit');
         // })
     }
+    <?php } ?>
 
     <?php if (in_array($employee->user_role, array('operator', 'verifikator_skpd'))) { ?>
     $('.btn-resend').click(function () {
@@ -1125,16 +1129,4 @@ if ($archieve->verifikasi_status == 'Y') {
         });
     })
     <?php } ?>
-
-    // $('.btn-save').click(function () {
-    //     Swal.fire({
-    //         title: "Mohon tunggu...",
-    //         text: "Sedang mengirim data...",
-    //         allowOutsideClick: false,
-    //         allowEscapeKey: false,
-    //         didOpen: function () {
-    //             Swal.showLoading();
-    //         }
-    //     });
-    // });
 </script>

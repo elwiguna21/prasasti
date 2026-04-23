@@ -94,7 +94,7 @@ class Companies extends MY_Controller
                }
           }
 
-          redirect('v2/backend/companies');
+          redirect('v2/companies');
      }
 
      public function get_companies_json()

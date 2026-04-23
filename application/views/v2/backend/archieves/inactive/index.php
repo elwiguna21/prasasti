@@ -100,13 +100,13 @@
                               <div class="col-xl-9 mb-3">
                                    <label class="form-label">Pilih Jenis Arsip <span class="text-danger">*</span></label>
                                    <div class="d-flex justify-content-between">
-                                        <div class="form-check d-inline-block">
-                                             <input class="form-check-input" type="radio" name="jenis_arsip"
-                                                    id="flexRadioDefault4" value="arsip_statis" required>
-                                             <label class="form-check-label" for="flexRadioDefault4">
-                                                  Arsip Statis
-                                             </label>
-                                        </div>
+<!--                                        <div class="form-check d-inline-block">-->
+<!--                                             <input class="form-check-input" type="radio" name="jenis_arsip"-->
+<!--                                                    id="flexRadioDefault4" value="arsip_statis" required>-->
+<!--                                             <label class="form-check-label" for="flexRadioDefault4">-->
+<!--                                                  Arsip Statis-->
+<!--                                             </label>-->
+<!--                                        </div>-->
                                         <div class="form-check d-inline-block mx-2">
                                              <input class="form-check-input" type="radio" name="jenis_arsip"
                                                     id="flexRadioDefault5" value="arsip_vital" required>

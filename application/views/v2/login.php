@@ -20,6 +20,12 @@
      <link href="<?= base_url('assets/v3/backend/') ?>vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
      <link href="<?= base_url('assets/v3/backend/') ?>css/style.css" rel="stylesheet">
 
+     <style>
+         .auth-form .btn {
+              height: auto;
+             font-weight: 700;
+         }
+     </style>
 </head>
 
 <body class="h-100">
@@ -63,7 +69,11 @@
                                                             </div>
                                                             <div class="form-group">
                                                                  <label class="mb-1 text-black">Password<span class="required">*</span></label>
-                                                                 <input type="password" class="form-control" name="password" placeholder="*******" required autocomplete="off">
+<!--                                                                 <input type="password" class="form-control" name="password" placeholder="*******" required autocomplete="off">-->
+                                                                 <div class="input-group mb-2">
+                                                                      <input type="password" class="form-control" name="password" id="pwd" placeholder="Password" required autocomplete="off">
+                                                                      <a href="javascript:void(0);" class="btn btn-primary waves-effect waves-light" id="password-addon" onclick="createpassword('pwd', this)"><i class="mdi mdi-eye-outline"></i></a>
+                                                                 </div>
                                                                  <div class="invalid-feedback">
                                                                       Mohon masukan password anda!
                                                                  </div>
@@ -113,6 +123,21 @@
      <script src="<?= base_url('assets/v3/backend/') ?>vendor/jquery-validation/jquery.validate.min.js"></script>
      <!-- Form validate init -->
      <script src="<?= base_url('assets/v3/backend/') ?>js/plugins-init/jquery.validate-init.js"></script>
+
+     <script>
+         let createpassword = (type, ele) => {
+             document.getElementById(type).type = document.getElementById(type).type == "password" ? "text" : "password"
+             let icon = ele.childNodes[0].classList
+             let stringIcon = icon.toString()
+             if (stringIcon.includes("mdi-eye-outline")) {
+                 ele.childNodes[0].classList.remove("mdi-eye-outline")
+                 ele.childNodes[0].classList.add("mdi-eye-off-outline")
+             } else {
+                 ele.childNodes[0].classList.add("mdi-eye-outline")
+                 ele.childNodes[0].classList.remove("mdi-eye-off-outline")
+             }
+         }
+     </script>
 
 </body>
 

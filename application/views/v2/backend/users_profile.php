@@ -209,6 +209,8 @@
                                                                  <input type="text" placeholder="Telepon / No.HP" class="form-control" name="phone" value="<?= $employee->phone ?>" required autocomplete="off">
                                                             </div>
                                                        </div>
+
+	                                                  <?php if (in_array($employee->user_role, array('kepala_skpd', 'kepala_lkd'))) { ?>
                                                        <div class="row">
                                                             <div class="mb-3 col-md-6">
                                                                  <label class="form-label">NIK</label>
@@ -223,6 +225,7 @@
                                                             <label class="form-label">Jabatan</label>
                                                             <input type="text" placeholder="Masukan jabatan" class="form-control" name="position" value="<?= $employee->jabatan; ?>" maxlength="100" required autocomplete="off">
                                                        </div>
+                                                       <?php } ?>
 
                                                        <h4 class="text-primary mt-3">Pengaturan Akun</h4>
                                                        <div class="mb-3 col-md-12">
@@ -457,9 +460,9 @@
                               message: 'Username harus diisi dan tidak boleh kosong!'
                          },
                          stringLength: {
-                              min: 6,
+                              min: 5,
                               max: 20,
-                              message: 'Panjang minimal 6 karakter dan maksimal 20 karakter'
+                              message: 'Panjang minimal 5 karakter dan maksimal 20 karakter'
                          },
                          regexp: {
                               regexp: /^[a-zA-Z0-9_]+$/,
@@ -511,6 +514,47 @@
                          },
                     }
                },
+              nik: {
+                   validators: {
+                       notEmpty: {
+                           message: 'NIK harus diisi dan tidak boleh kosong!'
+                       },
+                       stringLength: {
+                           max: 16,
+                           message: 'Panjang NIK maksimal 16 karakter'
+                       },
+                       regexp: {
+                           regexp: /^[0-9]+$/,
+                           message: 'Hanya angka yang diperbolehkan!'
+                       },
+                   }
+              },
+              nip: {
+                  validators: {
+                      notEmpty: {
+                          message: 'NIP harus diisi dan tidak boleh kosong!'
+                      },
+                      stringLength: {
+                          max: 20,
+                          message: 'Panjang NIP maksimal 20 karakter'
+                      },
+                      regexp: {
+                          regexp: /^[0-9]+$/,
+                          message: 'Hanya angka yang diperbolehkan!'
+                      },
+                  }
+              },
+              position: {
+                  validators: {
+                      notEmpty: {
+                          message: 'Jabatan harus diisi dan tidak boleh kosong!'
+                      },
+                      stringLength: {
+                          max: 200,
+                          message: 'Panjang jabatan maksimal 200 karakter'
+                      },
+                  }
+              }
           },
           plugins: {
                trigger: new FormValidation.plugins.Trigger(),

@@ -264,7 +264,8 @@
                                    <div class="row g-3">
                                         <div class="col-12">
 									<?php if (!empty($archieve)) { ?>
-                                                  <input type="hidden" class="form-control" name="archieve"
+                                                  <input type="hidden" class="form-control" id="archieve"
+                                                         name="archieve"
                                                          value="<?= $_GET['archieve']; ?>" required readonly>
 									<?php } ?>
                                              <label class="form-label fw-semibold">Kode Klasifikasi <span
@@ -314,7 +315,7 @@
                                                           class="text-danger">*</span></label>
                                              <input type="date" id="tanggal" name="tanggal" class="form-control"
                                                     autocomplete="off"
-                                                    value="<?= (!empty($archieve)) ? $archieve->tanggal : '' ?>">
+                                                    value="<?= (!empty($archieve)) ? date('Y-m-d', strtotime($archieve->tanggal)) : '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
@@ -345,9 +346,10 @@
                                                   onclick="document.getElementById('file_pdf_input').click()">
                                                   <div class="upload-icon"><i class="fas fa-file-pdf"></i></div>
                                                   <h6 id="upload-label">Klik atau drag file PDF ke sini</h6>
-                                                  <p class="text-muted small mb-0">Format: PDF · Maksimal 10MB</p>
+                                                  <p class="text-muted small mb-0">Format: PDF · Maksimal 20MB</p>
                                              </div>
-                                             <input type="file" id="file_pdf_input" accept=".pdf" class="d-none" data-initial="<?= (!empty($archieve)) ? $archieve->file : null; ?>">
+                                             <input type="file" id="file_pdf_input" accept=".pdf" class="d-none"
+                                                    data-initial="<?= (!empty($archieve)) ? $archieve->file : null; ?>">
                                              <div id="upload-progress" class="mt-3 d-none">
                                                   <div class="progress">
                                                        <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -442,11 +444,14 @@
     var pdfDoc = null;
     var pageNum = 1;
     var pageScale = 1.0;
-    var tempFilename = '';
+    var tempFilename = '', tempFileJSON = '', pathFile = '';
     let is_exists = false;
     let initial_file = $('#file_pdf_input').data('initial');
     if (initial_file) {
         is_exists = true;
+        tempFilename = '<?= (!empty($archieve)) ? json_encode($archieve->file) : null ?>';
+        tempFileJSON = JSON.parse(tempFilename);
+        pathFile = initial_file ? '<?= base_url() ?>/assets/data/' + tempFileJSON : null;
     }
 
 
@@ -481,25 +486,37 @@
             if (currentStepIndex === 0) {
                 // return validateStep1();
                 if (is_exists) {
-                    tempFilename   = '<?= json_encode($archieve->file) ?>';
-                    let pathFile   = initialFile ? "https://sisemar.sumedangkab.go.id/assets/data/" + tempFilename : '';
-                    if (nextStepIndex === 1) {
-                        e.preventDefault(); // Batalkan pindah ke langkah 2
 
-                        $('#smartwizard').smartWizard("goToStep", 2); // Paksa pindah ke langkah 3
+                    if (tempFilename != '' || tempFilename != null) {
+                        fetch(pathFile)
+                            .then(response => response.blob())
+                            .then(data => {
+                                const myFile = new File([data], tempFileJSON, {
+                                    type: 'application/pdf',
+                                });
+                                if (myFile != null || myFile != '') {
+                                    // 2. Wrap the file in a DataTransfer object
+                                    const dataTransfer = new DataTransfer();
+                                    dataTransfer.items.add(myFile);
 
-                        // 3. Muat PDF ke viewer
-                        if(typeof loadPdfFromUrl === 'function' && pathFile !== '') {
-                            loadPdfFromUrl(pathFile);
-                        }
+                                    // 3. Set the input's files property
+                                    const fileInput = document.querySelector('#file_pdf_input');
+                                    fileInput.files = dataTransfer.files;
 
-                        return false;
+                                    fileInput.dispatchEvent(new Event('change', {bubbles: true}));
+                                    // console.log("File loaded and change event fired.");
+                                } else {
+                                    Swal.fire("Kesalahan", `Gagal memuat draf pdf dengan nama: ${tempFileJSON}! Silahkan upload ulang.`, "error");
+                                }
+                            });
                     }
                 }
+
+                return validateStep1();
             }
 
             if (currentStepIndex === 1) {
-                // return validateStep2();
+                return validateStep2();
             }
         }
         return true;
@@ -572,7 +589,6 @@
     // File input change
     document.getElementById('file_pdf_input').addEventListener('change', function () {
         if (this.files.length) handlePdfFile(this.files[0]);
-        console.log(this.files[0]);
     });
 
     // ===== Handle PDF file upload =====
@@ -581,8 +597,8 @@
             Swal.fire('Kesalahan', 'Hanya file PDF yang diizinkan!', 'error');
             return;
         }
-        if (file.size > 10 * 1024 * 1024) {
-            Swal.fire('Kesalahan', 'Ukuran file maksimal 10MB!', 'error');
+        if (file.size > 20 * 1024 * 1024) {
+            Swal.fire('Kesalahan', 'Ukuran file maksimal 50MB!', 'error');
             return;
         }
 
@@ -857,6 +873,10 @@
         });
 
         var formData = new FormData();
+	    <?php if (!empty($archieve)) { ?>
+        formData.append('archieve', document.getElementById('archieve').value);
+	    <?php } ?>
+
         formData.append('kode_klsf', document.getElementById('kode_klsf').value);
         formData.append('indeks', document.getElementById('indeks').value);
         formData.append('uraian_informasi_arsip', document.getElementById('uraian_informasi_arsip').value);
@@ -882,7 +902,6 @@
             processData: false,
             dataType: 'JSON',
             success: function (res) {
-                console.log(res);
                 if (res.status) {
                     Swal.fire({
                         title: 'Berhasil!',
