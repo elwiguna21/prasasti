@@ -436,8 +436,8 @@ if ($archieve->verifikasi_status == 'Y') {
                               <div><?= $archieve->jumlah ?? '-' ?></div>
                          </div>
                          <div class="mb-4 col-xl-4 col-lg-4 col-md-6 col-sm-12">
-                              <h6>Tanggal Buat:</h6>
-                              <div><?= $archieve->tanggal; ?></div>
+                              <h6>Tanggal Arsip:</h6>
+                              <div><?= tgl_indo(date('Y-m-d', strtotime($archieve->tanggal))); ?></div>
                          </div>
                          <div class="col-xl-12">
                               <h6>Keterangan:</h6>

@@ -207,8 +207,8 @@
 
 <div class="row page-titles">
      <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?= base_url('v2/backend/dashboards') ?>">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="<?= base_url('v2/backend/alih_media_arsip_vital') ?>">Daftar Arsip
+          <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="<?= base_url('v2/alih_media_arsip_vital') ?>">Daftar Arsip
                     Vital</a></li>
           <li class="breadcrumb-item active"><a href="javascript:void(0)">Tambah</a></li>
      </ol>
@@ -217,7 +217,7 @@
 <div class="media mb-2 mt-3">
      <div class="media-body">
           <div class="pull-end">
-               <a href="<?= base_url('v2/backend/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm">
+               <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm">
                     <i class="fas fa-arrow-left me-1"></i> Kembali
                </a>
           </div>
