@@ -271,7 +271,7 @@ if ($archieve->verifikasi_status == 'Y') {
 					$params = array('archieve' => $archieve->id, 'company' => $archieve->nomor_skpd);
 					?>
                          <a href="<?= base_url('v2/alih_media_arsip_vital/edit?' . http_build_query($params)); ?>"
-                            class="btn btn-sm btn-warning w-100 mb-3">
+                            class="btn btn-sm btn-warning w-100 mb-3 disabled">
                               <i class="fas fa-edit me-1"></i> Ubah Arsip
                          </a>
                          <a href="javascript:void(0);" class="btn light btn-sm btn-danger w-100 mb-3 btn-delete"
