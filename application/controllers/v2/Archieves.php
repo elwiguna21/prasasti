@@ -934,6 +934,9 @@ class Archieves extends MY_Controller
           $this->upload->initialize($config);
 
           if ($this->upload->do_upload('file_pdf')) {
+			if (!empty($_POST['pdf_filename_temp']) and file_exists('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'))) {
+				unlink('./assets/upload/berkas/temp/'. $this->input->post('pdf_filename_temp'));
+			}
                $upload_data = $this->upload->data();
                echo json_encode(array(
                     'status' => TRUE,

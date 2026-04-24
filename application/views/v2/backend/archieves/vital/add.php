@@ -618,6 +618,10 @@
         // Upload ke server temp
         var formData = new FormData();
         formData.append('file_pdf', file);
+        let pdf_filename_temp = document.getElementById('pdf_filename_temp');
+        if (pdf_filename_temp.value != null) {
+            formData.append('pdf_filename_temp', pdf_filename_temp.value);
+        }
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '<?= base_url(); ?>v2/alih_media_arsip_vital/upload_pdf');
