@@ -132,7 +132,7 @@
                     <div class="d-flex align-items-center mt-4 mt-lg-0">
                          <!-- Button -->
                          <?php if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-uname'))) { ?>
-                              <a href="<?= base_url('v2/dashboards') ?>" class="btn btn-primary align-middle">
+                              <a href="<?= base_url('v2/dashboards') ?>" class="btn btn-primary btn-sm align-middle">
                                    Dashboard <i class="ti ti-home-2 ms-2"></i>
                               </a>
                          <?php } else { ?>
