@@ -28,8 +28,7 @@
 </div>
 
 <div class="row">
-<!--     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">-->
-          <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
           <div class="widget-stat card">
                <div class="card-body p-4">
                     <div class="media ai-icon d-flex">
@@ -44,7 +43,6 @@
                </div>
           </div>
      </div>
-<!--     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">-->
      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
           <div class="widget-stat card">
                <div class="card-body p-4">
@@ -53,14 +51,14 @@
                                <i class="ti-user"></i>
                          </span>
                          <div class="media-body">
-                              <h3 class="mb-0 text-black"><span class="counter ms-0"><?= $total_users_operator; ?></span></h3>
+                              <h3 class="mb-0 text-black"><span
+                                           class="counter ms-0"><?= $total_users_operator; ?></span></h3>
                               <p class="mb-0">Operator</p>
                          </div>
                     </div>
                </div>
           </div>
      </div>
-<!--     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">-->
      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
           <div class="widget-stat card">
                <div class="card-body p-4">
@@ -69,7 +67,8 @@
                                <i class="ti-user"></i>
                          </span>
                          <div class="media-body">
-                              <h3 class="mb-0 text-black"><span class="counter ms-0"><?= $total_users_verificator; ?></span></h3>
+                              <h3 class="mb-0 text-black"><span
+                                           class="counter ms-0"><?= $total_users_verificator; ?></span></h3>
                               <p class="mb-0">Verifikator</p>
                          </div>
                     </div>
@@ -84,7 +83,8 @@
                                <i class="ti-user"></i>
                          </span>
                          <div class="media-body">
-                              <h3 class="mb-0 text-black"><span class="counter ms-0"><?= $total_users_evaluator; ?></span></h3>
+                              <h3 class="mb-0 text-black"><span
+                                           class="counter ms-0"><?= $total_users_evaluator; ?></span></h3>
                               <p class="mb-0">Penilai</p>
                          </div>
                     </div>
@@ -124,9 +124,11 @@
                               <p class="mb-1 text-white">Arsip Inaktif</p>
                               <h3 class="text-white"><?= $total_archieves_inactives; ?></h3>
                               <div class="progress mb-2 bg-primary">
-                                   <div class="progress-bar progress-animated bg-white" style="width: <?= ($total_archieves_inactives > 0) ? ($total_archieves_inactives/$total_archieves)*100 : 0; ?>%"></div>
+                                   <div class="progress-bar progress-animated bg-white"
+                                        style="width: <?= ($total_archieves_inactives > 0) ? ($total_archieves_inactives / $total_archieves) * 100 : 0; ?>%"></div>
                               </div>
-                              <small><?= ($total_archieves_inactives > 0) ? ($total_archieves_inactives/$total_archieves)*100 : 0; ?>% dari total arsip</small>
+                              <small><?= ($total_archieves_inactives > 0) ? ($total_archieves_inactives / $total_archieves) * 100 : 0; ?>
+                                   % dari total arsip</small>
                          </div>
                     </div>
                </div>
@@ -143,9 +145,11 @@
                               <p class="mb-1 text-white">Arsip Vital</p>
                               <h3 class="text-white"><?= $total_archieves_vital; ?></h3>
                               <div class="progress mb-2 bg-success">
-                                   <div class="progress-bar progress-animated bg-white" style="width: <?= ($total_archieves_vital > 0) ? ($total_archieves_vital/$total_archieves)*100 : 0; ?>%"></div>
+                                   <div class="progress-bar progress-animated bg-white"
+                                        style="width: <?= ($total_archieves_vital > 0) ? ($total_archieves_vital / $total_archieves) * 100 : 0; ?>%"></div>
                               </div>
-                              <small><?= ($total_archieves_vital > 0) ? ($total_archieves_vital/$total_archieves)*100 : 0; ?>% dari total arsip</small>
+                              <small><?= ($total_archieves_vital > 0) ? ($total_archieves_vital / $total_archieves) * 100 : 0; ?>
+                                   % dari total arsip</small>
                          </div>
                     </div>
                </div>
@@ -162,9 +166,11 @@
                               <p class="mb-1 text-white">Arsip Usul Musnah</p>
                               <h3 class="text-white"><?= $total_archieves_usul_musnah ?></h3>
                               <div class="progress mb-2 bg-secondary">
-                                   <div class="progress-bar progress-animated bg-white" style="width: <?= ($total_archieves_usul_musnah > 0) ? ($total_archieves_usul_musnah/$total_archieves)*100 : 0; ?>%"></div>
+                                   <div class="progress-bar progress-animated bg-white"
+                                        style="width: <?= ($total_archieves_usul_musnah > 0) ? ($total_archieves_usul_musnah / $total_archieves) * 100 : 0; ?>%"></div>
                               </div>
-                              <small><?= ($total_archieves_usul_musnah > 0) ? ($total_archieves_usul_musnah/$total_archieves)*100 : 0; ?>% dari total arsip</small>
+                              <small><?= ($total_archieves_usul_musnah > 0) ? ($total_archieves_usul_musnah / $total_archieves) * 100 : 0; ?>
+                                   % dari total arsip</small>
                          </div>
                     </div>
                </div>
@@ -195,37 +201,40 @@
                </div>
                <div class="card-body p-0">
                     <div id="DZ_W_TimeLine1" class="widget-timeline dz-scroll style-1 my-4 px-4" style="height:370px;">
-                         <?php if (!empty($logs)) {
-                              $isFirst = true; ?>
-                         <ul class="timeline">
-                              <?php foreach ($logs as $log) {
-                                   if ($log->action == 'signin') {
-                                        $action_color  = 'success';
-                                   } else if ($log->action == 'signout') {
-	                                   $action_color  = 'danger';
-                                   } else {
-	                                   $action_color  = 'primary';
-                                   } ?>
-                                   <li>
-                                        <?php if ($isFirst) { ?>
-                                             <div class="timeline-badge <?= $action_color; ?> pulse"></div>
-                                        <?php $isFirst= false; } else { ?>
-                                             <div class="timeline-badge <?= $action_color; ?>"></div>
-                                        <?php } ?>
+					<?php if (!empty($logs)) {
+						$isFirst = true; ?>
+                              <ul class="timeline">
+							<?php foreach ($logs as $log) {
+								if ($log->action == 'signin') {
+									$action_color = 'success';
+								} else if ($log->action == 'signout') {
+									$action_color = 'danger';
+								} else {
+									$action_color = 'primary';
+								} ?>
+                                        <li>
+									<?php if ($isFirst) { ?>
+                                                  <div class="timeline-badge <?= $action_color; ?> pulse"></div>
+										<?php $isFirst = false;
+									} else { ?>
+                                                  <div class="timeline-badge <?= $action_color; ?>"></div>
+									<?php } ?>
 
-                                        <a class="timeline-panel text-muted" href="javascript:void(0);">
-                                             <span><?= tgl_indo(date('Y-m-d', strtotime($log->created_at))) . ' - ' . jam_indo(date('H:i:s', strtotime($log->created_at))); ?></span>
-                                             <h6 class="mb-0"><?= ucwords($log->menu) ?> <strong class="text-info"><?= ucwords($log->action); ?></strong></h6>
-                                             <p class="mb-0"><?= $log->description; ?></p>
-                                        </a>
-                                   </li>
-                              <?php } ?>
-                         </ul>
-                         <?php } else { ?>
+                                             <a class="timeline-panel text-muted" href="javascript:void(0);">
+                                                  <span><?= tgl_indo(date('Y-m-d', strtotime($log->created_at))) . ' - ' . jam_indo(date('H:i:s', strtotime($log->created_at))); ?></span>
+                                                  <h6 class="mb-0"><?= ucwords($log->menu) ?> <strong
+                                                               class="text-info"><?= ucwords($log->action); ?></strong>
+                                                  </h6>
+                                                  <p class="mb-0"><?= $log->description; ?></p>
+                                             </a>
+                                        </li>
+							<?php } ?>
+                              </ul>
+					<?php } else { ?>
                               <div class="alert alert-warning">
                                    <p class="mb-0">Belum ada log dari akun anda.</p>
                               </div>
-                         <?php } ?>
+					<?php } ?>
                          </ul>
                     </div>
                </div>
@@ -242,9 +251,12 @@
                </div>
                <div class="card-body tab-content orders-summary pt-3">
                     <div class="d-flex flex-wrap order-manage p-3 align-items-center mb-4">
-                         <a href="javascript:void(0);" class="btn fs-22 text-white py-1 btn-success px-4 me-3"><?= $total_archieves_vital; ?></a>
+                         <a href="javascript:void(0);"
+                            class="btn fs-22 text-white py-1 btn-success px-4 me-3"><?= $total_archieves_vital; ?></a>
                          <h4 class="mb-0">Arsip Vital <i class="fa fa-circle text-success ms-1 fs-15"></i></h4>
-                         <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="ms-sm-auto mt-sm-0 mt-2 text-success font-w500">Kelola Arsip Vital <i class="ti-angle-right ms-1"></i></a>
+                         <a href="<?= base_url('v2/alih_media_arsip_vital') ?>"
+                            class="ms-sm-auto mt-sm-0 mt-2 text-success font-w500">Kelola Arsip Vital <i
+                                      class="ti-angle-right ms-1"></i></a>
                     </div>
                     <div class="row">
                          <div class="col-sm-4 mb-4">
@@ -273,27 +285,39 @@
                               </div>
                               <div class="col-xl-9 col-lg-10 col-xxl-8 col-sm-9 col-md-9">
                                    <div class="d-flex align-items-center mb-3">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu Verifikasi (<?= ($total_archieve_vital_waiting_verification > 0) ? ($total_archieve_vital_waiting_verification/$total_archieves_vital)*100 : 0 ?>%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu Verifikasi
+                                             (<?= ($total_archieve_vital_waiting_verification > 0) ? ($total_archieve_vital_waiting_verification / $total_archieves_vital) * 100 : 0 ?>
+                                             %)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-primary progress-animated" style="width:<?= ($total_archieve_vital_waiting_verification > 0) ? ($total_archieve_vital_waiting_verification/$total_archieves_vital)*100 : 0 ?>%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-primary progress-animated"
+                                                  style="width:<?= ($total_archieve_vital_waiting_verification > 0) ? ($total_archieve_vital_waiting_verification / $total_archieves_vital) * 100 : 0 ?>%; height:8px;"
+                                                  role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
                                         <span class=" ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_vital_waiting_verification; ?></span>
                                    </div>
                                    <div class="d-flex align-items-center  mb-3">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu di TTE (<?= ($total_archieve_vital_waiting_signed > 0) ? ($total_archieve_vital_waiting_signed/$total_archieves_vital)*100 : 0 ?>%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu di TTE
+                                             (<?= ($total_archieve_vital_waiting_signed > 0) ? ($total_archieve_vital_waiting_signed / $total_archieves_vital) * 100 : 0 ?>
+                                             %)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-warning progress-animated" style="width:<?= ($total_archieve_vital_waiting_signed > 0) ? ($total_archieve_vital_waiting_signed/$total_archieves_vital)*100 : 0 ?>%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-warning progress-animated"
+                                                  style="width:<?= ($total_archieve_vital_waiting_signed > 0) ? ($total_archieve_vital_waiting_signed / $total_archieves_vital) * 100 : 0 ?>%; height:8px;"
+                                                  role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
                                         <span class="ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_vital_waiting_signed; ?></span>
                                    </div>
                                    <div class="d-flex align-items-center">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Selesai di TTE (<?= ($total_archieve_vital_signed > 0) ? ($total_archieve_vital_signed/$total_archieves_vital)*100 : 0 ?>%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Selesai di TTE
+                                             (<?= ($total_archieve_vital_signed > 0) ? ($total_archieve_vital_signed / $total_archieves_vital) * 100 : 0 ?>
+                                             %)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-success progress-animated" style="width:<?= ($total_archieve_vital_signed > 0) ? ($total_archieve_vital_signed/$total_archieves_vital)*100 : 0 ?>%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-success progress-animated"
+                                                  style="width:<?= ($total_archieve_vital_signed > 0) ? ($total_archieve_vital_signed / $total_archieves_vital) * 100 : 0 ?>%; height:8px;"
+                                                  role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
@@ -316,9 +340,12 @@
                </div>
                <div class="card-body tab-content orders-summary pt-3">
                     <div class="d-flex flex-wrap order-manage p-3 align-items-center mb-4">
-                         <a href="javascript:void(0);" class="btn fs-22 text-white py-1 btn-success px-4 me-3"><?= $total_archieves_usul_musnah; ?></a>
+                         <a href="javascript:void(0);"
+                            class="btn fs-22 text-white py-1 btn-success px-4 me-3"><?= $total_archieves_usul_musnah; ?></a>
                          <h4 class="mb-0">Arsip Usul Musnah <i class="fa fa-circle text-success ms-1 fs-15"></i></h4>
-                         <a href="<?= base_url('v2/alih_media_arsip_usul_serah') ?>" class="ms-sm-auto mt-sm-0 mt-2 text-success font-w500">Kelola Arsip<i class="ti-angle-right ms-1"></i></a>
+                         <a href="<?= base_url('v2/alih_media_arsip_usul_serah') ?>"
+                            class="ms-sm-auto mt-sm-0 mt-2 text-success font-w500">Kelola Arsip<i
+                                      class="ti-angle-right ms-1"></i></a>
                     </div>
                     <div class="row">
                          <div class="col-sm-4 mb-4">
@@ -347,27 +374,39 @@
                               </div>
                               <div class="col-xl-9 col-lg-10 col-xxl-8 col-sm-9 col-md-9">
                                    <div class="d-flex align-items-center mb-3">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu Verifikasi (<?= ($total_archieve_musnah_waiting_verification > 0) ? ($total_archieve_musnah_waiting_verification/$total_archieves_usul_musnah)*100 : 0 ?>%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu Verifikasi
+                                             (<?= ($total_archieve_musnah_waiting_verification > 0) ? ($total_archieve_musnah_waiting_verification / $total_archieves_usul_musnah) * 100 : 0 ?>
+                                             %)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-primary progress-animated" style="width:<?= ($total_archieve_musnah_waiting_verification > 0) ? ($total_archieve_musnah_waiting_verification/$total_archieves_usul_musnah)*100 : 0 ?>%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-primary progress-animated"
+                                                  style="width:<?= ($total_archieve_musnah_waiting_verification > 0) ? ($total_archieve_musnah_waiting_verification / $total_archieves_usul_musnah) * 100 : 0 ?>%; height:8px;"
+                                                  role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
                                         <span class=" ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_musnah_waiting_verification; ?></span>
                                    </div>
                                    <div class="d-flex align-items-center  mb-3">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu di TTE (<?= ($total_archieve_musnah_waiting_signed > 0) ? ($total_archieve_musnah_waiting_signed/$total_archieves_usul_musnah)*100 : 0 ?>%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu di TTE
+                                             (<?= ($total_archieve_musnah_waiting_signed > 0) ? ($total_archieve_musnah_waiting_signed / $total_archieves_usul_musnah) * 100 : 0 ?>
+                                             %)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-warning progress-animated" style="width:<?= ($total_archieve_musnah_waiting_signed > 0) ? ($total_archieve_musnah_waiting_signed/$total_archieves_usul_musnah)*100 : 0 ?>%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-warning progress-animated"
+                                                  style="width:<?= ($total_archieve_musnah_waiting_signed > 0) ? ($total_archieve_musnah_waiting_signed / $total_archieves_usul_musnah) * 100 : 0 ?>%; height:8px;"
+                                                  role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
                                         <span class="ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_musnah_waiting_signed; ?></span>
                                    </div>
                                    <div class="d-flex align-items-center">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Selesai di TTE (<?= ($total_archieve_musnah_signed > 0) ? ($total_archieve_musnah_signed/$total_archieves_usul_musnah)*100 : 0 ?>%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Selesai di TTE
+                                             (<?= ($total_archieve_musnah_signed > 0) ? ($total_archieve_musnah_signed / $total_archieves_usul_musnah) * 100 : 0 ?>
+                                             %)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-success progress-animated" style="width:<?= ($total_archieve_musnah_signed > 0) ? ($total_archieve_musnah_signed/$total_archieves_usul_musnah)*100 : 0 ?>%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-success progress-animated"
+                                                  style="width:<?= ($total_archieve_musnah_signed > 0) ? ($total_archieve_musnah_signed / $total_archieves_usul_musnah) * 100 : 0 ?>%; height:8px;"
+                                                  role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
@@ -386,16 +425,13 @@
 <!-- Apex Chart -->
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/apexchart/apexchart.js"></script>
 
-<!-- Dashboard 1 -->
-<!--<script src="--><?php //= base_url('assets/v3/backend/') ?><!--js/dashboard/dashboard-1.js"></script>-->
-<!--<script src="--><?php //= base_url('assets/v3/backend/') ?><!--js/dashboard/analytics.js"></script>-->
 <script>
-    let dataVital   = [<?= $total_archieve_vital_waiting_verification ?>, <?= $total_archieve_vital_waiting_signed ?>, <?= $total_archieve_vital_signed ?>];
-    let dataMusnah  = [<?= $total_archieve_musnah_waiting_verification ?>, <?= $total_archieve_musnah_waiting_signed ?>, <?= $total_archieve_musnah_signed ?>];
+    let dataVital = [<?= $total_archieve_vital_waiting_verification ?>, <?= $total_archieve_vital_waiting_signed ?>, <?= $total_archieve_vital_signed ?>];
+    let dataMusnah = [<?= $total_archieve_musnah_waiting_verification ?>, <?= $total_archieve_musnah_waiting_signed ?>, <?= $total_archieve_musnah_signed ?>];
     var optionsDonut = {
         series: [45, 35, 20],
         labels: ['Menunggu Verifikasi', 'Menunggu TTE', 'Sudah TTE'],
-        colors:['#2f4cdd', '#ff6d4d', '#2bc155'],
+        colors: ['#2f4cdd', '#ff6d4d', '#2bc155'],
         chart: {
             width: 150,
             height: 150,
@@ -469,7 +505,7 @@
                 endingShape: 'rounded'
             },
         },
-        colors:['#2f4cdd'],
+        colors: ['#2f4cdd'],
         dataLabels: {
             enabled: false,
         },
@@ -482,7 +518,7 @@
         stroke: {
             show: true,
             width: 4,
-            colors:['#2f4cdd'],
+            colors: ['#2f4cdd'],
         },
 
         grid: {
