@@ -140,7 +140,7 @@
         user-select: none;
         top: 20px;
         left: 20px;
-        z-index: 10;
+        z-index: 2;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         opacity: 0.92;
     }
@@ -371,22 +371,42 @@
                                    </div>
 
                                    <!-- PDF Nav Bar -->
-                                   <div class="pdf-nav-bar">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                id="btn-prev-page" disabled>
-                                             <i class="fas fa-chevron-left me-1"></i> Sebelumnya
-                                        </button>
-                                        <span class="fw-semibold" id="page-info">Halaman 1 / 1</span>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                id="btn-next-page" disabled>
-                                             Selanjutnya <i class="fas fa-chevron-right ms-1"></i>
-                                        </button>
-                                        <div class="ms-3 d-flex align-items-center gap-2">
+<!--                                   <div class="pdf-nav-bar">-->
+<!--                                        <button type="button" class="btn btn-sm btn-outline-secondary"-->
+<!--                                                id="btn-prev-page" disabled>-->
+<!--                                             <i class="fas fa-chevron-left me-1"></i> Sebelumnya-->
+<!--                                        </button>-->
+<!--                                        <span class="fw-semibold" id="page-info">Halaman 1 / 1</span>-->
+<!--                                        <button type="button" class="btn btn-sm btn-outline-secondary"-->
+<!--                                                id="btn-next-page" disabled>-->
+<!--                                             Selanjutnya <i class="fas fa-chevron-right ms-1"></i>-->
+<!--                                        </button>-->
+<!--                                        <div class="ms-3 d-flex align-items-center gap-2">-->
+<!--                                             <span class="text-muted small">Zoom:</span>-->
+<!--                                             <button type="button" class="btn btn-sm btn-outline-secondary"-->
+<!--                                                     id="btn-zoom-out"><i class="fas fa-search-minus"></i></button>-->
+<!--                                             <span id="zoom-label" class="small fw-semibold">100%</span>-->
+<!--                                             <button type="button" class="btn btn-sm btn-outline-secondary"-->
+<!--                                                     id="btn-zoom-in"><i class="fas fa-search-plus"></i></button>-->
+<!--                                        </div>-->
+<!--                                   </div>-->
+                                   <div class="d-lg-flex flex-wrap justify-content-center align-items-center mb-2">
+                                        <div class="d-flex flex-column flex-md-row justify-content-sm-center align-items-center mb-3 mb-lg-0 me-lg-3 me-0">
+                                             <button type="button" class="btn btn-sm btn-outline-primary"
+                                                     id="btn-prev-page" disabled>
+                                                  <i class="fas fa-chevron-left me-1"></i> Sebelumnya
+                                             </button>
+                                             <span class="fw-semibold my-2 my-md-0 mx-2 mx-0 mx-lg-2" id="page-info">Halaman 1 / 1</span>
+                                             <button type="button" class="btn btn-sm btn-outline-primary"
+                                                     id="btn-next-page" disabled>
+                                                  Selanjutnya <i class="fas fa-chevron-right ms-1"></i>
+                                        </div>
+                                        <div class="justify-content-center text-center">
                                              <span class="text-muted small">Zoom:</span>
-                                             <button type="button" class="btn btn-sm btn-outline-secondary"
+                                             <button type="button" class="btn btn-sm btn-outline-primary"
                                                      id="btn-zoom-out"><i class="fas fa-search-minus"></i></button>
                                              <span id="zoom-label" class="small fw-semibold">100%</span>
-                                             <button type="button" class="btn btn-sm btn-outline-secondary"
+                                             <button type="button" class="btn btn-sm btn-outline-primary"
                                                      id="btn-zoom-in"><i class="fas fa-search-plus"></i></button>
                                         </div>
                                    </div>

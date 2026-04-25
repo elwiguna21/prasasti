@@ -282,7 +282,8 @@ if ($archieve->verifikasi_status == 'Y') {
                             class="btn btn-sm btn-warning shadow w-100 mb-3 <?= ($archieve->verifikasi_status == 'Y') ? 'disabled-link' : ''; ?>">
                               <i class="fas fa-edit me-1"></i> Ubah Arsip
                          </a>
-                         <a href="javascript:void(0);" class="btn light btn-sm btn-danger shadow w-100 mb-3 btn-delete <?= ($archieve->verifikasi_status == 'Y') ? 'disabled-link' : ''; ?>"
+                         <a href="javascript:void(0);"
+                            class="btn light btn-sm btn-danger shadow w-100 mb-3 btn-delete <?= ($archieve->verifikasi_status == 'Y') ? 'disabled-link' : ''; ?>"
                             data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                               <i class="fas fa-trash me-1"></i> Hapus Arsip
                          </a>
@@ -298,7 +299,8 @@ if ($archieve->verifikasi_status == 'Y') {
 				<?php if ($this->session->userdata('next-role') == 'verifikator_skpd') {
 					?>
 					<?php if ($archieve->verifikasi_status == 'N') { ?>
-                              <a href="javascript:void(0);" class="btn btn-sm btn-success shadow btn-verification w-100 mb-3"
+                              <a href="javascript:void(0);"
+                                 class="btn btn-sm btn-success shadow btn-verification w-100 mb-3"
                                  data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                                    <i class="fas fa-user-check me-1"></i> Setujui & Teruskan ke Kepala SKPD
                               </a>
@@ -338,15 +340,18 @@ if ($archieve->verifikasi_status == 'Y') {
                          </a>
 				<?php } else {
 					if (file_exists('./assets/upload/berkas/' . $archieve->file)) { ?>
-                              <a href="<?= base_url('assets/upload/berkas/') . $archieve->file; ?>" target="_blank" class="btn light btn-info btn-sm shadow w-100 mb-3">
+                              <a href="<?= base_url('assets/upload/berkas/') . $archieve->file; ?>" target="_blank"
+                                 class="btn light btn-info btn-sm shadow w-100 mb-3">
                                    <i class="fas fa-file-pdf me-1"></i> Unduh Draf
                               </a>
 					<?php } else if (file_exists('./assets/data/' . $archieve->file)) { ?>
-                              <a href="<?= base_url('assets/data/') . $archieve->file; ?>" target="_blank" class="btn light btn-info btn-sm shadow w-100 mb-3">
+                              <a href="<?= base_url('assets/data/') . $archieve->file; ?>" target="_blank"
+                                 class="btn light btn-info btn-sm shadow w-100 mb-3">
                                    <i class="fas fa-file-pdf me-1"></i> Unduh Draf
                               </a>
 					<?php } else { ?>
-                              <a href="javascript:void(0);" class="btn light btn-outline-danger btn-sm shadow w-100 mb-3 disabled">
+                              <a href="javascript:void(0);"
+                                 class="btn light btn-outline-danger btn-sm shadow w-100 mb-3 disabled">
                                    <i class="fas fa-exclamation-triangle me-1"></i> Unduh Draf
                               </a>
 					<?php } ?>
@@ -460,7 +465,7 @@ if ($archieve->verifikasi_status == 'Y') {
 			<?php
 			// Selalu gunakan route proxy IDM bypass
 			$pdfProxyUrl = base_url('v2/alih_media_arsip_vital/baca_dokumen?' . http_build_query(array('archieve' => $archieve->id)));
-			
+
 			if ($archieve->tte_status === 'Y' && !empty($archieve->tte_dokumen)) {
 				$namaFilePdf = $archieve->tte_dokumen;
 			} else {
@@ -469,34 +474,39 @@ if ($archieve->verifikasi_status == 'Y') {
 			$ttePosisi = !empty($archieve->tte_posisi) ? $archieve->tte_posisi : null;
 			?>
                <div class="card">
-                    <div class="card-header d-flex align-items-center justify-content-between py-2 px-4"
+                    <div class="card-header py-2 px-4"
                          style="border-bottom:1px solid #f0f0f0; background:#f8f9fa; border-radius:12px 12px 0 0;">
-                         <div class="d-flex align-items-center gap-2">
-                              <span style="width:10px;height:10px;border-radius:50%;background:#dc3545;display:inline-block;"></span>
-                              <span class="text-muted small"><?= htmlspecialchars($namaFilePdf) ?></span>
-                         </div>
-                         <!-- Navigasi Halaman PDF -->
-                         <div class="d-flex align-items-center gap-2">
-                              <button type="button" class="btn btn-xs btn-outline-secondary" id="btn-prev-page"
-                                      disabled>
-                                   <i class="fas fa-chevron-left"></i>
-                              </button>
-                              <span class="small fw-semibold" id="page-info">1 / 1</span>
-                              <button type="button" class="btn btn-xs btn-outline-secondary" id="btn-next-page"
-                                      disabled>
-                                   <i class="fas fa-chevron-right"></i>
-                              </button>
-                              <span class="text-muted mx-1">|</span>
-                              <button type="button" class="btn btn-xs btn-outline-secondary" id="btn-zoom-out"
-                                      title="Perkecil">
-                                   <i class="fas fa-search-minus"></i>
-                              </button>
-                              <span id="zoom-label" class="small fw-semibold"
-                                    style="min-width:40px;text-align:center;">100%</span>
-                              <button type="button" class="btn btn-xs btn-outline-secondary" id="btn-zoom-in"
-                                      title="Perbesar">
-                                   <i class="fas fa-search-plus"></i>
-                              </button>
+                         <div class="col-12">
+                              <div class="d-sm-flex justify-content-between align-items-center">
+                                   <div class="text-center text-xl-start align-items-center gap-2 mb-2 mb-sm-0">
+                                        <span style="width:10px;height:10px;border-radius:50%;background:#dc3545;display:inline-block;"></span>
+                                        <span class="ms-1 text-muted small"><?= htmlspecialchars($namaFilePdf) ?></span>
+                                   </div>
+                                   <div class="text-center text-xl-end align-items-center gap-2">
+                                        <button type="button" class="btn btn-xs btn-outline-primary"
+                                                id="btn-prev-page"
+                                                disabled>
+                                             <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <span class="small fw-semibold text-primary" id="page-info">1 / 1</span>
+                                        <button type="button" class="btn btn-xs btn-outline-primary"
+                                                id="btn-next-page"
+                                                disabled>
+                                             <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                        <span class="text-muted mx-1">|</span>
+                                        <button type="button" class="btn btn-xs btn-outline-primary" id="btn-zoom-out"
+                                                title="Perkecil">
+                                             <i class="fas fa-search-minus"></i>
+                                        </button>
+                                        <span id="zoom-label" class="small fw-semibold text-primary"
+                                              style="min-width:40px;text-align:center;">100%</span>
+                                        <button type="button" class="btn btn-xs btn-outline-primary" id="btn-zoom-in"
+                                                title="Perbesar">
+                                             <i class="fas fa-search-plus"></i>
+                                        </button>
+                                   </div>
+                              </div>
                          </div>
                     </div>
                     <div class="card-body p-0">
@@ -524,7 +534,8 @@ if ($archieve->verifikasi_status == 'Y') {
                <!-- Info Posisi TTE -->
 			<?php if (!empty($archieve->tte_posisi)): ?>
 				<?php $pos = json_decode($archieve->tte_posisi, true); ?>
-                    <div class="mt-2 p-3 rounded small" style="background:rgba(231,76,60,0.06); border:1px solid rgba(231,76,60,0.15);">
+                    <div class="mt-2 p-3 rounded small"
+                         style="background:rgba(231,76,60,0.06); border:1px solid rgba(231,76,60,0.15);">
                          <i class="fas fa-map-marker-alt me-1 text-danger"></i>
                          <strong>Posisi TTE:</strong>
                          Halaman <strong><?= $pos['page'] ?? '-' ?></strong> ·
@@ -534,7 +545,8 @@ if ($archieve->verifikasi_status == 'Y') {
 			<?php else: ?>
                     <div class="mt-2 p-3 rounded small bg-light text-muted">
                          <i class="fas fa-info-circle me-1"></i>
-                         Posisi TTE belum ditentukan oleh operator. Tanda tangan akan disisipkan secara <em>invisible</em>.
+                         Posisi TTE belum ditentukan oleh operator. Tanda tangan akan disisipkan secara
+                         <em>invisible</em>.
                     </div>
 			<?php endif; ?>
 		<?php } else { ?>
@@ -610,7 +622,8 @@ if ($archieve->verifikasi_status == 'Y') {
                               <button type="button" class="btn-close" style="color: #fff;" data-bs-dismiss="modal">
                               </button>
                          </div>
-                         <form id="passphrase-form" action="<?= base_url('v2/alih_media_arsip_vital/signed') ?>" method="post">
+                         <form id="passphrase-form" action="<?= base_url('v2/alih_media_arsip_vital/signed') ?>"
+                               method="post">
                               <div class="modal-body">
                                    <div class="row">
                                         <input type="hidden" class="form-control" name="archieve"
@@ -1025,7 +1038,7 @@ if ($archieve->verifikasi_status == 'Y') {
                 trigger: new FormValidation.plugins.Trigger(),
                 bootstrap5: new FormValidation.plugins.Bootstrap5({
                     eleValidClass: '',
-                    rowSelector: function(field, ele) {
+                    rowSelector: function (field, ele) {
                         switch (field) {
                             case 'passphrase':
                                 return '.col-md-12';
