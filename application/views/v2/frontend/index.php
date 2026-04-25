@@ -561,11 +561,6 @@
 
 <!-- FAQ Wrapper -->
 <section class="faq-wrapper bg-secondary">
-     <!-- Background -->
-     <div class="bg-shape">
-          <img src="assets/img/core-img/shape12.png" alt="">
-     </div>
-
      <!-- Divider -->
      <div class="divider-sm"></div>
 
