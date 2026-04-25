@@ -60,10 +60,13 @@
                          </ul>
                     </li>
                     <li>
-                         <a class="ai-icon" href="<?= base_url('v2/services/list') ?>">
+                         <a class="has-arrow ai-icon" href="javascript:void();" aria-expanded="false">
                               <i class="fas fa-file-upload"></i>
-                              <span class="nav-text">Permohonan Perbaikan</span>
+                              <span class="nav-text">Layanan</span>
                          </a>
+                         <ul aria-expanded="false">
+                              <li><a href="<?= base_url('v2/services/list') ?>">Permohonan Perbaikan</a></li>
+                         </ul>
                     </li>
 			<?php endif; ?>
 
@@ -112,15 +115,25 @@
                          <span class="nav-text">Profil</span>
                     </a>
                </li>
+               <li>
+                    <a href="<?= base_url('v2/authentications/signout') ?>" class="ai-icon">
+                         <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                              <polyline points="16 17 21 12 16 7"></polyline>
+                              <line x1="21" y1="12" x2="9" y2="12"></line>
+                         </svg>
+                         <span class="nav-text text-danger">Sign Out</span>
+                    </a>
+               </li>
 
           </ul>
 
           <div class="add-menu-sidebar">
                <!-- <img src="<?= base_url('assets/v3/backend/images/icon1.png') ?>" alt=""> -->
                <p>Anda ingi ke halaman utama?</p>
-               <a href="<?= base_url('v2/home') ?>" class="btn bg-white">
-                    <i class="flaticon-381-home-2"></i>
-                    <span class="ms-2">Beranda</span>
+               <a href="<?= base_url('v2/home') ?>" class="btn btn-sm btn-light shadow bg-white">
+                    <i class="flaticon-381-home-2 text-dark"></i>
+                    <span class="ms-2 text-dark">Beranda</span>
                </a>
           </div>
           <div class="copyright">

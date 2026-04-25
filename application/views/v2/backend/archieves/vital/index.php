@@ -116,10 +116,10 @@
 						<?php } ?>
 
                               <div class="col-xl-3 col-sm-12">
-                                   <button class="btn btn-primary btn-filter" title="Klik disini untuk mencari"
+                                   <button class="btn btn-primary btn-filter shadow me-1" title="Klik disini untuk mencari"
                                            type="button"><i class="fa fa-search me-1"></i>Filter
                                    </button>
-                                   <button class="btn btn-danger light btn-reset"
+                                   <button class="btn btn-danger light shadow btn-reset"
                                            title="Klik disini untuk menghapus filter" type="button">Reset
                                    </button>
                               </div>
@@ -136,14 +136,14 @@
                          <i class="fa-sharp fa-solid fa-file-alt me-2"></i>Daftar Arsip Vital
                     </div>
                     <div class="align-middle">
-					<?php if ($employee->user_role == 'verifikator_skpd') { ?>
+					<?php if (in_array($employee->user_role, array('verifikator_skpd', 'admin'))) { ?>
                               <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara') ?>"
-                                 class="btn btn-info btn-sm"><i class="fas fa-file-signature me-1"></i> Berita Acara
+                                 class="btn btn-info btn-sm shadow"><i class="fas fa-file-signature me-1"></i> Berita Acara
                                    (BAST)</a>
 					<?php } ?>
 
 					<?php if ($employee->user_role == 'operator') { ?>
-                              <a href="<?= base_url('v2/alih_media_arsip_vital/add') ?>" class="btn btn-primary btn-sm"><i
+                              <a href="<?= base_url('v2/alih_media_arsip_vital/add') ?>" class="btn btn-primary btn-sm shadow"><i
                                            class="fal fa-plus me-1"></i> Tambah Arsip Vital</a>
 					<?php } ?>
                     </div>
@@ -257,33 +257,41 @@
          },
          columns: [{
              data: "",
+             className: 'text-center',
              render: function (data, type, row, meta) {
                  let number = meta.row + meta.settings._iDisplayStart + 1;
                  return "<span class='d-flex justify-content-center'>" + number + "</span>";
              }
          }, {
              data: "klasifikasi",
+             className: 'text-center'
          }, {
              bSortable: !1,
              data: "deskripsi"
          }, {
-             data: "tahun"
+             data: "tahun",
+             className: 'text-center'
          }, {
              bSortable: !1,
-             data: "jumlah"
+             data: "jumlah",
+             className: 'text-center'
          }, {
-             data: "tanggal"
+             data: "tanggal",
+             className: 'text-center'
          }, {
              bSortable: !1,
              data: "status",
+             className: 'text-center'
          },
 		    <?php if ($employee->user_role == 'admin') { ?> {
                  bSortable: !1,
                  data: "company",
+                 className: 'text-center'
              },
 		    <?php } ?> {
                  data: "action",
                  bSortable: !1,
+                 className: 'text-center'
              }
          ]
      });

@@ -1335,7 +1335,7 @@ class Archieves extends MY_Controller
 
 	public function berita_acara()
 	{
-		if (empty($this->user_auth) or $this->user_auth->user_role != 'verifikator_skpd') {
+		if (empty($this->user_auth) or !in_array($this->user_auth->user_role, array('admin', 'verifikator_skpd'))) {
 			show_error('Not Authorize!', 403);
 			die;
 		}
@@ -1383,7 +1383,7 @@ class Archieves extends MY_Controller
 
      public function berita_acara_detail()
      {
-          if (empty($this->user_auth) or $this->user_auth->user_role != 'verifikator_skpd') {
+          if (empty($this->user_auth) or !in_array($this->user_auth->user_role, array('admin', 'verifikator_skpd'))) {
                show_error('Not Authorize!', 403);
                die;
           }
@@ -1935,7 +1935,7 @@ class Archieves extends MY_Controller
           $archieves = $this->archieve->get_all_where($where);
           if (!empty($archieves)) {
                foreach ($archieves as $archieve) {
-                    $btn_detail = '<a href="javascript:void(0);" class="btn btn-primary btn-xs shadow sharp btn-detail" data-archieve="' . $this->encryption->encrypt($archieve->id) . '" data-company="' . $archieve->nomor_skpd . '"><i class="fas fa-repeat"></i></a>';
+                    $btn_detail = '<a href="javascript:void(0);" class="btn btn-primary btn-xs shadow sharp btn-detail" data-archieve="' . $this->encryption->encrypt($archieve->id) . '" data-company="' . $archieve->nomor_skpd . '"><i class="fas fa-file-arrow-up"></i></a>';
 
                     $archieve->indek = (!empty($archieve->indek)) ? $archieve->indek : '-';
                     $archieve->deskripsi = (!empty($archieve->deskripsi)) ? $archieve->deskripsi : '-';

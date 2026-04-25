@@ -58,6 +58,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-message" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/setasign/fpdi" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/assets/upload/berita_acara" />
+      <excludeFolder url="file://$MODULE_DIR$/assets/upload/berkas/image_ttd" />
+      <excludeFolder url="file://$MODULE_DIR$/assets/upload/repair" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

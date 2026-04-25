@@ -133,10 +133,10 @@
 						<?php } ?>
 
                               <div class="col-xl-3 col-sm-12">
-                                   <button class="btn btn-primary btn-filter" title="Klik disini untuk mencari"
+                                   <button class="btn btn-primary btn-filter shadow me-1" title="Klik disini untuk mencari"
                                            type="button"><i class="fa fa-search me-1"></i>Filter
                                    </button>
-                                   <button class="btn btn-danger light btn-reset"
+                                   <button class="btn btn-danger light shadow btn-reset"
                                            title="Klik disini untuk menghapus filter" type="button">Reset
                                    </button>
                               </div>
@@ -155,7 +155,7 @@
 				<?php if ($employee->user_role == 'verifikator_skpd') { ?>
                          <div class="align-middle">
                               <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara_add') ?>"
-                                 class="btn btn-primary btn-sm"><i
+                                 class="btn btn-primary btn-sm shadow"><i
                                            class="fal fa-plus me-1"></i> Tambah Berita Acara</a>
                          </div>
 				<?php } ?>
@@ -284,14 +284,17 @@
              {
                  bSortable: !1,
                  data: "creator",
+                 className: "text-center"
              },
              {
                  bSortable: !1,
                  data: "company",
+                 className: "text-center"
              },
 		    <?php } ?> {
                  data: "action",
                  bSortable: !1,
+                 className: "text-center"
              }
          ]
      });

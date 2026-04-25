@@ -217,7 +217,7 @@
 <div class="media mb-2 mt-3">
      <div class="media-body">
           <div class="pull-end">
-               <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm">
+               <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm shadow">
                     <i class="fas fa-arrow-left me-1"></i> Kembali
                </a>
           </div>

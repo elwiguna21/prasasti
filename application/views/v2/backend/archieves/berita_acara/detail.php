@@ -46,7 +46,7 @@
                     </div>
                     <div class="align-middle">
                          <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara') ?>"
-                            class="btn btn-xs btn-info light shadow">
+                            class="btn btn-sm btn-info light shadow">
                               <i class="fas fa-arrow-left me-2"></i> Daftar Berita Acara</a>
                     </div>
                </div>
@@ -89,7 +89,7 @@
           <div class="card">
                <div class="card-header">
                     <h4 class="card-title">Daftar Dokumen Arsip Vital</h4>
-                    <button type="button" class="btn btn-primary btn-sm btn-document-modal">
+                    <button type="button" class="btn btn-primary btn-sm shadow btn-document-modal">
                          <i class="fas fa-link me-1"></i> Tautkan Dokumen Arsip Vital
                     </button>
                </div>
@@ -155,8 +155,8 @@
 
                     </div>
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
-                         <button type="submit" class="btn btn-primary">Simpan Tautan</button>
+                         <button type="button" class="btn btn-danger light btn-sm shadow" data-bs-dismiss="modal">Tutup</button>
+                         <button type="submit" class="btn btn-primary btn-sm shadow">Simpan Tautan</button>
                     </div>
                </form>
           </div>

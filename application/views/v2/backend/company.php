@@ -39,7 +39,7 @@
                          <i class="fa-solid fa-users me-2"></i>Daftar SKPD
                     </div>
                     <div class="align-middle">
-                         <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-add my-2">
+                         <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-add shadow my-2">
                               <i class="fa fa-plus me-2"></i>Tambah SKPD</a>
                     </div>
                </div>
@@ -125,7 +125,6 @@
                url: "<?= base_url('v2/companies/get_companies_json') ?>",
                type: "post",
           },
-          bLengthChange: !1,
           order: [
                [1, "asc"]
           ],
@@ -135,6 +134,7 @@
                zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
                searchPlaceholder: 'Cari nama SKPD...',
                sSearch: '',
+              lengthMenu: "Tampilkan _MENU_ data",
                paginate: {
                     next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
                     previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'

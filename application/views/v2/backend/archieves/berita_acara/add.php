@@ -33,8 +33,8 @@
                               </div>
                               <hr>
                               <div class="mt-4">
-                                   <button type="submit" class="btn btn-primary btn-save">Simpan BAST</button>
-                                   <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara') ?>" class="btn btn-light">Batal</a>
+                                   <button type="submit" class="btn btn-primary btn-sm shadow btn-save me-2">Simpan BAST</button>
+                                   <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara') ?>" class="btn btn-danger light btn-sm shadow ">Batal</a>
                               </div>
                          </form>
                     </div>

@@ -26,7 +26,7 @@ class Service extends CI_Model
 
           $this->db->select('repair.*, employee.fullname as employee_fullname');
           $this->db->join('employee', 'repair.verification_user = employee.user', 'left');
-          return $this->db->get('repair')->row();
+          return $this->db->get('service')->row();
      }
 
      public function get_all_where($where = null)
@@ -35,6 +35,7 @@ class Service extends CI_Model
 
           if (!empty($where['search'])) {
                $this->db->like('code', $where['search']);
+               $this->db->or_like('fullname', $where['search']);
                $this->db->or_like('email', $where['search']);
                unset($where['search']);
           }
@@ -57,7 +58,7 @@ class Service extends CI_Model
                $this->db->where($where);
           }
 
-          return $this->db->get('repair')->result();
+          return $this->db->get('service')->result();
      }
 
      public function get_all_where_count($where = null)
@@ -79,12 +80,12 @@ class Service extends CI_Model
                $this->db->where($where);
           }
 
-          return $this->db->count_all_results('repair');
+          return $this->db->count_all_results('service');
      }
 
      public function insert_entry($data)
      {
-          return $this->db->insert('repair', $data);
+          return $this->db->insert('service', $data);
      }
 
      public function update_entry($data, $where)
@@ -95,6 +96,18 @@ class Service extends CI_Model
 
           $data['updated_at']      = date('Y-m-d H:i:s');
           $this->db->where($where);
-          return $this->db->update('repair', $data);
+          return $this->db->update('service', $data);
      }
+
+	public function delete_entry($where)
+	{
+		if (empty($where)) {
+			return false;
+		}
+
+		$data['deleted_at']      = date('Y-m-d H:i:s');
+		$this->db->where($where);
+		$this->db->update('service', $where);
+		return $this->db->affected_rows();
+	}
 }

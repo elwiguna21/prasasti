@@ -1,2 +1,4 @@
 
 .env.development
+assets/upload/
+.idea/

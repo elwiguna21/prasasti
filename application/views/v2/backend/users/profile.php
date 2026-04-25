@@ -249,7 +249,7 @@
                                                             </div>
                                                             <small class="text-danger mb-3" id="note-pwd">*) Kosongkan <strong>Password & Konfirmasi Password</strong> apabila tidak akan diubah!</small>
                                                        </div>
-                                                       <button class="btn btn-primary" type="submit">Simpan</button>
+                                                       <button class="btn btn-primary btn-sm shadow" type="submit">Simpan</button>
                                                   </form>
                                              </div>
                                         </div>

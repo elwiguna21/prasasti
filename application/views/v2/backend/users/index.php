@@ -34,23 +34,16 @@
                                         <option value="operator">OPERATOR</option>
                                    </select>
                               </div>
-                              <div class="col-xl-3 col-sm-6">
+                              <div class="col-xl-3 col-sm-6 mb-3 mb-xl-0">
                                    <select id="skpd"></select>
                               </div>
                               <div class="col-xl-3 col-sm-6">
-                                   <button class="btn btn-primary btn-filter" title="Tekan untuk mencari" type="button"><i class="fa fa-search me-1"></i>Filter</button>
-                                   <button class="btn btn-danger light btn-reset" title="Tekan untuk hapus filter" type="button"><i class="fa fa-refresh me-1"></i>Reset</button>
+                                   <button class="btn btn-primary shadow btn-filter me-1" title="Tekan untuk mencari" type="button"><i class="fa fa-search me-1"></i>Filter</button>
+                                   <button class="btn btn-danger light shadow btn-reset" title="Tekan untuk hapus filter" type="button"><i class="fa fa-refresh me-1"></i>Reset</button>
                               </div>
                          </div>
                     </div>
                </div>
-          </div>
-          <div class="mb-3">
-               <ul class="d-flex align-items-center flex-wrap">
-                    <li><a href="javascript:void(0);" class="btn btn-primary btn-sm btn-add">
-                              <i class="fas fa-user-plus me-2"></i>Tambah Pengguna</a></li>
-                    <!-- <li><a href="blog-category.html" class="btn btn-primary mx-1">Blog Category</a></li> -->
-               </ul>
           </div>
           <?php if (!empty($this->session->flashdata('status'))) {
                $status = $this->session->flashdata('status');
@@ -74,8 +67,9 @@
                     <div class="cpa">
                          <i class="fa-solid fa-users me-2"></i>Daftar Pengguna
                     </div>
-                    <div class="tools">
-                         <a href="javascript:void(0);" class="expand SlideToolHeader"><i class="fal fa-angle-down"></i></a>
+                    <div class="">
+                         <a href="javascript:void(0);" class="btn btn-primary btn-sm shadow btn-add my-2">
+                              <i class="fas fa-user-plus me-2"></i>Tambah Pengguna</a>
                     </div>
                </div>
                <div class="cm-content-body form excerpt">
@@ -182,8 +176,8 @@
                          </div>
                     </div>
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-danger light me-3" data-bs-dismiss="modal">Batal</button>
-                         <button type="submit" class="btn btn-primary btn-save">Simpan</button>
+                         <button type="button" class="btn btn-danger btn-sm shadow light me-3" data-bs-dismiss="modal">Batal</button>
+                         <button type="submit" class="btn btn-primary btn-sm shadow btn-save">Simpan</button>
                     </div>
                </form>
           </div>
@@ -349,6 +343,7 @@
                zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
                searchPlaceholder: 'Cari nama atau ticket pengaduan...',
                sSearch: '',
+              lengthMenu: "Tampilkan _MENU_ data",
                paginate: {
                     next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
                     previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
@@ -362,19 +357,24 @@
                }
           }, {
                data: "username",
+              className: 'text-center'
           }, {
                bSortable: !1,
                data: "employee.fullname"
           }, {
                bSortable: !1,
-               data: "employee.phone"
+               data: "employee.phone",
+              className: 'text-center'
           }, {
-               data: "company.name"
+               data: "company.name",
+              className: 'text-center'
           }, {
                data: "role",
+              className: 'text-center'
           }, {
                data: "action",
                bSortable: !1,
+              className: 'text-center'
           }]
      });
      $(".dataTables_paginate").addClass("pagination-rounded");

@@ -112,7 +112,6 @@
                url: "<?= base_url('v2/services/get_services_json') ?>",
                type: "post",
           },
-          bLengthChange: !1,
           order: [
                [0, "desc"]
           ],
@@ -120,8 +119,9 @@
                processing: '<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Mohon tunggu ...',
                infoEmpty: '<strong>Tidak ada data</strong>',
                zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
-               searchPlaceholder: 'Cari tiket permohonan atau nama pemohon...',
+               searchPlaceholder: 'Cari tiket / nama / email pemohon...',
                sSearch: '',
+              lengthMenu: "Tampilkan _MENU_ data",
                paginate: {
                     next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
                     previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
@@ -137,18 +137,23 @@
                data: 'fullname'
           }, {
                bSortable: !1,
-               data: 'phone'
+               data: 'phone',
+              className: 'text-center'
           }, {
                bSortable: !1,
-               data: 'address'
+               data: 'address',
+              className: 'text-center'
           }, {
-               data: 'status'
+               data: 'status',
+              className: 'text-center'
           }, {
                bSortable: !1,
-               data: 'created_at'
+               data: 'created_at',
+              className: 'text-center'
           }, {
                bSortable: !1,
-               data: 'action'
+               data: 'action',
+              className: 'text-center'
           }]
      });
      $(".dataTables_paginate").addClass("pagination-rounded");

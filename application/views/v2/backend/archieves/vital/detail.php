@@ -86,6 +86,14 @@
             box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
         }
     }
+
+    .disabled-link {
+        pointer-events: none;
+        cursor: default;
+        /*color: gray;*/
+        text-decoration: none;
+        opacity: 0.6;
+    }
 </style>
 <?php
 $status_name = '';
@@ -160,7 +168,7 @@ if ($archieve->verifikasi_status == 'Y') {
 <div class="media mb-2 mt-3">
      <div class="media-body">
           <div class="pull-end">
-               <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm">
+               <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm shadow">
                     <i class="fas fa-arrow-left me-1"></i> Kembali
                </a>
           </div>
@@ -267,21 +275,21 @@ if ($archieve->verifikasi_status == 'Y') {
 
                <!-- action button -->
                <div class="col-xl-12 mb-3">
-				<?php if (($archieve->verifikasi_status != 'Y' or $archieve->verifikasi_status == null) and $this->session->userdata('next-role') == 'operator') {
+				<?php if ($this->session->userdata('next-role') == 'operator') {
 					$params = array('archieve' => $archieve->id, 'company' => $archieve->nomor_skpd);
 					?>
-                         <a href="<?= base_url('v2/alih_media_arsip_vital/edit?' . http_build_query($params)); ?>"
-                            class="btn btn-sm btn-warning w-100 mb-3 disabled">
+                         <a href="<?= base_url('v2/alih_media_arsip_vital/add?' . http_build_query($params)); ?>"
+                            class="btn btn-sm btn-warning shadow w-100 mb-3 <?= ($archieve->verifikasi_status == 'Y') ? 'disabled-link' : ''; ?>">
                               <i class="fas fa-edit me-1"></i> Ubah Arsip
                          </a>
-                         <a href="javascript:void(0);" class="btn light btn-sm btn-danger w-100 mb-3 btn-delete"
+                         <a href="javascript:void(0);" class="btn light btn-sm btn-danger shadow w-100 mb-3 btn-delete <?= ($archieve->verifikasi_status == 'Y') ? 'disabled-link' : ''; ?>"
                             data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                               <i class="fas fa-trash me-1"></i> Hapus Arsip
                          </a>
 				<?php } ?>
 
 				<?php if ($archieve->verifikasi_status == 'R' and $this->session->userdata('next-role') == 'operator') { ?>
-                         <a href="javascript:void(0);" class="btn btn-sm btn-info w-100 mb-3 btn-resend"
+                         <a href="javascript:void(0);" class="btn btn-sm btn-info shadow w-100 mb-3 btn-resend"
                             data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                               <i class="fas fa-arrow-right-from-file me-1"></i> Kirim Kembali ke Verifikator
                          </a>
@@ -290,16 +298,16 @@ if ($archieve->verifikasi_status == 'Y') {
 				<?php if ($this->session->userdata('next-role') == 'verifikator_skpd') {
 					?>
 					<?php if ($archieve->verifikasi_status == 'N') { ?>
-                              <a href="javascript:void(0);" class="btn btn-sm btn-success btn-verification w-100 mb-3"
+                              <a href="javascript:void(0);" class="btn btn-sm btn-success shadow btn-verification w-100 mb-3"
                                  data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                                    <i class="fas fa-user-check me-1"></i> Setujui & Teruskan ke Kepala SKPD
                               </a>
-                              <a href="javascript:void(0);" class="btn btn-sm btn-danger w-100 mb-3 btn-reject"
+                              <a href="javascript:void(0);" class="btn btn-sm btn-danger shadow w-100 mb-3 btn-reject"
                                  data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                                    <i class="fas fa-close me-1"></i> Tolak Pengajuan
                               </a>
 					<?php } else if ($archieve->tte_status == 'R') { ?>
-                              <a href="javascript:void(0);" class="btn btn-sm btn-info btn-resend w-100 mb-3"
+                              <a href="javascript:void(0);" class="btn btn-sm btn-info shadow btn-resend w-100 mb-3"
                                  data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                                    <i class="fas fa-arrow-right-from-file me-1"></i> Kirim ulang ke Kepala SKPD
                               </a>
@@ -311,13 +319,13 @@ if ($archieve->verifikasi_status == 'Y') {
 
 				<?php if ($archieve->tte_status == 'N' and $this->session->userdata('next-role') == 'kepala_skpd') { ?>
 					<?php if (file_exists('./assets/upload/berkas/' . $archieve->file)) { ?>
-                              <a href="javascript:void(0);" class="btn btn-sm btn-success btn-sign w-100 mb-3">
+                              <a href="javascript:void(0);" class="btn btn-sm btn-success shadow btn-sign w-100 mb-3">
                                    <i class="fas fa-file-signature me-1"></i> Tandatangani Dokumen
                               </a>
 					<?php } ?>
 
 
-                         <a href="javascript:void(0);" class="btn btn-sm btn-danger w-100 mb-3 btn-unsign"
+                         <a href="javascript:void(0);" class="btn btn-sm btn-danger shadow w-100 mb-3 btn-unsign"
                             data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                               <i class="fas fa-mail-reply me-1"></i> Kembalikan ke Verifikator
                          </a>
@@ -325,20 +333,20 @@ if ($archieve->verifikasi_status == 'Y') {
 
 				<?php if ($archieve->tte_status == 'Y' and file_exists('./assets/upload/berkas/' . $archieve->tte_dokumen)) { ?>
                          <a href="<?= base_url('assets/upload/berkas/' . $archieve->tte_dokumen) ?>" target="_blank"
-                            class="btn light btn-success btn-sm w-100 mb-3">
+                            class="btn light btn-success btn-sm shadow w-100 mb-3">
                               <i class="fas fa-file-pdf me-1"></i> Unduh Dokumen TTE
                          </a>
 				<?php } else {
 					if (file_exists('./assets/upload/berkas/' . $archieve->file)) { ?>
-                              <a href="<?= base_url('assets/upload/berkas/') . $archieve->file; ?>" target="_blank" class="btn light btn-info btn-sm w-100 mb-3">
+                              <a href="<?= base_url('assets/upload/berkas/') . $archieve->file; ?>" target="_blank" class="btn light btn-info btn-sm shadow w-100 mb-3">
                                    <i class="fas fa-file-pdf me-1"></i> Unduh Draf
                               </a>
 					<?php } else if (file_exists('./assets/data/' . $archieve->file)) { ?>
-                              <a href="<?= base_url('assets/data/') . $archieve->file; ?>" target="_blank" class="btn light btn-info btn-sm w-100 mb-3">
+                              <a href="<?= base_url('assets/data/') . $archieve->file; ?>" target="_blank" class="btn light btn-info btn-sm shadow w-100 mb-3">
                                    <i class="fas fa-file-pdf me-1"></i> Unduh Draf
                               </a>
 					<?php } else { ?>
-                              <a href="javascript:void(0);" class="btn light btn-outline-danger btn-sm w-100 mb-3 disabled">
+                              <a href="javascript:void(0);" class="btn light btn-outline-danger btn-sm shadow w-100 mb-3 disabled">
                                    <i class="fas fa-exclamation-triangle me-1"></i> Unduh Draf
                               </a>
 					<?php } ?>

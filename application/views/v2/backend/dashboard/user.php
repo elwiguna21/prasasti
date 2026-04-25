@@ -418,8 +418,6 @@
                </div>
           </div>
      </div>
-
-
 </div>
 
 <!-- Apex Chart -->
@@ -429,7 +427,7 @@
     let dataVital = [<?= $total_archieve_vital_waiting_verification ?>, <?= $total_archieve_vital_waiting_signed ?>, <?= $total_archieve_vital_signed ?>];
     let dataMusnah = [<?= $total_archieve_musnah_waiting_verification ?>, <?= $total_archieve_musnah_waiting_signed ?>, <?= $total_archieve_musnah_signed ?>];
     var optionsDonut = {
-        series: [45, 35, 20],
+        series: [100, 100, 100],
         labels: ['Menunggu Verifikasi', 'Menunggu TTE', 'Sudah TTE'],
         colors: ['#2f4cdd', '#ff6d4d', '#2bc155'],
         chart: {
