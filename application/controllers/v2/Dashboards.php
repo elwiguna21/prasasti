@@ -38,21 +38,72 @@ class Dashboards extends MY_Controller
 		$data['title'] = 'Dashboard';
 		$data['employee'] = $this->user_auth;
 
-		$data['total_users']               = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id)));
-		$data['total_users_operator']      = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => 'operator'));
-		$data['total_users_verificator']   = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => 'verifikator_skpd'));
+		$data['total_users'] = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role !=' => 'kepala_skpd'));
+		$data['total_users_operator'] = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => 'operator'));
+		$data['total_users_verificator'] = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role IN ("verifikator_skpd", "verifikator_lkd")' => null));
+		$data['total_users_evaluator'] = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => 'admin'));
 
-		$data['total_archieves']           = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company));
+		$data['total_archieves'] = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company));
 		$data['total_archieves_inactives'] = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company, 'jenis_arsip is null OR jenis_arsip NOT IN ("vital", "usul_serah")' => null));
-		$data['total_archieves_vital']     = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company, 'jenis_arsip' => 'vital'));
-		$data['total_archieves_usul_musnah']    = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company, 'jenis_arsip' => 'usul_serah'));
+		$data['total_archieves_vital'] = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company, 'jenis_arsip' => 'vital'));
+		$data['total_archieves_usul_musnah'] = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company, 'jenis_arsip' => 'usul_serah'));
 
-		$data['logs']  = $this->logs->get_all_where(
+		$data['logs'] = $this->logs->get_all_where(
 			   array(
-					 'user' => $this->encryption->decrypt($this->user_auth->id),
-				   'limits'    => 8
+					 'user' => $this->encryption->decrypt($this->user_auth->user_id),
+					 'limits' => 8
 			   )
 		);
+
+		$data['total_archieve_vital_waiting_verification'] = $this->archieve->get_all_where_count(
+			   array(
+					 'nomor_skpd' => $this->user_auth->no_company,
+					 'jenis_arsip' => 'vital',
+					 'verifikasi_status' => 'N'
+			   )
+		);
+		$data['total_archieve_vital_waiting_signed'] = $this->archieve->get_all_where_count(
+			   array(
+					 'nomor_skpd' => $this->user_auth->no_company,
+					 'jenis_arsip' => 'vital',
+					 'verifikasi_status' => 'Y',
+				   'tte_status'     => 'N'
+			   )
+		);
+		$data['total_archieve_vital_signed'] = $this->archieve->get_all_where_count(
+			   array(
+					 'nomor_skpd' => $this->user_auth->no_company,
+					 'jenis_arsip' => 'vital',
+					 'verifikasi_status' => 'Y',
+				   'tte_status'     => 'Y'
+			   )
+		);
+
+		$data['total_archieve_musnah_waiting_verification'] = $this->archieve->get_all_where_count(
+			   array(
+					 'nomor_skpd' => $this->user_auth->no_company,
+					 'jenis_arsip' => 'usul_serah',
+					 'verifikasi_status' => 'N'
+			   )
+		);
+		$data['total_archieve_musnah_waiting_signed'] = $this->archieve->get_all_where_count(
+			   array(
+					 'nomor_skpd' => $this->user_auth->no_company,
+					 'jenis_arsip' => 'usul_serah',
+					 'verifikasi_status' => 'Y',
+					 'tte_status'     => 'N'
+			   )
+		);
+		$data['total_archieve_musnah_signed'] = $this->archieve->get_all_where_count(
+			   array(
+					 'nomor_skpd' => $this->user_auth->no_company,
+					 'jenis_arsip' => 'usul_serah',
+					 'verifikasi_status' => 'Y',
+					 'tte_status'     => 'Y'
+			   )
+		);
+
+//		echo json_encode($data); die;
 
 		if ($this->user_auth->user_role == 'admin') {
 			$this->backend('v2/backend/dashboard/index', $data);

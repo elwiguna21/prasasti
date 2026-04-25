@@ -28,7 +28,8 @@
 </div>
 
 <div class="row">
-     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+<!--     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">-->
+          <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
           <div class="widget-stat card">
                <div class="card-body p-4">
                     <div class="media ai-icon d-flex">
@@ -37,13 +38,14 @@
                          </span>
                          <div class="media-body">
                               <h3 class="mb-0 text-black"><span class="counter ms-0"><?= $total_users; ?></span></h3>
-                              <p class="mb-0">Pengguna</p>
+                              <p class="mb-0">Total Pengguna</p>
                          </div>
                     </div>
                </div>
           </div>
      </div>
-     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+<!--     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">-->
+     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
           <div class="widget-stat card">
                <div class="card-body p-4">
                     <div class="media ai-icon d-flex">
@@ -58,7 +60,8 @@
                </div>
           </div>
      </div>
-     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+<!--     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">-->
+     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
           <div class="widget-stat card">
                <div class="card-body p-4">
                     <div class="media ai-icon d-flex">
@@ -68,6 +71,21 @@
                          <div class="media-body">
                               <h3 class="mb-0 text-black"><span class="counter ms-0"><?= $total_users_verificator; ?></span></h3>
                               <p class="mb-0">Verifikator</p>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+          <div class="widget-stat card">
+               <div class="card-body p-4">
+                    <div class="media ai-icon d-flex">
+                         <span class="me-3 bgl-danger text-danger">
+                               <i class="ti-user"></i>
+                         </span>
+                         <div class="media-body">
+                              <h3 class="mb-0 text-black"><span class="counter ms-0"><?= $total_users_evaluator; ?></span></h3>
+                              <p class="mb-0">Penilai</p>
                          </div>
                     </div>
                </div>
@@ -161,9 +179,7 @@
                          <small class="mb-0">Total arsip yang dibuat berdasarkan bulan</small>
                     </div>
                     <select class="form-control style-1 default-select  mt-3 mt-sm-0">
-                         <option>Weekly</option>
-                         <option>Monthly</option>
-                         <option>Daily</option>
+                         <option>2026</option>
                     </select>
                </div>
                <div class="card-body revenue-chart px-3">
@@ -233,19 +249,19 @@
                     <div class="row">
                          <div class="col-sm-4 mb-4">
                               <div class="border border-primary px-3 py-3 rounded-xl">
-                                   <h2 class="fs-32 font-w600 counter text-primary">25</h2>
+                                   <h2 class="fs-32 font-w600 counter text-primary"><?= $total_archieve_vital_waiting_verification; ?></h2>
                                    <p class="fs-16 mb-0">Menunggu di Verifikasi</p>
                               </div>
                          </div>
                          <div class="col-sm-4 mb-4">
                               <div class="border border-warning px-3 py-3 rounded-xl">
-                                   <h2 class="fs-32 font-w600 counter text-warning">60</h2>
+                                   <h2 class="fs-32 font-w600 counter text-warning"><?= $total_archieve_vital_waiting_signed; ?></h2>
                                    <p class="fs-16 mb-0">Menunggu di TTE</p>
                               </div>
                          </div>
                          <div class="col-sm-4 mb-4">
                               <div class="border border-success px-3 py-3 rounded-xl">
-                                   <h2 class="fs-32 font-w600 counter text-success">7</h2>
+                                   <h2 class="fs-32 font-w600 counter text-success"><?= $total_archieve_vital_signed; ?></h2>
                                    <p class="fs-16 mb-0">Sudah di TTE</p>
                               </div>
                          </div>
@@ -253,35 +269,35 @@
                     <div class="widget-timeline-icon">
                          <div class="row align-items-center">
                               <div class="col-xl-3 col-lg-2 col-xxl-4 col-sm-3 col-md-3 my-2 text-center text-sm-left">
-                                   <div id="chart" class="d-inline-block"></div>
+                                   <div id="vital-chart" class="d-inline-block"></div>
                               </div>
                               <div class="col-xl-9 col-lg-10 col-xxl-8 col-sm-9 col-md-9">
                                    <div class="d-flex align-items-center mb-3">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Immunities (24%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu Verifikasi (<?= ($total_archieve_vital_waiting_verification > 0) ? ($total_archieve_vital_waiting_verification/$total_archieves_vital)*100 : 0 ?>%)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-warning progress-animated" style="width:85%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-primary progress-animated" style="width:<?= ($total_archieve_vital_waiting_verification > 0) ? ($total_archieve_vital_waiting_verification/$total_archieves_vital)*100 : 0 ?>%; height:8px;" role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
-                                        <span class=" ms-auto col-1 col-xxl-2 px-0 text-end">25</span>
+                                        <span class=" ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_vital_waiting_verification; ?></span>
                                    </div>
                                    <div class="d-flex align-items-center  mb-3">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Heart Beat (41%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu di TTE (<?= ($total_archieve_vital_waiting_signed > 0) ? ($total_archieve_vital_waiting_signed/$total_archieves_vital)*100 : 0 ?>%)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-success progress-animated" style="width:70%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-warning progress-animated" style="width:<?= ($total_archieve_vital_waiting_signed > 0) ? ($total_archieve_vital_waiting_signed/$total_archieves_vital)*100 : 0 ?>%; height:8px;" role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
-                                        <span class="ms-auto col-1 col-xxl-2 px-0 text-end">60</span>
+                                        <span class="ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_vital_waiting_signed; ?></span>
                                    </div>
                                    <div class="d-flex align-items-center">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Weigth (15%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Selesai di TTE (<?= ($total_archieve_vital_signed > 0) ? ($total_archieve_vital_signed/$total_archieves_vital)*100 : 0 ?>%)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-dark progress-animated" style="width:30%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-success progress-animated" style="width:<?= ($total_archieve_vital_signed > 0) ? ($total_archieve_vital_signed/$total_archieves_vital)*100 : 0 ?>%; height:8px;" role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
-                                        <span class="ms-auto col-1 col-xxl-2 px-0 text-end">07</span>
+                                        <span class="ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_vital_signed; ?></span>
                                    </div>
                               </div>
                          </div>
@@ -307,19 +323,19 @@
                     <div class="row">
                          <div class="col-sm-4 mb-4">
                               <div class="border border-primary px-3 py-3 rounded-xl">
-                                   <h2 class="fs-32 font-w600 counter text-primary">25</h2>
+                                   <h2 class="fs-32 font-w600 counter text-primary"><?= $total_archieve_musnah_waiting_verification; ?></h2>
                                    <p class="fs-16 mb-0">Menunggu di Verifikasi</p>
                               </div>
                          </div>
                          <div class="col-sm-4 mb-4">
                               <div class="border border-warning px-3 py-3 rounded-xl">
-                                   <h2 class="fs-32 font-w600 counter text-warning">60</h2>
+                                   <h2 class="fs-32 font-w600 counter text-warning"><?= $total_archieve_musnah_waiting_signed; ?></h2>
                                    <p class="fs-16 mb-0">Menunggu di TTE</p>
                               </div>
                          </div>
                          <div class="col-sm-4 mb-4">
                               <div class="border border-success px-3 py-3 rounded-xl">
-                                   <h2 class="fs-32 font-w600 counter text-success">7</h2>
+                                   <h2 class="fs-32 font-w600 counter text-success"><?= $total_archieve_musnah_signed; ?></h2>
                                    <p class="fs-16 mb-0">Sudah di TTE</p>
                               </div>
                          </div>
@@ -327,35 +343,35 @@
                     <div class="widget-timeline-icon">
                          <div class="row align-items-center">
                               <div class="col-xl-3 col-lg-2 col-xxl-4 col-sm-3 col-md-3 my-2 text-center text-sm-left">
-                                   <div id="chart" class="d-inline-block"></div>
+                                   <div id="musnah-chart" class="d-inline-block"></div>
                               </div>
                               <div class="col-xl-9 col-lg-10 col-xxl-8 col-sm-9 col-md-9">
                                    <div class="d-flex align-items-center mb-3">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Immunities (24%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu Verifikasi (<?= ($total_archieve_musnah_waiting_verification > 0) ? ($total_archieve_musnah_waiting_verification/$total_archieves_usul_musnah)*100 : 0 ?>%)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-warning progress-animated" style="width:85%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-primary progress-animated" style="width:<?= ($total_archieve_musnah_waiting_verification > 0) ? ($total_archieve_musnah_waiting_verification/$total_archieves_usul_musnah)*100 : 0 ?>%; height:8px;" role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
-                                        <span class=" ms-auto col-1 col-xxl-2 px-0 text-end">25</span>
+                                        <span class=" ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_musnah_waiting_verification; ?></span>
                                    </div>
                                    <div class="d-flex align-items-center  mb-3">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Heart Beat (41%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Menunggu di TTE (<?= ($total_archieve_musnah_waiting_signed > 0) ? ($total_archieve_musnah_waiting_signed/$total_archieves_usul_musnah)*100 : 0 ?>%)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-success progress-animated" style="width:70%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-warning progress-animated" style="width:<?= ($total_archieve_musnah_waiting_signed > 0) ? ($total_archieve_musnah_waiting_signed/$total_archieves_usul_musnah)*100 : 0 ?>%; height:8px;" role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
-                                        <span class="ms-auto col-1 col-xxl-2 px-0 text-end">60</span>
+                                        <span class="ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_musnah_waiting_signed; ?></span>
                                    </div>
                                    <div class="d-flex align-items-center">
-                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Weigth (15%)</p>
+                                        <p class="mb-0 fs-14 me-2 col-4 col-xxl-5 px-0">Selesai di TTE (<?= ($total_archieve_musnah_signed > 0) ? ($total_archieve_musnah_signed/$total_archieves_usul_musnah)*100 : 0 ?>%)</p>
                                         <div class="progress mb-0" style="height:8px; width:100%;">
-                                             <div class="progress-bar bg-dark progress-animated" style="width:30%; height:8px;" role="progressbar">
+                                             <div class="progress-bar bg-success progress-animated" style="width:<?= ($total_archieve_musnah_signed > 0) ? ($total_archieve_musnah_signed/$total_archieves_usul_musnah)*100 : 0 ?>%; height:8px;" role="progressbar">
                                                   <span class="sr-only">60% Complete</span>
                                              </div>
                                         </div>
-                                        <span class="ms-auto col-1 col-xxl-2 px-0 text-end">07</span>
+                                        <span class="ms-auto col-1 col-xxl-2 px-0 text-end"><?= $total_archieve_musnah_signed; ?></span>
                                    </div>
                               </div>
                          </div>
@@ -371,9 +387,65 @@
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/apexchart/apexchart.js"></script>
 
 <!-- Dashboard 1 -->
-<script src="<?= base_url('assets/v3/backend/') ?>js/dashboard/dashboard-1.js"></script>
+<!--<script src="--><?php //= base_url('assets/v3/backend/') ?><!--js/dashboard/dashboard-1.js"></script>-->
 <!--<script src="--><?php //= base_url('assets/v3/backend/') ?><!--js/dashboard/analytics.js"></script>-->
 <script>
+    let dataVital   = [<?= $total_archieve_vital_waiting_verification ?>, <?= $total_archieve_vital_waiting_signed ?>, <?= $total_archieve_vital_signed ?>];
+    let dataMusnah  = [<?= $total_archieve_musnah_waiting_verification ?>, <?= $total_archieve_musnah_waiting_signed ?>, <?= $total_archieve_musnah_signed ?>];
+    var optionsDonut = {
+        series: [45, 35, 20],
+        labels: ['Menunggu Verifikasi', 'Menunggu TTE', 'Sudah TTE'],
+        colors:['#2f4cdd', '#ff6d4d', '#2bc155'],
+        chart: {
+            width: 150,
+            height: 150,
+            type: 'donut',
+            sparkline: {
+                enabled: true,
+            },
+
+        },
+        plotOptions: {
+            pie: {
+                customScale: 1,
+                donut: {
+                    size: '50%',
+                }
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        responsive: [{
+            breakpoint: 1300,
+            options: {
+                chart: {
+                    width: 120,
+                    height: 120
+                },
+            }
+        }],
+        legend: {
+            show: false
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return val + " Arsip"
+                }
+            }
+        }
+    };
+
+    var vitalDonutChart = new ApexCharts(document.querySelector("#vital-chart"), optionsDonut);
+    vitalDonutChart.render();
+    vitalDonutChart.updateSeries(dataVital);
+
+    var musnahDonutChart = new ApexCharts(document.querySelector("#musnah-chart"), optionsDonut);
+    musnahDonutChart.render();
+    musnahDonutChart.updateSeries(dataMusnah);
+
+
     var options = {
         series: [
             {
@@ -404,8 +476,6 @@
         markers: {
             shape: "circle",
         },
-
-
         legend: {
             show: false,
         },
@@ -419,7 +489,6 @@
             borderColor: '#eee',
         },
         xaxis: {
-
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Okt', 'Nov', 'Des'],
             labels: {
                 style: {
