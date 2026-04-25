@@ -36,7 +36,7 @@ class Users extends MY_Controller
           $data['title']      = 'Daftar Pengguna';
           $data['employee']   = $this->user_auth;
 
-          $this->backend('v2/backend/users', $data);
+          $this->backend('v2/backend/users/index', $data);
      }
 
      public function save()
@@ -109,7 +109,7 @@ class Users extends MY_Controller
 
           // echo json_encode($data);
           // die;
-          $this->backend('v2/backend/users_profile', $data);
+          $this->backend('v2/backend/users/profile', $data);
      }
 
      // JSON OUTPUT
