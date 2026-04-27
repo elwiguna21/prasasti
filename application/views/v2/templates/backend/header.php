@@ -62,7 +62,7 @@
             Nav header start
         ***********************************-->
           <div class="nav-header">
-               <a href="<?= base_url('v2/backend/dashboards') ?>" class="brand-logo">
+               <a href="<?= base_url('v2/dashboards') ?>" class="brand-logo">
                     <img class="logo-abbr" src="<?= base_url('assets/v3/backend/') ?>images/logo-prasasti.png" alt="">
                     <img class="logo-compact" src="<?= base_url('assets/v3/backend/') ?>images/logo-text-prasasti.png" alt="">
                     <img class="brand-title" src="<?= base_url('assets/v3/backend/') ?>images/logo-text-prasasti.png" alt="">

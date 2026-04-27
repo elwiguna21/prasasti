@@ -588,7 +588,7 @@ class Archieves extends MY_Controller
           }
 
           $params = array('archieve' => $this->input->post('archieve'), 'company' => $this->input->post('company'));
-          redirect('v2/backend/alih_media_arsip_vital/detail?' . http_build_query($params));
+          redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
      }
 
      public function vital_signed()
@@ -609,7 +609,7 @@ class Archieves extends MY_Controller
                } else {
                     $this->session->set_flashdata(array('status' => 500, 'message' => 'Maaf, mohon isi Passphrase terlebih dahulu! Silahkan coba kembali.'));
                }
-               redirect('v2/backend/alih_media_arsip_vital/detail?' . http_build_query($params));
+               redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
           }
 
           $where = array(
@@ -620,13 +620,13 @@ class Archieves extends MY_Controller
           $path_pdf = FCPATH . 'assets/upload/berkas/' . $archieve->file;
           if (empty($archieve)) {
                $this->session->set_flashdata(array('status' => 500, 'message' => 'Arsip tidak dapat ditemukan! Silahkan coba kembali.'));
-               redirect('v2/backend/alih_media_arsip_vital/detail?' . http_build_query($params));
+               redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
           } else if (!file_exists($path_pdf)) {
                $this->session->set_flashdata(array('status' => 500, 'message' => 'Dokumen pada arsip tidak ditemukan! Silahkan coba kembali.'));
-               redirect('v2/backend/alih_media_arsip_vital/detail?' . http_build_query($params));
+               redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
           } else if ($archieve->verifikasi_status != 'Y') {
                $this->session->set_flashdata(array('status' => 500, 'message' => 'Arsip belum diverifikasi! Silahkan hubungi verifikator.'));
-               redirect('v2/backend/alih_media_arsip_vital/detail?' . http_build_query($params));
+               redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
           }
 
           $passphrase = trim($this->input->post('passphrase'));
@@ -749,7 +749,7 @@ class Archieves extends MY_Controller
                ));
 
                $this->session->set_flashdata(array('status' => 500, 'message' => "Maaf, terjadi kesalahan saat proses TTE! " . $result['message']));
-               redirect('v2/backend/alih_media_arsip_vital/detail?' . http_build_query($params));
+               redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
           }
 
           // Sukses — update status di database
@@ -784,7 +784,7 @@ class Archieves extends MY_Controller
                $this->session->set_flashdata(array('status' => 200, 'message' => "Dokumen arsip gagal di TTE oleh Anda! {$result['message']}"));
           }
 
-          redirect('v2/backend/alih_media_arsip_vital/detail?' . http_build_query($params));
+          redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
      }
 
      public function get_archieves_vital_json()
@@ -1192,7 +1192,7 @@ class Archieves extends MY_Controller
           }
 
           if (!$this->input->is_ajax_request()) {
-               redirect('v2/backend/dashboards');
+               redirect('v2/dashboards');
           }
           $list = $this->guide_arsip->get_datatables();
           $data = array();
