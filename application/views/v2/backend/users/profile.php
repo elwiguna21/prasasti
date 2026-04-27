@@ -448,7 +448,7 @@
                               data: function() {
                                    return {
                                         email: formAdd.querySelector('input[name="email"]').value,
-                                        user: formAdd.querySelector('#user').value
+                                        user: formAdd.querySelector('input[name="user"]').value
                                    }
                               }
                          },
@@ -475,7 +475,7 @@
                               data: function() {
                                    return {
                                         // username: formAdd.querySelector('input[name="username"]').value
-                                        user: formAdd.querySelector('#user').value
+                                        user: formAdd.querySelector('input[name="user"]').value
                                    }
                               }
                          },
