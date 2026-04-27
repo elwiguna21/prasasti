@@ -308,10 +308,15 @@ if ($archieve->verifikasi_status == 'Y') {
                                  data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                                    <i class="fas fa-close me-1"></i> Tolak Pengajuan
                               </a>
+
 					<?php } else if ($archieve->tte_status == 'R') { ?>
                               <a href="javascript:void(0);" class="btn btn-sm btn-info shadow btn-resend w-100 mb-3"
                                  data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                                    <i class="fas fa-arrow-right-from-file me-1"></i> Kirim ulang ke Kepala SKPD
+                              </a>
+                              <a href="javascript:void(0);" class="btn btn-sm btn-danger shadow w-100 mb-3 btn-reject"
+                                 data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
+                                   <i class="fas fa-arrow-left-rotate me-1"></i> Kembalikan ke Operator
                               </a>
 					<?php } ?>
 
@@ -601,9 +606,9 @@ if ($archieve->verifikasi_status == 'Y') {
                               </div>
                          </div>
                          <div class="modal-footer">
-                              <button type="button" class="btn btn-danger light me-3" data-bs-dismiss="modal">Batal
+                              <button type="button" class="btn btn-danger btn-sm light shadow me-3" data-bs-dismiss="modal">Batal
                               </button>
-                              <button type="submit" class="btn btn-primary btn-save">Simpan</button>
+                              <button type="submit" class="btn btn-primary btn-sm shadow btn-save">Simpan</button>
                          </div>
                     </form>
                </div>
@@ -648,9 +653,9 @@ if ($archieve->verifikasi_status == 'Y') {
                                    </div>
                               </div>
                               <div class="modal-footer">
-                                   <button type="button" class="btn btn-danger light me-3" data-bs-dismiss="modal">Batal
+                                   <button type="button" class="btn btn-danger light btn-sm shadow me-3" data-bs-dismiss="modal">Batal
                                    </button>
-                                   <button type="submit" class="btn btn-primary btn-submit">Simpan</button>
+                                   <button type="submit" class="btn btn-primary btn-sm shadow btn-submit">Simpan</button>
                               </div>
                          </form>
                     </div>

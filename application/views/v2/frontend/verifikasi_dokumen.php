@@ -60,7 +60,7 @@
                 <?php endif; ?>
 
                 <!-- Detail Dokumen -->
-                <div class="card border-0 shadow-sm mt-3">
+                <div class="card border-0 shadow my-3">
                     <div class="card-header bg-white border-bottom">
                         <h6 class="mb-0 fw-bold"><i class="fas fa-file-alt me-2 text-primary"></i>Informasi Dokumen</h6>
                     </div>
@@ -94,7 +94,7 @@
 
                 <?php if (!empty($berkas->tte_status) && $berkas->tte_status === 'Y'): ?>
                 <!-- Detail TTE -->
-                <div class="card border-0 shadow-sm mt-3">
+                <div class="card border-0 shadow my-3">
                     <div class="card-header bg-white border-bottom">
                         <h6 class="mb-0 fw-bold"><i class="fas fa-pen-nib me-2 text-success"></i>Informasi Tanda Tangan Elektronik</h6>
                     </div>
@@ -103,7 +103,7 @@
                             <tbody>
                                 <tr>
                                     <td class="text-muted" style="width:200px;">Ditandatangani oleh</td>
-                                    <td class="fw-semibold"><?= htmlspecialchars($berkas->tte_user ?? '-') ?></td>
+                                    <td class="fw-semibold"><?= (!empty($penandatangan)) ? $penandatangan->fullname . '<br/><span class="fw-light">' . $penandatangan->jabatan . '</span>' : '-' ?></td>
                                 </tr>
                                 <tr>
                                     <td class="text-muted">Tanggal TTE</td>
@@ -116,7 +116,7 @@
                 <?php endif; ?>
 
                 <!-- Catatan Hukum -->
-                <div class="card border-0 shadow-sm mt-3 bg-light">
+                <div class="card border-0 shadow mt-3 bg-light">
                     <div class="card-body small text-muted">
                         <strong class="fst-italic">Catatan :</strong>
                         <p class="mb-1">- UU ITE No 11 Tahun 2008 Pasal 5 ayat 1 : "Informasi Elektronik dan/atau Dokumen Elektronik dan/atau hasil cetaknya merupakan alat bukti hukum yang sah."</p>

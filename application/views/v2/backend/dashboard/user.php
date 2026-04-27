@@ -127,7 +127,7 @@
                                    <div class="progress-bar progress-animated bg-white"
                                         style="width: <?= ($total_archieves_inactives > 0) ? ($total_archieves_inactives / $total_archieves) * 100 : 0; ?>%"></div>
                               </div>
-                              <small><?= ($total_archieves_inactives > 0) ? ($total_archieves_inactives / $total_archieves) * 100 : 0; ?>
+                              <small><?= ($total_archieves_inactives > 0) ? round(($total_archieves_inactives / $total_archieves) * 100, 2) : 0; ?>
                                    % dari total arsip</small>
                          </div>
                     </div>
@@ -148,7 +148,7 @@
                                    <div class="progress-bar progress-animated bg-white"
                                         style="width: <?= ($total_archieves_vital > 0) ? ($total_archieves_vital / $total_archieves) * 100 : 0; ?>%"></div>
                               </div>
-                              <small><?= ($total_archieves_vital > 0) ? ($total_archieves_vital / $total_archieves) * 100 : 0; ?>
+                              <small><?= ($total_archieves_vital > 0) ?  round(($total_archieves_vital / $total_archieves) * 100,2) : 0; ?>
                                    % dari total arsip</small>
                          </div>
                     </div>
@@ -169,7 +169,7 @@
                                    <div class="progress-bar progress-animated bg-white"
                                         style="width: <?= ($total_archieves_usul_musnah > 0) ? ($total_archieves_usul_musnah / $total_archieves) * 100 : 0; ?>%"></div>
                               </div>
-                              <small><?= ($total_archieves_usul_musnah > 0) ? ($total_archieves_usul_musnah / $total_archieves) * 100 : 0; ?>
+                              <small><?= ($total_archieves_usul_musnah > 0) ? round(($total_archieves_usul_musnah / $total_archieves) * 100, 2) : 0; ?>
                                    % dari total arsip</small>
                          </div>
                     </div>

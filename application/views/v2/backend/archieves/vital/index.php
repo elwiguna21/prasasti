@@ -208,7 +208,9 @@
              cache: true
          }
      });
-	<?php } ?>
+	<?php } else { ?>
+          let company =false;
+     <?php } ?>
 
      $('.btn-reset').click(function () {
          if (company) {

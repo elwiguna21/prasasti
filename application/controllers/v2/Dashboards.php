@@ -59,15 +59,15 @@ class Dashboards extends MY_Controller
 			   array(
 					 'nomor_skpd' => $this->user_auth->no_company,
 					 'jenis_arsip' => 'vital',
-					 'verifikasi_status' => 'N'
+					 'verifikasi_status IN ("N", "R")' => null
 			   )
 		);
 		$data['total_archieve_vital_waiting_signed'] = $this->archieve->get_all_where_count(
 			   array(
 					 'nomor_skpd' => $this->user_auth->no_company,
 					 'jenis_arsip' => 'vital',
-					 'verifikasi_status' => 'Y',
-				   'tte_status'     => 'N'
+					 'verifikasi_status IN ("Y")' => null,
+				   'tte_status IN ("N", "R")' => null,
 			   )
 		);
 		$data['total_archieve_vital_signed'] = $this->archieve->get_all_where_count(
