@@ -1,8 +1,8 @@
 <style>
-     .dataTables_filter input {
-          width: 400px !important;
-          /* Or any specific pixel or percentage value (e.g., 50%) */
-     }
+    .dataTables_filter input {
+        width: 400px !important;
+        /* Or any specific pixel or percentage value (e.g., 50%) */
+    }
 </style>
 
 <div class="page-titles">
@@ -74,6 +74,26 @@
           </div>
      </div>
 
+	<?php if (!empty($this->session->flashdata('status'))) {
+		$status = $this->session->flashdata('status'); ?>
+          <div class="col-12">
+               <div class="alert alert-<?= ($status == 200) ? 'success' : 'danger'; ?> left-icon-big alert-dismissible fade show">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"><span><i
+                                      class="mdi mdi-btn-close"></i></span>
+                    </button>
+                    <div class="media">
+                         <div class="alert-left-icon-big">
+                              <span><i class="mdi mdi-<?= ($status == 200) ? 'check-circle-outline' : 'alert'; ?>"></i></span>
+                         </div>
+                         <div class="media-body">
+                              <h5 class="mt-1 mb-2"><?= ($status == 200) ? 'Berhasil' : 'Gagal' ?>!</h5>
+                              <p class="mb-0"><?= $this->session->flashdata('message'); ?></p>
+                         </div>
+                    </div>
+               </div>
+          </div>
+	<?php } ?>
+
      <div class="col-12">
           <div class="card">
                <div class="card-header">
@@ -83,15 +103,15 @@
                     <div class="table-responsive">
                          <table id="services-table" class="display" style="min-width: 845px">
                               <thead>
-                                   <tr>
-                                        <th width="8%" class="text-center">No.</th>
-                                        <th class="text-center">Nama lengkap</th>
-                                        <th class="text-start">No. HP</th>
-                                        <th class="text-center">Alamat Pemohon</th>
-                                        <th class="text-center">Status</th>
-                                        <th class="text-center">Permohonan Dibuat</th>
-                                        <th width="8%" class="text-center">Aksi</th>
-                                   </tr>
+                              <tr>
+                                   <th width="8%" class="text-center">No.</th>
+                                   <th class="text-center">Nama lengkap</th>
+                                   <th class="text-start">No. HP</th>
+                                   <th class="text-center">Alamat Pemohon</th>
+                                   <th class="text-center">Status</th>
+                                   <th class="text-center">Permohonan Dibuat</th>
+                                   <th width="8%" class="text-center">Aksi</th>
+                              </tr>
                               </thead>
                               <tbody>
                               </tbody>
@@ -104,58 +124,58 @@
 
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 <script>
-     let services_table = $('#services-table').DataTable({
-          searching: true,
-          processing: true,
-          serverSide: true,
-          ajax: {
-               url: "<?= base_url('v2/services/get_services_json') ?>",
-               type: "post",
-          },
-          order: [
-               [0, "desc"]
-          ],
-          language: {
-               processing: '<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Mohon tunggu ...',
-               infoEmpty: '<strong>Tidak ada data</strong>',
-               zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
-               searchPlaceholder: 'Cari tiket / nama / email pemohon...',
-               sSearch: '',
-              lengthMenu: "Tampilkan _MENU_ data",
-               paginate: {
-                    next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
-                    previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
-               }
-          },
-          columns: [{
-               data: "id",
-               render: function(data, type, row, meta) {
-                    let number = meta.row + meta.settings._iDisplayStart + 1;
-                    return "<span class='d-flex justify-content-center'>" + number + "</span>";
-               }
-          }, {
-               data: 'fullname'
-          }, {
-               bSortable: !1,
-               data: 'phone',
-              className: 'text-center'
-          }, {
-               bSortable: !1,
-               data: 'address',
-              className: 'text-center'
-          }, {
-               data: 'status',
-              className: 'text-center'
-          }, {
-               bSortable: !1,
-               data: 'created_at',
-              className: 'text-center'
-          }, {
-               bSortable: !1,
-               data: 'action',
-              className: 'text-center'
-          }]
-     });
-     $(".dataTables_paginate").addClass("pagination-rounded");
-     // $(".dataTables_filter").hide();
+    let services_table = $('#services-table').DataTable({
+        searching: true,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "<?= base_url('v2/services/get_services_json') ?>",
+            type: "post",
+        },
+        order: [
+            [0, "desc"]
+        ],
+        language: {
+            processing: '<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Mohon tunggu ...',
+            infoEmpty: '<strong>Tidak ada data</strong>',
+            zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
+            searchPlaceholder: 'Cari tiket / nama / email pemohon...',
+            sSearch: '',
+            lengthMenu: "Tampilkan _MENU_ data",
+            paginate: {
+                next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
+            }
+        },
+        columns: [{
+            data: "id",
+            render: function (data, type, row, meta) {
+                let number = meta.row + meta.settings._iDisplayStart + 1;
+                return "<span class='d-flex justify-content-center'>" + number + "</span>";
+            }
+        }, {
+            data: 'fullname'
+        }, {
+            bSortable: !1,
+            data: 'phone',
+            className: 'text-center'
+        }, {
+            bSortable: !1,
+            data: 'address',
+            className: 'text-center'
+        }, {
+            data: 'status',
+            className: 'text-center'
+        }, {
+            bSortable: !1,
+            data: 'created_at',
+            className: 'text-center'
+        }, {
+            bSortable: !1,
+            data: 'action',
+            className: 'text-center'
+        }]
+    });
+    $(".dataTables_paginate").addClass("pagination-rounded");
+    // $(".dataTables_filter").hide();
 </script>

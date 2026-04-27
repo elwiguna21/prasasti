@@ -21,7 +21,8 @@
     }
 </style>
 <div class="form-head d-flex mb-3 align-items-start">
-     <div class="me-auto d-none d-lg-block">
+<!--     <div class="me-auto d-none d-lg-block">-->
+     <div class="me-auto d-block">
           <h2 class="text-primary font-w600 mb-0">Halo, <?= $employee->fullname; ?></h2>
           <p class="mb-0">Selamat datang di Dashboard Prasasti!</p>
      </div>

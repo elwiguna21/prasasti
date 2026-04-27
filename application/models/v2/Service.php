@@ -11,12 +11,12 @@ class Service extends CI_Model
 
      public function get_single_where($where = null)
      {
-          $this->db->where('repair.deleted_at', null);
+          $this->db->where('service.deleted_at', null);
 
           if (!empty($where['search'])) {
-               $this->db->like('repair.code', $where['search']);
-               $this->db->or_like('repair.email', $where['search']);
-               $this->db->or_like('repair.phone', $where['search']);
+               $this->db->like('service.code', $where['search']);
+               $this->db->or_like('service.email', $where['search']);
+               $this->db->or_like('service.phone', $where['search']);
                unset($where['search']);
           }
 
@@ -24,8 +24,8 @@ class Service extends CI_Model
                $this->db->where($where);
           }
 
-          $this->db->select('repair.*, employee.fullname as employee_fullname');
-          $this->db->join('employee', 'repair.verification_user = employee.user', 'left');
+          $this->db->select('service.*, employee.fullname as employee_fullname');
+          $this->db->join('employee', 'service.verification_user = employee.user', 'left');
           return $this->db->get('service')->row();
      }
 
@@ -107,7 +107,7 @@ class Service extends CI_Model
 
 		$data['deleted_at']      = date('Y-m-d H:i:s');
 		$this->db->where($where);
-		$this->db->update('service', $where);
+		$this->db->update('service', $data);
 		return $this->db->affected_rows();
 	}
 }

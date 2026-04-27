@@ -94,7 +94,6 @@ class Services extends MY_Controller
 
      public function list()
      {
-          $this->load->model('v2/User', 'user');
           $this->load->model('v2/Employee', 'employee');
 
           if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
@@ -130,7 +129,6 @@ class Services extends MY_Controller
 
      public function detail()
      {
-          $this->load->model('v2/User', 'user');
           $this->load->model('v2/Employee', 'employee');
 
           if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
@@ -151,7 +149,7 @@ class Services extends MY_Controller
                $user->avatar       = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
           }
 
-          $data['title']           = 'Daftar Permohonan Perbaikan Arsip';
+          $data['title']           = 'Detail Permohonan Perbaikan Arsip';
           $data['employee']        = $user;
 
           if (empty($_GET['code']) or empty($_GET['service'])) {
@@ -162,8 +160,7 @@ class Services extends MY_Controller
           $id                      = $this->encryption->decrypt($_GET['service']);
           $code                    = $_GET['code'];
 
-          $service                 = $this->service->get_single_where(array('repair.id' => $id, 'repair.code' => $code));
-
+          $service                 = $this->service->get_single_where(array('service.id' => $id, 'service.code' => $code));
           if (empty($service)) {
                show_error('Terjadi kesalahan saat memuat data permohonan...');
                die;
@@ -173,10 +170,63 @@ class Services extends MY_Controller
 
           $data['service']         = $service;
 
-          // echo json_encode($data);
-          // die;
+//           echo json_encode($data);
+//           die;
           $this->backend('v2/backend/services/detail', $data);
      }
+
+	public function deleted()
+	{
+		$this->load->model('v2/Employee', 'employee');
+
+		if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
+			show_error('Not Authorize! Please signin again.', 403);
+			die;
+		} else {
+			$user                    = $this->employee->get_single_where(
+				   array(
+						 'user.id'           => $this->encryption->decrypt($this->session->userdata('next-uid')),
+						 'user.username'     => $this->session->userdata('next-uname')
+				   )
+			);
+
+			if (empty($user)) {
+				redirect('v2/authentications/signout');
+			} else if ($user->user_username != 'lutdinar') {
+				show_error('Cant access this request!', 403);
+				die;
+			}
+
+			$user->avatar       = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
+		}
+
+		if (empty($_POST['code']) or empty($_POST['service'])) {
+			show_error('Mohon pilih permohonan terlebih dahulu! Silahkan coba kembali.');
+			die;
+		}
+
+		$id                      = $this->encryption->decrypt($_POST['service']);
+		$code                    = $_POST['code'];
+
+		$service                 = $this->service->get_single_where(array('service.id' => $id, 'service.code' => $code));
+		if (empty($service)) {
+			show_error('Terjadi kesalahan saat memuat data permohonan...');
+			die;
+		}
+
+		$deleted                 = $this->service->delete_entry(array('id' => $service->id, 'code' => $service->code));
+		if ($deleted > 0) {
+			if (file_exists('./data/repair/' . $service->document)) {
+				unlink('./data/repair/' . $service->document);
+			}
+
+			$this->session->set_flashdata(array('status' => 200, 'message' => 'Permohonan berhasil dihapus.'));
+		} else {
+			$this->session->set_flashdata(array('status' => 500, 'message' => 'Permohonan gagal dihapus! Silahkan coba kembali.'));
+		}
+
+		redirect('v2/services/list');
+	}
 
      public function get_services_json()
      {
