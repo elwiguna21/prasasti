@@ -1,11 +1,12 @@
-<div class="contact-page-section">
+<div class="case-study-section">
      <!-- Divider -->
-     <div class="divider"></div>
+     <div class="divider-sm"></div>
+     <div class="divider-sm"></div>
      <div class="container py-5">
           <div class="row justify-content-center">
                <div class="col-lg-8">
 
-				<?php if (empty($berkas)): ?>
+                    <?php if (empty($berkas)): ?>
                          <!-- Dokumen Tidak Ditemukan -->
                          <div class="card border-0 shadow-sm text-center py-5">
                               <div class="card-body">
@@ -17,7 +18,7 @@
                                    </a>
                               </div>
                          </div>
-				<?php else: ?>
+                    <?php else: ?>
                          <!-- Header Verifikasi -->
                          <div class="text-center mb-4">
                               <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle mb-3"
@@ -30,7 +31,7 @@
                          </div>
 
                          <!-- Status TTE -->
-					<?php if (!empty($berkas->tte_status) && $berkas->tte_status === 'Y'): ?>
+                         <?php if (!empty($berkas->tte_status) && $berkas->tte_status === 'Y'): ?>
                               <div class="alert alert-success d-flex align-items-center shadow-sm border-0"
                                    role="alert">
                                    <i class="fas fa-check-circle fa-2x me-3"></i>
@@ -40,7 +41,7 @@
                                              terverifikasi.</small>
                                    </div>
                               </div>
-					<?php else: ?>
+                         <?php else: ?>
                               <div class="alert alert-warning d-flex align-items-center shadow-sm border-0"
                                    role="alert">
                                    <i class="fas fa-clock fa-2x me-3"></i>
@@ -49,7 +50,7 @@
                                         <small>Dokumen ini belum ditandatangani secara elektronik.</small>
                                    </div>
                               </div>
-					<?php endif; ?>
+                         <?php endif; ?>
 
                          <!-- Detail Dokumen -->
                          <div class="card border-0 shadow my-3">
@@ -60,34 +61,34 @@
                               <div class="card-body">
                                    <table class="table table-borderless mb-0">
                                         <tbody>
-                                        <tr>
-                                             <td class="text-muted" style="width:200px;">Kode Klasifikasi</td>
-                                             <td class="fw-semibold"><?= htmlspecialchars($berkas->kode_klsf ?? '-') ?></td>
-                                        </tr>
-                                        <tr>
-                                             <td class="text-muted">Uraian Informasi Arsip</td>
-                                             <td class="fw-semibold"><?= htmlspecialchars(!empty($berkas->uraian_informasi_arsip)) ? $berkas->uraian_informasi_arsip : (!empty($berkas->deskripsi) ? $berkas->deskripsi : '-') ?></td>
-                                        </tr>
-                                        <tr>
-                                             <td class="text-muted">Kurun Waktu (Tahun)</td>
-                                             <td class="fw-semibold"><?= htmlspecialchars($berkas->tahun ?? '-') ?></td>
-                                        </tr>
-                                        <tr>
-                                             <td class="text-muted">Jumlah Dokumen</td>
-                                             <td class="fw-semibold"><?= htmlspecialchars($berkas->jumlah ?? '-') ?>
-                                                  dok
-                                             </td>
-                                        </tr>
-                                        <tr>
-                                             <td class="text-muted">Tanggal</td>
-                                             <td class="fw-semibold"><?= !empty($berkas->tanggal) ? date('d F Y', strtotime($berkas->tanggal)) : '-' ?></td>
-                                        </tr>
+                                             <tr>
+                                                  <td class="text-muted" style="width:200px;">Kode Klasifikasi</td>
+                                                  <td class="fw-semibold"><?= htmlspecialchars($berkas->kode_klsf ?? '-') ?></td>
+                                             </tr>
+                                             <tr>
+                                                  <td class="text-muted">Uraian Informasi Arsip</td>
+                                                  <td class="fw-semibold"><?= htmlspecialchars(!empty($berkas->uraian_informasi_arsip)) ? $berkas->uraian_informasi_arsip : (!empty($berkas->deskripsi) ? $berkas->deskripsi : '-') ?></td>
+                                             </tr>
+                                             <tr>
+                                                  <td class="text-muted">Kurun Waktu (Tahun)</td>
+                                                  <td class="fw-semibold"><?= htmlspecialchars($berkas->tahun ?? '-') ?></td>
+                                             </tr>
+                                             <tr>
+                                                  <td class="text-muted">Jumlah Dokumen</td>
+                                                  <td class="fw-semibold"><?= htmlspecialchars($berkas->jumlah ?? '-') ?>
+                                                       dok
+                                                  </td>
+                                             </tr>
+                                             <tr>
+                                                  <td class="text-muted">Tanggal</td>
+                                                  <td class="fw-semibold"><?= !empty($berkas->tanggal) ? date('d F Y', strtotime($berkas->tanggal)) : '-' ?></td>
+                                             </tr>
                                         </tbody>
                                    </table>
                               </div>
                          </div>
 
-					<?php if (!empty($berkas->tte_status) && $berkas->tte_status === 'Y'): ?>
+                         <?php if (!empty($berkas->tte_status) && $berkas->tte_status === 'Y'): ?>
                               <!-- Detail TTE -->
                               <div class="card border-0 shadow my-3">
                                    <div class="card-header bg-white border-bottom">
@@ -97,21 +98,21 @@
                                    <div class="card-body">
                                         <table class="table table-borderless mb-0">
                                              <tbody>
-                                             <tr>
-                                                  <td class="text-muted" style="width:200px;">Ditandatangani oleh</td>
-                                                  <td class="fw-semibold"><?= (!empty($penandatangan)) ? $penandatangan->fullname . '<br/><span class="fw-light">' . $penandatangan->jabatan . '</span>' : '-' ?></td>
-                                             </tr>
-                                             <tr>
-                                                  <td class="text-muted">Tanggal TTE</td>
-                                                  <td class="fw-semibold"><?= !empty($berkas->tte_tanggal) ? date('d F Y, H:i', strtotime($berkas->tte_tanggal)) : '-' ?>
-                                                       WIB
-                                                  </td>
-                                             </tr>
+                                                  <tr>
+                                                       <td class="text-muted" style="width:200px;">Ditandatangani oleh</td>
+                                                       <td class="fw-semibold"><?= (!empty($penandatangan)) ? $penandatangan->fullname . '<br/><span class="fw-light">' . $penandatangan->jabatan . '</span>' : '-' ?></td>
+                                                  </tr>
+                                                  <tr>
+                                                       <td class="text-muted">Tanggal TTE</td>
+                                                       <td class="fw-semibold"><?= !empty($berkas->tte_tanggal) ? date('d F Y, H:i', strtotime($berkas->tte_tanggal)) : '-' ?>
+                                                            WIB
+                                                       </td>
+                                                  </tr>
                                              </tbody>
                                         </table>
                                    </div>
                               </div>
-					<?php endif; ?>
+                         <?php endif; ?>
 
                          <!-- Catatan Hukum -->
                          <div class="card border-0 shadow mt-3 bg-light">
@@ -126,7 +127,7 @@
                               </div>
                          </div>
 
-				<?php endif; ?>
+                    <?php endif; ?>
 
                </div>
           </div>
