@@ -70,6 +70,7 @@
                     </li>
 			<?php endif; ?>
 
+               <?php if (!in_array($this->session->userdata('next-role'), ['kepala_lkd', 'verifikator_lkd'])): ?>
                <li>
                     <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                          <i class="flaticon-381-folder-14"></i>
@@ -81,6 +82,7 @@
                                    Serah</a></li>
                     </ul>
                </li>
+               <?php endif; ?>
 			<?php if (in_array($this->session->userdata('next-role'), ['kepala_lkd', 'verifikator_lkd'])): ?>
                     <li>
                          <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

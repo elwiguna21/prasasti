@@ -205,6 +205,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
 
           $aksi = $this->input->post('aksi'); // 'disetujui' atau 'ditolak'
+          $alasan = $this->input->post('alasan');
           $nilai = ($aksi === 'disetujui') ? 'Y' : 'N';
 
           $this->berkas->update_by_id($id, array(
@@ -216,6 +217,11 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $monitoring_msg = ($aksi === 'disetujui')
                ? 'Berkas disetujui oleh Admin dan diteruskan ke Verifikator LKD.'
                : 'Berkas ditolak oleh Admin.';
+               
+          if ($aksi === 'ditolak' && !empty($alasan)) {
+               $monitoring_msg .= ' Alasan: ' . htmlspecialchars($alasan);
+          }
+
           $this->monitoring->insert_entry(array(
                'berkas'  => $id,
                'title'   => ($aksi === 'disetujui') ? 'process' : 'reject',
@@ -248,17 +254,29 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
 
           $aksi  = $this->input->post('aksi'); // 'terverifikasi' atau 'ditolak'
+          $alasan = $this->input->post('alasan');
           $nilai = ($aksi === 'terverifikasi') ? 'Y' : 'N';
-
-          $this->berkas->update_by_id($id, array(
+          
+          $update_data = array(
                'verifikasi_status'  => $nilai,
                'verifikasi_user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
                'verifikasi_tanggal' => date('Y-m-d H:i:s'),
-          ));
+          );
+
+          if ($aksi === 'ditolak' && !empty($alasan)) {
+               $update_data['verifikasi_message'] = $alasan;
+          }
+
+          $this->berkas->update_by_id($id, $update_data);
 
           $monitoring_msg = ($aksi === 'terverifikasi')
                ? 'Berkas diverifikasi dan diteruskan ke Kepala LKD untuk ditandatangani.'
                : 'Berkas ditolak oleh Verifikator LKD.';
+               
+          if ($aksi === 'ditolak' && !empty($alasan)) {
+               $monitoring_msg .= ' Alasan: ' . htmlspecialchars($alasan);
+          }
+
           $this->monitoring->insert_entry(array(
                'berkas'  => $id,
                'title'   => ($aksi === 'terverifikasi') ? 'process' : 'reject',
@@ -539,15 +557,19 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                $penilaian = $item->penilaian_arsip_statis ?? null;
                $verifikasi = $item->verifikasi_status ?? null;
                $tte = $item->tte_status ?? null;
+               
+               $is_ditolak_verifikator = ($verifikasi === 'N' && !empty($item->verifikasi_user));
 
                if ($tte === 'Y') {
                     $badge = '<span class="badge badge-success">Sudah Ditandatangani</span>';
                } elseif ($verifikasi === 'Y') {
                     $badge = '<span class="badge badge-info">Menunggu Tandatangan</span>';
+               } elseif ($is_ditolak_verifikator) {
+                    $badge = '<span class="badge badge-danger">Ditolak Verifikator</span>';
                } elseif ($penilaian === 'Y') {
                     $badge = '<span class="badge badge-primary">Menunggu Verifikasi</span>';
                } elseif ($penilaian === 'N') {
-                    $badge = '<span class="badge badge-danger">Ditolak</span>';
+                    $badge = '<span class="badge badge-danger">Ditolak Admin</span>';
                } else {
                     $badge = '<span class="badge badge-warning light">Menunggu Penilaian</span>';
                }
@@ -560,13 +582,24 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                $row[] = $item->jumlah ? number_format($item->jumlah) . ' dok' : '-';
                $row[] = $item->tanggal ?? '-';
                $row[] = $badge;
+
+               // Logika untuk menampilkan tombol Edit dan Hapus (Hanya jika belum disetujui / ditolak)
+               // Hanya role operator yang memiliki aksi edit dan hapus
+               $btn_edit = '';
+               $btn_delete = '';
+               $role = $this->session->userdata('next-role');
+               
+               if ($role === 'operator') {
+                    if ($penilaian === null || $penilaian === 'N' || $is_ditolak_verifikator) {
+                         $btn_edit = '<a class="btn btn-primary btn-xs sharp" href="javascript:void(0)" title="Edit" onclick="edit_data(\'' . $item->id . '\')"><i class="fas fa-pencil-alt"></i></a>';
+                         $btn_delete = '<a class="btn btn-danger btn-xs sharp" href="javascript:void(0)" title="Hapus" onclick="delete_data(\'' . $item->id . '\')"><i class="fas fa-trash"></i></a>';
+                    }
+               }
+
                $row[] = '<div class="d-flex gap-1">'
-                    . '<a class="btn btn-info btn-xs sharp" href="' . base_url('v2/backend/alih_media_arsip_usul_serah/detail/' . $item->id) . '" title="Detail">'
-                    . '<i class="fas fa-eye"></i></a>'
-                    . '<a class="btn btn-primary btn-xs sharp" href="javascript:void(0)" title="Edit" onclick="edit_data(\'' . $item->id . '\')">'
-                    . '<i class="fas fa-pencil-alt"></i></a>'
-                    . '<a class="btn btn-danger btn-xs sharp" href="javascript:void(0)" title="Hapus" onclick="delete_data(\'' . $item->id . '\')">'
-                    . '<i class="fas fa-trash"></i></a>'
+                    . '<a class="btn btn-info btn-xs sharp" href="' . base_url('v2/backend/alih_media_arsip_usul_serah/detail/' . $item->id) . '" title="Detail"><i class="fas fa-eye"></i></a>'
+                    . $btn_edit
+                    . $btn_delete
                     . '</div>';
                $data[] = $row;
           }
@@ -666,6 +699,103 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
      }
 
+     public function edit($id)
+     {
+          if ($this->session->userdata('next-role') !== 'operator') {
+               show_error('Akses ditolak. Hanya operator yang dapat mengedit data ini.', 403);
+          }
+
+          $berkas = $this->berkas->get_by_id($id);
+          if (empty($berkas)) {
+               show_404();
+          }
+
+          // Cek apakah masih bisa diedit
+          if (($berkas->penilaian_arsip_statis === 'Y' && $berkas->verifikasi_status !== 'N') || $berkas->tte_status === 'Y') {
+               show_error('Berkas ini sudah tidak dapat diedit karena sedang dalam proses verifikasi atau sudah ditandatangani.', 403);
+          }
+
+          $data['title']    = 'Edit Alih Media Arsip Usul Serah';
+          $data['employee'] = $this->user_auth;
+          $data['berkas']   = $berkas;
+          $this->backend('v2/backend/form_edit_alih_media_arsip_usul_serah', $data);
+     }
+
+     public function ajax_update($id)
+     {
+          if (!$this->input->is_ajax_request()) {
+               redirect('v2/backend/dashboards');
+          }
+
+          if ($this->session->userdata('next-role') !== 'operator') {
+               echo json_encode(array('status' => FALSE, 'message' => 'Akses ditolak. Hanya operator yang dapat mengedit.'));
+               return;
+          }
+
+          $berkas = $this->berkas->get_by_id($id);
+          if (empty($berkas)) {
+               echo json_encode(array('status' => FALSE, 'message' => 'Berkas tidak ditemukan.'));
+               return;
+          }
+
+          if (($berkas->penilaian_arsip_statis === 'Y' && $berkas->verifikasi_status !== 'N') || $berkas->tte_status === 'Y') {
+               echo json_encode(array('status' => FALSE, 'message' => 'Berkas ini sudah tidak dapat diedit.'));
+               return;
+          }
+
+          $data = array(
+               'kode_klsf'              => htmlentities($this->input->post('kode_klsf')),
+               'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
+               'tahun'                  => (int) $this->input->post('tahun'),
+               'jumlah'                 => (int) $this->input->post('jumlah'),
+               'tanggal'                => htmlentities($this->input->post('tanggal')),
+               'deskripsi'              => htmlentities($this->input->post('keterangan')),
+               'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
+               'tte_posisi'             => $this->input->post('tte_posisi'),
+               
+               // Reset status penilaian dan verifikasi jika diedit (hanya jika sebelumnya ditolak atau sedang proses)
+               'penilaian_arsip_statis' => null,
+               'penilaian_user'         => null,
+               'penilaian_tanggal'      => null,
+               'verifikasi_status'      => 'N',
+               'verifikasi_user'        => null,
+               'verifikasi_tanggal'     => null,
+          );
+
+          // Upload PDF final jika ada perubahan
+          if (!empty($_FILES['file_pdf']['name'])) {
+               $config['upload_path']   = './assets/upload/berkas/';
+               $config['allowed_types'] = 'pdf';
+               $config['encrypt_name']  = TRUE;
+               $this->upload->initialize($config);
+
+               if ($this->upload->do_upload('file_pdf')) {
+                    $upload_data  = $this->upload->data();
+                    $data['file'] = $upload_data['file_name'];
+
+                    // Hapus file lama jika ada
+                    if (!empty($berkas->file) && file_exists('./assets/upload/berkas/' . $berkas->file)) {
+                         @unlink('./assets/upload/berkas/' . $berkas->file);
+                    }
+               } else {
+                    echo json_encode(array('status' => FALSE, 'message' => $this->upload->display_errors('', '')));
+                    return;
+               }
+          }
+
+          $this->berkas->update_by_id($id, $data);
+          
+          $monitoring = array(
+               'berkas'  => $id,
+               'title'   => 'process',
+               'message' => 'Arsip telah diperbarui oleh operator dan menunggu penilaian kembali.',
+               'user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
+          );
+          $this->monitoring->insert_entry($monitoring);
+          
+          echo json_encode(array('status' => TRUE));
+     }
+
      public function ajax_edit($id)
      {
           if (!$this->input->is_ajax_request()) {
@@ -680,6 +810,12 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           if (!$this->input->is_ajax_request()) {
                redirect('v2/backend/dashboards');
           }
+          
+          if ($this->session->userdata('next-role') !== 'operator') {
+               echo json_encode(array('status' => FALSE, 'message' => 'Akses ditolak. Hanya operator yang dapat menghapus.'));
+               return;
+          }
+
           $this->berkas->delete_by_id($id);
           echo json_encode(array("status" => TRUE));
      }

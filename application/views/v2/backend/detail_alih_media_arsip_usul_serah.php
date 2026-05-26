@@ -647,7 +647,7 @@ var berkas_id = '<?php echo $berkas->id; ?>';
 // ===== Fungsi Aksi: Penilaian, Verifikasi, TTE =====
 function penilaian(aksi) {
      var label = aksi === 'disetujui' ? 'menyetujui' : 'menolak';
-     Swal.fire({
+     var swalConfig = {
           title: 'Konfirmasi',
           text: 'Apakah Anda yakin ingin ' + label + ' berkas ini?',
           icon: 'question',
@@ -656,13 +656,26 @@ function penilaian(aksi) {
           cancelButtonColor: '#6c757d',
           confirmButtonText: 'Ya, ' + label + '!',
           cancelButtonText: 'Batal'
-     }).then(function(result) {
+     };
+
+     if (aksi === 'ditolak') {
+          swalConfig.input = 'textarea';
+          swalConfig.inputPlaceholder = 'Masukkan alasan penolakan...';
+          swalConfig.inputValidator = (value) => {
+               if (!value) {
+                    return 'Alasan penolakan tidak boleh kosong!'
+               }
+          };
+     }
+
+     Swal.fire(swalConfig).then(function(result) {
           if (result.isConfirmed) {
+               var alasan = result.value || '';
                $.ajax({
                     url: base_url + 'v2/backend/alih_media_arsip_usul_serah/ajax_penilaian/' + berkas_id,
                     type: 'POST',
                     dataType: 'JSON',
-                    data: { aksi: aksi },
+                    data: { aksi: aksi, alasan: alasan },
                     success: function(res) {
                          if (res.status) {
                               Swal.fire('Berhasil!', res.pesan, 'success').then(function() { location.reload(); });
@@ -676,7 +689,7 @@ function penilaian(aksi) {
 
 function verifikasi(aksi) {
      var label = aksi === 'terverifikasi' ? 'memverifikasi' : 'menolak';
-     Swal.fire({
+     var swalConfig = {
           title: 'Konfirmasi Verifikasi',
           text: 'Apakah Anda yakin ingin ' + label + ' berkas ini?',
           icon: 'question',
@@ -685,13 +698,26 @@ function verifikasi(aksi) {
           cancelButtonColor: '#6c757d',
           confirmButtonText: 'Ya, ' + label + '!',
           cancelButtonText: 'Batal'
-     }).then(function(result) {
+     };
+
+     if (aksi === 'ditolak') {
+          swalConfig.input = 'textarea';
+          swalConfig.inputPlaceholder = 'Masukkan alasan penolakan...';
+          swalConfig.inputValidator = (value) => {
+               if (!value) {
+                    return 'Alasan penolakan tidak boleh kosong!'
+               }
+          };
+     }
+
+     Swal.fire(swalConfig).then(function(result) {
           if (result.isConfirmed) {
+               var alasan = result.value || '';
                $.ajax({
                     url: base_url + 'v2/backend/alih_media_arsip_usul_serah/ajax_verifikasi/' + berkas_id,
                     type: 'POST',
                     dataType: 'JSON',
-                    data: { aksi: aksi },
+                    data: { aksi: aksi, alasan: alasan },
                     success: function(res) {
                          if (res.status) {
                               Swal.fire('Berhasil!', res.pesan, 'success').then(function() { location.reload(); });

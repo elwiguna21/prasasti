@@ -55,6 +55,7 @@ $route['v2/backend/alih_media_arsip_usul_serah/ajax_verifikasi/(:num)']         
 $route['v2/backend/alih_media_arsip_usul_serah/ajax_tte/(:num)']                = 'v2/backend/AlihMediaArsipUsulSerahs/ajax_tte/$1';
 $route['v2/backend/alih_media_arsip_usul_serah/tanda_tangan']                   = 'v2/backend/AlihMediaArsipUsulSerahs/tanda_tangan';
 $route['v2/backend/alih_media_arsip_usul_serah/ajax_tte_list']                  = 'v2/backend/AlihMediaArsipUsulSerahs/ajax_tte_list';
+$route['v2/backend/alih_media_arsip_usul_serah/edit/(:num)']                    = 'v2/backend/AlihMediaArsipUsulSerahs/edit/$1';
 $route['v2/backend/alih_media_arsip_usul_serah/ajax_edit/(:num)']               = 'v2/backend/AlihMediaArsipUsulSerahs/ajax_edit/$1';
 $route['v2/backend/alih_media_arsip_usul_serah/ajax_update/(:num)']             = 'v2/backend/AlihMediaArsipUsulSerahs/ajax_update/$1';
 $route['v2/backend/alih_media_arsip_usul_serah/ajax_delete/(:num)']             = 'v2/backend/AlihMediaArsipUsulSerahs/ajax_delete/$1';
