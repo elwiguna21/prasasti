@@ -14,11 +14,11 @@ class Archieve extends CI_Model
           $this->db->where('berkas.deleted_at', null);
 
           if (!empty($where['search'])) {
-			$this->db->group_start();
+               $this->db->group_start();
                $this->db->like('berkas.indek', $where['search']);
                $this->db->or_like('berkas.uraian_informasi_arsip', $where['search']);
                $this->db->or_like('berkas.kode_klsf', $where['search']);
-			$this->db->group_end();
+               $this->db->group_end();
                unset($where['search']);
           }
 
@@ -64,7 +64,7 @@ class Archieve extends CI_Model
                     unset($result->creator->id);
                     unset($result->creator->user);
                } else {
-				$result->creator         = null;
+                    $result->creator         = null;
                }
 
                if (in_array($result->verifikasi_status, ['Y', 'R'])) {
@@ -92,11 +92,11 @@ class Archieve extends CI_Model
           $this->db->where('deleted_at', null);
 
           if (!empty($where['search'])) {
-	          $this->db->group_start();
+               $this->db->group_start();
                $this->db->like('indek', $where['search']);
                $this->db->or_like('kode_klsf', $where['search']);
                $this->db->or_like('uraian_informasi_arsip', $where['search']);
-	          $this->db->group_end();
+               $this->db->group_end();
                unset($where['search']);
           }
 
@@ -118,12 +118,12 @@ class Archieve extends CI_Model
           $this->db->where('berkas.nomor_skpd !=', null);
 
           if (!empty($where['search'])) {
-	          $this->db->group_start();
+               $this->db->group_start();
                $this->db->like('berkas.indek', $where['search']);
-			$this->db->or_like('berkas.kode_klsf', $where['search']);
+               $this->db->or_like('berkas.kode_klsf', $where['search']);
                $this->db->or_like('berkas.uraian_informasi_arsip', $where['search']);
                // $this->db->or_like('deskripsi', $where['search']);
-	          $this->db->group_end();
+               $this->db->group_end();
                unset($where['search']);
           }
 
@@ -202,5 +202,29 @@ class Archieve extends CI_Model
           $this->db->where($where);
           $this->db->update('berkas', $data);
           return $this->db->affected_rows();
+     }
+
+     public function get_all_where_group_month_count($where)
+     {
+          $tanggal_bersih = "STR_TO_DATE(LEFT(tanggal, 10), '%d-%m-%Y')";
+
+          // 1. Ambil nama bulan dan angka bulan dari tanggal yang sudah dibersihkan
+          $this->db->select("
+               MONTH($tanggal_bersih) AS bulan_angka,
+               DATE_FORMAT($tanggal_bersih, '%M') AS nama_bulan,
+               COUNT(*) AS jumlah_berkas
+          ");
+          $this->db->from('berkas');
+
+          $this->db->where('tanggal IS NOT NULL');
+          $this->db->where('tanggal !=', '');
+          $this->db->where("tanggal REGEXP '^[0-9]{2}-[0-9]{2}-[0-9]{4}'", NULL, FALSE);
+          $this->db->where('deleted_at is null');
+
+          $this->db->where($where);
+
+          $this->db->group_by("MONTH($tanggal_bersih)");
+
+          return $this->db->get()->result();
      }
 }

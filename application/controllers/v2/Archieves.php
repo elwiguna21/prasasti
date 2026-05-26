@@ -4,63 +4,63 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Archieves extends MY_Controller
 {
-	public $user_auth = null;
+     public $user_auth = null;
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->load->model('v2/Employee', 'employee');
-		$this->load->model('v2/User', 'user_model');
-		$this->load->model('v2/Archieve', 'archieve');
-		$this->load->model('v2/Monitoring', 'monitoring');
-		$this->load->model('v2/Company', 'company');
-		$this->load->model('v2/GuideArchieve', 'guide_archieve');
-		$this->load->model('v2/Inventory', 'inventory');
-		$this->load->model('M_guide_arsip', 'guide_arsip');
-		$this->load->model('M_data', 'model');
-		$this->load->model('v2/BeritaAcara', 'berita_acara');
-		$this->load->model('v2/BeritaAcaraDetail', 'berita_acara_detail');
+     public function __construct()
+     {
+          parent::__construct();
+          $this->load->model('v2/Employee', 'employee');
+          $this->load->model('v2/User', 'user_model');
+          $this->load->model('v2/Archieve', 'archieve');
+          $this->load->model('v2/Monitoring', 'monitoring');
+          $this->load->model('v2/Company', 'company');
+          $this->load->model('v2/GuideArchieve', 'guide_archieve');
+          $this->load->model('v2/Inventory', 'inventory');
+          $this->load->model('M_guide_arsip', 'guide_arsip');
+          $this->load->model('M_data', 'model');
+          $this->load->model('v2/BeritaAcara', 'berita_acara');
+          $this->load->model('v2/BeritaAcaraDetail', 'berita_acara_detail');
 
-//		if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
-//			show_error('Not Authorize! Please signin again.', 403);
-//			die;
-//		} else {
-//			$uid = $this->encryption->decrypt($this->session->userdata('next-uid'));
-//			$uname = $this->session->userdata('next-uname');
-//
-//			// Coba ambil dari tabel employee (untuk operator/ASN)
-//			$user = $this->employee->get_single_where(
-//				   array('user.id' => $uid, 'user.username' => $uname)
-//			);
-//
-//			// Fallback: ambil dari tabel user langsung (untuk admin, verifikator_lkd, dll)
-//			if (empty($user)) {
-//				$user = $this->user_model->get_single_where(
-//					   array('user.id' => $uid, 'user.username' => $uname)
-//				);
-//			}
-//
-//			if (empty($user)) {
-//				redirect('v2/authentications/signout');
-//			}
-//
-//			$this->user_auth = $user;
-//			$this->user_auth->avatar = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
-//		}
-		if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-role'))) {
-			$uid = $this->encryption->decrypt($this->session->userdata('next-uid'));
-			$uname = $this->session->userdata('next-uname');
+          //		if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
+          //			show_error('Not Authorize! Please signin again.', 403);
+          //			die;
+          //		} else {
+          //			$uid = $this->encryption->decrypt($this->session->userdata('next-uid'));
+          //			$uname = $this->session->userdata('next-uname');
+          //
+          //			// Coba ambil dari tabel employee (untuk operator/ASN)
+          //			$user = $this->employee->get_single_where(
+          //				   array('user.id' => $uid, 'user.username' => $uname)
+          //			);
+          //
+          //			// Fallback: ambil dari tabel user langsung (untuk admin, verifikator_lkd, dll)
+          //			if (empty($user)) {
+          //				$user = $this->user_model->get_single_where(
+          //					   array('user.id' => $uid, 'user.username' => $uname)
+          //				);
+          //			}
+          //
+          //			if (empty($user)) {
+          //				redirect('v2/authentications/signout');
+          //			}
+          //
+          //			$this->user_auth = $user;
+          //			$this->user_auth->avatar = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
+          //		}
+          if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-role'))) {
+               $uid = $this->encryption->decrypt($this->session->userdata('next-uid'));
+               $uname = $this->session->userdata('next-uname');
 
-			// Coba ambil dari tabel employee (untuk operator/ASN)
-			$user = $this->employee->get_single_where(
-				   array('user.id' => $uid, 'user.username' => $uname)
-			);
-			if (!empty($user)) {
-				$this->user_auth = $user;
-				$this->user_auth->avatar = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
-			}
-		}
-	}
+               // Coba ambil dari tabel employee (untuk operator/ASN)
+               $user = $this->employee->get_single_where(
+                    array('user.id' => $uid, 'user.username' => $uname)
+               );
+               if (!empty($user)) {
+                    $this->user_auth = $user;
+                    $this->user_auth->avatar = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
+               }
+          }
+     }
 
 
      // ====== FRONTEND ======
@@ -70,10 +70,10 @@ class Archieves extends MY_Controller
 
           $data['companies'] = $this->company->get_all_where();
 
-		$search = $this->input->get('title');
-		$limits = 6;
-		$pages = (!empty($this->input->get('pages'))) ? ($this->input->get('pages') - 1) * $limits : 0;
-		$company = $this->input->get('company');
+          $search = $this->input->get('title');
+          $limits = 6;
+          $pages = (!empty($this->input->get('pages'))) ? ($this->input->get('pages') - 1) * $limits : 0;
+          $company = $this->input->get('company');
 
           $where = array(
                'limits' => $limits,
@@ -86,7 +86,7 @@ class Archieves extends MY_Controller
                'berkas.verifikasi_status' => 'Y'
           );
 
-//		$where['berkas.penilaian_arsip_statis']   = 'Y';
+          //		$where['berkas.penilaian_arsip_statis']   = 'Y';
 
           if (!empty($search)) {
                $where['search'] = $search;
@@ -106,10 +106,10 @@ class Archieves extends MY_Controller
           $data['archieves_total'] = $config['total_rows'];
           $data['pagination'] = $this->pagination->create_links();
 
-		// echo json_encode($data);
-		// die;
-		$this->frontend_new('v2/frontend/archieves/static', $data);
-	}
+          // echo json_encode($data);
+          // die;
+          $this->frontend_new('v2/frontend/archieves/static', $data);
+     }
 
      public function detail()
      {
@@ -131,9 +131,9 @@ class Archieves extends MY_Controller
                'berkas.tte_dokumen !='       => null
           );
 
-		if (!empty($company)) {
-			$where['berkas.nomor_skpd']   = $company;
-		}
+          if (!empty($company)) {
+               $where['berkas.nomor_skpd']   = $company;
+          }
 
           $archieve = $this->archieve->get_single_where($where);
           if (empty($archieve)) {
@@ -143,8 +143,8 @@ class Archieves extends MY_Controller
 
           $data['archieve'] = $archieve;
 
-//          		 echo json_encode($data);
-//          		 die;
+          //          		 echo json_encode($data);
+          //          		 die;
           $this->frontend_new('v2/frontend/archieves/detail', $data);
      }
 
@@ -249,7 +249,7 @@ class Archieves extends MY_Controller
           if (empty($guide)) {
                echo json_encode(array('status' => 404, 'message' => 'Dokumen guide arsip tidak dapat ditemukan!', 'data' => null));
           } else {
-			$guide->id     = $this->encryption->encrypt($guide->id);
+               $guide->id     = $this->encryption->encrypt($guide->id);
                echo json_encode(array('status' => 200, 'message' => 'Dokumen guide arsip berhasil ditemukan', 'data' => $guide));
           }
      }
@@ -287,7 +287,7 @@ class Archieves extends MY_Controller
                'berkas.tte_user !=' => null,
                'berkas.tte_dokumen !=' => null,
                'berkas.verifikasi_status' => 'Y',
-	          '(berkas.penilaian_arsip_statis != "Y" or berkas.penilaian_arsip_statis is null)' => null
+               '(berkas.penilaian_arsip_statis != "Y" or berkas.penilaian_arsip_statis is null)' => null
           );
 
           if (!empty($company)) {
@@ -323,7 +323,7 @@ class Archieves extends MY_Controller
                          'archieve' => $nested['id'],
                          'code' => $nested['klasifikasi'],
                          'company' => $archieve->nomor_skpd,
-	                    'src'     => 'inventory'
+                         'src'     => 'inventory'
                     );
                     $nested['actions'] = '<a class="btn btn-sm btn-primary" href="' . base_url("v2/archieves/detail?") . http_build_query($params) . '"><i class="ti ti-eye"></i></a>';
 
@@ -427,7 +427,7 @@ class Archieves extends MY_Controller
                'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
                'tahun' => $this->input->post('tahun'),
                'jumlah' => (int)$this->input->post('jumlah'),
-               'tanggal' => htmlentities($this->input->post('tanggal')),
+               'tanggal' => htmlentities(date('d-m-Y', strtotime($this->input->post('tanggal')))),
                'deskripsi' => htmlentities($this->input->post('keterangan')),
                'nomor_skpd' => $this->user_auth->no_company,
                'unit_kerja_pencipta' => htmlentities($this->input->post('unit_kerja_pencipta')),
@@ -446,55 +446,55 @@ class Archieves extends MY_Controller
                if ($this->upload->do_upload('file_pdf')) {
                     $upload_data = $this->upload->data();
                     $data['file'] = $upload_data['file_name'];
-				if (file_exists('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'))) {
-					unlink('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'));
-				}
+                    if (file_exists('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'))) {
+                         unlink('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'));
+                    }
                } else {
                     echo json_encode(array('status' => 500, 'message' => "Terjadi kesalahan saat menyimpan dokumen: " . $this->upload->display_errors('', '')));
                     die;
                }
           }
 
-		if (!empty($_POST['archieve'])) {
-			$id       = $this->encryption->decrypt($this->input->post('archieve'));
-			$get_archieve  = $this->archieve->get_single_where(array('berkas.id' => $id));
-			if (empty($get_archieve)) {
-				echo json_encode(array('status' => 500, 'message' => 'Maaf, terjadi kesalahan saat memuat arsip yang akan diperbarui!'));
-				die;
-			}
+          if (!empty($_POST['archieve'])) {
+               $id       = $this->encryption->decrypt($this->input->post('archieve'));
+               $get_archieve  = $this->archieve->get_single_where(array('berkas.id' => $id));
+               if (empty($get_archieve)) {
+                    echo json_encode(array('status' => 500, 'message' => 'Maaf, terjadi kesalahan saat memuat arsip yang akan diperbarui!'));
+                    die;
+               }
 
-			$save     = $this->archieve->update_entry($data, array('id' => $id));
-			if ($save and $save > 0) {
-				$monitoring = array(
-					   'berkas' => $id,
-					   'title' => 'start',
-					   'message' => 'Arsip berhasil diperbarui dan menunggu verifikasi.',
-					   'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
-				);
-				$this->monitoring->insert_entry($monitoring);
-				echo json_encode(array('status' => 200, 'message' => 'Data arsip berhasil diperbarui.'));
-				die;
-			} else {
-				echo json_encode(array('status' => 500, 'message' => 'Data arsip gagal diperbarui! Silahkan coba kembali.'));
-				die;
-			}
-		} else {
-			$save = $this->archieve->insert_entry($data);
-			if ($save and $save > 0) {
-				$monitoring = array(
-					   'berkas' => $save,
-					   'title' => 'start',
-					   'message' => 'Arsip baru berhasil dibuat dan menunggu verifikasi.',
-					   'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
-				);
-				$this->monitoring->insert_entry($monitoring);
-				echo json_encode(array('status' => 200, 'message' => 'Data arsip baru berhasil disimpan.'));
-				die;
-			} else {
-				echo json_encode(array('status' => 500, 'message' => 'Data arsip baru gagal disimpan! Silahkan coba kembali.'));
-				die;
-			}
-		}
+               $save     = $this->archieve->update_entry($data, array('id' => $id));
+               if ($save and $save > 0) {
+                    $monitoring = array(
+                         'berkas' => $id,
+                         'title' => 'start',
+                         'message' => 'Arsip berhasil diperbarui dan menunggu verifikasi.',
+                         'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
+                    );
+                    $this->monitoring->insert_entry($monitoring);
+                    echo json_encode(array('status' => 200, 'message' => 'Data arsip berhasil diperbarui.'));
+                    die;
+               } else {
+                    echo json_encode(array('status' => 500, 'message' => 'Data arsip gagal diperbarui! Silahkan coba kembali.'));
+                    die;
+               }
+          } else {
+               $save = $this->archieve->insert_entry($data);
+               if ($save and $save > 0) {
+                    $monitoring = array(
+                         'berkas' => $save,
+                         'title' => 'start',
+                         'message' => 'Arsip baru berhasil dibuat dan menunggu verifikasi.',
+                         'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
+                    );
+                    $this->monitoring->insert_entry($monitoring);
+                    echo json_encode(array('status' => 200, 'message' => 'Data arsip baru berhasil disimpan.'));
+                    die;
+               } else {
+                    echo json_encode(array('status' => 500, 'message' => 'Data arsip baru gagal disimpan! Silahkan coba kembali.'));
+                    die;
+               }
+          }
      }
 
      public function vital_detail()
@@ -823,8 +823,8 @@ class Archieves extends MY_Controller
           );
 
 
-//	     $where["berkas.jenis_arsip IN ('vital', 'usul_serah')"] = null;
-	     $where["berkas.jenis_arsip IN ('vital')"] = null;
+          //	     $where["berkas.jenis_arsip IN ('vital', 'usul_serah')"] = null;
+          $where["berkas.jenis_arsip IN ('vital')"] = null;
 
           switch ($this->session->userdata('next-role')) {
                case 'operator':
@@ -934,9 +934,9 @@ class Archieves extends MY_Controller
           $this->upload->initialize($config);
 
           if ($this->upload->do_upload('file_pdf')) {
-			if (!empty($_POST['pdf_filename_temp']) and file_exists('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'))) {
-				unlink('./assets/upload/berkas/temp/'. $this->input->post('pdf_filename_temp'));
-			}
+               if (!empty($_POST['pdf_filename_temp']) and file_exists('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'))) {
+                    unlink('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'));
+               }
                $upload_data = $this->upload->data();
                echo json_encode(array(
                     'status' => TRUE,
@@ -948,13 +948,13 @@ class Archieves extends MY_Controller
           }
      }
 
-	// PHP Proxy Full Bypassing IDM
-	public function baca_dokumen()
-	{
-		if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
-			show_error('Not Authorize!', 403);
-			die;
-		}
+     // PHP Proxy Full Bypassing IDM
+     public function baca_dokumen()
+     {
+          if (empty($this->user_auth) or $this->session->userdata('next-state') != 'logged_in') {
+               show_error('Not Authorize!', 403);
+               die;
+          }
 
           if (empty($_GET['archieve'])) {
                redirect('v2/alih_media_arsip_vital');
@@ -966,42 +966,42 @@ class Archieves extends MY_Controller
                return;
           }
 
-		if (!empty($archieve->tte_dokumen)) {
-			$paths = [
-				   "./assets/upload/berkas/{$archieve->tte_dokumen}",
-			];
-		} else {
-			$paths = [
-				   "./assets/data/{$archieve->file}",
-				   "./assets/upload/berkas/{$archieve->file}",
-			];
-		}
+          if (!empty($archieve->tte_dokumen)) {
+               $paths = [
+                    "./assets/upload/berkas/{$archieve->tte_dokumen}",
+               ];
+          } else {
+               $paths = [
+                    "./assets/data/{$archieve->file}",
+                    "./assets/upload/berkas/{$archieve->file}",
+               ];
+          }
 
           $filepath = null;
           foreach ($paths as $path) {
                if (file_exists($path)) {
                     $filepath = $path;
-				break;
+                    break;
                }
           }
 
-		if (empty($filepath)) {
-			show_404();
-			return;
-		}
+          if (empty($filepath)) {
+               show_404();
+               return;
+          }
 
           // Bersihkan semua level output buffer CI
           while (ob_get_level() > 0) {
                ob_end_clean();
           }
 
-		// Stream PDF inline untuk dicustom via AJAX PDF.js
-		// Menggunakan tipe text/plain murni untuk full bypass IDM
-		header('Content-Type: text/plain');
-		header('Content-Length: ' . filesize($filepath));
-		header('Cache-Control: private, max-age=0, must-revalidate');
-		header('Pragma: public');
-		header('X-Content-Type-Options: nosniff');
+          // Stream PDF inline untuk dicustom via AJAX PDF.js
+          // Menggunakan tipe text/plain murni untuk full bypass IDM
+          header('Content-Type: text/plain');
+          header('Content-Length: ' . filesize($filepath));
+          header('Cache-Control: private, max-age=0, must-revalidate');
+          header('Pragma: public');
+          header('X-Content-Type-Options: nosniff');
 
           readfile($filepath);
           exit;
@@ -1046,7 +1046,7 @@ class Archieves extends MY_Controller
                foreach ($paths as $path) {
                     if (file_exists($path)) {
                          unlink($path);
-//                         break;
+                         //                         break;
                     }
                }
 
@@ -1333,12 +1333,12 @@ class Archieves extends MY_Controller
           }
      }
 
-	public function berita_acara()
-	{
-		if (empty($this->user_auth) or !in_array($this->user_auth->user_role, array('admin', 'verifikator_skpd'))) {
-			show_error('Not Authorize!', 403);
-			die;
-		}
+     public function berita_acara()
+     {
+          if (empty($this->user_auth) or !in_array($this->user_auth->user_role, array('admin', 'verifikator_skpd'))) {
+               show_error('Not Authorize!', 403);
+               die;
+          }
 
           if ($this->user_auth->user_role == 'verifikator_skpd') {
                $where['berkas.nomor_skpd'] = $this->user_auth->no_company;

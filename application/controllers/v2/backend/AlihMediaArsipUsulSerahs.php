@@ -217,7 +217,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $monitoring_msg = ($aksi === 'disetujui')
                ? 'Berkas disetujui oleh Admin dan diteruskan ke Verifikator LKD.'
                : 'Berkas ditolak oleh Admin.';
-               
+
           if ($aksi === 'ditolak' && !empty($alasan)) {
                $monitoring_msg .= ' Alasan: ' . htmlspecialchars($alasan);
           }
@@ -256,7 +256,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $aksi  = $this->input->post('aksi'); // 'terverifikasi' atau 'ditolak'
           $alasan = $this->input->post('alasan');
           $nilai = ($aksi === 'terverifikasi') ? 'Y' : 'N';
-          
+
           $update_data = array(
                'verifikasi_status'  => $nilai,
                'verifikasi_user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
@@ -272,7 +272,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $monitoring_msg = ($aksi === 'terverifikasi')
                ? 'Berkas diverifikasi dan diteruskan ke Kepala LKD untuk ditandatangani.'
                : 'Berkas ditolak oleh Verifikator LKD.';
-               
+
           if ($aksi === 'ditolak' && !empty($alasan)) {
                $monitoring_msg .= ' Alasan: ' . htmlspecialchars($alasan);
           }
@@ -490,7 +490,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
      /**
       * PHP Proxy: Stream PDF inline (Full Bypass IDM)
-      * Mengubah metode streaming dengan full bypass IDM: tidak ada ekstensi di URL, 
+      * Mengubah metode streaming dengan full bypass IDM: tidak ada ekstensi di URL,
       * tidak ada keyword "pdf" di URL, dan dikirim sebagai tipe text/plain murni.
       */
      public function baca_dokumen($id)
@@ -557,7 +557,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                $penilaian = $item->penilaian_arsip_statis ?? null;
                $verifikasi = $item->verifikasi_status ?? null;
                $tte = $item->tte_status ?? null;
-               
+
                $is_ditolak_verifikator = ($verifikasi === 'N' && !empty($item->verifikasi_user));
 
                if ($tte === 'Y') {
@@ -588,7 +588,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                $btn_edit = '';
                $btn_delete = '';
                $role = $this->session->userdata('next-role');
-               
+
                if ($role === 'operator') {
                     if ($penilaian === null || $penilaian === 'N' || $is_ditolak_verifikator) {
                          $btn_edit = '<a class="btn btn-primary btn-xs sharp" href="javascript:void(0)" title="Edit" onclick="edit_data(\'' . $item->id . '\')"><i class="fas fa-pencil-alt"></i></a>';
@@ -629,7 +629,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
                'tahun'                  => (int) $this->input->post('tahun'),
                'jumlah'                 => (int) $this->input->post('jumlah'),
-               'tanggal'                => htmlentities($this->input->post('tanggal')),
+               'tanggal'                => htmlentities(date('d-m-Y', strtotime($this->input->post('tanggal')))),
                'deskripsi'              => htmlentities($this->input->post('keterangan')),
                'nomor_skpd'             => htmlentities($this->input->post('nomor_skpd')),
                'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
@@ -752,7 +752,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'deskripsi'              => htmlentities($this->input->post('keterangan')),
                'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
                'tte_posisi'             => $this->input->post('tte_posisi'),
-               
+
                // Reset status penilaian dan verifikasi jika diedit (hanya jika sebelumnya ditolak atau sedang proses)
                'penilaian_arsip_statis' => null,
                'penilaian_user'         => null,
@@ -784,7 +784,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
 
           $this->berkas->update_by_id($id, $data);
-          
+
           $monitoring = array(
                'berkas'  => $id,
                'title'   => 'process',
@@ -792,7 +792,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
           );
           $this->monitoring->insert_entry($monitoring);
-          
+
           echo json_encode(array('status' => TRUE));
      }
 
@@ -810,7 +810,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           if (!$this->input->is_ajax_request()) {
                redirect('v2/backend/dashboards');
           }
-          
+
           if ($this->session->userdata('next-role') !== 'operator') {
                echo json_encode(array('status' => FALSE, 'message' => 'Akses ditolak. Hanya operator yang dapat menghapus.'));
                return;
