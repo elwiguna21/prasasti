@@ -79,7 +79,7 @@ class Archieves extends MY_Controller
                'limits' => $limits,
                'starts' => $pages,
                'berkas.penilaian_arsip_statis' => 'Y',
-               'berkas.jenis_arsip !=' => null,
+               '(berkas.jenis_arsip is not null AND berkas.jenis_arsip != "vital")' => null,
                'berkas.tte_status' => 'Y',
                'berkas.tte_user !=' => null,
                'berkas.tte_dokumen !=' => null,
@@ -282,7 +282,8 @@ class Archieves extends MY_Controller
                'limits' => $limit,
                'orders' => 'berkas.' . $order,
                'dirs' => $dir,
-               'berkas.jenis_arsip !=' => null,
+               // '(berkas.jenis_arsip is not null AND berkas.jenis_arsip != "vital")' => null,
+               'berkas.jenis_arsip !=' => 'vital',
                'berkas.tte_status' => 'Y',
                'berkas.tte_user !=' => null,
                'berkas.tte_dokumen !=' => null,
@@ -366,10 +367,12 @@ class Archieves extends MY_Controller
           $data['total_verification'] = $this->archieve->get_all_where_count($where);
           unset($where['verifikasi_status']);
           unset($where["tte_status IN ('N', 'R')"]);
-          $where['tte_status'] = 'Y';
-          $data['total_signed'] = $this->archieve->get_all_where_count($where);
-          $where['tte_status'] = 'N';
-          $data['total_unsigned'] = $this->archieve->get_all_where_count($where);
+          $where['tte_status']     = 'Y';
+          $data['total_signed']    = $this->archieve->get_all_where_count($where);
+          $where['tte_status']     = 'N';
+          $data['total_unsigned']  = $this->archieve->get_all_where_count($where);
+
+          $data['years']           = $this->archieve->get_all_years(array('jenis_arsip' => 'vital'));
 
           $this->backend('v2/backend/archieves/vital/index', $data);
      }
@@ -787,6 +790,157 @@ class Archieves extends MY_Controller
           redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
      }
 
+     public function vital_export()
+     {
+          $type          = $this->input->get('type');
+          $company       = $this->input->get('company');
+          $status        = $this->input->get('status');
+          $year          = $this->input->get('year');
+          $search        = $this->input->get('search');
+
+          $where         = array(
+               'berkas.jenis_arsip' => 'vital',
+          );
+
+          if ($this->user_auth->user_role != 'admin') {
+               $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
+          } else {
+               if (!empty($company)) {
+                    $where['berkas.nomor_skpd'] = $company;
+               } else {
+                    $where['berkas.nomor_skpd !='] = null;
+               }
+          }
+
+          if (!empty($search)) {
+               $where['search'] = $search;
+          }
+
+          if (!empty($status)) {
+               switch ($status) {
+                    case 'verify_waiting':
+                         $where['berkas.verifikasi_status'] = 'N';
+                         break;
+                    case 'verify_done':
+                         $where['(berkas.verifikasi_status = "Y" AND berkas.tte_status = "N")'] = null;
+                         break;
+                    case 'verify_reject':
+                         $where['berkas.verifikasi_status'] = 'R';
+                         break;
+                    case 'tte_waiting':
+                         $where['(berkas.verifikasi_status = "Y" AND berkas.tte_status = "N")'] = null;
+                         break;
+                    case 'tte_done':
+                         $where['(berkas.verifikasi_status = "Y" AND berkas.tte_status = "Y")'] = null;
+                         break;
+                    case 'tte_reject':
+                         $where['berkas.tte_status'] = 'R';
+                         break;
+               }
+          }
+
+          if (!empty($year)) {
+               $where['berkas.tahun'] = $year;
+          }
+
+          $data          = array();
+          $archieves     = $this->archieve->get_all_where($where);
+          if (!empty($archieves)) {
+               foreach ($archieves as $archieve) {
+                    if ($archieve->verifikasi_status == 'R') {
+                         $status_color = 'danger';
+                         $status_name = 'Verifikasi Ditolak';
+                    } else if ($archieve->verifikasi_status == 'Y' and ($archieve->tte_status == 'N' or $archieve->tte_status == null)) {
+                         $status_color = 'warning';
+                         $status_name = 'Menunggu Ditandatangan';
+                    } else if ($archieve->tte_status == 'R') {
+                         $status_color = 'danger';
+                         $status_name = 'Tandatangan Ditolak';
+                    } else if ($archieve->tte_status == 'Y') {
+                         $status_color = 'success';
+                         $status_name = 'Sudah Ditandatangani';
+                    } else {
+                         $status_color = 'primary';
+                         $status_name = 'Menunggu Diverifikasi';
+                    }
+
+
+                    $nested['indeks']        = $archieve->indek ?? '-';
+                    $nested['uraian']        = $archieve->uraian_informasi_arsip;
+                    $nested['deskripsi']     = $archieve->deskripsi ?? '-';
+                    $nested['tahun']         = $archieve->tahun;
+                    $nested['skpd']          = $archieve->name;
+                    $nested['unit_kerja']    = $archieve->unit_kerja_pencipta ?? '-';
+
+                    if ($type == 'pdf') {
+                         $nested['klasifikasi']   = '<span class="text-center text-primary">' . $archieve->kode_klsf . ' - ' . $archieve->klasifikasi_nama . '</span>';
+                         $nested['status']        = '<span class="badge light badge-' . $status_color . '"><i class="fa fa-circle text-' . $status_color . ' me-1"></i> ' . $status_name . '</span>';
+                    } else {
+                         $nested['klasifikasi']   = $archieve->kode_klsf . ' - ' . $archieve->klasifikasi_nama;
+                         $nested['status']        = $status_name;
+                    }
+
+                    $data['archieves'][]                  = $nested;
+               }
+          }
+
+          echo json_encode($data);
+          die;
+
+          $data['title']      = 'Daftar Arsip Vital';
+
+          // Stream the file down to the browser
+          if ($type == 'pdf') {
+               $this->load->library('exportpdf');
+
+               // Load the view into a variable string rather than rendering it directly
+               $html = $this->load->view('v2/backend/export/pdf_template', $data, TRUE);
+
+               $this->exportpdf->generate($html, 'DAFTAR_ARSIP_VITAL_' . date('Y-m-d H:i:s'), TRUE, 'A4', 'portrait');
+          } else {
+               $this->load->library('exportexcel');
+               $object = new PHPExcel();
+
+               // 2. Select active spreadsheet
+               $object->setActiveSheetIndex(0);
+
+               // 3. Define headers for your dataset
+               $table_columns = array('No', 'Klasifikasi', 'Indeks', 'Uraian Informasi', 'Deskripsi', 'Tahun', 'Unit Kerja', 'Status');
+               $column = 0;
+
+               foreach ($table_columns as $field) {
+                    $object->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $field);
+                    $column++;
+               }
+
+               // 5. Populate cells dynamically
+               $excel_row     = 2; // Starts tracking row right after headers
+               $no            = 1;
+               foreach ($data['archieves'] as $row) {
+                    $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $no);
+                    $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row['klasifikasi']);
+                    $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row['indeks']);
+                    $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row['uraian']);
+                    $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row['deskripsi']);
+                    $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row['tahun']);
+                    $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $row['unit_kerja']);
+                    $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $row['status']);
+                    $excel_row++;
+                    $no++;
+               }
+
+               $filename = "DAFTAR_ARSIP_VITAL_" . date('Ymd_His') . ".xlsx";
+               header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+               header('Content-Disposition: attachment;filename="' . $filename . '"');
+               header('Cache-Control: max-age=0');
+
+               $object_writer = PHPExcel_IOFactory::createWriter($object, 'Excel2007');
+               $object_writer->setPreCalculateFormulas(false); // <--- Kunci anti-error di PHP modern
+               $object_writer->save('php://output');
+               exit;
+          }
+     }
+
      public function get_archieves_vital_json()
      {
           if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
@@ -814,6 +968,8 @@ class Archieves extends MY_Controller
           // $search     = (!empty($this->input->post('search')['value'])) ? $this->input->post('search')['value'] : null;
           $search = $this->input->post('search');
           $company = $this->input->post('company');
+          $status   = $this->input->post('status');
+          $year   = $this->input->post('year');
 
           $where = array(
                'starts' => $start,
@@ -846,6 +1002,33 @@ class Archieves extends MY_Controller
                     $where['berkas.nomor_skpd !='] = null;
                     // $where['berkas.tte_status']               = 'Y';
                     break;
+          }
+
+          if (!empty($status)) {
+               switch ($status) {
+                    case 'verify_waiting':
+                         $where['berkas.verifikasi_status'] = 'N';
+                         break;
+                    case 'verify_done':
+                         $where['(berkas.verifikasi_status = "Y" AND berkas.tte_status = "N")'] = null;
+                         break;
+                    case 'verify_reject':
+                         $where['berkas.verifikasi_status'] = 'R';
+                         break;
+                    case 'tte_waiting':
+                         $where['(berkas.verifikasi_status = "Y" AND berkas.tte_status = "N")'] = null;
+                         break;
+                    case 'tte_done':
+                         $where['(berkas.verifikasi_status = "Y" AND berkas.tte_status = "Y")'] = null;
+                         break;
+                    case 'tte_reject':
+                         $where['berkas.tte_status'] = 'R';
+                         break;
+               }
+          }
+
+          if (!empty($year)) {
+               $where['berkas.tahun'] = $year;
           }
 
           if (!empty($company)) {

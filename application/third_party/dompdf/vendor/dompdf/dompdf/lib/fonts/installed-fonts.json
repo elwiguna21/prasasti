@@ -1,0 +1,76 @@
+{
+    "poppins": {
+        "300": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/poppins_300_2e2883f4cf5280db5a8f5b456d9f76e7",
+        "normal": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/poppins_normal_59578db0d134e5107911b0772fcd36b3",
+        "500": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/poppins_500_e357e72d1459b7129a703bd036127015",
+        "600": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/poppins_600_7d20ab77d986921f47f6842ca5ca81b1",
+        "bold": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/poppins_bold_e92875066bf07ed4e7ee92062224b42c",
+        "800": "poppins_800_5b5492e9abc7905444a0655107c324e3"
+    },
+    "open sans": {
+        "normal": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/open_sans_normal_da59a9c5214844a109aa8ec3d9a30e3a",
+        "600": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/open_sans_600_e5e3459bb957db2425daab2849f40fbf",
+        "bold": "open_sans_bold_b5b2dda2226a6db813dac7d3e6a67f3c"
+    },
+    "montserrat": {
+        "normal": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/montserrat_normal_55c601de6113d62d4d9bfbae7d74241b",
+        "500": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/montserrat_500_283b8afb4e3fb552d9740fdcb6fcee17",
+        "600": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/montserrat_600_55084f6e98ed102161f110739a01c7de",
+        "bold": "montserrat_bold_4a32a5c65f5b900ae6d868a9d7c5afc1"
+    },
+    "roboto": {
+        "normal": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/roboto_normal_11c232254ea6efec4f31dae0e1c50f76",
+        "500": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/roboto_500_d32c5c759ce09d6a0f1b4ea221ff19eb",
+        "bold": "roboto_bold_215f77cb0c0c3f339396c6c63cc3cadb"
+    },
+    "nunito": {
+        "normal": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/nunito_normal_a79d5d478ff144acb132596b30109135",
+        "600": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/nunito_600_2ca724e4e1a9f8e2ed8bb752920a8be4",
+        "bold": "nunito_bold_00e56b884f6187001db248b275d34500"
+    },
+    "simple-line-icons": {
+        "normal": "simple_line_icons_normal_c21a26eb4d7839fbcda3a84d13a389b7"
+    },
+    "font awesome 6 brands": {
+        "normal": "font_awesome_6_brands_normal_bfd3295d6ecdff5164c1a2f0ada8e59f"
+    },
+    "font awesome 6 free": {
+        "normal": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/font_awesome_6_free_normal_1920db5635958aa0b01348001ce8785a",
+        "900": "font_awesome_6_free_900_a78cd3130a1973451d14bfdec29fd75a"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_bfd3295d6ecdff5164c1a2f0ada8e59f"
+    },
+    "font awesome 5 free": {
+        "900": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/font_awesome_5_free_900_a78cd3130a1973451d14bfdec29fd75a",
+        "normal": "font_awesome_5_free_normal_1920db5635958aa0b01348001ce8785a"
+    },
+    "fontawesome": {
+        "normal": "fontawesome_normal_5f4487ecdb3a145e18a5ff216d76abd3"
+    },
+    "material design icons": {
+        "normal": "material_design_icons_normal_abd7bedb455fac92e13c9827e1727b31"
+    },
+    "themify": {
+        "normal": "themify_normal_240b39b2c13c595ac3fb361321aa55fc"
+    },
+    "line awesome brands": {
+        "normal": "line_awesome_brands_normal_cd70fb22a8bf1536a4b3f5dc0e7c9fbc"
+    },
+    "line awesome free": {
+        "normal": "\/Applications\/XAMPP\/xamppfiles\/htdocs\/prasasti\/application\/third_party\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/line_awesome_free_normal_1985501a430938c4fbfbb84533e6f3f2",
+        "900": "line_awesome_free_900_8ed4bb89f75f8c0dfe9f2cffc4eb8836"
+    },
+    "avasta": {
+        "normal": "avasta_normal_4617912ae264e8d3a7ce4dbb588ddd2a"
+    },
+    "flaticon": {
+        "normal": "flaticon_normal_3db88f419d74fa771e5056daba61910a"
+    },
+    "icomoon": {
+        "normal": "icomoon_normal_7b63ab7dc1ccd18f357c8ce6a898faef"
+    },
+    "lineicons": {
+        "normal": "lineicons_normal_baaf29f2944e47757a67a436ba1f49dd"
+    }
+}

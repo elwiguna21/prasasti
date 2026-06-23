@@ -1,23 +1,23 @@
 <link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/select2/css/select2.min.css') ?>">
 <style>
-    .select2-container--default .select2-selection--single {
-        border-radius: 0.5rem;
-        border: 0.0625rem solid #c8c8c8;
-        height: 3.5rem;
-        background: #fff;
-    }
+     .select2-container--default .select2-selection--single {
+          border-radius: 0.5rem;
+          border: 0.0625rem solid #c8c8c8;
+          height: 3.5rem;
+          background: #fff;
+     }
 
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 3.5rem;
-        color: #7e7e7e;
-        padding-left: 0.9375rem;
-        min-height: 3.5rem;
-    }
+     .select2-container--default .select2-selection--single .select2-selection__rendered {
+          line-height: 3.5rem;
+          color: #7e7e7e;
+          padding-left: 0.9375rem;
+          min-height: 3.5rem;
+     }
 
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        top: 1.075rem;
-        right: 0.9375rem;
-    }
+     .select2-container--default .select2-selection--single .select2-selection__arrow {
+          top: 1.075rem;
+          right: 0.9375rem;
+     }
 </style>
 
 <div class="page-titles">
@@ -105,22 +105,44 @@
                <div class="cm-content-body form excerpt">
                     <div class="card-body">
                          <div class="row">
-                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-5' : 'col-xl-9' ?> col-sm-12">
+                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-3' : 'col-xl-4' ?> col-sm-12">
                                    <input type="text" class="form-control mb-xl-0 mb-3" id="search"
-                                          placeholder="Cari kode klasifikasi atau indeks arsip..." autocomplete="off">
+                                        placeholder="Cari klasifikasi atau indeks arsip..." autocomplete="off">
                               </div>
-						<?php if ($this->session->userdata('next-role') == 'admin') { ?>
-                                   <div class="col-xl-4 col-sm-12">
-                                        <select id="company"></select>
+                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-2' : 'col-xl-3' ?> col-sm-12">
+                                   <select id="status">
+                                        <option value="">Semua</option>
+                                        <option value="verify_waiting">Menunggu Verifikasi</option>
+                                        <option value="verify_done">Sudah Diverifikasi</option>
+                                        <option value="verify_reject">Verifikasi Ditolak</option>
+                                        <option value="tte_waiting">Menunggu Tandatangan</option>
+                                        <option value="tte_done">Sudah Ditandatangani</option>
+                                        <option value="tte_reject">Tandatangan Ditolak</option>
+                                   </select>
+                              </div>
+                              <div class="col-xl-2 col-sm-12">
+                                   <select name="" id="year">
+                                        <option value="">Semua</option>
+                                        <?php foreach ($years as $year) { ?>
+                                             <option value="<?= $year->name; ?>"><?= $year->name; ?></option>
+                                        <?php } ?>
+                                   </select>
+                              </div>
+
+                              <?php if ($this->session->userdata('next-role') == 'admin') { ?>
+                                   <div class="col-xl-2 col-sm-12">
+                                        <select id="company">
+                                             <option value="">Semua SKPD</option>
+                                        </select>
                                    </div>
-						<?php } ?>
+                              <?php } ?>
 
                               <div class="col-xl-3 col-sm-12">
                                    <button class="btn btn-primary btn-filter shadow me-1" title="Klik disini untuk mencari"
-                                           type="button"><i class="fa fa-search me-1"></i>Filter
+                                        type="button"><i class="fa fa-search me-1"></i>Filter
                                    </button>
                                    <button class="btn btn-danger light shadow btn-reset"
-                                           title="Klik disini untuk menghapus filter" type="button">Reset
+                                        title="Klik disini untuk menghapus filter" type="button">Reset
                                    </button>
                               </div>
                          </div>
@@ -136,16 +158,20 @@
                          <i class="fa-sharp fa-solid fa-file-alt me-2"></i>Daftar Arsip Vital
                     </div>
                     <div class="align-middle">
-					<?php if (in_array($employee->user_role, array('verifikator_skpd', 'admin'))) { ?>
+                         <!-- <?php if (in_array($employee->user_role, array('verifikator_skpd', 'admin'))) { ?>
                               <a href="<?= base_url('v2/alih_media_arsip_vital/berita_acara') ?>"
                                  class="btn btn-info btn-sm shadow"><i class="fas fa-file-signature me-1"></i> Berita Acara
                                    (BAST)</a>
-					<?php } ?>
+					<?php } ?> -->
 
-					<?php if ($employee->user_role == 'operator') { ?>
+                         <?php if ($employee->user_role == 'operator') { ?>
                               <a href="<?= base_url('v2/alih_media_arsip_vital/add') ?>" class="btn btn-primary btn-sm shadow"><i
-                                           class="fal fa-plus me-1"></i> Tambah Arsip Vital</a>
-					<?php } ?>
+                                        class="fal fa-plus me-1"></i> Tambah Arsip Vital</a>
+                         <?php } ?>
+
+                         <a href="javascript:void(0);" class="btn btn-success btn-sm shadow btn-export" id="excel"><i class="fas fa-file-excel me-1"></i> Export Excel</a>
+
+                         <a href="javascript:void(0);" class="btn btn-warning btn-sm shadow btn-export" id="pdf"><i class="fas fa-file-pdf me-1"></i> Export PDF</a>
                     </div>
                </div>
                <div class="cm-content-body form excerpt">
@@ -153,19 +179,19 @@
                          <div class="table-responsive">
                               <table id="archieve-vital-table" class="display" style="min-width: 845px">
                                    <thead>
-                                   <tr>
-                                        <th class="text-center">No.</th>
-                                        <th class="text-center">Klasifikasi</th>
-                                        <th class="text-start">Uraian Informasi Arsip / Deskripsi</th>
-                                        <th class="text-center">Kurun Waktu</th>
-                                        <th class="text-center">Jumlah</th>
-                                        <th class="text-center">Waktu</th>
-                                        <th class="text-center">Status</th>
-								<?php if ($employee->user_role == 'admin') { ?>
-                                             <th class="text-center">SKPD</th>
-								<?php } ?>
-                                        <th class="text-center">Aksi</th>
-                                   </tr>
+                                        <tr>
+                                             <th class="text-center">No.</th>
+                                             <th class="text-center">Klasifikasi</th>
+                                             <th class="text-start">Uraian Informasi Arsip / Deskripsi</th>
+                                             <th class="text-center">Kurun Waktu</th>
+                                             <th class="text-center">Jumlah</th>
+                                             <th class="text-center">Waktu</th>
+                                             <th class="text-center">Status</th>
+                                             <?php if ($employee->user_role == 'admin') { ?>
+                                                  <th class="text-center">SKPD</th>
+                                             <?php } ?>
+                                             <th class="text-center">Aksi</th>
+                                        </tr>
                                    </thead>
                                    <tbody>
                                    </tbody>
@@ -180,123 +206,151 @@
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/select2/js/select2.full.min.js') ?>"></script>
 <script>
-	<?php if ($employee->user_role == 'admin') { ?>
-     let company = $('#company').select2({
-         width: '100%',
-         placeholder: 'Pilih SKPD',
-         ajax: {
-             url: "<?= base_url('v2/companies/get_companies_select_json') ?>",
-             dataType: 'json',
-             type: 'post',
-             delay: 250,
-             data: function (params) {
-                 return {
-                     search: params.term, // search term
-                     page: params.page
-                 };
-             },
-             processResults: function (data, params) {
-                 params.page = params.page || 1;
+     <?php if ($employee->user_role == 'admin') { ?>
+          let company = $('#company').select2({
+               width: '100%',
+               placeholder: 'Pilih SKPD',
+               ajax: {
+                    url: "<?= base_url('v2/companies/get_companies_select_json') ?>",
+                    dataType: 'json',
+                    type: 'post',
+                    delay: 250,
+                    data: function(params) {
+                         return {
+                              search: params.term, // search term
+                              page: params.page
+                         };
+                    },
+                    processResults: function(data, params) {
+                         params.page = params.page || 1;
 
-                 return {
-                     results: data.results,
-                     pagination: {
-                         more: (params.page * 20) < data.totalRows
-                     }
-                 };
-             },
-             cache: true
-         }
-     });
-	<?php } else { ?>
-          let company =false;
+                         return {
+                              results: data.results,
+                              pagination: {
+                                   more: (params.page * 20) < data.totalRows
+                              }
+                         };
+                    },
+                    cache: true
+               }
+          });
+     <?php } else { ?>
+          let company = false;
      <?php } ?>
 
-     $('.btn-reset').click(function () {
-         if (company) {
-             company.val(null).trigger('change');
-         }
-         $('#search').val(null);
-         archieve_table.ajax.reload();
+     let status = $('#status').select2({
+          width: '100%',
      });
 
-     $('.btn-filter').click(function () {
-         archieve_table.ajax.reload();
+     let year = $('#year').select2({
+          width: '100%',
+     });
+
+     $('.btn-reset').click(function() {
+          if (company) {
+               company.val(null).trigger('change');
+          }
+          $('#search').val(null);
+          status.val(null).trigger('change');
+          year.val(null).trigger('change');
+          archieve_table.ajax.reload();
+     });
+
+     $('.btn-filter').click(function() {
+          archieve_table.ajax.reload();
      });
 
      var archieve_table = $('#archieve-vital-table').DataTable({
-         // responsive: false,
-         searching: true,
-         processing: true,
-         serverSide: true,
-         ajax: {
-             url: "<?= base_url('v2/archieves/get_archieves_vital_json') ?>",
-             type: "post",
-             data: {
-                 search: function () {
-                     return $("#search").val();
-                 },
-                 company: function () {
-                     return $("#company").val();
-                 },
-             }
-         },
-         // bLengthChange: !1,
-         order: [
-             [0, "desc"]
-         ],
-         language: {
-             processing: '<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Mohon tunggu ...',
-             infoEmpty: '<strong>Tidak ada data</strong>',
-             zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
-             searchPlaceholder: 'Cari kode klasifikasi atau indeks arsip...',
-             sSearch: '',
-             lengthMenu: "Tampilkan _MENU_ data",
-             paginate: {
-                 next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
-                 previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
-             }
-         },
-         columns: [{
-             data: "",
-             className: 'text-center',
-             render: function (data, type, row, meta) {
-                 let number = meta.row + meta.settings._iDisplayStart + 1;
-                 return "<span class='d-flex justify-content-center'>" + number + "</span>";
-             }
-         }, {
-             data: "klasifikasi",
-             className: 'text-center'
-         }, {
-             bSortable: !1,
-             data: "deskripsi"
-         }, {
-             data: "tahun",
-             className: 'text-center'
-         }, {
-             bSortable: !1,
-             data: "jumlah",
-             className: 'text-center'
-         }, {
-             data: "tanggal",
-             className: 'text-center'
-         }, {
-             bSortable: !1,
-             data: "status",
-             className: 'text-center'
-         },
-		    <?php if ($employee->user_role == 'admin') { ?> {
-                 bSortable: !1,
-                 data: "company",
-                 className: 'text-center'
-             },
-		    <?php } ?> {
-                 data: "action",
-                 bSortable: !1,
-                 className: 'text-center'
-             }
-         ]
+          // responsive: false,
+          searching: true,
+          processing: true,
+          serverSide: true,
+          ajax: {
+               url: "<?= base_url('v2/archieves/get_archieves_vital_json') ?>",
+               type: "post",
+               data: {
+                    search: function() {
+                         return $("#search").val();
+                    },
+                    status: function() {
+                         return $("#status").val();
+                    },
+                    year: function() {
+                         return $("#year").val();
+                    },
+                    company: function() {
+                         return $("#company").val();
+                    },
+               }
+          },
+          // bLengthChange: !1,
+          order: [
+               [0, "desc"]
+          ],
+          language: {
+               processing: '<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Mohon tunggu ...',
+               infoEmpty: '<strong>Tidak ada data</strong>',
+               zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
+               searchPlaceholder: 'Cari kode klasifikasi atau indeks arsip...',
+               sSearch: '',
+               lengthMenu: "Tampilkan _MENU_ data",
+               paginate: {
+                    next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                    previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
+               }
+          },
+          columns: [{
+                    data: "",
+                    className: 'text-center',
+                    render: function(data, type, row, meta) {
+                         let number = meta.row + meta.settings._iDisplayStart + 1;
+                         return "<span class='d-flex justify-content-center'>" + number + "</span>";
+                    }
+               }, {
+                    data: "klasifikasi",
+                    className: 'text-center'
+               }, {
+                    bSortable: !1,
+                    data: "deskripsi"
+               }, {
+                    data: "tahun",
+                    className: 'text-center'
+               }, {
+                    bSortable: !1,
+                    data: "jumlah",
+                    className: 'text-center'
+               }, {
+                    data: "tanggal",
+                    className: 'text-center'
+               }, {
+                    bSortable: !1,
+                    data: "status",
+                    className: 'text-center'
+               },
+               <?php if ($employee->user_role == 'admin') { ?> {
+                         bSortable: !1,
+                         data: "company",
+                         className: 'text-center'
+                    },
+               <?php } ?> {
+                    data: "action",
+                    bSortable: !1,
+                    className: 'text-center'
+               }
+          ]
      });
      $(".dataTables_paginate").addClass("pagination-rounded");
      $(".dataTables_filter").hide();
+
+     $('.btn-export').click(function() {
+          let type = this.id;
+          let search = $('#search').val();
+          let status = $('#status').val();
+          let year = $('#year').val();
+          let filterCompany = '';
+
+          let url = "<?= base_url('v2/archieves/vital_export') ?>?search=" + search + "&status=" + status + "&year=" + year + "&type=" + type;
+
+          window.open(url, '_blank');
+     });
 </script>

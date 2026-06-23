@@ -561,6 +561,10 @@
      chartBar1.render();
      _initialize_arhieve_data();
 
+     $('#archieve-month-year').change(function() {
+          _initialize_arhieve_data();
+     });
+
      function _initialize_arhieve_data() {
           $.post("<?= base_url('v2/Dashboards/get_total_archieves_json') ?>", {
                year: $('#archieve-month-year').val()

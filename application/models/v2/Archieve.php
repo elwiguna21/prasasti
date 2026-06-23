@@ -40,8 +40,9 @@ class Archieve extends CI_Model
                $this->db->where($where);
           }
 
-          $this->db->select('berkas.*, company.name');
+          $this->db->select('berkas.*, company.name, klasifikasi.nama as klasifikasi_nama');
           $this->db->join('company', 'company.no_company = berkas.nomor_skpd', 'left');
+          $this->db->join('klasifikasi', 'klasifikasi.kode_gabungan = berkas.kode_klsf', 'left');
           return $this->db->get('berkas')->result();
      }
 
@@ -53,10 +54,10 @@ class Archieve extends CI_Model
                $this->db->where($where);
           }
 
-          $this->db->select('berkas.*, company.name');
+          $this->db->select('berkas.*, company.name, klasifikasi.nama as klasifikasi_nama');
           $this->db->join('company', 'company.no_company = berkas.nomor_skpd', 'left');
+          $this->db->join('klasifikasi', 'klasifikasi.kode_gabungan = berkas.kode_klsf', 'left');
           // $this->db->join('employee', 'employee.user = berkas.tte_user', 'left');
-          // return $this->db->get('berkas')->row();
           $result = $this->db->get('berkas')->row();
           if (!empty($result)) {
                $result->creator              = $this->db->get_where('employee', array('user' => $result->user))->row();
@@ -224,6 +225,22 @@ class Archieve extends CI_Model
           $this->db->where($where);
 
           $this->db->group_by("MONTH($tanggal_bersih)");
+
+          return $this->db->get()->result();
+     }
+
+     public function get_all_years($where = null)
+     {
+          $this->db->where('deleted_at is null');
+
+          $this->db->select('tahun as name');
+          $this->db->from('berkas');
+          $this->db->group_by('tahun');
+          $this->db->order_by('tahun', 'DESC');
+
+          if (!empty($where)) {
+               $this->db->where($where);
+          }
 
           return $this->db->get()->result();
      }
