@@ -32,6 +32,7 @@
                                         <option value="kepala_skpd">KEPALA SKPD</option>
                                         <option value="kepala_lkd">KEPALA LKD</option>
                                         <option value="operator">OPERATOR</option>
+                                        <option value="penilai">PENILAI</option>
                                    </select>
                               </div>
                               <div class="col-xl-3 col-sm-6 mb-3 mb-xl-0">
@@ -157,6 +158,7 @@
                                         <option value="kepala_skpd">KEPALA SKPD</option>
                                         <option value="kepala_lkd">KEPALA LKD</option>
                                         <option value="operator">OPERATOR</option>
+                                        <option value="penilai">PENILAI</option>
                                    </select>
                               </div>
                          </div>
