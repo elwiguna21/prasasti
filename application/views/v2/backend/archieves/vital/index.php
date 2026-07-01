@@ -349,7 +349,7 @@
           let year = $('#year').val();
           let filterCompany = '';
 
-          let url = "<?= base_url('v2/archieves/vital_export') ?>?search=" + search + "&status=" + status + "&year=" + year + "&type=" + type;
+          let url = "<?= base_url('v2/alih_media_arsip_vital/export') ?>?search=" + search + "&status=" + status + "&year=" + year + "&type=" + type;
 
           window.open(url, '_blank');
      });
