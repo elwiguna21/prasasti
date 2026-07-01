@@ -884,10 +884,8 @@ class Archieves extends MY_Controller
                }
           }
 
-          echo json_encode($data);
-          die;
-
           $data['title']      = 'Daftar Arsip Vital';
+          $data['user']       = $this->user_auth;
 
           // Stream the file down to the browser
           if ($type == 'pdf') {
@@ -1071,7 +1069,12 @@ class Archieves extends MY_Controller
 
                     $action = '<div class="d-flex justify-content-center">' . $btn_detail . '</div>';
 
-                    $nested['klasifikasi'] = '<a href="' . base_url('v2/alih_media_arsip_vital/detail?') . http_build_query($params) . '" class="text-primary">' . $archieve->kode_klsf ?? '-' . '</a>';
+                    if (!empty($archieve->klasifikasi_nama)) {
+                         $nested['klasifikasi'] = '<a href="' . base_url('v2/alih_media_arsip_vital/detail?') . http_build_query($params) . '" class="text-primary">' . $archieve->kode_klsf . ' - ' . $archieve->klasifikasi_nama . '' ?? '-' . '</a>';
+                    } else {
+                         $nested['klasifikasi'] = '<a href="' . base_url('v2/alih_media_arsip_vital/detail?') . http_build_query($params) . '" class="text-primary">' . $archieve->kode_klsf ?? '-' . '</a>';
+                    }
+
                     $nested['deskripsi'] = (!empty($archieve->uraian_informasi_arsip)) ? $archieve->uraian_informasi_arsip : (!empty($archieve->deskripsi) ? $archieve->deskripsi : '-');
                     $nested['tahun'] = $archieve->tahun;
                     $nested['jumlah'] = (!empty($archieve->jumlah)) ? $archieve->jumlah . ' dok' : '-';
