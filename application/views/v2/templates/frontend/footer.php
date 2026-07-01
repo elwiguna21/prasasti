@@ -17,7 +17,7 @@
                          <p class="mb-0">Penerapan Sistem Arsip Statis Terintegrasi.</p>
 
                          <!-- Social Nav -->
-                         <div class="social-nav">
+                         <div class="social-nav mb-4">
                               <a href="#">
                                    <i class="ti ti-brand-facebook"></i>
                               </a>
@@ -31,6 +31,13 @@
                                    <i class="ti ti-brand-instagram"></i>
                               </a>
                          </div>
+                         
+                         <h6 class="mb-2 text-white">Statistik Pengunjung</h6>
+                         <ul class="list-unstyled mb-0 text-white" style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">
+                              <li class="mb-1"><i class="ti ti-user me-2"></i> Hari ini: <?= isset($visitor_stats) ? number_format($visitor_stats['today']) : 0 ?></li>
+                              <li class="mb-1"><i class="ti ti-calendar-event me-2"></i> Bulan ini: <?= isset($visitor_stats) ? number_format($visitor_stats['month']) : 0 ?></li>
+                              <li><i class="ti ti-chart-bar me-2"></i> Total: <?= isset($visitor_stats) ? number_format($visitor_stats['total']) : 0 ?></li>
+                         </ul>
                     </div>
                </div>
 

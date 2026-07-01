@@ -105,6 +105,19 @@ class Dashboards extends MY_Controller
 
           //		echo json_encode($data); die;
 
+          if ($this->db->table_exists('visitor_logs')) {
+               $this->load->model('v2/Visitor_model', 'visitor_model');
+               $data['visitor_stats'] = [
+                    'today' => $this->visitor_model->get_today_visitors(),
+                    'month' => $this->visitor_model->get_this_month_visitors(),
+                    'total' => $this->visitor_model->get_total_visitors()
+               ];
+               $data['visitor_chart'] = $this->visitor_model->get_chart_data(7);
+          } else {
+               $data['visitor_stats'] = ['today' => 0, 'month' => 0, 'total' => 0];
+               $data['visitor_chart'] = [];
+          }
+
           if ($this->user_auth->user_role == 'admin') {
                $this->backend('v2/backend/dashboard/index', $data);
           } else {

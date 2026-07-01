@@ -26,6 +26,54 @@
      </div>
 </div>
 <div class="row">
+     <div class="col-xl-4 col-xxl-4 col-lg-4 col-md-4 col-sm-12">
+          <div class="widget-stat card">
+               <div class="card-body p-4">
+                    <div class="media ai-icon d-flex">
+                         <span class="me-3 bgl-primary text-primary">
+                              <i class="ti-user" style="font-size: 36px"></i>
+                         </span>
+                         <div class="media-body">
+                              <h3 class="mb-0 text-black"><span class="counter ms-0"><?= isset($visitor_stats) ? number_format($visitor_stats['today']) : 0 ?></span></h3>
+                              <p class="mb-0">Pengunjung Hari Ini</p>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     <div class="col-xl-4 col-xxl-4 col-lg-4 col-md-4 col-sm-12">
+          <div class="widget-stat card bg-primary">
+               <div class="card-body p-4">
+                    <div class="media ai-icon d-flex">
+                         <span class="me-3 bgl-white text-white">
+                              <i class="ti-calendar" style="font-size: 36px"></i>
+                         </span>
+                         <div class="media-body text-white">
+                              <h3 class="mb-0 text-white"><span class="counter ms-0"><?= isset($visitor_stats) ? number_format($visitor_stats['month']) : 0 ?></span></h3>
+                              <p class="mb-0 text-white">Pengunjung Bulan Ini</p>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     <div class="col-xl-4 col-xxl-4 col-lg-4 col-md-4 col-sm-12">
+          <div class="widget-stat card bg-success">
+               <div class="card-body p-4">
+                    <div class="media ai-icon d-flex">
+                         <span class="me-3 bgl-white text-white">
+                              <i class="ti-bar-chart" style="font-size: 36px"></i>
+                         </span>
+                         <div class="media-body text-white">
+                              <h3 class="mb-0 text-white"><span class="counter ms-0"><?= isset($visitor_stats) ? number_format($visitor_stats['total']) : 0 ?></span></h3>
+                              <p class="mb-0 text-white">Total Pengunjung</p>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+
+<div class="row">
      <div class="col-xl-3 col-xxl-3 col-lg-6 col-md-6 col-sm-6">
           <div class="widget-stat card">
                <div class="card-body p-4">
