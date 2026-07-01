@@ -1,4 +1,4 @@
-﻿<!-- Page Title -->
+<!-- Page Title -->
 <div class="page-titles">
      <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?= base_url('v2/backend/dashboards') ?>">Dashboard</a></li>
@@ -10,8 +10,30 @@
 <!-- SmartWizard CSS -->
 <link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/jquery-smartwizard/dist/css/smart_wizard_all.min.css') ?>">
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/select2/css/select2.min.css') ?>">
 
 <style>
+     /* ===== Select2 Overrides ===== */
+     .select2-container--default .select2-selection--single {
+          border-radius: 0.5rem;
+          border: 0.0625rem solid #c8c8c8;
+          height: 3.5rem;
+          background: #fff;
+     }
+
+     .select2-container--default .select2-selection--single .select2-selection__rendered {
+          line-height: 3.5rem;
+          color: #7e7e7e;
+          padding-left: 0.9375rem;
+          min-height: 3.5rem;
+     }
+
+     .select2-container--default .select2-selection--single .select2-selection__arrow {
+          top: 1.075rem;
+          right: 0.9375rem;
+     }
+
      /* ===== Wizard Overrides (Custom Step-by-Step) ===== */
      #smartwizard {
           background: transparent;
@@ -211,6 +233,52 @@
      #pdf-upload-preview.has-file .upload-icon {
           color: #28a745;
      }
+
+     /* ===== TTE Check Result ===== */
+     #tte-check-result {
+          display: none;
+          margin-top: 16px;
+          padding: 16px 20px;
+          border-radius: 8px;
+          border: 1px solid;
+          animation: fadeInUp 0.4s ease;
+     }
+
+     #tte-check-result.tte-checking {
+          background: #fff8e1;
+          border-color: #ffecb3;
+          color: #795548;
+     }
+
+     #tte-check-result.tte-found {
+          background: #e8f5e9;
+          border-color: #a5d6a7;
+          color: #2e7d32;
+     }
+
+     #tte-check-result.tte-not-found {
+          background: #e3f2fd;
+          border-color: #90caf9;
+          color: #1565c0;
+     }
+
+     #tte-check-result.tte-error {
+          background: #fce4ec;
+          border-color: #ef9a9a;
+          color: #c62828;
+     }
+
+     @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
+     }
+
+     .tte-signer-card {
+          background: rgba(255,255,255,0.7);
+          border-radius: 6px;
+          padding: 10px 14px;
+          margin-top: 10px;
+     }
 </style>
 
 <div class="row">
@@ -255,7 +323,12 @@
                                    <div class="row g-3">
                                         <div class="col-12">
                                              <label class="form-label fw-semibold">Kode Klasifikasi <span class="text-danger">*</span></label>
-                                             <input type="text" id="kode_klsf" name="kode_klsf" class="form-control" placeholder="Contoh: 900.1">
+                                             <select id="kode_klsf" name="kode_klsf" class="form-control select2" required>
+                                                  <option value="">Pilih Klasifikasi Surat</option>
+                                                  <?php foreach($klasifikasi as $k): ?>
+                                                       <option value="<?= $k->kode_gabungan ?>"><?= $k->kode_gabungan ?> - <?= $k->nama ?></option>
+                                                  <?php endforeach; ?>
+                                             </select>
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
@@ -263,22 +336,17 @@
                                              <textarea id="uraian_informasi_arsip" name="uraian_informasi_arsip" class="form-control" rows="3" placeholder="Tuliskan uraian informasi arsip..."></textarea>
                                              <span class="help-block text-danger small"></span>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                              <label class="form-label fw-semibold">Kurun Waktu (Tahun) <span class="text-danger">*</span></label>
                                              <input type="number" id="tahun" name="tahun" class="form-control" placeholder="Contoh: 2024" min="1900" max="2100">
                                              <span class="help-block text-danger small"></span>
                                         </div>
-                                        <div class="col-md-4">
-                                             <label class="form-label fw-semibold">Jumlah Dokumen <span class="text-danger">*</span></label>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Jumlah Berkas <span class="text-danger">*</span></label>
                                              <div class="input-group">
                                                   <input type="number" id="jumlah" name="jumlah" class="form-control" placeholder="0" min="1">
-                                                  <span class="input-group-text">dok</span>
+                                                  <span class="input-group-text">berkas</span>
                                              </div>
-                                             <span class="help-block text-danger small"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                             <label class="form-label fw-semibold">Waktu (Tanggal) <span class="text-danger">*</span></label>
-                                             <input type="date" id="tanggal" name="tanggal" class="form-control">
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
@@ -286,8 +354,9 @@
                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta" class="form-control" placeholder="Nama unit kerja pencipta arsip">
                                         </div>
                                         <div class="col-12">
-                                             <label class="form-label fw-semibold">Keterangan</label>
-                                             <textarea id="keterangan" name="keterangan" class="form-control" rows="2" placeholder="Keterangan tambahan (opsional)"></textarea>
+                                             <label class="form-label fw-semibold">Keterangan <span class="text-danger">*</span></label>
+                                             <textarea id="keterangan" name="keterangan" class="form-control" rows="2" placeholder="Masukan keterangan" required></textarea>
+                                             <span class="help-block text-danger small"></span>
                                         </div>
                                    </div>
                               </div>
@@ -313,6 +382,8 @@
                                                   <small class="text-muted">Mengupload...</small>
                                              </div>
                                              <span id="pdf-upload-error" class="text-danger small d-none"></span>
+                                             <!-- TTE Check Result -->
+                                             <div id="tte-check-result"></div>
                                         </div>
                                    </div>
                               </div>
@@ -379,7 +450,7 @@
 </div>
 
 <!-- Required vendors -->
-<script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
+<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
 <script src="<?= base_url('assets/v3/backend/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.min.js') ?>"></script>
 
 <!-- PDF.js via CDN -->
@@ -387,8 +458,15 @@
 
 <!-- interact.js via CDN (drag + resize) -->
 <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.27/dist/interact.min.js"></script>
+<!-- Select2 JS -->
+<script src="<?= base_url('assets/v3/backend/vendor/select2/js/select2.full.min.js') ?>"></script>
 
 <script>
+     $('#kode_klsf').select2({
+          placeholder: "Pilih Klasifikasi Surat",
+          allowClear: true,
+          width: '100%'
+     });
      var base_url = '<?php echo base_url(); ?>';
 
      // ===== PDF.js Worker =====
@@ -398,6 +476,8 @@
      var pageNum = 1;
      var pageScale = 1.0;
      var tempFilename = '';
+     var hasExistingTTE = false;
+     var tteCheckInProgress = false;
 
      // ===== SmartWizard Init =====
 
@@ -432,16 +512,29 @@
                     return validateStep1();
                }
                if (currentStepIndex === 1) {
+                    // Blokir navigasi selama pengecekan TTE masih berjalan
+                    if (tteCheckInProgress) {
+                         Swal.fire('Mohon Tunggu', 'Sedang memeriksa TTE pada dokumen. Harap tunggu hingga selesai.', 'info');
+                         return false;
+                    }
+                    // Jika dokumen sudah memiliki TTE, blokir navigasi ke Step 3
+                    // karena tombol Simpan sudah muncul di Step 2
+                    if (hasExistingTTE) {
+                         return false;
+                    }
                     return validateStep2();
                }
           }
           return true;
      });
 
-     // Saat masuk step 3: render PDF
+     // Saat masuk step: render PDF dan tampilkan tombol Simpan
      $('#smartwizard').on('showStep', function(e, anchorObject, stepIndex) {
           if (stepIndex === 2) {
                if (tempFilename) renderPdfPage(pageNum);
+               $('#btnSimpan').removeClass('d-none');
+          } else if (stepIndex === 1 && hasExistingTTE) {
+               // Tampilkan tombol Simpan di Step 2 jika sudah ada TTE
                $('#btnSimpan').removeClass('d-none');
           } else {
                $('#btnSimpan').addClass('d-none');
@@ -554,11 +647,11 @@
                },
                {
                     id: 'jumlah',
-                    label: 'Jumlah Dokumen'
+                    label: 'Jumlah Berkas'
                },
                {
-                    id: 'tanggal',
-                    label: 'Waktu (Tanggal)'
+                    id: 'keterangan',
+                    label: 'Keterangan'
                },
           ];
           fields.forEach(function(f) {
@@ -581,9 +674,11 @@
           if (!tempFilename) {
                document.getElementById('pdf-upload-error').textContent = 'File PDF wajib diupload terlebih dahulu.';
                document.getElementById('pdf-upload-error').classList.remove('d-none');
+               updateWizardHeight();
                return false;
           }
           document.getElementById('pdf-upload-error').classList.add('d-none');
+          updateWizardHeight();
           return true;
      }
 
@@ -634,6 +729,9 @@
                     // Preload PDF.js
                     loadPdfFromUrl(res.url);
                     document.getElementById('pdf-upload-error').classList.add('d-none');
+
+                    // ===== Auto-verifikasi TTE BSrE setelah upload berhasil =====
+                    verifyTteStatus(res.filename);
                } else {
                     alert('Gagal upload: ' + (res.message || 'Error'));
                     preview.classList.remove('has-file');
@@ -641,6 +739,106 @@
                }
           };
           xhr.send(formData);
+     }
+
+     // ===== Manual Wizard Height Update =====
+     function updateWizardHeight() {
+          setTimeout(function() {
+               var stepHeight = $('#step-2').outerHeight();
+               if (stepHeight > 0) {
+                    $('#smartwizard .tab-content').css('height', stepHeight + 'px');
+               }
+          }, 50);
+     }
+
+     // ===== Verifikasi TTE BSrE =====
+     function verifyTteStatus(filename) {
+          tteCheckInProgress = true;
+          var resultDiv = document.getElementById('tte-check-result');
+          resultDiv.style.display = 'block';
+          resultDiv.className = 'tte-checking';
+          resultDiv.innerHTML = '<div class="d-flex align-items-center">' +
+               '<div class="spinner-border spinner-border-sm me-2" role="status"></div>' +
+               '<span><strong>Memeriksa TTE BSrE...</strong><br><small>Sedang memverifikasi tanda tangan elektronik pada dokumen</small></span>' +
+               '</div>';
+
+          // Recalculate wizard height untuk menampilkan spinner
+          updateWizardHeight();
+
+          $.ajax({
+               url: base_url + 'v2/backend/alih_media_arsip_usul_serah/ajax_verify_tte',
+               type: 'POST',
+               data: { filename: filename },
+               dataType: 'JSON',
+               success: function(res) {
+                    tteCheckInProgress = false;
+                    if (res.status && res.has_tte) {
+                         // ✅ Dokumen sudah memiliki TTE
+                         hasExistingTTE = true;
+                         var signerHtml = '';
+                         if (res.detail && res.detail.length > 0) {
+                              signerHtml = '<div class="tte-signer-card">';
+                              for (var i = 0; i < res.detail.length; i++) {
+                                   signerHtml += '<div class="mb-1"><i class="fas fa-user-check me-1"></i> <strong>' + res.detail[i].signer_name + '</strong></div>';
+                                   signerHtml += '<div class="small text-muted">Validitas: ' + res.detail[i].cert_validity + '</div>';
+                              }
+                              signerHtml += '</div>';
+                         }
+                         resultDiv.className = 'tte-found';
+                         resultDiv.innerHTML = '<div>' +
+                              '<div class="d-flex align-items-center mb-1">' +
+                              '<i class="fas fa-check-circle fa-lg me-2"></i>' +
+                              '<strong>Dokumen Sudah Memiliki TTE BSrE</strong>' +
+                              '</div>' +
+                              '<small>' + (res.message || '') + '</small>' +
+                              '<div class="small mt-1"><i class="fas fa-signature me-1"></i> Jumlah tanda tangan: <strong>' + (res.jumlah_signature || 0) + '</strong></div>' +
+                              signerHtml +
+                              '<hr class="my-2">' +
+                              '<div class="small"><i class="fas fa-info-circle me-1"></i> Langkah <strong>Posisi TTE</strong> akan dilewati. Silakan klik <strong>Simpan Data</strong> untuk menyimpan pengajuan.</div>' +
+                              '</div>';
+
+                         // Tampilkan tombol Simpan di Step 2
+                         $('#btnSimpan').removeClass('d-none');
+
+                         // Recalculate wizard height agar konten TTE tidak terpotong
+                         updateWizardHeight();
+                    } else {
+                         // ❌ Dokumen belum memiliki TTE
+                         hasExistingTTE = false;
+                         resultDiv.className = 'tte-not-found';
+                         resultDiv.innerHTML = '<div class="d-flex align-items-center">' +
+                              '<i class="fas fa-info-circle fa-lg me-2"></i>' +
+                              '<div>' +
+                              '<strong>Dokumen Belum Memiliki TTE</strong><br>' +
+                              '<small>Silakan lanjut ke langkah <strong>Posisi TTE</strong> untuk menentukan posisi tanda tangan elektronik.</small>' +
+                              '</div>' +
+                              '</div>';
+
+                         // Sembunyikan tombol Simpan (kembali ke flow normal)
+                         $('#btnSimpan').addClass('d-none');
+
+                         // Recalculate wizard height
+                         updateWizardHeight();
+                    }
+               },
+               error: function() {
+                    // Jika gagal verifikasi, tetap lanjut flow normal
+                    tteCheckInProgress = false;
+                    hasExistingTTE = false;
+                    resultDiv.className = 'tte-error';
+                    resultDiv.innerHTML = '<div class="d-flex align-items-center">' +
+                         '<i class="fas fa-exclamation-triangle fa-lg me-2"></i>' +
+                         '<div>' +
+                         '<strong>Gagal Memverifikasi TTE</strong><br>' +
+                         '<small>Tidak dapat terhubung ke server verifikasi. Silakan lanjut ke langkah Posisi TTE.</small>' +
+                         '</div>' +
+                         '</div>';
+                    $('#btnSimpan').addClass('d-none');
+
+                    // Recalculate wizard height
+                    updateWizardHeight();
+               }
+          });
      }
 
      // ===== Load PDF via PDF.js =====
@@ -745,11 +943,11 @@
           formData.append('uraian_informasi_arsip', document.getElementById('uraian_informasi_arsip').value);
           formData.append('tahun', document.getElementById('tahun').value);
           formData.append('jumlah', document.getElementById('jumlah').value);
-          formData.append('tanggal', document.getElementById('tanggal').value);
           formData.append('unit_kerja_pencipta', document.getElementById('unit_kerja_pencipta').value);
           formData.append('keterangan', document.getElementById('keterangan').value);
           formData.append('tte_posisi', document.getElementById('tte_posisi').value);
           formData.append('pdf_filename_temp', document.getElementById('pdf_filename_temp').value);
+          formData.append('has_existing_tte', hasExistingTTE ? 'Y' : 'N');
 
           // File PDF dari input (kirim ulang untuk disimpan permanent)
           var fileInput = document.getElementById('file_pdf_input');

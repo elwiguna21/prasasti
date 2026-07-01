@@ -884,10 +884,8 @@ class Archieves extends MY_Controller
                }
           }
 
-          echo json_encode($data);
-          die;
-
           $data['title']      = 'Daftar Arsip Vital';
+          $data['user']       = $this->user_auth;
 
           // Stream the file down to the browser
           if ($type == 'pdf') {

@@ -10,6 +10,8 @@ class Berkas extends CI_Model
     var $jenis_arsip  = null;
     var $filter_skpd  = null;
     var $search_keyword = null;
+    var $filter_status = null;
+    var $filter_tahun = null;
 
     public function __construct()
     {
@@ -33,6 +35,16 @@ class Berkas extends CI_Model
         $this->search_keyword = $keyword;
     }
 
+    public function set_filter_status($status)
+    {
+        $this->filter_status = $status;
+    }
+
+    public function set_filter_tahun($tahun)
+    {
+        $this->filter_tahun = $tahun;
+    }
+
     private function _get_datatables_query()
     {
         // Select kolom yang membedakan dengan id dari tabel lain
@@ -48,7 +60,33 @@ class Berkas extends CI_Model
         }
 
         if ($this->filter_skpd !== null && $this->filter_skpd !== '') {
-            $this->db->where('company.id', $this->filter_skpd);
+            $this->db->where('berkas.nomor_skpd', $this->filter_skpd);
+        }
+
+        if ($this->filter_tahun !== null && $this->filter_tahun !== '') {
+            $this->db->where('berkas.tahun', $this->filter_tahun);
+        }
+
+        if ($this->filter_status !== null && $this->filter_status !== '') {
+            if ($this->filter_status == 'verify_waiting') {
+                $this->db->where("berkas.penilaian_arsip_statis = 'Y' AND (berkas.verifikasi_status IS NULL OR berkas.verifikasi_status != 'Y' AND berkas.verifikasi_status != 'N')");
+            } else if ($this->filter_status == 'verify_done') {
+                $this->db->where("berkas.verifikasi_status", 'Y');
+            } else if ($this->filter_status == 'verify_reject') {
+                $this->db->where("berkas.verifikasi_status", 'N');
+                $this->db->where("berkas.verifikasi_user IS NOT NULL");
+            } else if ($this->filter_status == 'tte_waiting') {
+                $this->db->where("berkas.verifikasi_status", 'Y');
+                $this->db->where("(berkas.tte_status IS NULL OR berkas.tte_status != 'Y' AND berkas.tte_status != 'N')");
+            } else if ($this->filter_status == 'tte_done') {
+                $this->db->where("berkas.tte_status", 'Y');
+            } else if ($this->filter_status == 'tte_reject') {
+                $this->db->where("berkas.tte_status", 'N');
+            } else if ($this->filter_status == 'penilaian_waiting') {
+                $this->db->where("(berkas.penilaian_arsip_statis IS NULL OR berkas.penilaian_arsip_statis != 'Y' AND berkas.penilaian_arsip_statis != 'N')");
+            } else if ($this->filter_status == 'penilaian_reject') {
+                $this->db->where("berkas.penilaian_arsip_statis", 'N');
+            }
         }
 
         $i = 0;
@@ -104,7 +142,31 @@ class Berkas extends CI_Model
             $this->db->where('berkas.jenis_arsip', $this->jenis_arsip);
         }
         if ($this->filter_skpd !== null && $this->filter_skpd !== '') {
-            $this->db->where('company.id', $this->filter_skpd);
+            $this->db->where('berkas.nomor_skpd', $this->filter_skpd);
+        }
+        if ($this->filter_tahun !== null && $this->filter_tahun !== '') {
+            $this->db->where('berkas.tahun', $this->filter_tahun);
+        }
+        if ($this->filter_status !== null && $this->filter_status !== '') {
+            if ($this->filter_status == 'verify_waiting') {
+                $this->db->where("berkas.penilaian_arsip_statis = 'Y' AND (berkas.verifikasi_status IS NULL OR berkas.verifikasi_status != 'Y' AND berkas.verifikasi_status != 'N')");
+            } else if ($this->filter_status == 'verify_done') {
+                $this->db->where("berkas.verifikasi_status", 'Y');
+            } else if ($this->filter_status == 'verify_reject') {
+                $this->db->where("berkas.verifikasi_status", 'N');
+                $this->db->where("berkas.verifikasi_user IS NOT NULL");
+            } else if ($this->filter_status == 'tte_waiting') {
+                $this->db->where("berkas.verifikasi_status", 'Y');
+                $this->db->where("(berkas.tte_status IS NULL OR berkas.tte_status != 'Y' AND berkas.tte_status != 'N')");
+            } else if ($this->filter_status == 'tte_done') {
+                $this->db->where("berkas.tte_status", 'Y');
+            } else if ($this->filter_status == 'tte_reject') {
+                $this->db->where("berkas.tte_status", 'N');
+            } else if ($this->filter_status == 'penilaian_waiting') {
+                $this->db->where("(berkas.penilaian_arsip_statis IS NULL OR berkas.penilaian_arsip_statis != 'Y' AND berkas.penilaian_arsip_statis != 'N')");
+            } else if ($this->filter_status == 'penilaian_reject') {
+                $this->db->where("berkas.penilaian_arsip_statis", 'N');
+            }
         }
         return $this->db->count_all_results();
     }

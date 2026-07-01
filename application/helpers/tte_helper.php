@@ -289,3 +289,120 @@ if (!function_exists('tanda_tangan_cloud')) {
         );
     }
 }
+
+if (!function_exists('verifikasi_tte')) {
+
+    /**
+     * Verifikasi apakah file PDF sudah memiliki Tanda Tangan Elektronik (TTE)
+     * via API BSrE Sumedang
+     *
+     * @param  string $path_pdf  Path absolut file PDF yang akan diverifikasi
+     * @return array  ['has_tte' => bool, 'message' => string, 'detail' => array]
+     */
+    function verifikasi_tte($path_pdf)
+    {
+        // ── Kredensial API BSrE (sama dengan tanda_tangan_cloud) ──
+        $server_ip   = 'tte.sumedangkab.go.id';
+        $server_user = 'sisemar';
+        $server_pass = 'A:S$]6vy^G-<)=byMr';
+
+        $has_tte = false;
+        $message = '';
+        $detail  = array();
+
+        // Validasi file sumber ada
+        if (!file_exists($path_pdf)) {
+            return array(
+                'has_tte' => false,
+                'message' => 'File PDF tidak ditemukan.',
+                'detail'  => array()
+            );
+        }
+
+        // ── Build POST data ──
+        $postData = array(
+            'signed_file' => curl_file_create(realpath($path_pdf), 'application/pdf'),
+        );
+
+        // ── cURL ke API BSrE Verify ──
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://' . $server_ip . '/api/sign/verify');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_USERPWD, "$server_user:$server_pass");
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30); // timeout 30 detik
+
+        $result     = curl_exec($ch);
+        $curl_error = false;
+
+        if (curl_errno($ch)) {
+            $curl_error   = true;
+            $curl_message = curl_error($ch);
+        }
+
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // ── Handle Response ──
+        if ($curl_error) {
+            return array(
+                'has_tte' => false,
+                'message' => 'Gagal terhubung ke server verifikasi TTE: ' . $curl_message,
+                'detail'  => array()
+            );
+        }
+
+        if ($http_code != 200) {
+            return array(
+                'has_tte' => false,
+                'message' => 'Server verifikasi TTE mengembalikan kode error: ' . $http_code,
+                'detail'  => array()
+            );
+        }
+
+        // Parse JSON response
+        $json = json_decode($result, true);
+
+        if (empty($json)) {
+            return array(
+                'has_tte' => false,
+                'message' => 'Response dari server verifikasi TTE tidak valid.',
+                'detail'  => array()
+            );
+        }
+
+        // Cek jumlah_signature > 0 berarti sudah ada TTE
+        $jumlah_signature = isset($json['jumlah_signature']) ? (int) $json['jumlah_signature'] : 0;
+
+        if ($jumlah_signature > 0) {
+            $has_tte = true;
+            $message = $json['notes'] ?? 'Dokumen sudah memiliki Tanda Tangan Elektronik.';
+
+            // Ambil detail penandatangan
+            if (!empty($json['details']) && is_array($json['details'])) {
+                foreach ($json['details'] as $sig) {
+                    $signer_info = $sig['info_signer'] ?? array();
+                    $detail[] = array(
+                        'signer_name'      => $signer_info['signer_name'] ?? '-',
+                        'signer_dn'        => $signer_info['signer_dn'] ?? '-',
+                        'cert_validity'    => $signer_info['signer_cert_validity'] ?? '-',
+                        'signature_field'  => $sig['signature_field'] ?? '-',
+                    );
+                }
+            }
+        } else {
+            $has_tte = false;
+            $message = 'Dokumen belum memiliki Tanda Tangan Elektronik.';
+        }
+
+        return array(
+            'has_tte'           => $has_tte,
+            'message'           => $message,
+            'detail'            => $detail,
+            'jumlah_signature'  => $jumlah_signature
+        );
+    }
+}

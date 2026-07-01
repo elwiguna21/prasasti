@@ -113,12 +113,12 @@ if ($status_tte === 'Y') {
     $statusBg    = 'rgba(23,162,184,.1)';
     $statusIcon  = 'fas fa-clock';
 } elseif ($status_pen === 'N') {
-    $statusLabel = 'Ditolak Admin';
+    $statusLabel = 'Ditolak Penilai';
     $statusColor = '#dc3545';
     $statusBg    = 'rgba(220,53,69,.1)';
     $statusIcon  = 'fas fa-times-circle';
 } else {
-    $statusLabel = 'Menunggu Penilaian Admin';
+    $statusLabel = 'Menunggu Penilaian Penilai';
     $statusColor = '#ffc107';
     $statusBg    = 'rgba(255,193,7,.1)';
     $statusIcon  = 'fas fa-hourglass-half';
@@ -169,7 +169,7 @@ if ($status_tte === 'Y') {
                     </div>
 
                     <?php if (in_array($status_pen, ['Y', 'N']) && !empty($berkas->penilai_name)): ?>
-                    <!-- Admin (Penilai) -->
+                    <!-- Penilai -->
                     <div class="detail-info-row">
                          <div class="detail-info-icon" style="background:rgba(23,162,184,.12); color:#17a2b8">
                               <i class="fas fa-gavel"></i>
@@ -225,8 +225,8 @@ if ($status_tte === 'Y') {
                </div>
           </div>
 
-          <!-- Tombol Aksi: Admin Penilaian (belum dinilai) -->
-          <?php if ($role === 'admin' && $status_pen === null): ?>
+          <!-- Tombol Aksi: Penilai Penilaian (belum dinilai) -->
+          <?php if ($role === 'penilai' && $status_pen === null): ?>
           <div class="card detail-status-card mb-3 border-warning">
                <div class="card-body">
                     <p class="text-muted small mb-2"><i class="fas fa-gavel me-1 text-warning"></i> Berikan penilaian terhadap berkas ini.</p>
@@ -242,8 +242,8 @@ if ($status_tte === 'Y') {
           </div>
           <?php endif; ?>
 
-          <!-- Tombol Aksi: Admin ubah penilaian (hanya bisa jika belum diverifikasi & belum TTE) -->
-          <?php if ($role === 'admin' && $status_pen !== null && $status_ver !== 'Y' && $status_tte !== 'Y'): ?>
+          <!-- Tombol Aksi: Penilai ubah penilaian (hanya bisa jika belum diverifikasi & belum TTE) -->
+          <?php if ($role === 'penilai' && $status_pen !== null && $status_ver !== 'Y' && $status_tte !== 'Y'): ?>
           <div class="card detail-status-card mb-3">
                <div class="card-body">
                     <div class="text-muted small mb-2"><i class="fas fa-redo me-1"></i> Ubah Penilaian</div>

@@ -107,21 +107,36 @@
                <div class="cm-content-body form excerpt">
                     <div class="card-body">
                          <div class="row">
+                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-3' : 'col-xl-4' ?> col-sm-12">
+                                   <input type="text" class="form-control mb-xl-0 mb-3" id="search" placeholder="Cari kode klasifikasi atau indeks arsip..." autocomplete="off">
+                              </div>
+                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-2' : 'col-xl-3' ?> col-sm-12">
+                                   <select id="filter_status">
+                                        <option value="">Semua Status</option>
+                                        <option value="verify_waiting">Menunggu Verifikasi</option>
+                                        <option value="verify_done">Sudah Diverifikasi</option>
+                                        <option value="verify_reject">Verifikasi Ditolak</option>
+                                        <option value="tte_waiting">Menunggu Tandatangan</option>
+                                        <option value="tte_done">Sudah Ditandatangani</option>
+                                        <option value="tte_reject">Tandatangan Ditolak</option>
+                                   </select>
+                              </div>
+                              <div class="col-xl-2 col-sm-12">
+                                   <select id="filter_tahun">
+                                        <option value="">Semua Tahun</option>
+                                        <?php if (!empty($years)): foreach ($years as $y): ?>
+                                             <option value="<?= htmlspecialchars($y->name) ?>"><?= htmlspecialchars($y->name) ?></option>
+                                        <?php endforeach; endif; ?>
+                                   </select>
+                              </div>
                               <?php if ($this->session->userdata('next-role') == 'admin'): ?>
-                                   <div class="col-xl-5 col-sm-12">
-                                        <input type="text" class="form-control mb-xl-0 mb-3" id="search" placeholder="Cari kode klasifikasi atau indeks arsip..." autocomplete="off">
-                                   </div>
-                                   <div class="col-xl-4 col-sm-12">
+                                   <div class="col-xl-2 col-sm-12">
                                         <select id="filter_skpd_adv">
                                              <option value="">-- Pilih SKPD --</option>
                                              <?php if (!empty($list_skpd)): foreach ($list_skpd as $skpd): ?>
                                                   <option value="<?= htmlspecialchars($skpd->id) ?>"><?= htmlspecialchars($skpd->nama_skpd) ?></option>
                                              <?php endforeach; endif; ?>
                                         </select>
-                                   </div>
-                              <?php else: ?>
-                                   <div class="col-xl-9 col-sm-12">
-                                        <input type="text" class="form-control mb-xl-0 mb-3" id="search" placeholder="Cari kode klasifikasi atau indeks arsip..." autocomplete="off">
                                    </div>
                               <?php endif; ?>
                               <div class="col-xl-3 col-sm-12">
@@ -142,6 +157,12 @@
                          <i class="fa-sharp fa-solid fa-file-alt me-2"></i>Daftar Alih Media Arsip Usul Serah
                     </div>
                     <div class="align-middle">
+                         <button type="button" class="btn btn-success btn-sm me-2" onclick="export_excel()">
+                              <i class="fas fa-file-excel me-1"></i> Export Excel
+                         </button>
+                         <button type="button" class="btn btn-danger btn-sm me-2" onclick="export_pdf()">
+                              <i class="fas fa-file-pdf me-1"></i> Export PDF
+                         </button>
                          <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/berita_acara') ?>" class="btn btn-info btn-sm me-2">
                               <i class="fas fa-file-signature me-1"></i> Berita Acara (BAST)
                          </a>
@@ -185,6 +206,14 @@
      var table;
      var base_url = '<?php echo base_url(); ?>';
 
+     var statusSelect = $('#filter_status').select2({
+          width: '100%',
+     });
+     
+     var tahunSelect = $('#filter_tahun').select2({
+          width: '100%',
+     });
+
      <?php if ($this->session->userdata('next-role') == 'admin'): ?>
           var skpdSelect = $('#filter_skpd_adv').select2({
                width: '100%',
@@ -204,6 +233,8 @@
                "type": "POST",
                "data": function(data) {
                     data.filter_skpd = $('#filter_skpd_adv').val() || '';
+                    data.filter_status = $('#filter_status').val() || '';
+                    data.filter_tahun = $('#filter_tahun').val() || '';
                     data.search_keyword = $('#search').val() || '';
                }
           },
@@ -244,6 +275,8 @@
      // Reset button
      $('.btn-reset').click(function() {
           $('#search').val('');
+          if (statusSelect) statusSelect.val(null).trigger('change');
+          if (tahunSelect) tahunSelect.val(null).trigger('change');
           <?php if ($this->session->userdata('next-role') == 'admin'): ?>
                if (skpdSelect) {
                     skpdSelect.val(null).trigger('change');
@@ -254,6 +287,32 @@
 
      function edit_data(id) {
           window.location.href = base_url + 'v2/backend/alih_media_arsip_usul_serah/edit/' + id;
+     }
+
+     function export_excel() {
+          var filter_skpd = '';
+          <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+               filter_skpd = $('#filter_skpd_adv').val() || '';
+          <?php endif; ?>
+          var search_keyword = $('#search').val() || '';
+          var filter_status = $('#filter_status').val() || '';
+          var filter_tahun = $('#filter_tahun').val() || '';
+          
+          var url = base_url + 'v2/backend/alih_media_arsip_usul_serah/export_excel?filter_skpd=' + encodeURIComponent(filter_skpd) + '&filter_status=' + encodeURIComponent(filter_status) + '&filter_tahun=' + encodeURIComponent(filter_tahun) + '&search_keyword=' + encodeURIComponent(search_keyword);
+          window.location.href = url;
+     }
+
+     function export_pdf() {
+          var filter_skpd = '';
+          <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+               filter_skpd = $('#filter_skpd_adv').val() || '';
+          <?php endif; ?>
+          var search_keyword = $('#search').val() || '';
+          var filter_status = $('#filter_status').val() || '';
+          var filter_tahun = $('#filter_tahun').val() || '';
+          
+          var url = base_url + 'v2/backend/alih_media_arsip_usul_serah/export_pdf?filter_skpd=' + encodeURIComponent(filter_skpd) + '&filter_status=' + encodeURIComponent(filter_status) + '&filter_tahun=' + encodeURIComponent(filter_tahun) + '&search_keyword=' + encodeURIComponent(search_keyword);
+          window.open(url, '_blank');
      }
 
      function reload_table() {

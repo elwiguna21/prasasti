@@ -57,6 +57,9 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           $this->db->order_by('name', 'ASC');
           $data['list_skpd'] = $this->db->get()->result();
 
+          // Ambil tahun
+          $data['years'] = $this->db->query("SELECT DISTINCT(tahun) as name FROM berkas WHERE deleted_at IS NULL AND jenis_arsip = 'usul_serah' ORDER BY tahun DESC")->result();
+
           // Statistik berkas
           $base_where = array(
                'jenis_arsip' => $this->jenis_arsip,
@@ -86,6 +89,8 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
      public function tambah()
      {
+          $this->load->model('v2/Klasifikasi', 'klasifikasi');
+          $data['klasifikasi'] = $this->klasifikasi->get_all();
           $data['title']    = 'Tambah Alih Media Arsip Usul Serah';
           $data['employee'] = $this->user_auth;
           $this->backend('v2/backend/form_alih_media_arsip_usul_serah', $data);
@@ -195,7 +200,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
      }
 
      /**
-      * Admin: Penilaian berkas (Setujui / Tolak)
+      * Penilai: Penilaian berkas (Setujui / Tolak)
       * Mengisi kolom penilaian_arsip_statis = Y (disetujui) atau N (ditolak)
       */
      public function ajax_penilaian($id)
@@ -215,8 +220,8 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           ));
 
           $monitoring_msg = ($aksi === 'disetujui')
-               ? 'Berkas disetujui oleh Admin dan diteruskan ke Verifikator LKD.'
-               : 'Berkas ditolak oleh Admin.';
+               ? 'Berkas disetujui oleh Penilai dan diteruskan ke Verifikator LKD.'
+               : 'Berkas ditolak oleh Penilai.';
 
           if ($aksi === 'ditolak' && !empty($alasan)) {
                $monitoring_msg .= ' Alasan: ' . htmlspecialchars($alasan);
@@ -249,7 +254,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
           $berkas = $this->berkas->get_by_id($id);
           if (empty($berkas) || ($berkas->penilaian_arsip_statis ?? null) !== 'Y') {
-               echo json_encode(array('status' => FALSE, 'pesan' => 'Berkas belum disetujui oleh Admin.'));
+               echo json_encode(array('status' => FALSE, 'pesan' => 'Berkas belum disetujui oleh Penilai.'));
                return;
           }
 
@@ -541,10 +546,14 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
 
           $filter_skpd    = $this->input->post('filter_skpd');
+          $filter_status  = $this->input->post('filter_status');
+          $filter_tahun   = $this->input->post('filter_tahun');
           $search_keyword = $this->input->post('search_keyword');
 
           $this->berkas->set_jenis_arsip($this->jenis_arsip);
           $this->berkas->set_filter_skpd($filter_skpd);
+          $this->berkas->set_filter_status($filter_status);
+          $this->berkas->set_filter_tahun($filter_tahun);
           if (!empty($search_keyword)) {
                $this->berkas->set_search($search_keyword);
           }
@@ -569,7 +578,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                } elseif ($penilaian === 'Y') {
                     $badge = '<span class="badge badge-primary">Menunggu Verifikasi</span>';
                } elseif ($penilaian === 'N') {
-                    $badge = '<span class="badge badge-danger">Ditolak Admin</span>';
+                    $badge = '<span class="badge badge-danger">Ditolak Penilai</span>';
                } else {
                     $badge = '<span class="badge badge-warning light">Menunggu Penilaian</span>';
                }
@@ -612,6 +621,44 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           ));
      }
 
+     /**
+      * Verifikasi TTE pada file PDF yang sudah diupload (temp)
+      * Dipanggil via AJAX setelah upload PDF berhasil di Step 2
+      */
+     public function ajax_verify_tte()
+     {
+          if (!$this->input->is_ajax_request()) {
+               redirect('v2/backend/dashboards');
+          }
+
+          $filename = $this->input->post('filename');
+          if (empty($filename)) {
+               echo json_encode(array('status' => FALSE, 'message' => 'Nama file tidak ditemukan.'));
+               return;
+          }
+
+          // Path file temp yang sudah diupload
+          $path_pdf = FCPATH . 'assets/upload/berkas/temp/' . $filename;
+          if (!file_exists($path_pdf)) {
+               echo json_encode(array('status' => FALSE, 'message' => 'File PDF temp tidak ditemukan.'));
+               return;
+          }
+
+          // Load helper TTE
+          $this->load->helper('tte');
+
+          // Panggil fungsi verifikasi TTE
+          $result = verifikasi_tte($path_pdf);
+
+          echo json_encode(array(
+               'status'           => TRUE,
+               'has_tte'          => $result['has_tte'],
+               'message'          => $result['message'],
+               'detail'           => $result['detail'],
+               'jumlah_signature' => $result['jumlah_signature'] ?? 0,
+          ));
+     }
+
      public function ajax_add()
      {
           if (!$this->input->is_ajax_request()) {
@@ -629,7 +676,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
                'tahun'                  => (int) $this->input->post('tahun'),
                'jumlah'                 => (int) $this->input->post('jumlah'),
-               'tanggal'                => htmlentities(date('d-m-Y', strtotime($this->input->post('tanggal')))),
+               'tanggal'                => date('d-m-Y'),
                'deskripsi'              => htmlentities($this->input->post('keterangan')),
                'nomor_skpd'             => htmlentities($this->input->post('nomor_skpd')),
                'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
@@ -638,6 +685,12 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'verifikator'            => 'LKD',
                'verifikasi_status'      => 'N',
           );
+
+          // Jika dokumen sudah memiliki TTE BSrE, kosongkan tte_posisi (step 3 di-skip)
+          $has_existing_tte = $this->input->post('has_existing_tte');
+          if ($has_existing_tte === 'Y') {
+               $data['tte_posisi'] = '';
+          }
 
           // Upload PDF final
           if (!empty($_FILES['file_pdf']['name'])) {
@@ -664,8 +717,11 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                     'user'    => $this->encryption->decrypt($this->session->userdata('next-uid')),
                );
                $this->monitoring->insert_entry($monitoring);
+               echo json_encode(array('status' => TRUE));
+          } else {
+               $db_error = $this->db->error();
+               echo json_encode(array('status' => FALSE, 'message' => 'Gagal menyimpan ke database. Error: ' . ($db_error['message'] ?? 'Unknown error')));
           }
-          echo json_encode(array('status' => TRUE));
      }
 
      /**
@@ -715,6 +771,9 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                show_error('Berkas ini sudah tidak dapat diedit karena sedang dalam proses verifikasi atau sudah ditandatangani.', 403);
           }
 
+          $this->load->model('v2/Klasifikasi', 'klasifikasi');
+          $data['klasifikasi'] = $this->klasifikasi->get_all();
+
           $data['title']    = 'Edit Alih Media Arsip Usul Serah';
           $data['employee'] = $this->user_auth;
           $data['berkas']   = $berkas;
@@ -748,7 +807,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
                'tahun'                  => (int) $this->input->post('tahun'),
                'jumlah'                 => (int) $this->input->post('jumlah'),
-               'tanggal'                => htmlentities($this->input->post('tanggal')),
+               'tanggal'                => null,
                'deskripsi'              => htmlentities($this->input->post('keterangan')),
                'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
                'tte_posisi'             => $this->input->post('tte_posisi'),
@@ -984,5 +1043,160 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
           $this->berita_acara->delete_by_id($id);
           echo json_encode(array("status" => TRUE));
+     }
+     public function export_excel()
+     {
+          $filter_skpd    = $this->input->get('filter_skpd');
+          $filter_status  = $this->input->get('filter_status');
+          $filter_tahun   = $this->input->get('filter_tahun');
+          $search_keyword = $this->input->get('search_keyword');
+
+          $this->berkas->set_jenis_arsip($this->jenis_arsip);
+          if (!empty($filter_skpd) && $filter_skpd != 'all') {
+               $this->berkas->set_filter_skpd($filter_skpd);
+          }
+          if (!empty($filter_status) && $filter_status != 'all') {
+               $this->berkas->set_filter_status($filter_status);
+          }
+          if (!empty($filter_tahun) && $filter_tahun != 'all') {
+               $this->berkas->set_filter_tahun($filter_tahun);
+          }
+          if (!empty($search_keyword)) {
+               $this->berkas->set_search($search_keyword);
+          }
+
+          $_POST['length'] = -1;
+          $_POST['start'] = 0;
+          if (!isset($_POST['search'])) {
+               $_POST['search'] = array('value' => '');
+          }
+          if (!empty($search_keyword)) {
+               $_POST['search']['value'] = $search_keyword;
+          }
+
+          $list = $this->berkas->get_datatables();
+
+          include APPPATH . 'third_party/PHPExcel/PHPExcel.php';
+          $objPHPExcel = new PHPExcel();
+          $objPHPExcel->getProperties()->setCreator("Prasasti")
+               ->setLastModifiedBy("Prasasti")
+               ->setTitle("Export Data Arsip Usul Serah")
+               ->setSubject("Arsip Usul Serah")
+               ->setDescription("Data Arsip Usul Serah")
+               ->setKeywords("arsip")
+               ->setCategory("arsip");
+
+          $sheet = $objPHPExcel->setActiveSheetIndex(0);
+          $sheet->setCellValue('A1', 'No');
+          $sheet->setCellValue('B1', 'SKPD/Pencipta');
+          $sheet->setCellValue('C1', 'Kode Klasifikasi');
+          $sheet->setCellValue('D1', 'Uraian Informasi Arsip');
+          $sheet->setCellValue('E1', 'Tahun');
+          $sheet->setCellValue('F1', 'Jumlah (Dok)');
+          $sheet->setCellValue('G1', 'Status Verifikasi');
+
+          // styling header
+          $sheet->getStyle('A1:G1')->getFont()->setBold(true);
+          
+          $row = 2;
+          $no = 1;
+          foreach ($list as $item) {
+               $penilaian = $item->penilaian_arsip_statis ?? null;
+               $verifikasi = $item->verifikasi_status ?? null;
+               $tte = $item->tte_status ?? null;
+               $is_ditolak_verifikator = ($verifikasi === 'N' && !empty($item->verifikasi_user));
+
+               if ($tte === 'Y') {
+                    $status = 'Sudah Ditandatangani';
+               } elseif ($verifikasi === 'Y') {
+                    $status = 'Menunggu Tandatangan';
+               } elseif ($is_ditolak_verifikator) {
+                    $status = 'Ditolak Verifikator';
+               } elseif ($penilaian === 'Y') {
+                    $status = 'Menunggu Verifikasi';
+               } elseif ($penilaian === 'N') {
+                    $status = 'Ditolak Penilai';
+               } else {
+                    $status = 'Menunggu Penilaian';
+               }
+
+               $sheet->setCellValue('A' . $row, $no++);
+               $sheet->setCellValue('B' . $row, $item->unit_kerja_pencipta);
+               $sheet->setCellValueExplicit('C' . $row, $item->kode_klsf, PHPExcel_Cell_DataType::TYPE_STRING);
+               $sheet->setCellValue('D' . $row, $item->uraian_informasi_arsip);
+               $sheet->setCellValue('E' . $row, $item->tahun);
+               $sheet->setCellValue('F' . $row, $item->jumlah);
+               $sheet->setCellValue('G' . $row, $status);
+               
+               $row++;
+          }
+
+          foreach(range('A','G') as $columnID) {
+              $sheet->getColumnDimension($columnID)->setAutoSize(true);
+          }
+
+          $filename = "Export_Arsip_Usul_Serah_" . date('Ymd_His') . ".xlsx";
+          
+          header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+          header('Content-Disposition: attachment;filename="'.$filename.'"');
+          header('Cache-Control: max-age=0');
+
+          $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+          $objWriter->setPreCalculateFormulas(false);
+          ob_end_clean();
+          $objWriter->save('php://output');
+          exit;
+     }
+     public function export_pdf()
+     {
+          $filter_skpd    = $this->input->get('filter_skpd');
+          $filter_status  = $this->input->get('filter_status');
+          $filter_tahun   = $this->input->get('filter_tahun');
+          $search_keyword = $this->input->get('search_keyword');
+
+          $this->berkas->set_jenis_arsip($this->jenis_arsip);
+          if (!empty($filter_skpd) && $filter_skpd != 'all') {
+               $this->berkas->set_filter_skpd($filter_skpd);
+          }
+          if (!empty($filter_status) && $filter_status != 'all') {
+               $this->berkas->set_filter_status($filter_status);
+          }
+          if (!empty($filter_tahun) && $filter_tahun != 'all') {
+               $this->berkas->set_filter_tahun($filter_tahun);
+          }
+          if (!empty($search_keyword)) {
+               $this->berkas->set_search($search_keyword);
+          }
+
+          $_POST['length'] = -1;
+          $_POST['start'] = 0;
+          if (!isset($_POST['search'])) {
+               $_POST['search'] = array('value' => '');
+          }
+          if (!empty($search_keyword)) {
+               $_POST['search']['value'] = $search_keyword;
+          }
+
+          $data_berkas = $this->berkas->get_datatables();
+          $data['data_berkas'] = $data_berkas;
+
+          $html = $this->load->view('v2/backend/pdf_alih_media_arsip_usul_serah', $data, TRUE);
+
+          require_once FCPATH . 'vendor/autoload.php';
+          try {
+               $mpdf = new \Mpdf\Mpdf([
+                    'orientation' => 'L',
+                    'format' => 'A4',
+                    'margin_top' => 15,
+                    'margin_left' => 15,
+                    'margin_right' => 15,
+                    'margin_bottom' => 15
+               ]);
+               $mpdf->WriteHTML($html);
+               $filename = "Export_Arsip_Usul_Serah_" . date('Ymd_His') . ".pdf";
+               $mpdf->Output($filename, \Mpdf\Output\Destination::DOWNLOAD);
+          } catch (\Mpdf\MpdfException $e) {
+               show_error($e->getMessage());
+          }
      }
 }

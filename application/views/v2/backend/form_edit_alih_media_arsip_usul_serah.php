@@ -10,8 +10,30 @@
 <!-- SmartWizard CSS -->
 <link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/jquery-smartwizard/dist/css/smart_wizard_all.min.css') ?>">
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/select2/css/select2.min.css') ?>">
 
 <style>
+     /* ===== Select2 Overrides ===== */
+     .select2-container--default .select2-selection--single {
+          border-radius: 0.5rem;
+          border: 0.0625rem solid #c8c8c8;
+          height: 3.5rem;
+          background: #fff;
+     }
+
+     .select2-container--default .select2-selection--single .select2-selection__rendered {
+          line-height: 3.5rem;
+          color: #7e7e7e;
+          padding-left: 0.9375rem;
+          min-height: 3.5rem;
+     }
+
+     .select2-container--default .select2-selection--single .select2-selection__arrow {
+          top: 1.075rem;
+          right: 0.9375rem;
+     }
+
      /* ===== Wizard Overrides (Custom Step-by-Step) ===== */
      #smartwizard {
           background: transparent;
@@ -255,7 +277,12 @@
                                    <div class="row g-3">
                                         <div class="col-12">
                                              <label class="form-label fw-semibold">Kode Klasifikasi <span class="text-danger">*</span></label>
-                                             <input type="text" id="kode_klsf" name="kode_klsf" class="form-control" placeholder="Contoh: 900.1" value="<?= htmlspecialchars($berkas->kode_klsf ?? '') ?>">
+                                             <select id="kode_klsf" name="kode_klsf" class="form-control select2" required>
+                                                  <option value="">Pilih Klasifikasi Surat</option>
+                                                  <?php foreach($klasifikasi as $k): ?>
+                                                       <option value="<?= $k->kode_gabungan ?>" <?= (isset($berkas->kode_klsf) && $berkas->kode_klsf === $k->kode_gabungan) ? 'selected' : '' ?>><?= $k->kode_gabungan ?> - <?= $k->nama ?></option>
+                                                  <?php endforeach; ?>
+                                             </select>
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
@@ -263,22 +290,17 @@
                                              <textarea id="uraian_informasi_arsip" name="uraian_informasi_arsip" class="form-control" rows="3" placeholder="Tuliskan uraian informasi arsip..."><?= htmlspecialchars($berkas->uraian_informasi_arsip ?? '') ?></textarea>
                                              <span class="help-block text-danger small"></span>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                              <label class="form-label fw-semibold">Kurun Waktu (Tahun) <span class="text-danger">*</span></label>
                                              <input type="number" id="tahun" name="tahun" class="form-control" placeholder="Contoh: 2024" min="1900" max="2100" value="<?= $berkas->tahun ?? '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div>
-                                        <div class="col-md-4">
-                                             <label class="form-label fw-semibold">Jumlah Dokumen <span class="text-danger">*</span></label>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Jumlah Berkas <span class="text-danger">*</span></label>
                                              <div class="input-group">
                                                   <input type="number" id="jumlah" name="jumlah" class="form-control" placeholder="0" min="1" value="<?= $berkas->jumlah ?? '' ?>">
-                                                  <span class="input-group-text">dok</span>
+                                                  <span class="input-group-text">berkas</span>
                                              </div>
-                                             <span class="help-block text-danger small"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                             <label class="form-label fw-semibold">Waktu (Tanggal) <span class="text-danger">*</span></label>
-                                             <input type="date" id="tanggal" name="tanggal" class="form-control" value="<?= $berkas->tanggal ?? '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
@@ -286,8 +308,9 @@
                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta" class="form-control" placeholder="Nama unit kerja pencipta arsip" value="<?= htmlspecialchars($berkas->unit_kerja_pencipta ?? '') ?>">
                                         </div>
                                         <div class="col-12">
-                                             <label class="form-label fw-semibold">Keterangan</label>
-                                             <textarea id="keterangan" name="keterangan" class="form-control" rows="2" placeholder="Keterangan tambahan (opsional)"><?= htmlspecialchars($berkas->deskripsi ?? '') ?></textarea>
+                                             <label class="form-label fw-semibold">Keterangan <span class="text-danger">*</span></label>
+                                             <textarea id="keterangan" name="keterangan" class="form-control" rows="2" placeholder="Masukan keterangan" required><?= htmlspecialchars($berkas->deskripsi ?? '') ?></textarea>
+                                             <span class="help-block text-danger small"></span>
                                         </div>
                                    </div>
                               </div>
@@ -380,7 +403,7 @@
 </div>
 
 <!-- Required vendors -->
-<script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script>
+<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
 <script src="<?= base_url('assets/v3/backend/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.min.js') ?>"></script>
 
 <!-- PDF.js via CDN -->
@@ -388,8 +411,15 @@
 
 <!-- interact.js via CDN (drag + resize) -->
 <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.27/dist/interact.min.js"></script>
+<!-- Select2 JS -->
+<script src="<?= base_url('assets/v3/backend/vendor/select2/js/select2.full.min.js') ?>"></script>
 
 <script>
+     $('#kode_klsf').select2({
+          placeholder: "Pilih Klasifikasi Surat",
+          allowClear: true,
+          width: '100%'
+     });
      var base_url = '<?php echo base_url(); ?>';
 
      // ===== PDF.js Worker =====
@@ -561,11 +591,11 @@
                },
                {
                     id: 'jumlah',
-                    label: 'Jumlah Dokumen'
+                    label: 'Jumlah Berkas'
                },
                {
-                    id: 'tanggal',
-                    label: 'Waktu (Tanggal)'
+                    id: 'keterangan',
+                    label: 'Keterangan'
                },
           ];
           fields.forEach(function(f) {
@@ -752,7 +782,6 @@
           formData.append('uraian_informasi_arsip', document.getElementById('uraian_informasi_arsip').value);
           formData.append('tahun', document.getElementById('tahun').value);
           formData.append('jumlah', document.getElementById('jumlah').value);
-          formData.append('tanggal', document.getElementById('tanggal').value);
           formData.append('unit_kerja_pencipta', document.getElementById('unit_kerja_pencipta').value);
           formData.append('keterangan', document.getElementById('keterangan').value);
           formData.append('tte_posisi', document.getElementById('tte_posisi').value);
