@@ -21,32 +21,6 @@ class Archieves extends MY_Controller
           $this->load->model('v2/BeritaAcara', 'berita_acara');
           $this->load->model('v2/BeritaAcaraDetail', 'berita_acara_detail');
 
-          //		if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
-          //			show_error('Not Authorize! Please signin again.', 403);
-          //			die;
-          //		} else {
-          //			$uid = $this->encryption->decrypt($this->session->userdata('next-uid'));
-          //			$uname = $this->session->userdata('next-uname');
-          //
-          //			// Coba ambil dari tabel employee (untuk operator/ASN)
-          //			$user = $this->employee->get_single_where(
-          //				   array('user.id' => $uid, 'user.username' => $uname)
-          //			);
-          //
-          //			// Fallback: ambil dari tabel user langsung (untuk admin, verifikator_lkd, dll)
-          //			if (empty($user)) {
-          //				$user = $this->user_model->get_single_where(
-          //					   array('user.id' => $uid, 'user.username' => $uname)
-          //				);
-          //			}
-          //
-          //			if (empty($user)) {
-          //				redirect('v2/authentications/signout');
-          //			}
-          //
-          //			$this->user_auth = $user;
-          //			$this->user_auth->avatar = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
-          //		}
           if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-role'))) {
                $uid = $this->encryption->decrypt($this->session->userdata('next-uid'));
                $uname = $this->session->userdata('next-uname');
@@ -384,6 +358,11 @@ class Archieves extends MY_Controller
                die;
           }
 
+          if ($this->user_auth->user_role != 'operator') {
+               show_error('Anda tidak dapat mengakses halaman ini!', 500);
+               die;
+          }
+
           $data['title'] = 'Tambah Arsip Vital';
           $data['employee'] = $this->user_auth;
 
@@ -396,8 +375,8 @@ class Archieves extends MY_Controller
                $data['archieve'] = $archieve;
           }
 
-          //		echo json_encode($data);
-          //		die;
+          // echo json_encode($data);
+          // die;
 
           $this->backend('v2/backend/archieves/vital/add', $data);
      }
@@ -439,6 +418,12 @@ class Archieves extends MY_Controller
                'verifikator' => 'SKPD',
                'verifikasi_status' => 'N',
           );
+
+          // Jika dokumen sudah memiliki TTE BSrE, kosongkan tte_posisi (step 3 di-skip)
+          $has_existing_tte = $this->input->post('has_existing_tte');
+          if ($has_existing_tte === 'Y') {
+               $data['tte_posisi'] = null;
+          }
 
           if (!empty($_FILES['file_pdf']['name'])) {
                $config['upload_path'] = './assets/upload/berkas/';
@@ -536,6 +521,29 @@ class Archieves extends MY_Controller
           $this->backend('v2/backend/archieves/vital/detail', $data);
      }
 
+     public function vital_watermark()
+     {
+          $this->load->library('pdf_watermark');
+          $id       = $this->encryption->decrypt($this->input->get('archieve'));
+          $company  = $this->input->get('company');
+
+          $archieve = $this->archieve->get_single_where(array('berkas.id' => $id, 'berkas.nomor_skpd' => $company));
+
+          if (file_exists('./assets/upload/berkas/' . $archieve->file)) {
+               $source_pdf    = './assets/upload/berkas/' . $archieve->file;
+               $output_pdf    = './assets/upload/berkas/' . 'watermarked_' . $archieve->file;
+               $success = $this->pdf_watermark->set_watermark($source_pdf, $output_pdf);
+               if ($success) {
+                    redirect('assets/upload/berkas/' . 'watermarked_' . $archieve->file);
+               } else {
+                    show_error('The requested PDF file could not be found or processed.', 404);
+               }
+          } else {
+               echo json_encode(array('status' => 500, 'message' => 'Maaf, terjadi kesalahan saat memuat dokumen!'));
+               die;
+          }
+     }
+
      public function vital_reject()
      {
           if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
@@ -629,6 +637,16 @@ class Archieves extends MY_Controller
                redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
           } else if ($archieve->verifikasi_status != 'Y') {
                $this->session->set_flashdata(array('status' => 500, 'message' => 'Arsip belum diverifikasi! Silahkan hubungi verifikator.'));
+               redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
+          }
+
+          // load library Watermark
+          $this->load->library('pdf_watermark');
+          $source_pdf    = $path_pdf;
+          $output_pdf    = $path_pdf;
+          $success       = $this->pdf_watermark->set_watermark($source_pdf, $output_pdf);
+          if (!$success) {
+               $this->session->set_flashdata(array('status' => 500, 'message' => 'Gagal membuat watermark pada dokumen.'));
                redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
           }
 
@@ -898,6 +916,13 @@ class Archieves extends MY_Controller
           } else {
                $this->load->library('exportexcel');
                $object = new PHPExcel();
+               $object->getProperties()->setCreator("Prasasti")
+                    ->setLastModifiedBy("Prasasti")
+                    ->setTitle("Export Data Arsip Vital")
+                    ->setSubject("Arsip Vital")
+                    ->setDescription("Data Arsip Vital")
+                    ->setKeywords("arsip")
+                    ->setCategory("arsip");
 
                // 2. Select active spreadsheet
                $object->setActiveSheetIndex(0);
@@ -934,6 +959,7 @@ class Archieves extends MY_Controller
 
                $object_writer = PHPExcel_IOFactory::createWriter($object, 'Excel2007');
                $object_writer->setPreCalculateFormulas(false); // <--- Kunci anti-error di PHP modern
+               ob_end_clean();
                $object_writer->save('php://output');
                exit;
           }
@@ -956,7 +982,6 @@ class Archieves extends MY_Controller
                1 => 'kode_klsf',
                3 => 'tahun',
                4 => 'jumlah',
-               5 => 'tanggal',
           );
 
           $limit = $this->input->post('length');
@@ -1048,18 +1073,18 @@ class Archieves extends MY_Controller
                     if ($archieve->verifikasi_status == 'R') {
                          $status_color = 'danger';
                          $status_name = 'Verifikasi Ditolak';
-                    } else if ($archieve->verifikasi_status == 'Y' and ($archieve->tte_status == 'N' or $archieve->tte_status == null)) {
-                         $status_color = 'warning';
+                    } else if ($archieve->verifikasi_status == 'Y' and $archieve->tte_status == 'N') {
                          $status_name = 'Menunggu Ditandatangan';
-                    } else if ($archieve->tte_status == 'R') {
+                         $status_color = 'info';
+                    } else if ($archieve->verifikasi_status == 'Y' and $archieve->tte_status == 'R') {
                          $status_color = 'danger';
                          $status_name = 'Tandatangan Ditolak';
                     } else if ($archieve->tte_status == 'Y') {
-                         $status_color = 'success';
                          $status_name = 'Sudah Ditandatangani';
+                         $status_color = 'success';
                     } else {
+                         $status_name = 'Menunggu Verifikasi';
                          $status_color = 'primary';
-                         $status_name = 'Menunggu Diverifikasi';
                     }
 
                     $archieve->id = $this->encryption->encrypt($archieve->id);
@@ -1078,7 +1103,6 @@ class Archieves extends MY_Controller
                     $nested['deskripsi'] = (!empty($archieve->uraian_informasi_arsip)) ? $archieve->uraian_informasi_arsip : (!empty($archieve->deskripsi) ? $archieve->deskripsi : '-');
                     $nested['tahun'] = $archieve->tahun;
                     $nested['jumlah'] = (!empty($archieve->jumlah)) ? $archieve->jumlah . ' dok' : '-';
-                    $nested['tanggal'] = tgl_indo(date('Y-m-d', strtotime($archieve->tanggal))) ?? '-';
                     $nested['status'] = '<span class="badge light badge-' . $status_color . '"><i class="fa fa-circle text-' . $status_color . ' me-1"></i> ' . $status_name . '</span>';
                     if ($this->user_auth->user_role == 'admin') {
                          $nested['company'] = $archieve->name;
@@ -1162,7 +1186,6 @@ class Archieves extends MY_Controller
                     "./assets/upload/berkas/{$archieve->file}",
                ];
           }
-
           $filepath = null;
           foreach ($paths as $path) {
                if (file_exists($path)) {
@@ -1272,6 +1295,12 @@ class Archieves extends MY_Controller
                die;
           }
 
+          $filepath      = './assets/upload/berkas/' . $archieve->file;
+          if (!file_exists($filepath)) {
+               echo json_encode(array('status' => 404, 'message' => 'File PDF tidak ditemukan! Silahkan coba kembali.'));
+               die;
+          }
+
           $data = array(
                'verifikasi_status' => 'Y',
                'verifikasi_user' => $this->encryption->decrypt($this->user_auth->user_id),
@@ -1279,14 +1308,32 @@ class Archieves extends MY_Controller
                'tte_status' => 'N'
           );
 
+          $monitoring = array(
+               'berkas' => $archieve->id,
+               'title' => 'process',
+               'message' => 'Arsip telah diverifikasi dan diteruskan ke Kepala SKPD untuk ditandatangani.',
+               'user' => $this->encryption->decrypt($this->user_auth->user_id)
+          );
+
+          // Load helper TTE
+          $this->load->helper('tte');
+          $this->load->library('pdf_watermark');
+          $verify_tte = verifikasi_tte($filepath);
+          if ($verify_tte['has_tte'] && count($verify_tte) > 0) {
+               $source_pdf    = './assets/upload/berkas/' . $archieve->file;
+               $output_pdf    = './assets/upload/berkas/' . 'watermarked_' . $archieve->file;
+               $success       = $this->pdf_watermark->set_watermark($source_pdf, $output_pdf);
+               if ($success) {
+                    $data['tte_status']      = 'Y';
+                    $data['tte_dokumen']     = 'watermarked_' . $archieve->file;
+                    $data['tte_message']     = $verify_tte['detail'][0]['signature_field'] . ' - ' . $verify_tte['detail'][0]['signer_name'];
+                    $monitoring['message']   = 'Arsip telah diverifikasi dan dokumen telah memiliki Tandatangan Elektronik (TTE) oleh ' . $verify_tte['detail'][0]['signer_name'];
+               }
+          }
+
           $verification = $this->archieve->update_entry($data, array('id' => $archieve->id, 'nomor_skpd' => $archieve->nomor_skpd));
           if ($verification > 0) {
-               $monitoring = array(
-                    'berkas' => $archieve->id,
-                    'title' => 'process',
-                    'message' => 'Arsip telah diverifikasi dan diteruskan ke Kepala SKPD untuk ditandatangani.',
-                    'user' => $this->encryption->decrypt($this->user_auth->user_id)
-               );
+
                $this->monitoring->insert_entry($monitoring);
                echo json_encode(array('status' => 200, 'message' => 'Arsip berhasil diverifikasi oleh Anda'));
                die;
@@ -1355,6 +1402,44 @@ class Archieves extends MY_Controller
                echo json_encode(array('status' => 500, 'message' => 'Arsip gagal di kirim ulang oleh Anda! Silahkan coba kembali.'));
                die;
           }
+     }
+
+     public function vital_verify_tte()
+     {
+          if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
+               echo json_encode(array('status' => 403, 'message' => 'Not Authorize!'));
+               die;
+          }
+
+          if ($this->input->method() != 'post') {
+               echo json_encode(array('status' => 405, 'message' => 'Maaf permintaan anda tidak dapat kami layani!'));
+               die;
+          }
+
+          if (empty($_POST)) {
+               echo json_encode(array('status' => 403, 'message' => 'Mohon pilih dokumen arsip terlebih dahulu! Silahkan coba kembali.'));
+               die;
+          }
+
+          $filename      = $this->input->post('filename');
+          $filepath      = './assets/upload/berkas/temp/' . $filename;
+          if (!file_exists($filepath)) {
+               echo json_encode(array('status' => 404, 'message' => 'File PDF tidak ditemukan! Silahkan coba kembali.'));
+               die;
+          }
+
+          // Load helper TTE
+          $this->load->helper('tte');
+
+          // Panggil fungsi verifikasi TTE
+          $result = verifikasi_tte($filepath);
+          echo json_encode(array(
+               'status'           => 200,
+               'has_tte'          => $result['has_tte'],
+               'message'          => $result['message'],
+               'detail'           => $result['detail'],
+               'jumlah_signature' => $result['jumlah_signature'] ?? 0,
+          ));
      }
 
      public function guide_list()

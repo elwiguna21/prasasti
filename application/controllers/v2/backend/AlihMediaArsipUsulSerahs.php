@@ -1097,7 +1097,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
           // styling header
           $sheet->getStyle('A1:G1')->getFont()->setBold(true);
-          
+
           $row = 2;
           $no = 1;
           foreach ($list as $item) {
@@ -1127,18 +1127,18 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                $sheet->setCellValue('E' . $row, $item->tahun);
                $sheet->setCellValue('F' . $row, $item->jumlah);
                $sheet->setCellValue('G' . $row, $status);
-               
+
                $row++;
           }
 
-          foreach(range('A','G') as $columnID) {
-              $sheet->getColumnDimension($columnID)->setAutoSize(true);
+          foreach (range('A', 'G') as $columnID) {
+               $sheet->getColumnDimension($columnID)->setAutoSize(true);
           }
 
           $filename = "Export_Arsip_Usul_Serah_" . date('Ymd_His') . ".xlsx";
-          
+
           header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-          header('Content-Disposition: attachment;filename="'.$filename.'"');
+          header('Content-Disposition: attachment;filename="' . $filename . '"');
           header('Cache-Control: max-age=0');
 
           $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');

@@ -111,7 +111,7 @@
                               </div>
                               <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-2' : 'col-xl-3' ?> col-sm-12">
                                    <select id="status">
-                                        <option value="">Semua</option>
+                                        <option value="">Semua Status</option>
                                         <option value="verify_waiting">Menunggu Verifikasi</option>
                                         <option value="verify_done">Sudah Diverifikasi</option>
                                         <option value="verify_reject">Verifikasi Ditolak</option>
@@ -122,7 +122,7 @@
                               </div>
                               <div class="col-xl-2 col-sm-12">
                                    <select name="" id="year">
-                                        <option value="">Semua</option>
+                                        <option value="">Semua Tahun</option>
                                         <?php foreach ($years as $year) { ?>
                                              <option value="<?= $year->name; ?>"><?= $year->name; ?></option>
                                         <?php } ?>
@@ -185,7 +185,6 @@
                                              <th class="text-start">Uraian Informasi Arsip / Deskripsi</th>
                                              <th class="text-center">Kurun Waktu</th>
                                              <th class="text-center">Jumlah</th>
-                                             <th class="text-center">Waktu</th>
                                              <th class="text-center">Status</th>
                                              <?php if ($employee->user_role == 'admin') { ?>
                                                   <th class="text-center">SKPD</th>
@@ -318,9 +317,6 @@
                }, {
                     bSortable: !1,
                     data: "jumlah",
-                    className: 'text-center'
-               }, {
-                    data: "tanggal",
                     className: 'text-center'
                }, {
                     bSortable: !1,
