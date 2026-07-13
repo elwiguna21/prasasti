@@ -307,7 +307,12 @@ if ($archieve->verifikasi_status == 'Y') {
                               <a href="javascript:void(0);"
                                    class="btn btn-sm btn-success shadow btn-verification w-100 mb-3"
                                    data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
-                                   <i class="fas fa-user-check me-1"></i> Setujui & Teruskan ke Kepala SKPD
+                                   <?php if (!empty($verify_tte)) { ?>
+                                        <i class="fas fa-user-check me-1"></i> Setujui Pengajuan
+                                   <?php } else { ?>
+                                        <i class="fas fa-user-check me-1"></i> Teruskan ke Kepala SKPD
+                                   <?php } ?>
+
                               </a>
                               <a href="javascript:void(0);" class="btn btn-sm btn-danger shadow w-100 mb-3 btn-reject"
                                    data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
@@ -553,10 +558,25 @@ if ($archieve->verifikasi_status == 'Y') {
                          Ukuran: <strong><?= ($pos['width'] ?? '-') ?> × <?= ($pos['height'] ?? '-') ?> px</strong>
                     </div>
                <?php else: ?>
-                    <div class="mt-2 p-3 rounded small bg-info text-white">
-                         <i class="fas fa-info-circle me-1"></i>
-                         Posisi TTE belum ditentukan oleh operator atau dokumen PDF telah memiliki tanda tangan. Tanda tangan akan disisipkan secara <em>invisible</em>.
-                    </div>
+                    <?php if (!empty($verify_tte)) { ?>
+                         <div class="mt-2 p-3 rounded small bg-success text-white">
+                              <i class="fas fa-info-circle me-1"></i>
+                              Dokumen telah ditandatangan secara elektronik dan disisipkan secara <em>invisible</em>. <br />
+                              <ul class="list-icons">
+                                   <?php
+                                   foreach ($verify_tte as $list) { ?>
+                                        <li>
+                                             <div><span class="align-middle me-2"><i class="fa fa-check text-white"></i></span> <?= $list['signer_name']; ?></div>
+                                        </li>
+                                   <?php } ?>
+                              </ul>
+                         </div>
+                    <?php } else { ?>
+                         <div class="mt-2 p-3 rounded small bg-info text-white">
+                              <i class="fas fa-info-circle me-1"></i>
+                              Posisi TTE belum ditentukan oleh operator. Tanda tangan akan disisipkan secara <em>invisible</em>.
+                         </div>
+                    <?php } ?>
                <?php endif; ?>
           <?php } else { ?>
                <div class="alert alert-warning fade show">

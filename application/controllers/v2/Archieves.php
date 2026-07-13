@@ -510,14 +510,21 @@ class Archieves extends MY_Controller
                die;
           } else {
                $archieve->id = $this->encryption->encrypt($archieve->id);
+
+               $this->load->helper('tte');
+               $filepath      = './assets/upload/berkas/' . $archieve->file;
+               $verify_tte    = verifikasi_tte($filepath);
+               if ($verify_tte['has_tte'] && $verify_tte['jumlah_signature'] > 0) {
+                    $data['verify_tte'] = $verify_tte['detail'];
+               } else {
+                    $data['verify_tte'] = array();
+               }
           }
 
           $data['archieve'] = $archieve;
           $data['employee'] = $this->user_auth;
           $data['monitorings'] = $this->monitoring->get_all_where(array('monitoring.berkas' => $id));
 
-          // echo json_encode($data);
-          // die;
           $this->backend('v2/backend/archieves/vital/detail', $data);
      }
 
@@ -1290,6 +1297,7 @@ class Archieves extends MY_Controller
                     'berkas.nomor_skpd' => $_POST['company']
                )
           );
+
           if (empty($archieve)) {
                echo json_encode(array('status' => 404, 'message' => 'Arsip tidak dapat ditemukan! Silahkan coba kembali.'));
                die;
@@ -1302,10 +1310,10 @@ class Archieves extends MY_Controller
           }
 
           $data = array(
-               'verifikasi_status' => 'Y',
-               'verifikasi_user' => $this->encryption->decrypt($this->user_auth->user_id),
-               'verifikasi_tanggal' => date('Y-m-d H:i:s'),
-               'tte_status' => 'N'
+               'verifikasi_status'      => 'Y',
+               'verifikasi_user'        => $this->encryption->decrypt($this->user_auth->user_id),
+               'verifikasi_tanggal'     => date('Y-m-d H:i:s'),
+               'tte_status'             => 'N'
           );
 
           $monitoring = array(
@@ -1317,18 +1325,19 @@ class Archieves extends MY_Controller
 
           // Load helper TTE
           $this->load->helper('tte');
-          $this->load->library('pdf_watermark');
+          // $this->load->library('pdf_watermark');
           $verify_tte = verifikasi_tte($filepath);
           if ($verify_tte['has_tte'] && count($verify_tte) > 0) {
-               $source_pdf    = './assets/upload/berkas/' . $archieve->file;
-               $output_pdf    = './assets/upload/berkas/' . 'watermarked_' . $archieve->file;
-               $success       = $this->pdf_watermark->set_watermark($source_pdf, $output_pdf);
-               if ($success) {
-                    $data['tte_status']      = 'Y';
-                    $data['tte_dokumen']     = 'watermarked_' . $archieve->file;
-                    $data['tte_message']     = $verify_tte['detail'][0]['signature_field'] . ' - ' . $verify_tte['detail'][0]['signer_name'];
-                    $monitoring['message']   = 'Arsip telah diverifikasi dan dokumen telah memiliki Tandatangan Elektronik (TTE) oleh ' . $verify_tte['detail'][0]['signer_name'];
-               }
+               // $source_pdf    = './assets/upload/berkas/' . $archieve->file;
+               // $output_pdf    = './assets/upload/berkas/' . 'watermarked_' . $archieve->file;
+               // $success       = $this->pdf_watermark->set_watermark($source_pdf, $output_pdf);
+               // if ($success) {
+               $data['tte_status']      = 'Y';
+               // $data['tte_dokumen']     = 'watermarked_' . $archieve->file;
+               $data['tte_dokumen']     = $archieve->file;
+               $data['tte_message']     = $verify_tte['detail'][0]['signature_field'] . ' - ' . $verify_tte['detail'][0]['signer_name'];
+               $monitoring['message']   = 'Arsip telah diverifikasi dan dokumen telah memiliki Tandatangan Elektronik (TTE) oleh ' . $verify_tte['detail'][0]['signer_name'];
+               // }
           }
 
           $verification = $this->archieve->update_entry($data, array('id' => $archieve->id, 'nomor_skpd' => $archieve->nomor_skpd));
