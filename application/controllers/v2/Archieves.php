@@ -409,7 +409,7 @@ class Archieves extends MY_Controller
                'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
                'tahun' => $this->input->post('tahun'),
                'jumlah' => (int)$this->input->post('jumlah'),
-               'tanggal' => htmlentities(date('d-m-Y', strtotime($this->input->post('tanggal')))),
+               'tanggal' => null,
                'deskripsi' => htmlentities($this->input->post('keterangan')),
                'nomor_skpd' => $this->user_auth->no_company,
                'unit_kerja_pencipta' => htmlentities($this->input->post('unit_kerja_pencipta')),
@@ -650,7 +650,8 @@ class Archieves extends MY_Controller
           // load library Watermark
           $this->load->library('pdf_watermark');
           $source_pdf    = $path_pdf;
-          $output_pdf    = $path_pdf;
+          // $output_pdf    = $path_pdf;
+          $output_pdf    = FCPATH . 'assets/upload/berkas/' . 'watermarked_' . $archieve->file;
           $success       = $this->pdf_watermark->set_watermark($source_pdf, $output_pdf);
           if (!$success) {
                $this->session->set_flashdata(array('status' => 500, 'message' => 'Gagal membuat watermark pada dokumen.'));
@@ -750,7 +751,7 @@ class Archieves extends MY_Controller
 
           // Panggil API BSrE dengan data specimen (image TTE)
           $result = tanda_tangan_cloud(
-               $path_pdf,
+               $output_pdf,
                $output_dir,
                $this->user_auth->nik,
                $passphrase,
@@ -778,6 +779,8 @@ class Archieves extends MY_Controller
 
                $this->session->set_flashdata(array('status' => 500, 'message' => "Maaf, terjadi kesalahan saat proses TTE! " . $result['message']));
                redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
+          } else {
+               @unlink($output_pdf);
           }
 
           // Sukses — update status di database

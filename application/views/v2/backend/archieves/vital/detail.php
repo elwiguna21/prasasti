@@ -329,10 +329,7 @@ if ($archieve->verifikasi_status == 'Y') {
                                    <i class="fas fa-arrow-left-rotate me-1"></i> Kembalikan ke Operator
                               </a>
                          <?php } ?>
-
                     <?php } ?>
-
-
 
                     <?php if ($archieve->tte_status == 'N' and $this->session->userdata('next-role') == 'kepala_skpd') { ?>
                          <?php if (file_exists('./assets/upload/berkas/' . $archieve->file)) { ?>
@@ -340,40 +337,35 @@ if ($archieve->verifikasi_status == 'Y') {
                                    <i class="fas fa-file-signature me-1"></i> Tandatangani Dokumen
                               </a>
                          <?php } ?>
-
-
                          <a href="javascript:void(0);" class="btn btn-sm btn-danger shadow w-100 mb-3 btn-unsign"
                               data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                               <i class="fas fa-mail-reply me-1"></i> Kembalikan ke Verifikator
                          </a>
                     <?php } ?>
 
+                    <?php
+                    if (file_exists('./assets/upload/berkas/' . $archieve->file)) {
+                         $filepath = base_url('assets/upload/berkas/' . $archieve->file);
+                    } else if (file_exists('./assets/data/' . $archieve->file)) {
+                         $filepath = base_url('assets/data/' . $archieve->file);
+                    } else {
+                         $filepath = null;
+                    } ?>
+                    <a href="<?= $filepath; ?>" <?= (!empty($filepath)) ? 'target="_blank"' : ''; ?>
+                         class="btn light btn-info btn-sm shadow w-100 mb-3 <?= (empty($filepath)) ? 'disabled' : ''; ?>">
+                         <i class="fas fa-file-pdf me-1"></i> Unduh Draf
+                    </a>
+
                     <?php if ($archieve->tte_status == 'Y' and file_exists('./assets/upload/berkas/' . $archieve->tte_dokumen)) { ?>
                          <a href="<?= base_url('assets/upload/berkas/' . $archieve->tte_dokumen) ?>" target="_blank"
-                              class="btn light btn-success btn-sm shadow w-100 mb-3">
+                              class="btn btn-success btn-sm shadow w-100 mb-3">
                               <i class="fas fa-file-pdf me-1"></i> Unduh Dokumen TTE
                          </a>
-                         <?php } else {
-                         if (file_exists('./assets/upload/berkas/' . $archieve->file)) { ?>
-                              <a href="<?= base_url('assets/upload/berkas/') . $archieve->file; ?>" target="_blank"
-                                   class="btn light btn-info btn-sm shadow w-100 mb-3">
-                                   <i class="fas fa-file-pdf me-1"></i> Unduh Draf
-                              </a>
-                         <?php } else if (file_exists('./assets/data/' . $archieve->file)) { ?>
-                              <a href="<?= base_url('assets/data/') . $archieve->file; ?>" target="_blank"
-                                   class="btn light btn-info btn-sm shadow w-100 mb-3">
-                                   <i class="fas fa-file-pdf me-1"></i> Unduh Draf
-                              </a>
-                         <?php } else { ?>
-                              <a href="javascript:void(0);"
-                                   class="btn light btn-outline-success btn-sm shadow w-100 mb-3 disabled">
-                                   <i class="fas fa-file-pdf me-1"></i> Unduh Dokumen TTE
-                              </a>
-                              <a href="javascript:void(0);"
-                                   class="btn light btn-outline-danger btn-sm shadow w-100 mb-3 disabled">
-                                   <i class="fas fa-exclamation-triangle me-1"></i> Unduh Draf
-                              </a>
-                         <?php } ?>
+                    <?php } else { ?>
+                         <a href="javascript:void(0);"
+                              class="btn btn-success btn-sm shadow w-100 mb-3 disabled">
+                              <i class="fas fa-file-pdf me-1"></i> Unduh Dokumen TTE
+                         </a>
                     <?php } ?>
                </div>
 
