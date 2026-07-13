@@ -766,6 +766,7 @@ class Archieves extends MY_Controller
                @unlink($file_image_ttd);
           }
 
+          @unlink($output_pdf);
           if ($result['error']) {
                // Catat log TTE gagal
                $this->db->insert('log_tte', array(
@@ -779,8 +780,6 @@ class Archieves extends MY_Controller
 
                $this->session->set_flashdata(array('status' => 500, 'message' => "Maaf, terjadi kesalahan saat proses TTE! " . $result['message']));
                redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
-          } else {
-               @unlink($output_pdf);
           }
 
           // Sukses — update status di database
