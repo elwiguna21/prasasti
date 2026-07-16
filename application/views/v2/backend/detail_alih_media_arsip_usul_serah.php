@@ -204,23 +204,29 @@ if ($status_tte === 'Y') {
                     </div>
                     <?php endif; ?>
 
-                    <?php if ($status_tte === 'Y' && !empty($berkas->signer_name)): ?>
-                    <!-- Penanda Tangan -->
-                    <div class="detail-info-row">
-                         <div class="detail-info-icon" style="background:rgba(40,167,69,.12); color:#28a745">
-                              <i class="fas fa-pen-nib"></i>
-                         </div>
-                         <div>
-                              <div class="text-muted" style="font-size:11px">Ditandatangani oleh</div>
-                              <div class="fw-semibold small"><?= htmlspecialchars($berkas->signer_name) ?></div>
-                              <?php if (!empty($berkas->tte_tanggal)): ?>
-                              <div class="text-muted" style="font-size:11px">
-                                   <i class="far fa-clock me-1"></i><?= date('d F Y H:i', strtotime($berkas->tte_tanggal)) ?>
-                              </div>
-                              <?php endif; ?>
-                         </div>
-                    </div>
-                    <?php endif; ?>
+                    <?php if ($status_tte === 'Y'): ?>
+                     <!-- Penanda Tangan -->
+                     <div class="detail-info-row">
+                          <div class="detail-info-icon" style="background:rgba(40,167,69,.12); color:#28a745">
+                               <i class="fas fa-pen-nib"></i>
+                          </div>
+                          <div>
+                               <div class="text-muted" style="font-size:11px">Ditandatangani oleh</div>
+                               <div class="fw-semibold small">
+                                    <?php if (!empty($berkas->signer_name)): ?>
+                                         <?= htmlspecialchars($berkas->signer_name) ?>
+                                    <?php else: ?>
+                                         <?= htmlspecialchars($berkas->tte_message ?? '-') ?>
+                                    <?php endif; ?>
+                               </div>
+                               <?php if (!empty($berkas->tte_tanggal)): ?>
+                               <div class="text-muted" style="font-size:11px">
+                                    <i class="far fa-clock me-1"></i><?= date('d F Y H:i', strtotime($berkas->tte_tanggal)) ?>
+                               </div>
+                               <?php endif; ?>
+                          </div>
+                     </div>
+                     <?php endif; ?>
 
                </div>
           </div>
@@ -277,7 +283,7 @@ if ($status_tte === 'Y') {
           <?php endif; ?>
 
           <!-- Tombol Aksi: Verifikator ubah verifikasi -->
-          <?php if ($role === 'verifikator_lkd' && $status_pen === 'Y' && $status_ver !== 'N'): ?>
+          <?php if ($role === 'verifikator_lkd' && $status_pen === 'Y' && $status_ver !== 'N' && $status_tte !== 'Y'): ?>
           <div class="card detail-status-card mb-3">
                <div class="card-body">
                     <div class="text-muted small mb-2"><i class="fas fa-redo me-1"></i> Ubah Verifikasi</div>
@@ -495,10 +501,24 @@ if ($status_tte === 'Y') {
                Ukuran: <strong><?= ($pos['width'] ?? '-') ?> × <?= ($pos['height'] ?? '-') ?> px</strong>
           </div>
           <?php else: ?>
-          <div class="mt-2 p-3 rounded small bg-light text-muted">
-               <i class="fas fa-info-circle me-1"></i>
-               Posisi TTE belum ditentukan oleh operator. Tanda tangan akan disisipkan secara <em>invisible</em>.
-          </div>
+               <?php if (!empty($verify_tte)): ?>
+                    <div class="mt-2 p-3 rounded small bg-success text-white">
+                         <i class="fas fa-info-circle me-1"></i>
+                         Dokumen telah ditandatangan secara elektronik dan disisipkan secara <em>invisible</em>. <br />
+                         <ul class="list-icons" style="margin-left: 15px; margin-top: 5px; list-style-type: disc;">
+                              <?php foreach ($verify_tte as $list): ?>
+                                   <li>
+                                        <div><span class="align-middle me-2"><i class="fa fa-check text-white"></i></span> <?= htmlspecialchars($list['signer_name']); ?></div>
+                                   </li>
+                              <?php endforeach; ?>
+                         </ul>
+                    </div>
+               <?php else: ?>
+                    <div class="mt-2 p-3 rounded small bg-info text-white">
+                         <i class="fas fa-info-circle me-1"></i>
+                         Posisi TTE belum ditentukan oleh operator. Tanda tangan akan disisipkan secara <em>invisible</em>.
+                    </div>
+               <?php endif; ?>
           <?php endif; ?>
 
           <?php endif; ?>

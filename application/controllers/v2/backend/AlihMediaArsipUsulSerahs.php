@@ -102,6 +102,21 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           if (empty($berkas)) {
                show_404();
           }
+
+          // Load helper TTE
+          $this->load->helper('tte');
+          $filepath = FCPATH . 'assets/upload/berkas/' . (!empty($berkas->tte_dokumen) ? $berkas->tte_dokumen : $berkas->file);
+          if (file_exists($filepath)) {
+               $verify_tte = verifikasi_tte($filepath);
+               if ($verify_tte['has_tte'] && $verify_tte['jumlah_signature'] > 0) {
+                    $data['verify_tte'] = $verify_tte['detail'];
+               } else {
+                    $data['verify_tte'] = array();
+               }
+          } else {
+               $data['verify_tte'] = array();
+          }
+
           $data['title']       = 'Detail Alih Media Arsip Usul Serah';
           $data['employee']    = $this->user_auth;
           $data['berkas']      = $berkas;
@@ -272,8 +287,6 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                $update_data['verifikasi_message'] = $alasan;
           }
 
-          $this->berkas->update_by_id($id, $update_data);
-
           $monitoring_msg = ($aksi === 'terverifikasi')
                ? 'Berkas diverifikasi dan diteruskan ke Kepala LKD untuk ditandatangani.'
                : 'Berkas ditolak oleh Verifikator LKD.';
@@ -281,6 +294,27 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           if ($aksi === 'ditolak' && !empty($alasan)) {
                $monitoring_msg .= ' Alasan: ' . htmlspecialchars($alasan);
           }
+
+          $pesan_sukses = 'Berkas berhasil diverifikasi dan dilanjutkan ke Kepala LKD.';
+
+          // Cek TTE jika aksi adalah verifikasi/terverifikasi
+          if ($aksi === 'terverifikasi') {
+               $filepath = FCPATH . 'assets/upload/berkas/' . $berkas->file;
+               if (file_exists($filepath)) {
+                    // Load helper TTE
+                    $this->load->helper('tte');
+                    $verify_tte = verifikasi_tte($filepath);
+                    if ($verify_tte['has_tte'] && count($verify_tte) > 0) {
+                         $update_data['tte_status']   = 'Y';
+                         $update_data['tte_dokumen']  = $berkas->file;
+                         $update_data['tte_message']  = $verify_tte['detail'][0]['signature_field'] . ' - ' . $verify_tte['detail'][0]['signer_name'];
+                         $monitoring_msg              = 'Arsip telah diverifikasi dan dokumen telah memiliki Tandatangan Elektronik (TTE) oleh ' . $verify_tte['detail'][0]['signer_name'];
+                         $pesan_sukses                = 'Berkas berhasil diverifikasi dan terdeteksi sudah memiliki TTE.';
+                    }
+               }
+          }
+
+          $this->berkas->update_by_id($id, $update_data);
 
           $this->monitoring->insert_entry(array(
                'berkas'  => $id,
@@ -292,7 +326,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           echo json_encode(array(
                'status' => TRUE,
                'pesan'  => ($aksi === 'terverifikasi')
-                    ? 'Berkas berhasil diverifikasi dan dilanjutkan ke Kepala LKD.'
+                    ? $pesan_sukses
                     : 'Berkas ditolak oleh Verifikator LKD.',
           ));
      }
@@ -338,6 +372,20 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
           // Load helper TTE
           $this->load->helper('tte');
+
+          // Cek apakah dokumen sudah memiliki TTE. Jika belum, tambahkan watermark.
+          $cek_tte = verifikasi_tte($path_pdf);
+          $pdf_to_sign = $path_pdf;
+          if (empty($cek_tte['has_tte'])) {
+               $this->load->library('pdf_watermark');
+               $watermarked_pdf = FCPATH . 'assets/upload/berkas/watermarked_' . $berkas->file;
+               $success = $this->pdf_watermark->set_watermark($path_pdf, $watermarked_pdf);
+               if (!$success) {
+                    echo json_encode(array('status' => FALSE, 'pesan' => 'Gagal membuat watermark pada dokumen.'));
+                    return;
+               }
+               $pdf_to_sign = $watermarked_pdf;
+          }
 
           // ── Generate Image TTE ──
           $this->load->library('ImageTTD');
@@ -427,7 +475,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
           // Panggil API BSrE dengan data specimen (image TTE)
           $result = tanda_tangan_cloud(
-               $path_pdf,
+               $pdf_to_sign,
                $output_dir,
                $nik,
                $passphrase,
@@ -440,6 +488,10 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           // Hapus file image TTE sementara
           if (file_exists($file_image_ttd)) {
                @unlink($file_image_ttd);
+          }
+
+          if (isset($watermarked_pdf)) {
+               @unlink($watermarked_pdf);
           }
 
           if ($result['error']) {
