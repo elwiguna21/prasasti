@@ -1,10 +1,6 @@
-<!--<link href="--><?php //= base_url('assets/v3/backend/') ?><!--vendor/lightgallery/css/lightgallery.min.css" rel="stylesheet">-->
-<!--<link href="--><?php //= base_url('assets/v3/backend/') ?><!--vendor/glightbox/dist/css/glightbox.min.css" rel="stylesheet">-->
 <style>
      img {
-         position: relative;
-         /*top: 50%;*/
-         /*transform: translateY(-50%);*/
+          position: relative;
      }
 </style>
 <div class="breadcrumb-section bg-img"
@@ -45,30 +41,10 @@
      <div class="divider-sm"></div>
 
      <div class="container">
-          <div class="row d-flex justify-content-center align-items-center g-4" id="id="lightgallery"">
-               <?php if (!empty($galleries)) {
-	               $counter = 1;
-                    foreach ($galleries as $gallery) {
-                         $gallery->file = "https://sisemar.sumedangkab.go.id/v2/assets/upload/" . $gallery->file;
-	                    $column_size = ($counter % 5 == 0) ? 'col-lg-8' : 'col-lg-4'; ?>
-                         <div class="col-12 col-sm-6 <?= $column_size; ?>">
-                              <div class="case-study-card">
-<!--                                   <img src="--><?php //= base_url('assets/v3/frontend/v2/img/') ?><!--bg-img/65.jpg" alt="" style="max-height: 491px">-->
-                                   <img src="<?= $gallery->file; ?>" alt="" style="max-height: 491px">
-                                   <!-- Case Study Content -->
-                                   <div class="case-study-content">
-<!--                                        <p class="text-white mb-2"></p>-->
-                                        <h4 class="mb-0 text-white"><?= $gallery->caption; ?></h4>
-                                   </div>
-                                   <!-- View More -->
-<!--                                   <a href="--><?php //= $gallery->file; ?><!--" class="btn btn-primary glightbox" data-exthumbimage="--><?php //= $gallery->file; ?><!--" data-src="--><?php //= $gallery->file; ?><!--"><i class="ti ti-arrow-up-right"></i></a>-->
-                                   <a href="<?= $gallery->file; ?>" class="btn btn-primary glightbox"><i class="ti ti-arrow-up-right"></i></a>
-                              </div>
-                         </div>
-                    <?php
-	                    $counter++;
-                    }
-               } ?>
+          <div class="row d-flex justify-content-center align-items-center g-4" id="lightgallery"></div>
+          <div class="d-flex justify-content-center align-items-center mt-3" id="loading">
+               <div class="spinner-border ms-center text-primary me-2" aria-hidden="true"></div>
+               <span role="status">Sedang memuat data...</span>
           </div>
      </div>
 
@@ -77,7 +53,53 @@
 </section>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<!--<script src="--><?php //= base_url('assets/v3/backend/') ?><!--vendor/glightbox/dist/js/glightbox.min.js"></script>-->
 <script>
+     $(document).ready(function() {
+          let limit = 5;
+          let start = 0;
+          let action = 'inactive';
 
+          load_data(limit, start);
+
+          function load_data(limit, start) {
+               $.ajax({
+                    url: "<?= base_url('v2/galleries/get_galleries_json') ?>", // File tujuan request
+                    method: "POST",
+                    data: {
+                         limits: limit,
+                         starts: start
+                    },
+                    cache: false,
+                    beforeSend: function() {
+                         $('#loading').show();
+                    },
+                    success: function(data, status) {
+                         if (status == 'success') {
+                              let dao = JSON.parse(data);
+                              if (dao.data == '') {
+                                   $('#loading').html("Tidak ada data lagi.");
+                                   action = 'active'; // Hentikan request
+                              } else {
+                                   $('#lightgallery').append(dao.data);
+                                   $('#loading').hide();
+                                   action = 'inactive'; // Lanjutkan jika user scroll lagi
+                              }
+                         } else {
+                              Swal.fire("Gagal", "Terjadi kesalahan saat memuat data...", "error");
+                         }
+                    }
+               });
+          }
+
+          // Event Scroll
+          $(window).scroll(function() {
+               if ($(window).scrollTop() + $(window).height() > $("#lightgallery").height() && action == 'inactive') {
+                    action = 'active';
+                    start = start + limit;
+                    setTimeout(function() {
+                         load_data(limit, start);
+                    }, 1000); // Delay 1 detik untuk memberi jeda loading
+               }
+          });
+     })
 </script>

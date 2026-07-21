@@ -11,6 +11,18 @@ class Gallery extends CI_Model
 
      public function get_all_where($where = null)
      {
+          if (!empty($where['limits']) or !empty($where['starts'])) {
+               $this->db->limit($where['limits'], $where['starts']);
+               unset($where['limits']);
+               unset($where['starts']);
+          }
+
+          if (!empty($where['orders']) or !empty($where['dirs'])) {
+               $this->db->order_by($where['orders'], $where['dirs']);
+               unset($where['orders']);
+               unset($where['dirs']);
+          }
+
           if (!empty($where)) {
                $this->db->where($where);
           }
