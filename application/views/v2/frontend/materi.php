@@ -106,7 +106,7 @@
           processing: true,
           serverSide: true,
           ajax: {
-               url: "<?= base_url('v2/materi/get_materi_json') ?>",
+               url: "<?= base_url('v2/materipaparans/get_materi_json') ?>",
                type: "post",
           },
           bLengthChange: !1,

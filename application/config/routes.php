@@ -33,8 +33,8 @@ $route['v2/news/manage/update']              = 'v2/news/update';
 $route['v2/news/manage/delete/(:num)']       = 'v2/news/delete/$1';
 
 // MATERI PAPARAN
-$route['v2/materi']                          = 'v2/materipaparans/list';
-$route['v2/materi/get_materi_json']          = 'v2/materipaparans/get_materi_json';
+// $route['v2/materi']                          = 'v2/MateriPaparans/list';
+// $route['v2/materi/get_materi_json']          = 'v2/MateriPaparans/get_materi_json';
 
 // GUIDE ARSIP Routes
 $route['v2/guides/list']                     = 'v2/archieves/guide_list';

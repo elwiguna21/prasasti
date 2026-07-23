@@ -98,7 +98,7 @@
                                         <a href="<?= base_url('v2/news') ?>">Berita</a>
                                    </li>
                                    <li>
-                                        <a href="<?= base_url('v2/materi') ?>">Materi / Paparan</a>
+                                        <a href="<?= base_url('v2/materipaparans/list') ?>">Materi / Paparan</a>
                                    </li>
                               </ul>
                          </li>
