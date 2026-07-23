@@ -54,7 +54,7 @@
                                         Guide Arsip
                                         <span class="badge badge-xs badge-warning">Edit URL</span>
                                    </a></li>
-                              <li><a href="<?= base_url('v2/materipaparans') ?>">Materi/Paparan</a></li>
+                              <li><a href="<?= base_url('v2/materi') ?>">Materi/Paparan</a></li>
                               <li><a href="<?= base_url('v2/profiles/list') ?>">
                                         Profil
                                         <span class="badge badge-xs badge-warning">Edit URL</span>

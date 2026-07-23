@@ -21,7 +21,7 @@
                                    <tr>
                                         <th>No</th>
                                         <th>Judul</th>
-                                        <th>Action</th>
+                                        <th>Aksi</th>
                                    </tr>
                               </thead>
                               <tbody></tbody>
@@ -83,7 +83,7 @@
           "serverSide": true,
           "order": [1, 'asc'],
           "ajax": {
-               "url": "<?php echo base_url('v2/materipaparans/ajax_list') ?>",
+               "url": "<?php echo base_url('v2/materi/ajax_list') ?>",
                "type": "POST"
           },
           "columnDefs": [{
@@ -126,7 +126,7 @@
           $('#form')[0].reset();
           $('.help-block').empty();
           $.ajax({
-               url: "<?php echo site_url('v2/materipaparans/ajax_edit/') ?>" + id,
+               url: "<?php echo site_url('v2/materi/ajax_edit/') ?>" + id,
                type: "GET",
                dataType: "JSON",
                success: function(data) {
@@ -151,7 +151,7 @@
 
      function save() {
           $('#btnSave').text('Menyimpan...').attr('disabled', true);
-          var url = (save_method == 'add') ? "<?php echo site_url('v2/materipaparans/ajax_add') ?>" : "<?php echo site_url('v2/materipaparans/ajax_update') ?>";
+          var url = (save_method == 'add') ? "<?php echo site_url('v2/materi/ajax_add') ?>" : "<?php echo site_url('v2/materi/ajax_update') ?>";
           var formData = new FormData($('#form')[0]);
           $.ajax({
                url: url,
@@ -191,7 +191,7 @@
           }).then((result) => {
                if (result.isConfirmed) {
                     $.ajax({
-                         url: "<?php echo site_url('v2/materipaparans/ajax_delete/') ?>" + id,
+                         url: "<?php echo site_url('v2/materi/ajax_delete/') ?>" + id,
                          type: "POST",
                          dataType: "JSON",
                          success: function() {

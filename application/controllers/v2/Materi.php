@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class MateriPaparans extends MY_Controller
+class Materi extends MY_Controller
 {
      public $user_auth;
 
