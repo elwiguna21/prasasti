@@ -206,7 +206,7 @@ class Galleries extends MY_Controller
 
                     $content       = '<div class="col-12 col-sm-6 ' . $column_size . '">'
                          . '<div class="case-study-card">'
-                         . '<img src="' . $gallery->file . '" alt="" style="max-height: 491px">'
+                         . '<img src="' . $gallery->file . '" alt="Galeri" loading="lazy" style="max-height: 491px">'
                          . '<div class="case-study-content"><h4 class="mb-0 text-white">' . $gallery->caption . '</h4></div>'
                          . '<a href="' . $gallery->file . '" class="btn btn-primary glightbox"><i class="ti ti-arrow-up-right"></i></a>'
                          . '</div>'

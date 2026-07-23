@@ -1,7 +1,7 @@
 <style>
-    .link-title:hover {
-        color: #2B4DFF;
-    }
+     .link-title:hover {
+          color: #2B4DFF;
+     }
 </style>
 <div class="breadcrumb-section bg-img" style="background-image: url('assets/img/bg-img/90.jpg');">
      <div class="container">
@@ -49,15 +49,15 @@
                                    <div class="row">
                                         <div class="col-lg-5 col-12 mb-3">
                                              <input type="text" name="title" class="form-control"
-                                                    placeholder="Cari indeks / klasifikasi / uraian arsip" autocomplete="off"
-                                                    value="<?= (!empty($_GET['title'])) ? $_GET['title'] : '' ?>">
+                                                  placeholder="Cari indeks / klasifikasi / uraian arsip" autocomplete="off"
+                                                  value="<?= (!empty($_GET['title'])) ? $_GET['title'] : '' ?>">
                                         </div>
                                         <div class="col-lg-5 col-12 mb-3">
                                              <select class="form-control" name="company">
                                                   <option value="">Pilih SKPD</option>
-										<?php foreach ($companies as $company) { ?>
+                                                  <?php foreach ($companies as $company) { ?>
                                                        <option value="<?= $company->no_company; ?>" <?= (!empty($_GET['company']) && $_GET['company'] == $company->no_company) ? 'selected' : '' ?>><?= $company->name; ?></option>
-										<?php } ?>
+                                                  <?php } ?>
                                              </select>
                                         </div>
                                         <div class="col-lg-2 col-12">
@@ -80,19 +80,19 @@
 <section class="pricing-section mt-4">
      <div class="container">
           <p><?= number_format($archieves_total, 0, ',', '.'); ?> Arsip ditemukan</p>
-		<?php if (!empty($archieves)) { ?>
+          <?php if (!empty($archieves)) { ?>
                <div class="pricing-card-two wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="400ms">
                     <div class="row">
-					<?php foreach ($archieves as $archieve) {
-						$params = array('archieve' => $this->encryption->encrypt($archieve->id), 'company' => $archieve->nomor_skpd, 'src' => 'static');
-						?>
+                         <?php foreach ($archieves as $archieve) {
+                              $params = array('archieve' => $this->encryption->encrypt($archieve->id), 'company' => $archieve->nomor_skpd, 'src' => 'static');
+                         ?>
                               <div class="col-lg-4 col-md-6 col-12 mb-3">
                                    <div class="packgae-name-price wow fadeInUp" data-wow-duration="1000ms"
                                         data-wow-delay="400ms">
 
                                         <h4>
                                              <a href="<?= base_url('v2/archieves/detail?' . http_build_query($params)); ?>"
-                                                class="link-title"><?= (!empty($archieve->indek)) ? $archieve->indek : ((!empty($archieve->uraian_informasi_arsip)) ? substr($archieve->uraian_informasi_arsip, 0, 50) : '-'); ?></a>
+                                                  class="link-title"><?= (!empty($archieve->indek)) ? $archieve->indek : ((!empty($archieve->uraian_informasi_arsip)) ? substr($archieve->uraian_informasi_arsip, 0, 50) : '-'); ?></a>
                                         </h4>
 
                                         <div class="border-top mt-4 mb-3"></div>
@@ -100,34 +100,38 @@
                                         <ul class="ps-0 list-unstyled mb-2">
                                              <li class="align-items-center align-content-center">
                                                   <i class="ti ti-calendar text-purple me-2"
-                                                     style="font-size: 18px;"></i> <?= $archieve->tahun; ?>
+                                                       style="font-size: 18px;"></i> <?= $archieve->tahun; ?>
                                              </li>
                                              <li>
                                                   <i class="ti ti-user text-purple me-2"
-                                                     style="font-size: 18px;"></i> <?= (!empty($archieve->name)) ? $archieve->name : ((!empty($archieve->unit_kerja_pencipta)) ? $archieve->unit_kerja_pencipta : '-') ?>
+                                                       style="font-size: 18px;"></i> <?= (!empty($archieve->name)) ? $archieve->name : ((!empty($archieve->unit_kerja_pencipta)) ? $archieve->unit_kerja_pencipta : '-') ?>
+                                             </li>
+                                             <li>
+                                                  <i class="ti ti-eye text-purple me-2"
+                                                       style="font-size: 18px;"></i> <?= (!empty($archieve->viewers)) ? $archieve->viewers . ' kali' : 0; ?>
                                              </li>
                                         </ul>
                                         <p class="mb-3"><?= (!empty($archieve->uraian_informasi_arsip)) ? $archieve->uraian_informasi_arsip : ((!empty($archieve->deskripsi)) ? $archieve->deskripsi : '-'); ?></p>
                                         <div class="d-flex justify-content-center">
                                              <a href="<?= base_url('v2/archieves/detail?' . http_build_query($params)); ?>"
-                                                class="btn btn-sm btn-primary w-100">Detail</a>
+                                                  class="btn btn-sm btn-primary w-100">Detail</a>
                                         </div>
                                    </div>
                               </div>
-					<?php } ?>
+                         <?php } ?>
 
                          <div class="d-flex justify-content-center mt-2">
-						<?= $pagination; ?>
+                              <?= $pagination; ?>
                          </div>
                     </div>
                </div>
-		<?php } else { ?>
+          <?php } else { ?>
                <div class="col-lg-12">
                     <div class="alert alert-warning">
                          Maaf, tidak dapat memuat arsip statis atau arsip statis belum tersedia...
                     </div>
                </div>
-		<?php } ?>
+          <?php } ?>
      </div>
 </section>
 
@@ -277,9 +281,9 @@
 
 <script src="<?= base_url('assets/v3/frontend/js/jquery.min.js') ?>"></script>
 <script>
-    $('.btn-reset').click(function () {
-        $('input[name="title"]').val(null);
-        $('select[name="company"]').val(null).trigger('change');
-        window.location.href = '<?= base_url('v2/archieves') ?>';
-    })
+     $('.btn-reset').click(function() {
+          $('input[name="title"]').val(null);
+          $('select[name="company"]').val(null).trigger('change');
+          window.location.href = '<?= base_url('v2/archieves') ?>';
+     })
 </script>

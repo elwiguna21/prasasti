@@ -115,6 +115,7 @@ class Archieves extends MY_Controller
                die;
           }
 
+          $this->archieve->update_entry(array('viewers' => (int)$archieve->viewers + 1), array('id' => $archieve->id));
           $data['archieve'] = $archieve;
 
           //          		 echo json_encode($data);
@@ -162,6 +163,7 @@ class Archieves extends MY_Controller
                die;
           }
 
+          $this->archieve->update_entry(array('viewers' => (int)$archieve->viewers + 1), array('id' => $archieve->id));
           $data['archieve'] = $archieve;
 
           //		echo json_encode($data); die;
