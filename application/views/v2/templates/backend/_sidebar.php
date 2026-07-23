@@ -11,7 +11,7 @@
                          <!-- <span class="badge badge-xs badge-success">New</span> -->
                     </a>
                </li>
-			<?php if ($this->session->userdata('next-role') === 'admin') : ?>
+               <?php if ($this->session->userdata('next-role') === 'admin') : ?>
                     <li>
                          <a class="ai-icon" href="<?= base_url('v2/users') ?>">
                               <i class="flaticon-381-user-9"></i>
@@ -46,8 +46,10 @@
                                         Peraturan
                                         <span class="badge badge-xs badge-warning">Edit URL</span>
                                    </a></li>
-<!--                              <li><a href="--><?php //= base_url('v2/backend/inventarisarsips') ?><!--">Inventaris Arsip</a></li>-->
-<!--                              <li><a href="--><?php //= base_url('v2/backend/arsipstatiss') ?><!--">Daftar Arsip Statis</a></li>-->
+                              <!--                              <li><a href="--><?php //= base_url('v2/backend/inventarisarsips') 
+                                                                                ?><!--">Inventaris Arsip</a></li>-->
+                              <!--                              <li><a href="--><?php //= base_url('v2/backend/arsipstatiss') 
+                                                                                ?><!--">Daftar Arsip Statis</a></li>-->
                               <li><a href="<?= base_url('v2/guides/list') ?>">
                                         Guide Arsip
                                         <span class="badge badge-xs badge-warning">Edit URL</span>
@@ -68,22 +70,22 @@
                               <li><a href="<?= base_url('v2/services/list') ?>">Permohonan Perbaikan</a></li>
                          </ul>
                     </li>
-			<?php endif; ?>
+               <?php endif; ?>
 
                <?php if (!in_array($this->session->userdata('next-role'), ['kepala_lkd', 'verifikator_lkd'])): ?>
-               <li>
-                    <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                         <i class="flaticon-381-folder-14"></i>
-                         <span class="nav-text">Alih Media</span>
-                    </a>
-                    <ul aria-expanded="false">
-                         <li><a href="<?= base_url('v2/alih_media_arsip_vital') ?>">Alih Media Arsip Vital</a></li>
-                         <li><a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah') ?>">Alih Media Arsip Usul
-                                   Serah</a></li>
-                    </ul>
-               </li>
+                    <li>
+                         <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                              <i class="flaticon-381-folder-14"></i>
+                              <span class="nav-text">Alih Media</span>
+                         </a>
+                         <ul aria-expanded="false">
+                              <li><a href="<?= base_url('v2/alih_media_arsip_vital') ?>">Alih Media Arsip Vital</a></li>
+                              <li><a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah') ?>">Alih Media Arsip Usul
+                                        Serah</a></li>
+                         </ul>
+                    </li>
                <?php endif; ?>
-			<?php if (in_array($this->session->userdata('next-role'), ['kepala_lkd', 'verifikator_lkd'])): ?>
+               <?php if (in_array($this->session->userdata('next-role'), ['kepala_lkd', 'verifikator_lkd'])): ?>
                     <li>
                          <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                               <i class="flaticon-381-folder-14"></i>
@@ -92,17 +94,17 @@
                          <ul aria-expanded="false">
                               <li><a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah') ?>">Daftar Berkas</a>
                               </li>
-						<?php if ($this->session->userdata('next-role') === 'kepala_lkd'): ?>
+                              <?php if ($this->session->userdata('next-role') === 'kepala_lkd'): ?>
                                    <li>
                                         <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/tanda_tangan') ?>">
                                              <i class="fas fa-pen-nib me-1 text-primary"></i> Tanda Tangan
                                              <span class="badge badge-xs badge-primary ms-1">TTE</span>
                                         </a>
                                    </li>
-						<?php endif; ?>
+                              <?php endif; ?>
                          </ul>
                     </li>
-			<?php endif; ?>
+               <?php endif; ?>
 
                <?php if ($this->session->userdata('next-role') == 'operator') { ?>
                     <li>
