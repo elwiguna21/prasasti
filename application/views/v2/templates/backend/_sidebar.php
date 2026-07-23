@@ -35,26 +35,26 @@
                                         Berita
                                         <span class="badge badge-xs badge-warning">Edit URL</span>
                                    </a></li>
-                              <li><a href="<?= base_url('v2/backend/banners') ?>">Banner</a></li>
+                              <li><a href="<?= base_url('v2/banners') ?>">Banner</a></li>
                               <li><a href="<?= base_url('v2/galleries/list') ?>">
                                         Galeri
                                         <span class="badge badge-xs badge-warning">Edit URL</span>
                                    </a></li>
-                              <li><a href="<?= base_url('v2/backend/faqs') ?>">FAQ</a></li>
-                              <li><a href="<?= base_url('v2/backend/links') ?>">Link</a></li>
+                              <li><a href="<?= base_url('v2/faqs') ?>">FAQ</a></li>
+                              <li><a href="<?= base_url('v2/links') ?>">Link</a></li>
                               <li><a href="<?= base_url('v2/regulations/list') ?>">
                                         Peraturan
                                         <span class="badge badge-xs badge-warning">Edit URL</span>
                                    </a></li>
-                              <!--                              <li><a href="--><?php //= base_url('v2/backend/inventarisarsips') 
+                              <!--                              <li><a href="--><?php //= base_url('v2/backend/inventarisarsips')
                                                                                 ?><!--">Inventaris Arsip</a></li>-->
-                              <!--                              <li><a href="--><?php //= base_url('v2/backend/arsipstatiss') 
+                              <!--                              <li><a href="--><?php //= base_url('v2/backend/arsipstatiss')
                                                                                 ?><!--">Daftar Arsip Statis</a></li>-->
                               <li><a href="<?= base_url('v2/guides/list') ?>">
                                         Guide Arsip
                                         <span class="badge badge-xs badge-warning">Edit URL</span>
                                    </a></li>
-                              <li><a href="<?= base_url('v2/backend/materipaparans') ?>">Materi/Paparan</a></li>
+                              <li><a href="<?= base_url('v2/materipaparans') ?>">Materi/Paparan</a></li>
                               <li><a href="<?= base_url('v2/profiles/list') ?>">
                                         Profil
                                         <span class="badge badge-xs badge-warning">Edit URL</span>

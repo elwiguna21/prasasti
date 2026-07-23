@@ -13,36 +13,75 @@ class MateriPaparans extends MY_Controller
           $this->load->model('M_data', 'model');
           $this->load->model('v2/Employee', 'employee');
 
-          if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
-               show_error('Not Authorize! Please signin again.', 403);
-               die;
-          } else {
+          if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-role'))) {
+               $uid = $this->encryption->decrypt($this->session->userdata('next-uid'));
+               $uname = $this->session->userdata('next-uname');
+
+               // Coba ambil dari tabel employee (untuk operator/ASN)
                $user = $this->employee->get_single_where(
-                    array(
-                         'user.id'       => $this->encryption->decrypt($this->session->userdata('next-uid')),
-                         'user.username' => $this->session->userdata('next-uname')
-                    )
+                    array('user.id' => $uid, 'user.username' => $uname)
                );
-
-               if (empty($user)) {
-                    redirect('v2/authentications/signout');
+               if (!empty($user)) {
+                    $this->user_auth = $user;
+                    $this->user_auth->avatar = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
                }
-
-               $this->user_auth = $user;
-               $this->user_auth->avatar = base_url('assets/v3/backend/images/avatar/user-dummy.jpg');
           }
      }
 
      public function index()
      {
+          if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
+               show_error('Not Authorize! Please signin again.', 403);
+               die;
+          }
+
           $data['title']    = 'Materi/Paparan';
           $data['employee'] = $this->user_auth;
 
           $this->backend('v2/backend/data_materi_paparan', $data);
      }
 
+     public function list()
+     {
+          $data['title']      = 'Materi / Paparan';
+
+          $this->frontend_new('v2/frontend/materi', $data);
+     }
+
+     public function get_materi_json()
+     {
+          if (!$this->input->is_ajax_request()) {
+               redirect('v2/backend/dashboards');
+          }
+          $list  = $this->materi_paparan->get_datatables();
+          $data  = array();
+          $no    = $_POST['start'];
+          $nomor = 1;
+          foreach ($list as $item) {
+               $no++;
+               $row   = array();
+               $row[] = $nomor++;
+               $row[] = $item->caption;
+               $row[] = '<div class="text-center"><a class="btn btn-primary btn-sm" href="' . base_url('assets/upload/') . $item->file . '" target="_blank"><i class="ti ti-file-download me-2"></i> Download</a></div>';
+               $data[] = $row;
+          }
+
+          $output = array(
+               "draw"            => $_POST['draw'],
+               "recordsTotal"    => $this->materi_paparan->count_all(),
+               "recordsFiltered" => $this->materi_paparan->count_filtered(),
+               "data"            => $data,
+          );
+          echo json_encode($output);
+     }
+
      public function ajax_list()
      {
+          if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
+               echo json_encode(array('status' => 403, 'message' => 'Cant access this request!'));
+               die;
+          }
+
           if (!$this->input->is_ajax_request()) {
                redirect('v2/backend/dashboards');
           }
@@ -70,12 +109,22 @@ class MateriPaparans extends MY_Controller
 
      public function ajax_edit($id)
      {
+          if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
+               echo json_encode(array('status' => 403, 'message' => 'Cant access this request!'));
+               die;
+          }
+
           $data = $this->materi_paparan->get_by_id($id);
           echo json_encode($data);
      }
 
      public function ajax_add()
      {
+          if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
+               echo json_encode(array('status' => 403, 'message' => 'Cant access this request!'));
+               die;
+          }
+
           $this->_validate();
           $data = array(
                'caption' => htmlentities($this->input->post('judul')),
@@ -98,6 +147,11 @@ class MateriPaparans extends MY_Controller
 
      public function ajax_update()
      {
+          if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
+               echo json_encode(array('status' => 403, 'message' => 'Cant access this request!'));
+               die;
+          }
+
           $this->_validate();
           $data = array(
                'caption' => htmlentities($this->input->post('judul')),
@@ -129,6 +183,11 @@ class MateriPaparans extends MY_Controller
 
      public function ajax_delete($id)
      {
+          if (empty($this->session->userdata('next-uid')) && empty($this->session->userdata('next-role'))) {
+               echo json_encode(array('status' => 403, 'message' => 'Cant access this request!'));
+               die;
+          }
+
           $table = 'materi_paparan';
           $where = array('id' => $id);
           $query = $this->model->getone($table, $where);

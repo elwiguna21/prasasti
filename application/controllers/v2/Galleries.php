@@ -32,21 +32,6 @@ class Galleries extends MY_Controller
      {
           $data['title'] = 'Galeri';
 
-          // $galleries = $this->gallery->get_all_where();
-          //		if (!empty($galleries)) {
-          //			foreach ($galleries as $gallery) {
-          //				if (file_exists('./assets/upload/' . $gallery->file)) {
-          //					$gallery->file = base_url('assets/upload/') . $gallery->file;
-          //				} else {
-          //					$gallery->file = base_url('assets/v3/frontend/v2/img/bg-img/65.jpg');
-          //				}
-          //			}
-          //		}
-
-          // $data['galleries'] = $galleries;
-          // echo json_encode($data);
-          // die;
-
           $this->frontend_new('v2/frontend/gallery', $data);
      }
 
@@ -72,6 +57,7 @@ class Galleries extends MY_Controller
                $row   = array();
                $row[] = $nomor++;
                $row[] = $galeri->caption;
+               $row[] = $galeri->ref_link ?? '-';
                $row[] = '<div class="d-flex"><a class="btn btn-primary btn-xs sharp me-1" href="javascript:void(0)" title="Edit" onclick="edit_galeri(\'' . $galeri->id . '\')"><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-xs sharp" href="javascript:void(0)" title="Hapus" onclick="delete_galeri(\'' . $galeri->id . '\')"><i class="fas fa-trash"></i></a></div>';
                $data[] = $row;
           }
@@ -178,9 +164,10 @@ class Galleries extends MY_Controller
 
      public function get_galleries_json()
      {
-          // if ($this->input->method() !== 'post') {
-          //      echo json_encode(array("status" => 401, "message" => 'Cant access this request!'));
-          // }
+          if ($this->input->method() !== 'post') {
+               echo json_encode(array("status" => 401, "message" => 'Cant access this request!'));
+               die;
+          }
 
           $limits   = $this->input->post('limits');
           $starts   = $this->input->post('starts');
