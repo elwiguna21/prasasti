@@ -65,15 +65,15 @@
                          <li class="softora-dd">
                               <a href="javascript:void(0);">Profil <i class="ti ti-caret-down-filled"></i></a>
                               <ul class="softora-dd-menu">
-                                   <li class="softora-dd"><a href="<?= base_url('v2/profiles/vision') ?>"
+                                   <li class="softora-dd"><a href="<?= base_url('profiles/vision') ?>"
                                              class="dez-page">Visi &amp; Misi </a></li>
-                                   <li class="softora-dd"><a href="<?= base_url('v2/profiles/about') ?>"
+                                   <li class="softora-dd"><a href="<?= base_url('profiles/about') ?>"
                                              class="dez-page">Gambaran Umum </a></li>
-                                   <li class="softora-dd"><a href="<?= base_url('v2/profiles/jobdesc') ?>"
+                                   <li class="softora-dd"><a href="<?= base_url('profiles/jobdesc') ?>"
                                              class="dez-page">Tugas &amp; Fungsi</a></li>
-                                   <li class="softora-dd"><a href="<?= base_url('v2/profiles/history') ?>"
+                                   <li class="softora-dd"><a href="<?= base_url('profiles/history') ?>"
                                              class="dez-page">Sejarah</a></li>
-                                   <li class="softora-dd"><a href="<?= base_url('v2/profiles/structure') ?>"
+                                   <li class="softora-dd"><a href="<?= base_url('profiles/structure') ?>"
                                              class="dez-page">Struktur Organisasi</a></li>
                                    <!-- <li class="softora-dd">
                                         <a href="#">Service <i class="ti ti-caret-right-filled"></i></a>
@@ -92,10 +92,10 @@
                               <a href="javascript:void(0);">Informasi <i class="ti ti-caret-down-filled"></i></a>
                               <ul class="softora-dd-menu">
                                    <li>
-                                        <a href="<?= base_url('v2/articles') ?>">Artikel</a>
+                                        <a href="<?= base_url('articles') ?>">Artikel</a>
                                    </li>
                                    <li>
-                                        <a href="<?= base_url('v2/news') ?>">Berita</a>
+                                        <a href="<?= base_url('news') ?>">Berita</a>
                                    </li>
                               </ul>
                          </li>
@@ -103,7 +103,7 @@
                               <a href="javascript:void(0);">Layanan <i class="ti ti-caret-down-filled"></i></a>
                               <ul class="softora-dd-menu">
                                    <li>
-                                        <a href="<?= base_url('v2/services') ?>">Perbaikan Arsip</a>
+                                        <a href="<?= base_url('services') ?>">Perbaikan Arsip</a>
                                    </li>
                               </ul>
                          </li>
@@ -111,32 +111,32 @@
                               <a href="javascript:void(0);">Kearsipan <i class="ti ti-caret-down-filled"></i></a>
                               <ul class="softora-dd-menu">
                                    <li>
-                                        <a href="<?= base_url('v2/archieves') ?>">Arsip Statis</a>
+                                        <a href="<?= base_url('archieves') ?>">Arsip Statis</a>
                                    </li>
                                    <li>
-                                        <a href="<?= base_url('v2/archieves/inventory') ?>">Inventaris Arsip</a>
+                                        <a href="<?= base_url('archieves/inventory') ?>">Inventaris Arsip</a>
                                    </li>
                                    <li>
-                                        <a href="<?= base_url('v2/archieves/guide') ?>">Guide Arsip</a>
+                                        <a href="<?= base_url('archieves/guide') ?>">Guide Arsip</a>
                                    </li>
                               </ul>
                          </li>
                          <li class=" softora-dd">
-                              <a href="<?= base_url('v2/regulations') ?>">Peraturan</a>
+                              <a href="<?= base_url('regulations') ?>">Peraturan</a>
                          </li>
                          <li class=" softora-dd">
-                              <a href="<?= base_url('v2/galleries') ?>">Galeri</a>
+                              <a href="<?= base_url('galleries') ?>">Galeri</a>
                          </li>
                     </ul>
 
                     <div class="d-flex align-items-center mt-4 mt-lg-0">
                          <!-- Button -->
                          <?php if (!empty($this->session->userdata('next-uid')) and !empty($this->session->userdata('next-uname'))) { ?>
-                              <a href="<?= base_url('v2/dashboards') ?>" class="btn btn-primary btn-sm align-middle">
+                              <a href="<?= base_url('dashboards') ?>" class="btn btn-primary btn-sm align-middle">
                                    Dashboard <i class="ti ti-home-2 ms-2"></i>
                               </a>
                          <?php } else { ?>
-                              <a href="<?= base_url('v2/authentications') ?>" class="btn btn-primary btn-sm px-4">Sign In <i class="ti ti-login-2 ms-2"></i></a>
+                              <a href="<?= base_url('authentications') ?>" class="btn btn-primary btn-sm px-4">Sign In <i class="ti ti-login-2 ms-2"></i></a>
                          <?php } ?>
 
                     </div>
