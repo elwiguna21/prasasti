@@ -512,7 +512,9 @@
                     </div>
                </div>
                <div class="card-body px-3">
-                    <div id="skpd-chart"></div>
+                    <div id="skpd-chart-wrapper" class="dz-scroll style-1" style="max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                         <div id="skpd-chart"></div>
+                    </div>
                </div>
           </div>
      </div>
