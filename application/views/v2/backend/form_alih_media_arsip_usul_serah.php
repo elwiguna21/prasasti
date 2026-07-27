@@ -349,6 +349,16 @@
                                              </div>
                                              <span class="help-block text-danger small"></span>
                                         </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Tingkat Perkembangan <span class="text-danger">*</span></label>
+                                             <select id="keterangan_tk_perkembangan" name="keterangan_tk_perkembangan" class="form-control" required>
+                                                  <option value="">Pilih Tingkat Perkembangan</option>
+                                                  <option value="Asli">Asli</option>
+                                                  <option value="Copy">Copy</option>
+                                                  <option value="Salinan">Salinan</option>
+                                             </select>
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
                                         <div class="col-12">
                                              <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta" class="form-control" placeholder="Nama unit kerja pencipta arsip">
@@ -478,6 +488,7 @@
      var tempFilename = '';
      var hasExistingTTE = false;
      var tteCheckInProgress = false;
+     var currentStepIdx = 0;
 
      // ===== SmartWizard Init =====
 
@@ -528,17 +539,37 @@
           return true;
      });
 
-     // Saat masuk step: render PDF dan tampilkan tombol Simpan
+     // Helper untuk update visibilitas tombol berdasarkan step aktif dan status TTE
+     function updateStepButtons(stepIdx) {
+          if (typeof stepIdx === 'number') {
+               currentStepIdx = stepIdx;
+          }
+          if (currentStepIdx === 0) {
+               // Step 1: selalu tampilkan Selanjutnya, sembunyikan Simpan
+               $('#btnSimpan').addClass('d-none');
+               $('.sw-btn-next').removeClass('d-none');
+          } else if (currentStepIdx === 1) {
+               // Step 2: jika dokumen sudah ada TTE, tampilkan Simpan dan sembunyikan Selanjutnya
+               if (hasExistingTTE) {
+                    $('#btnSimpan').removeClass('d-none');
+                    $('.sw-btn-next').addClass('d-none');
+               } else {
+                    $('#btnSimpan').addClass('d-none');
+                    $('.sw-btn-next').removeClass('d-none');
+               }
+          } else if (currentStepIdx === 2) {
+               // Step 3: tampilkan Simpan, sembunyikan Selanjutnya
+               $('#btnSimpan').removeClass('d-none');
+               $('.sw-btn-next').addClass('d-none');
+          }
+     }
+
+     // Saat masuk step: render PDF dan update tombol
      $('#smartwizard').on('showStep', function(e, anchorObject, stepIndex) {
           if (stepIndex === 2) {
                if (tempFilename) renderPdfPage(pageNum);
-               $('#btnSimpan').removeClass('d-none');
-          } else if (stepIndex === 1 && hasExistingTTE) {
-               // Tampilkan tombol Simpan di Step 2 jika sudah ada TTE
-               $('#btnSimpan').removeClass('d-none');
-          } else {
-               $('#btnSimpan').addClass('d-none');
           }
+          updateStepButtons(stepIndex);
      });
 
      // Tombol Simpan
@@ -648,6 +679,10 @@
                {
                     id: 'jumlah',
                     label: 'Jumlah Berkas'
+               },
+               {
+                    id: 'keterangan_tk_perkembangan',
+                    label: 'Tingkat Perkembangan'
                },
                {
                     id: 'keterangan',
@@ -797,8 +832,8 @@
                               '<div class="small"><i class="fas fa-info-circle me-1"></i> Langkah <strong>Posisi TTE</strong> akan dilewati. Silakan klik <strong>Simpan Data</strong> untuk menyimpan pengajuan.</div>' +
                               '</div>';
 
-                         // Tampilkan tombol Simpan di Step 2
-                         $('#btnSimpan').removeClass('d-none');
+                         // Update tombol berdasarkan step aktif
+                         updateStepButtons();
 
                          // Recalculate wizard height agar konten TTE tidak terpotong
                          updateWizardHeight();
@@ -814,8 +849,8 @@
                               '</div>' +
                               '</div>';
 
-                         // Sembunyikan tombol Simpan (kembali ke flow normal)
-                         $('#btnSimpan').addClass('d-none');
+                         // Update tombol berdasarkan step aktif
+                         updateStepButtons();
 
                          // Recalculate wizard height
                          updateWizardHeight();
@@ -833,7 +868,8 @@
                          '<small>Tidak dapat terhubung ke server verifikasi. Silakan lanjut ke langkah Posisi TTE.</small>' +
                          '</div>' +
                          '</div>';
-                    $('#btnSimpan').addClass('d-none');
+                    // Update tombol berdasarkan step aktif
+                    updateStepButtons();
 
                     // Recalculate wizard height
                     updateWizardHeight();
@@ -943,6 +979,7 @@
           formData.append('uraian_informasi_arsip', document.getElementById('uraian_informasi_arsip').value);
           formData.append('tahun', document.getElementById('tahun').value);
           formData.append('jumlah', document.getElementById('jumlah').value);
+          formData.append('keterangan_tk_perkembangan', document.getElementById('keterangan_tk_perkembangan').value);
           formData.append('unit_kerja_pencipta', document.getElementById('unit_kerja_pencipta').value);
           formData.append('keterangan', document.getElementById('keterangan').value);
           formData.append('tte_posisi', document.getElementById('tte_posisi').value);

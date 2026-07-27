@@ -233,6 +233,52 @@
      #pdf-upload-preview.has-file .upload-icon {
           color: #28a745;
      }
+
+     /* ===== TTE Check Result ===== */
+     #tte-check-result {
+          display: none;
+          margin-top: 16px;
+          padding: 16px 20px;
+          border-radius: 8px;
+          border: 1px solid;
+          animation: fadeInUp 0.4s ease;
+     }
+
+     #tte-check-result.tte-checking {
+          background: #fff8e1;
+          border-color: #ffecb3;
+          color: #795548;
+     }
+
+     #tte-check-result.tte-found {
+          background: #e8f5e9;
+          border-color: #a5d6a7;
+          color: #2e7d32;
+     }
+
+     #tte-check-result.tte-not-found {
+          background: #e3f2fd;
+          border-color: #90caf9;
+          color: #1565c0;
+     }
+
+     #tte-check-result.tte-error {
+          background: #fce4ec;
+          border-color: #ef9a9a;
+          color: #c62828;
+     }
+
+     @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
+     }
+
+     .tte-signer-card {
+          background: rgba(255,255,255,0.7);
+          border-radius: 6px;
+          padding: 10px 14px;
+          margin-top: 10px;
+     }
 </style>
 
 <div class="row">
@@ -303,6 +349,16 @@
                                              </div>
                                              <span class="help-block text-danger small"></span>
                                         </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Tingkat Perkembangan <span class="text-danger">*</span></label>
+                                             <select id="keterangan_tk_perkembangan" name="keterangan_tk_perkembangan" class="form-control" required>
+                                                  <option value="">Pilih Tingkat Perkembangan</option>
+                                                  <option value="Asli" <?= (isset($berkas->keterangan_tk_perkembangan) && $berkas->keterangan_tk_perkembangan === 'Asli') ? 'selected' : '' ?>>Asli</option>
+                                                  <option value="Copy" <?= (isset($berkas->keterangan_tk_perkembangan) && $berkas->keterangan_tk_perkembangan === 'Copy') ? 'selected' : '' ?>>Copy</option>
+                                                  <option value="Salinan" <?= (isset($berkas->keterangan_tk_perkembangan) && $berkas->keterangan_tk_perkembangan === 'Salinan') ? 'selected' : '' ?>>Salinan</option>
+                                             </select>
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
                                         <div class="col-12">
                                              <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta" class="form-control" placeholder="Nama unit kerja pencipta arsip" value="<?= htmlspecialchars($berkas->unit_kerja_pencipta ?? '') ?>">
@@ -336,6 +392,8 @@
                                                   <small class="text-muted">Mengupload...</small>
                                              </div>
                                              <span id="pdf-upload-error" class="text-danger small d-none"></span>
+                                             <!-- TTE Check Result -->
+                                             <div id="tte-check-result"></div>
                                         </div>
                                    </div>
                               </div>
@@ -430,10 +488,16 @@
      var pageScale = 1.0;
      var tempFilename = document.getElementById('existing_file').value;
      var existingFileUrl = tempFilename ? base_url + 'assets/upload/berkas/' + tempFilename : '';
+     var hasExistingTTE = false;
+     var tteCheckInProgress = false;
+     var currentStepIdx = 0;
 
      // Load existing PDF jika ada
      if (existingFileUrl) {
           loadPdfFromUrl(existingFileUrl);
+          if (tempFilename) {
+               verifyTteStatus(tempFilename);
+          }
      }
 
      // ===== SmartWizard Init =====
@@ -469,20 +533,53 @@
                     return validateStep1();
                }
                if (currentStepIndex === 1) {
+                    // Blokir navigasi selama pengecekan TTE masih berjalan
+                    if (tteCheckInProgress) {
+                         Swal.fire('Mohon Tunggu', 'Sedang memeriksa TTE pada dokumen. Harap tunggu hingga selesai.', 'info');
+                         return false;
+                    }
+                    // Jika dokumen sudah memiliki TTE, blokir navigasi ke Step 3
+                    // karena tombol Simpan sudah muncul di Step 2
+                    if (hasExistingTTE) {
+                         return false;
+                    }
                     return validateStep2();
                }
           }
           return true;
      });
 
-     // Saat masuk step 3: render PDF
+     // Helper untuk update visibilitas tombol berdasarkan step aktif dan status TTE
+     function updateStepButtons(stepIdx) {
+          if (typeof stepIdx === 'number') {
+               currentStepIdx = stepIdx;
+          }
+          if (currentStepIdx === 0) {
+               // Step 1: selalu tampilkan Selanjutnya, sembunyikan Simpan
+               $('#btnSimpan').addClass('d-none');
+               $('.sw-btn-next').removeClass('d-none');
+          } else if (currentStepIdx === 1) {
+               // Step 2: jika dokumen sudah ada TTE, tampilkan Simpan dan sembunyikan Selanjutnya
+               if (hasExistingTTE) {
+                    $('#btnSimpan').removeClass('d-none');
+                    $('.sw-btn-next').addClass('d-none');
+               } else {
+                    $('#btnSimpan').addClass('d-none');
+                    $('.sw-btn-next').removeClass('d-none');
+               }
+          } else if (currentStepIdx === 2) {
+               // Step 3: tampilkan Simpan, sembunyikan Selanjutnya
+               $('#btnSimpan').removeClass('d-none');
+               $('.sw-btn-next').addClass('d-none');
+          }
+     }
+
+     // Saat masuk step: render PDF dan update tombol
      $('#smartwizard').on('showStep', function(e, anchorObject, stepIndex) {
           if (stepIndex === 2) {
                if (tempFilename) renderPdfPage(pageNum);
-               $('#btnSimpan').removeClass('d-none');
-          } else {
-               $('#btnSimpan').addClass('d-none');
           }
+          updateStepButtons(stepIndex);
      });
 
      // Tombol Simpan
@@ -594,6 +691,10 @@
                     label: 'Jumlah Berkas'
                },
                {
+                    id: 'keterangan_tk_perkembangan',
+                    label: 'Tingkat Perkembangan'
+               },
+               {
                     id: 'keterangan',
                     label: 'Keterangan'
                },
@@ -618,9 +719,11 @@
           if (!tempFilename) {
                document.getElementById('pdf-upload-error').textContent = 'File PDF wajib diupload terlebih dahulu.';
                document.getElementById('pdf-upload-error').classList.remove('d-none');
+               updateWizardHeight();
                return false;
           }
           document.getElementById('pdf-upload-error').classList.add('d-none');
+          updateWizardHeight();
           return true;
      }
 
@@ -671,6 +774,9 @@
                     // Preload PDF.js
                     loadPdfFromUrl(res.url);
                     document.getElementById('pdf-upload-error').classList.add('d-none');
+
+                    // ===== Auto-verifikasi TTE BSrE setelah upload berhasil =====
+                    verifyTteStatus(res.filename);
                } else {
                     alert('Gagal upload: ' + (res.message || 'Error'));
                     preview.classList.remove('has-file');
@@ -678,6 +784,107 @@
                }
           };
           xhr.send(formData);
+     }
+
+     // ===== Manual Wizard Height Update =====
+     function updateWizardHeight() {
+          setTimeout(function() {
+               var stepHeight = $('#step-2').outerHeight();
+               if (stepHeight > 0) {
+                    $('#smartwizard .tab-content').css('height', stepHeight + 'px');
+               }
+          }, 50);
+     }
+
+     // ===== Verifikasi TTE BSrE =====
+     function verifyTteStatus(filename) {
+          tteCheckInProgress = true;
+          var resultDiv = document.getElementById('tte-check-result');
+          resultDiv.style.display = 'block';
+          resultDiv.className = 'tte-checking';
+          resultDiv.innerHTML = '<div class="d-flex align-items-center">' +
+               '<div class="spinner-border spinner-border-sm me-2" role="status"></div>' +
+               '<span><strong>Memeriksa TTE BSrE...</strong><br><small>Sedang memverifikasi tanda tangan elektronik pada dokumen</small></span>' +
+               '</div>';
+
+          // Recalculate wizard height untuk menampilkan spinner
+          updateWizardHeight();
+
+          $.ajax({
+               url: base_url + 'v2/backend/alih_media_arsip_usul_serah/ajax_verify_tte',
+               type: 'POST',
+               data: { filename: filename },
+               dataType: 'JSON',
+               success: function(res) {
+                    tteCheckInProgress = false;
+                    if (res.status && res.has_tte) {
+                         // ✅ Dokumen sudah memiliki TTE
+                         hasExistingTTE = true;
+                         var signerHtml = '';
+                         if (res.detail && res.detail.length > 0) {
+                              signerHtml = '<div class="tte-signer-card">';
+                              for (var i = 0; i < res.detail.length; i++) {
+                                   signerHtml += '<div class="mb-1"><i class="fas fa-user-check me-1"></i> <strong>' + res.detail[i].signer_name + '</strong></div>';
+                                   signerHtml += '<div class="small text-muted">Validitas: ' + res.detail[i].cert_validity + '</div>';
+                              }
+                              signerHtml += '</div>';
+                         }
+                         resultDiv.className = 'tte-found';
+                         resultDiv.innerHTML = '<div>' +
+                              '<div class="d-flex align-items-center mb-1">' +
+                              '<i class="fas fa-check-circle fa-lg me-2"></i>' +
+                              '<strong>Dokumen Sudah Memiliki TTE BSrE</strong>' +
+                              '</div>' +
+                              '<small>' + (res.message || '') + '</small>' +
+                              '<div class="small mt-1"><i class="fas fa-signature me-1"></i> Jumlah tanda tangan: <strong>' + (res.jumlah_signature || 0) + '</strong></div>' +
+                              signerHtml +
+                              '<hr class="my-2">' +
+                              '<div class="small"><i class="fas fa-info-circle me-1"></i> Langkah <strong>Posisi TTE</strong> akan dilewati. Silakan klik <strong>Simpan Data</strong> untuk menyimpan pengajuan.</div>' +
+                              '</div>';
+
+                         // Update tombol berdasarkan step aktif
+                         updateStepButtons();
+
+                         // Recalculate wizard height agar konten TTE tidak terpotong
+                         updateWizardHeight();
+                    } else {
+                         // ❌ Dokumen belum memiliki TTE
+                         hasExistingTTE = false;
+                         resultDiv.className = 'tte-not-found';
+                         resultDiv.innerHTML = '<div class="d-flex align-items-center">' +
+                              '<i class="fas fa-info-circle fa-lg me-2"></i>' +
+                              '<div>' +
+                              '<strong>Dokumen Belum Memiliki TTE</strong><br>' +
+                              '<small>Silakan lanjut ke langkah <strong>Posisi TTE</strong> untuk menentukan posisi tanda tangan elektronik.</small>' +
+                              '</div>' +
+                              '</div>';
+
+                         // Update tombol berdasarkan step aktif
+                         updateStepButtons();
+
+                         // Recalculate wizard height
+                         updateWizardHeight();
+                    }
+               },
+               error: function() {
+                    // Jika gagal verifikasi, tetap lanjut flow normal
+                    tteCheckInProgress = false;
+                    hasExistingTTE = false;
+                    resultDiv.className = 'tte-error';
+                    resultDiv.innerHTML = '<div class="d-flex align-items-center">' +
+                         '<i class="fas fa-exclamation-triangle fa-lg me-2"></i>' +
+                         '<div>' +
+                         '<strong>Gagal Memverifikasi TTE</strong><br>' +
+                         '<small>Tidak dapat terhubung ke server verifikasi. Silakan lanjut ke langkah Posisi TTE.</small>' +
+                         '</div>' +
+                         '</div>';
+                    // Update tombol berdasarkan step aktif
+                    updateStepButtons();
+
+                    // Recalculate wizard height
+                    updateWizardHeight();
+               }
+          });
      }
 
      // ===== Load PDF via PDF.js =====
@@ -782,10 +989,12 @@
           formData.append('uraian_informasi_arsip', document.getElementById('uraian_informasi_arsip').value);
           formData.append('tahun', document.getElementById('tahun').value);
           formData.append('jumlah', document.getElementById('jumlah').value);
+          formData.append('keterangan_tk_perkembangan', document.getElementById('keterangan_tk_perkembangan').value);
           formData.append('unit_kerja_pencipta', document.getElementById('unit_kerja_pencipta').value);
           formData.append('keterangan', document.getElementById('keterangan').value);
           formData.append('tte_posisi', document.getElementById('tte_posisi').value);
           formData.append('pdf_filename_temp', document.getElementById('pdf_filename_temp').value);
+          formData.append('has_existing_tte', hasExistingTTE ? 'Y' : 'N');
 
           // File PDF dari input (kirim ulang untuk disimpan permanent)
           var fileInput = document.getElementById('file_pdf_input');

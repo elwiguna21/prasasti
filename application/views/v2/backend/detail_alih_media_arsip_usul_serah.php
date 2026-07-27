@@ -406,15 +406,19 @@ if ($status_tte === 'Y') {
                               <div class="text-muted small">Unit Kerja Pencipta</div>
                               <div class="fw-semibold"><?= htmlspecialchars($berkas->unit_kerja_pencipta ?? '-') ?></div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                               <div class="text-muted small">Kurun Waktu (Tahun)</div>
                               <div class="fw-semibold"><?= htmlspecialchars($berkas->tahun ?? '-') ?></div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                               <div class="text-muted small">Jumlah Dokumen</div>
                               <div class="fw-semibold"><?= $berkas->jumlah ? number_format($berkas->jumlah) . ' dok' : '-' ?></div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
+                              <div class="text-muted small">Tingkat Perkembangan</div>
+                              <div class="fw-semibold"><?= htmlspecialchars($berkas->keterangan_tk_perkembangan ?? '-') ?></div>
+                         </div>
+                         <div class="col-md-3">
                               <div class="text-muted small">Tanggal</div>
                               <div class="fw-semibold"><?= htmlspecialchars($berkas->tanggal ?? '-') ?></div>
                          </div>
