@@ -2219,11 +2219,13 @@ class Archieves extends MY_Controller
           $archieves = $this->archieve->get_all_where($where);
           if (!empty($archieves)) {
                foreach ($archieves as $archieve) {
-                    $btn_detail = '<a href="javascript:void(0);" class="btn btn-primary btn-xs shadow sharp btn-detail" data-archieve="' . $this->encryption->encrypt($archieve->id) . '" data-company="' . $archieve->nomor_skpd . '"><i class="fas fa-file-arrow-up"></i></a>';
+                    $btn_detail = '<a href="javascript:void(0);" class="btn btn-primary btn-xs shadow sharp me-1 btn-detail" data-archieve="' . $this->encryption->encrypt($archieve->id) . '" data-company="' . $archieve->nomor_skpd . '"><i class="fas fa-file-arrow-up"></i></a>';
+
+                    $btn_delete = '<a href="javascript:void(0);" class="btn btn-danger btn-xs shadow sharp btn-delete" data-archieve="' . $this->encryption->encrypt($archieve->id) . '" data-company="' . $archieve->nomor_skpd . '"><i class="fas fa-trash"></i></a>';
 
                     $archieve->indek = (!empty($archieve->indek)) ? $archieve->indek : '-';
                     $archieve->deskripsi = (!empty($archieve->deskripsi)) ? $archieve->deskripsi : '-';
-                    $archieve->action = $btn_detail;
+                    $archieve->action = '<div class="d-flex justify-content-center">' . $btn_detail . $btn_delete . '</div>';
 
                     $data[] = $archieve;
                }
@@ -2237,6 +2239,63 @@ class Archieves extends MY_Controller
           );
 
           echo json_encode($json_data);
+     }
+
+     public function inactive_deleted()
+     {
+          if (empty($this->user_auth) or $this->user_auth->user_role != 'operator') {
+               show_error('Not Authorize!', 401);
+               die;
+          }
+
+          if ($this->input->method() != 'post') {
+               show_error('Maaf permintaan anda tidak dapat kami layani!', 405);
+               die;
+          }
+
+          $id = $this->encryption->decrypt($this->input->post('archieve'));
+          $company = $this->input->post('company');
+
+          if (empty($id) or empty($company)) {
+               echo json_encode(array('status' => 500, 'message' => 'Mohon pilih arsip terlebih dahulu!'));
+               die;
+          }
+
+          $archieve = $this->archieve->get_single_where(array('berkas.id' => $id, 'berkas.nomor_skpd' => $company));
+          if (empty($archieve) or ($archieve->id != $id)) {
+               echo json_encode(array('status' => 500, 'message' => 'Maaf, arsip yang anda pilih tidak dapat diproses! Silahkan muat ulang (refresh) halaman ini.'));
+               die;
+          }
+
+          $deleted  = $this->archieve->delete_entry(array('id' => $archieve->id, 'nomor_skpd' => $archieve->nomor_skpd));
+          if ($deleted or $deleted > 0) {
+               $paths = [
+                    "./assets/upload/{$archieve->file}",
+                    "./assets/upload/berkas/{$archieve->file}",
+               ];
+
+               foreach ($paths as $path) {
+                    if (file_exists($path)) {
+                         unlink($path);
+                         break;
+                    }
+               }
+
+               $logs = array(
+                    'menu' => 'Arsip Inaktif',
+                    'action' => 'delete',
+                    'description' => 'Melakukan hapus arsip inaktif',
+                    'user' => $this->encryption->decrypt($this->user_auth->id)
+               );
+               $this->load->model('v2/Logs', 'logs');
+               $this->logs->insert_entry($logs);
+
+               echo json_encode(array('status' => 200, 'message' => 'Arsip berhasil dihapus.'));
+               die;
+          } else {
+               echo json_encode(array('status' => 500, 'message' => 'Arsip gagal dihapus! Silahkan coba kembali.'));
+               die;
+          }
      }
 
      public function get_archieve_json()

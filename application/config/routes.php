@@ -109,3 +109,4 @@ $route['v2/alih_media_arsip_statis']                                            
 $route['v2/alih_media_arsip_statis/add']                                        = 'v2/archieves/statis_add';
 $route['v2/alih_media_arsip_vital/export']                                      = 'v2/archieves/vital_export';
 $route['v2/alih_media_arsip_vital/verify_tte']                                  = 'v2/archieves/vital_verify_tte';
+$route['v2/alih_media_arsip_vital/inactive_deleted']                            = 'v2/archieves/inactive_deleted';
