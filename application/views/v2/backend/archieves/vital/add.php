@@ -397,18 +397,55 @@
                                                   value="<?= (!empty($archieve)) ? date('Y-m-d', strtotime($archieve->tanggal)) : '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div> -->
-                                        <div class="col-12">
-                                             <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
-                                             <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta"
-                                                  class="form-control" placeholder="Nama unit kerja pencipta arsip"
-                                                  autocomplete="off"
-                                                  value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>">
-                                        </div>
-                                        <div class="col-12">
-                                             <label class="form-label fw-semibold">Keterangan</label>
-                                             <textarea id="keterangan" name="keterangan" class="form-control" rows="2"
-                                                  placeholder="Keterangan tambahan" required><?= (!empty($archieve)) ? $archieve->deskripsi : '' ?></textarea>
-                                        </div>
+                                         <div class="col-md-6">
+                                              <label class="form-label fw-semibold">Media Rekam <span
+                                                        class="text-danger">*</span></label>
+                                              <select id="media" name="media" class="form-control select2">
+                                                   <option value="">Pilih Media Rekam</option>
+                                                   <option value="Tekstual / Kertas" <?= (!empty($archieve) && $archieve->media == 'Tekstual / Kertas') ? 'selected' : '' ?>>Tekstual / Kertas</option>
+                                                   <option value="Elektronik / Digital" <?= (!empty($archieve) && $archieve->media == 'Elektronik / Digital') ? 'selected' : '' ?>>Elektronik / Digital</option>
+                                                   <option value="Mikrofilm / Microform" <?= (!empty($archieve) && $archieve->media == 'Mikrofilm / Microform') ? 'selected' : '' ?>>Mikrofilm / Microform</option>
+                                                   <option value="Audio / Visual / Magnetik" <?= (!empty($archieve) && $archieve->media == 'Audio / Visual / Magnetik') ? 'selected' : '' ?>>Audio / Visual / Magnetik</option>
+                                              </select>
+                                              <span class="help-block text-danger small"></span>
+                                         </div>
+                                         <div class="col-md-6">
+                                              <label class="form-label fw-semibold">Jangka Simpan <span
+                                                        class="text-danger">*</span></label>
+                                              <input type="text" id="jangka_simpan" name="jangka_simpan" class="form-control"
+                                                   placeholder="Contoh: Permanen / 10 Tahun" autocomplete="off"
+                                                   value="<?= (!empty($archieve)) ? $archieve->jangka_simpan : '' ?>">
+                                              <span class="help-block text-danger small"></span>
+                                         </div>
+                                         <div class="col-md-6">
+                                              <label class="form-label fw-semibold">Metode Perlindungan <span
+                                                        class="text-danger">*</span></label>
+                                              <select id="metode_perlindungan" name="metode_perlindungan" class="form-control select2">
+                                                   <option value="">Pilih Metode Perlindungan</option>
+                                                   <option value="Duplikasi dan Pemencaran (Dispersal)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Pemencaran (Dispersal)') ? 'selected' : '' ?>>Duplikasi dan Pemencaran (Dispersal)</option>
+                                                   <option value="Peralatan Khusus (Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Peralatan Khusus (Vaulting)') ? 'selected' : '' ?>>Peralatan Khusus (Vaulting)</option>
+                                                   <option value="Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)') ? 'selected' : '' ?>>Duplikasi & Peralatan Khusus (Dispersal & Vaulting)</option>
+                                              </select>
+                                              <span class="help-block text-danger small"></span>
+                                         </div>
+                                         <div class="col-md-6">
+                                              <label class="form-label fw-semibold">Lokasi Simpan</label>
+                                              <input type="text" id="ruang_penyimpanan" name="ruang_penyimpanan" class="form-control"
+                                                   placeholder="Contoh: Depo Arsip, Ruang Vault, Box 01" autocomplete="off"
+                                                   value="<?= (!empty($archieve)) ? $archieve->ruang_penyimpanan : '' ?>">
+                                         </div>
+                                         <div class="col-12">
+                                              <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
+                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta"
+                                                   class="form-control" placeholder="Nama unit kerja pencipta arsip"
+                                                   autocomplete="off"
+                                                   value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>">
+                                         </div>
+                                         <div class="col-12">
+                                              <label class="form-label fw-semibold">Keterangan</label>
+                                              <textarea id="keterangan" name="keterangan" class="form-control" rows="2"
+                                                   placeholder="Keterangan tambahan" required><?= (!empty($archieve)) ? $archieve->deskripsi : '' ?></textarea>
+                                         </div>
                                    </div>
                               </div>
 
@@ -663,6 +700,18 @@
                {
                     id: 'jumlah',
                     label: 'Jumlah Dokumen'
+               },
+               {
+                    id: 'media',
+                    label: 'Media Rekam'
+               },
+               {
+                    id: 'jangka_simpan',
+                    label: 'Jangka Simpan'
+               },
+               {
+                    id: 'metode_perlindungan',
+                    label: 'Metode Perlindungan'
                },
                {
                     id: 'keterangan',
@@ -1122,6 +1171,10 @@
           formData.append('uraian_informasi_arsip', document.getElementById('uraian_informasi_arsip').value);
           formData.append('tahun', document.getElementById('tahun').value);
           formData.append('jumlah', document.getElementById('jumlah').value);
+          formData.append('media', document.getElementById('media').value);
+          formData.append('jangka_simpan', document.getElementById('jangka_simpan').value);
+          formData.append('metode_perlindungan', document.getElementById('metode_perlindungan').value);
+          formData.append('ruang_penyimpanan', document.getElementById('ruang_penyimpanan').value);
           formData.append('unit_kerja_pencipta', document.getElementById('unit_kerja_pencipta').value);
           formData.append('keterangan', document.getElementById('keterangan').value);
           formData.append('tte_posisi', document.getElementById('tte_posisi').value);
@@ -1142,10 +1195,10 @@
                processData: false,
                dataType: 'JSON',
                success: function(res) {
-                    if (res.status) {
+                    if (res.status == 200 || res.status === true) {
                          Swal.fire({
                               title: 'Berhasil!',
-                              text: 'Data arsip baru berhasil disimpan.',
+                              text: res.message || 'Data arsip baru berhasil disimpan.',
                               icon: 'success',
                               confirmButtonText: 'OK',
                               allowOutsideClick: false,
@@ -1204,6 +1257,18 @@
                // For regular results, return the data.text or a customized HTML structure
                return data.text;
           }
+     });
+
+     $('#media').select2({
+          placeholder: "Pilih Media Rekam",
+          allowClear: true,
+          width: '100%'
+     });
+
+     $('#metode_perlindungan').select2({
+          placeholder: "Pilih Metode Perlindungan",
+          allowClear: true,
+          width: '100%'
      });
 
      let klsfCode = '<?= (!empty($archieve)) ? $archieve->kode_klsf : "" ?>';

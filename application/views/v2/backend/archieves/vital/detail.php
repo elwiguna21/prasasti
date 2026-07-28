@@ -165,16 +165,10 @@ if ($archieve->verifikasi_status == 'Y') {
      </div>
 <?php } ?>
 
-<div class="media mb-2 mt-3">
-     <div class="media-body">
-          <div class="pull-end">
-               <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm shadow">
-                    <i class="fas fa-arrow-left me-1"></i> Kembali
-               </a>
-          </div>
-          <h5 class="my-1 text-primary"><?= $archieve->indek ?? '-'; ?></h5>
-          <p class="read-content-email"><?= $archieve->kode_klsf ?? '-'; ?></p>
-     </div>
+<div class="d-flex justify-content-end mb-3 mt-3">
+     <a href="<?= base_url('v2/alih_media_arsip_vital') ?>" class="btn btn-primary btn-sm shadow">
+          <i class="fas fa-arrow-left me-1"></i> Kembali
+     </a>
 </div>
 
 <div class="row g-3 align-items-start">
@@ -435,33 +429,53 @@ if ($archieve->verifikasi_status == 'Y') {
      </div>
      <div class="col-lg-8">
           <div class="card">
-               <div class="card-header">
-                    <div class="iconbox px-0">
-                         <small>Kode Klasifikasi</small>
-                         <p class="text-primary"><?= (!empty($archieve->kode_klsf)) ? $archieve->kode_klsf : '-'; ?></p>
+               <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                         <span class="text-muted d-block small mb-1">Kode Klasifikasi</span>
+                         <h5 class="text-primary mb-0"><?= (!empty($archieve->kode_klsf)) ? $archieve->kode_klsf : '-'; ?></h5>
+                    </div>
+                    <div class="text-end">
+                         <span class="text-muted d-block small mb-1">Indeks</span>
+                         <h5 class="text-primary mb-0"><?= (!empty($archieve->indek)) ? $archieve->indek : '-'; ?></h5>
                     </div>
                </div>
                <div class="card-body">
                     <div class="row">
                          <div class="col-lg-12 mb-4">
-                              <h6>Uraian Informasi Arsip:</h6>
-                              <div><?= $archieve->uraian_informasi_arsip ?? '-'; ?></div>
+                              <span class="text-muted d-block small mb-1">Uraian Informasi Arsip:</span>
+                              <span class="text-dark fw-semibold"><?= $archieve->uraian_informasi_arsip ?? '-'; ?></span>
                          </div>
                          <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
-                              <h6>Unit Kerja Pencipta:</h6>
-                              <div><?= $archieve->unit_kerja_pencipta ?? '-'; ?></div>
+                              <span class="text-muted d-block small mb-1">Unit Kerja Pencipta:</span>
+                              <span class="text-dark fw-semibold"><?= $archieve->unit_kerja_pencipta ?? '-'; ?></span>
                          </div>
-                         <div class="mb-4 col-xl-4 col-lg-4 col-md-6 col-sm-12">
-                              <h6>Kurun Waktu (Tahun):</h6>
-                              <div><?= $archieve->tahun; ?></div>
+                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
+                              <span class="text-muted d-block small mb-1">Kurun Waktu (Tahun):</span>
+                              <span class="text-dark fw-semibold"><?= $archieve->tahun; ?></span>
                          </div>
-                         <div class="mb-4 col-xl-4 col-lg-4 col-md-6 col-sm-12">
-                              <h6>Jumlah Dokumen:</h6>
-                              <div><?= $archieve->jumlah ?? '-' ?></div>
+                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
+                              <span class="text-muted d-block small mb-1">Jumlah Dokumen:</span>
+                              <span class="text-dark fw-semibold"><?= $archieve->jumlah ?? '-' ?></span>
+                         </div>
+                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
+                              <span class="text-muted d-block small mb-1">Media Rekam:</span>
+                              <span class="text-dark fw-semibold"><?= $archieve->media ?? '-' ?></span>
+                         </div>
+                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
+                              <span class="text-muted d-block small mb-1">Jangka Simpan:</span>
+                              <span class="text-dark fw-semibold"><?= $archieve->jangka_simpan ?? '-' ?></span>
+                         </div>
+                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
+                              <span class="text-muted d-block small mb-1">Metode Perlindungan:</span>
+                              <span class="text-dark fw-semibold"><?= $archieve->metode_perlindungan ?? '-' ?></span>
+                         </div>
+                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
+                              <span class="text-muted d-block small mb-1">Lokasi Simpan:</span>
+                              <span class="text-dark fw-semibold"><?= $archieve->ruang_penyimpanan ?? '-' ?></span>
                          </div>
                          <div class="col-xl-12">
-                              <h6>Keterangan:</h6>
-                              <div><?= (!empty($archieve->deskripsi)) ? $archieve->deskripsi : '-'; ?></div>
+                              <span class="text-muted d-block small mb-1">Keterangan:</span>
+                              <span class="text-dark fw-semibold"><?= (!empty($archieve->deskripsi)) ? $archieve->deskripsi : '-'; ?></span>
                          </div>
                     </div>
                </div>

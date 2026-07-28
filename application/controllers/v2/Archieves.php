@@ -404,6 +404,8 @@ class Archieves extends MY_Controller
                mkdir('./assets/upload/berkas/', 0755, true);
           }
 
+          $user_id = $this->encryption->decrypt($this->session->userdata('next-uid'));
+
           $data = array(
                'jenis_arsip' => 'vital',
                'kode_klsf' => htmlentities($this->input->post('kode_klsf')),
@@ -411,12 +413,16 @@ class Archieves extends MY_Controller
                'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
                'tahun' => $this->input->post('tahun'),
                'jumlah' => (int)$this->input->post('jumlah'),
-               'tanggal' => null,
+               'tanggal' => date('d-m-Y'),
                'deskripsi' => htmlentities($this->input->post('keterangan')),
+               'media' => htmlentities($this->input->post('media')),
+               'jangka_simpan' => htmlentities($this->input->post('jangka_simpan')),
+               'metode_perlindungan' => htmlentities($this->input->post('metode_perlindungan')),
+               'ruang_penyimpanan' => htmlentities($this->input->post('ruang_penyimpanan')),
                'nomor_skpd' => $this->user_auth->no_company,
                'unit_kerja_pencipta' => htmlentities($this->input->post('unit_kerja_pencipta')),
                'tte_posisi' => $this->input->post('tte_posisi'),
-               'user' => $this->encryption->decrypt($this->user_auth->user_id),
+               'user' => $user_id,
                'verifikator' => 'SKPD',
                'verifikasi_status' => 'N',
           );
@@ -437,11 +443,19 @@ class Archieves extends MY_Controller
                     $upload_data = $this->upload->data();
                     $data['file'] = $upload_data['file_name'];
                     if (file_exists('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'))) {
-                         unlink('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'));
+                         @unlink('./assets/upload/berkas/temp/' . $this->input->post('pdf_filename_temp'));
                     }
                } else {
                     echo json_encode(array('status' => 500, 'message' => "Terjadi kesalahan saat menyimpan dokumen: " . $this->upload->display_errors('', '')));
                     die;
+               }
+          } else if (!empty($this->input->post('pdf_filename_temp'))) {
+               $temp_filename = $this->input->post('pdf_filename_temp');
+               if (file_exists('./assets/upload/berkas/temp/' . $temp_filename)) {
+                    @rename('./assets/upload/berkas/temp/' . $temp_filename, './assets/upload/berkas/' . $temp_filename);
+                    $data['file'] = $temp_filename;
+               } else if (file_exists('./assets/upload/berkas/' . $temp_filename)) {
+                    $data['file'] = $temp_filename;
                }
           }
 
@@ -453,13 +467,13 @@ class Archieves extends MY_Controller
                     die;
                }
 
-               $save     = $this->archieve->update_entry($data, array('id' => $id));
-               if ($save and $save > 0) {
+               $save = $this->archieve->update_entry($data, array('id' => $id));
+               if ($save !== false) {
                     $monitoring = array(
                          'berkas' => $id,
                          'title' => 'start',
                          'message' => 'Arsip berhasil diperbarui dan menunggu verifikasi.',
-                         'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
+                         'user' => $user_id
                     );
                     $this->monitoring->insert_entry($monitoring);
                     echo json_encode(array('status' => 200, 'message' => 'Data arsip berhasil diperbarui.'));
@@ -470,12 +484,12 @@ class Archieves extends MY_Controller
                }
           } else {
                $save = $this->archieve->insert_entry($data);
-               if ($save and $save > 0) {
+               if ($save && $save > 0) {
                     $monitoring = array(
                          'berkas' => $save,
                          'title' => 'start',
                          'message' => 'Arsip baru berhasil dibuat dan menunggu verifikasi.',
-                         'user' => $this->encryption->decrypt($this->session->userdata('next-uid'))
+                         'user' => $user_id
                     );
                     $this->monitoring->insert_entry($monitoring);
                     echo json_encode(array('status' => 200, 'message' => 'Data arsip baru berhasil disimpan.'));
@@ -894,12 +908,17 @@ class Archieves extends MY_Controller
                     }
 
 
-                    $nested['indeks']        = $archieve->indek ?? '-';
-                    $nested['uraian']        = $archieve->uraian_informasi_arsip;
-                    $nested['deskripsi']     = $archieve->deskripsi ?? '-';
-                    $nested['tahun']         = $archieve->tahun;
-                    $nested['skpd']          = $archieve->name;
-                    $nested['unit_kerja']    = $archieve->unit_kerja_pencipta ?? '-';
+                    $nested['indeks']              = $archieve->indek ?? '-';
+                    $nested['uraian']              = $archieve->uraian_informasi_arsip;
+                    $nested['deskripsi']           = $archieve->deskripsi ?? '-';
+                    $nested['tahun']               = $archieve->tahun;
+                    $nested['jumlah']              = $archieve->jumlah ?? '-';
+                    $nested['skpd']                = $archieve->name;
+                    $nested['unit_kerja']          = $archieve->unit_kerja_pencipta ?? '-';
+                    $nested['media']               = !empty($archieve->media) ? $archieve->media : '-';
+                    $nested['jangka_simpan']        = !empty($archieve->jangka_simpan) ? $archieve->jangka_simpan : '-';
+                    $nested['metode_perlindungan'] = !empty($archieve->metode_perlindungan) ? $archieve->metode_perlindungan : '-';
+                    $nested['ruang_penyimpanan']   = !empty($archieve->ruang_penyimpanan) ? $archieve->ruang_penyimpanan : '-';
 
                     if ($type == 'pdf') {
                          $nested['klasifikasi']   = '<span class="text-center text-primary">' . $archieve->kode_klsf . ' - ' . $archieve->klasifikasi_nama . '</span>';
@@ -920,10 +939,9 @@ class Archieves extends MY_Controller
           if ($type == 'pdf') {
                $this->load->library('exportpdf');
 
-               // Load the view into a variable string rather than rendering it directly
-               $html = $this->load->view('v2/backend/export/pdf_template', $data, TRUE);
+               $html = $this->load->view('v2/backend/export/pdf_vital_template', $data, TRUE);
 
-               $this->exportpdf->generate($html, 'DAFTAR_ARSIP_VITAL_' . date('Y-m-d H:i:s'), TRUE, 'A4', 'portrait');
+               $this->exportpdf->generate($html, 'DAFTAR_ARSIP_VITAL_' . date('Y-m-d H:i:s'), TRUE, 'A4', 'landscape');
           } else {
                $this->load->library('exportexcel');
                $object = new PHPExcel();
@@ -935,11 +953,9 @@ class Archieves extends MY_Controller
                     ->setKeywords("arsip")
                     ->setCategory("arsip");
 
-               // 2. Select active spreadsheet
                $object->setActiveSheetIndex(0);
 
-               // 3. Define headers for your dataset
-               $table_columns = array('No', 'Klasifikasi', 'Indeks', 'Uraian Informasi', 'Deskripsi', 'Tahun', 'Unit Kerja', 'Status');
+               $table_columns = array('No', 'Jenis Arsip', 'Unit Kerja', 'Kurun Waktu', 'Media', 'Jml', 'Jangka Simpan', 'Metode Perlindungan', 'Lokasi Simpan', 'Ket');
                $column = 0;
 
                foreach ($table_columns as $field) {
@@ -947,21 +963,75 @@ class Archieves extends MY_Controller
                     $column++;
                }
 
-               // 5. Populate cells dynamically
-               $excel_row     = 2; // Starts tracking row right after headers
+               $excel_row     = 2;
                $no            = 1;
-               foreach ($data['archieves'] as $row) {
-                    $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $no);
-                    $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row['klasifikasi']);
-                    $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row['indeks']);
-                    $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row['uraian']);
-                    $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row['deskripsi']);
-                    $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row['tahun']);
-                    $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $row['unit_kerja']);
-                    $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $row['status']);
-                    $excel_row++;
-                    $no++;
+               if (!empty($data['archieves'])) {
+                    foreach ($data['archieves'] as $row) {
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $no);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row['uraian']);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row['unit_kerja']);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row['tahun']);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row['media']);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row['jumlah']);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $row['jangka_simpan']);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $row['metode_perlindungan']);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $row['ruang_penyimpanan']);
+                         $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $row['deskripsi']);
+                         $excel_row++;
+                         $no++;
+                    }
                }
+
+               // Tambahkan Petunjuk Pengisian di Excel
+               $excel_row += 2;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "1.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Nomor");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan nomor urut Arsip Vital");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "2.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Jenis Arsip");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan Arsip Vital yang telah didata");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "3.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Unit Kerja");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan nama unit kerja asal Arsip Vital");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "4.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Kurun waktu");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan tahun Arsip Vital tercipta");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "5.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Media");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan jenis media rekam Arsip Vital");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "6.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Jumlah");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan banyaknya Arsip Vital misal, 1 berkas");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "7.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Jangka simpan");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan batas waktu sebagai Arsip Vital");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "8.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Metode");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan jenis metode Perlindungan sesuai dengan kebutuhan masing-masing media rekam yang digunakan.");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "9.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Lokasi simpan");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan tempat Arsip tersebut di simpan");
+
+               $excel_row++;
+               $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, "10.");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, "Keterangan");
+               $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, ": Diisi dengan informasi spesifik yang belum/tidak ada dalam kolom yang tersedia");
 
                $filename = "DAFTAR_ARSIP_VITAL_" . date('Ymd_His') . ".xlsx";
                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -969,7 +1039,7 @@ class Archieves extends MY_Controller
                header('Cache-Control: max-age=0');
 
                $object_writer = PHPExcel_IOFactory::createWriter($object, 'Excel2007');
-               $object_writer->setPreCalculateFormulas(false); // <--- Kunci anti-error di PHP modern
+               $object_writer->setPreCalculateFormulas(false);
                ob_end_clean();
                $object_writer->save('php://output');
                exit;
