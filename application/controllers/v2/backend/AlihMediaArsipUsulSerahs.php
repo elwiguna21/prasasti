@@ -689,10 +689,13 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                return;
           }
 
-          // Path file temp yang sudah diupload
+          // Path file temp atau file berkas yang sudah diupload
           $path_pdf = FCPATH . 'assets/upload/berkas/temp/' . $filename;
           if (!file_exists($path_pdf)) {
-               echo json_encode(array('status' => FALSE, 'message' => 'File PDF temp tidak ditemukan.'));
+               $path_pdf = FCPATH . 'assets/upload/berkas/' . $filename;
+          }
+          if (!file_exists($path_pdf)) {
+               echo json_encode(array('status' => FALSE, 'message' => 'File PDF tidak ditemukan.'));
                return;
           }
 
@@ -730,6 +733,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'jumlah'                 => (int) $this->input->post('jumlah'),
                'tanggal'                => date('d-m-Y'),
                'deskripsi'              => htmlentities($this->input->post('keterangan')),
+               'keterangan_tk_perkembangan' => htmlentities($this->input->post('keterangan_tk_perkembangan')),
                'nomor_skpd'             => htmlentities($this->input->post('nomor_skpd')),
                'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
                'tte_posisi'             => $this->input->post('tte_posisi'),
@@ -859,8 +863,9 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'uraian_informasi_arsip' => htmlentities($this->input->post('uraian_informasi_arsip')),
                'tahun'                  => (int) $this->input->post('tahun'),
                'jumlah'                 => (int) $this->input->post('jumlah'),
-               'tanggal'                => null,
+               'tanggal'                => !empty($berkas->tanggal) ? $berkas->tanggal : date('d-m-Y'),
                'deskripsi'              => htmlentities($this->input->post('keterangan')),
+               'keterangan_tk_perkembangan' => htmlentities($this->input->post('keterangan_tk_perkembangan')),
                'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
                'tte_posisi'             => $this->input->post('tte_posisi'),
 
@@ -872,6 +877,12 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'verifikasi_user'        => null,
                'verifikasi_tanggal'     => null,
           );
+
+          // Jika dokumen sudah memiliki TTE BSrE, kosongkan tte_posisi (step 3 di-skip)
+          $has_existing_tte = $this->input->post('has_existing_tte');
+          if ($has_existing_tte === 'Y') {
+               $data['tte_posisi'] = '';
+          }
 
           // Upload PDF final jika ada perubahan
           if (!empty($_FILES['file_pdf']['name'])) {
@@ -1139,51 +1150,59 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                ->setCategory("arsip");
 
           $sheet = $objPHPExcel->setActiveSheetIndex(0);
-          $sheet->setCellValue('A1', 'No');
-          $sheet->setCellValue('B1', 'SKPD/Pencipta');
-          $sheet->setCellValue('C1', 'Kode Klasifikasi');
-          $sheet->setCellValue('D1', 'Uraian Informasi Arsip');
-          $sheet->setCellValue('E1', 'Tahun');
-          $sheet->setCellValue('F1', 'Jumlah (Dok)');
-          $sheet->setCellValue('G1', 'Status Verifikasi');
+          $sheet->setCellValue('A1', 'No.');
+          $sheet->setCellValue('B1', 'JENIS ARSIP');
+          $sheet->setCellValue('C1', 'TAHUN');
+          $sheet->setCellValue('D1', 'JUMLAH');
+          $sheet->setCellValue('E1', 'TINGKAT PERKEMBANGAN');
+          $sheet->setCellValue('F1', 'KETERANGAN');
 
           // styling header
-          $sheet->getStyle('A1:G1')->getFont()->setBold(true);
+          $sheet->getStyle('A1:F1')->getFont()->setBold(true);
 
           $row = 2;
           $no = 1;
           foreach ($list as $item) {
-               $penilaian = $item->penilaian_arsip_statis ?? null;
-               $verifikasi = $item->verifikasi_status ?? null;
-               $tte = $item->tte_status ?? null;
-               $is_ditolak_verifikator = ($verifikasi === 'N' && !empty($item->verifikasi_user));
-
-               if ($tte === 'Y') {
-                    $status = 'Sudah Ditandatangani';
-               } elseif ($verifikasi === 'Y') {
-                    $status = 'Menunggu Tandatangan';
-               } elseif ($is_ditolak_verifikator) {
-                    $status = 'Ditolak Verifikator';
-               } elseif ($penilaian === 'Y') {
-                    $status = 'Menunggu Verifikasi';
-               } elseif ($penilaian === 'N') {
-                    $status = 'Ditolak Penilai';
-               } else {
-                    $status = 'Menunggu Penilaian';
-               }
-
                $sheet->setCellValue('A' . $row, $no++);
-               $sheet->setCellValue('B' . $row, $item->unit_kerja_pencipta);
-               $sheet->setCellValueExplicit('C' . $row, $item->kode_klsf, PHPExcel_Cell_DataType::TYPE_STRING);
-               $sheet->setCellValue('D' . $row, $item->uraian_informasi_arsip);
-               $sheet->setCellValue('E' . $row, $item->tahun);
-               $sheet->setCellValue('F' . $row, $item->jumlah);
-               $sheet->setCellValue('G' . $row, $status);
+               $sheet->setCellValue('B' . $row, $item->uraian_informasi_arsip);
+               $sheet->setCellValue('C' . $row, $item->tahun);
+               $sheet->setCellValue('D' . $row, $item->jumlah);
+               $sheet->setCellValue('E' . $row, !empty($item->keterangan_tk_perkembangan) ? ucfirst($item->keterangan_tk_perkembangan) : '-');
+               $sheet->setCellValue('F' . $row, !empty($item->deskripsi) ? $item->deskripsi : '-');
 
                $row++;
           }
 
-          foreach (range('A', 'G') as $columnID) {
+          // Tambahkan Petunjuk Pengisian
+          $row += 2;
+          $sheet->setCellValue('A' . $row, 'Petunjuk Pengisian');
+          $sheet->setCellValue('B' . $row, ':');
+
+          $row++;
+          $sheet->setCellValue('A' . $row, 'Nomor');
+          $sheet->setCellValue('B' . $row, ': Berisi nomor urut jenis Arsip');
+
+          $row++;
+          $sheet->setCellValue('A' . $row, 'Jenis Arsip');
+          $sheet->setCellValue('B' . $row, ': Berisi jenis / series Arsip');
+
+          $row++;
+          $sheet->setCellValue('A' . $row, 'Tahun');
+          $sheet->setCellValue('B' . $row, ': Berisi tahun terciptanya Arsip');
+
+          $row++;
+          $sheet->setCellValue('A' . $row, 'Jumlah');
+          $sheet->setCellValue('B' . $row, ': Berisi jumlah Arsip');
+
+          $row++;
+          $sheet->setCellValue('A' . $row, 'Tingkat Perkembangan');
+          $sheet->setCellValue('B' . $row, ': Berisi tingkat keaslian Arsip (asli,copy atau salinan)');
+
+          $row++;
+          $sheet->setCellValue('A' . $row, 'Keterangan');
+          $sheet->setCellValue('B' . $row, ': Berisi informasi tentang kondisi Arsip (misalnya rusak/tidak lengkap berbahasa asing/daerah)');
+
+          foreach (range('A', 'F') as $columnID) {
                $sheet->getColumnDimension($columnID)->setAutoSize(true);
           }
 
