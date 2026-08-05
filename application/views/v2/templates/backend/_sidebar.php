@@ -108,6 +108,15 @@
                          </a>
                     </li>
                <?php } ?>
+
+               <?php if ($this->session->userdata('next-role') == 'admin') { ?>
+                    <li>
+                         <a class="ai-icon" href="<?= base_url('v2/Logs/tte') ?>">
+                              <i class="flaticon-381-file-2"></i>
+                              <span class="nav-text">Log TTE</span>
+                         </a>
+                    </li>
+               <?php } ?>
                <li>
                     <a href="<?= base_url('v2/users/profiles') ?>" class="ai-icon"><i class="flaticon-381-user-4"></i>
                          <span class="nav-text">Profil</span>
