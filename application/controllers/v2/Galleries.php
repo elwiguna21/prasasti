@@ -82,6 +82,7 @@ class Galleries extends MY_Controller
           $this->_validate();
           $data = array(
                'caption' => htmlentities($this->input->post('judul')),
+               'ref_link'     => htmlentities($this->input->post('ref_link')),
           );
 
           $config['upload_path']   = './assets/upload/';
@@ -104,6 +105,7 @@ class Galleries extends MY_Controller
           $this->_validate();
           $data = array(
                'caption' => htmlentities($this->input->post('judul')),
+               'ref_link'     => htmlentities($this->input->post('ref_link')),
           );
 
           $where = array(
@@ -195,7 +197,7 @@ class Galleries extends MY_Controller
                          . '<div class="case-study-card">'
                          . '<img src="' . $gallery->file . '" alt="Galeri" loading="lazy" style="max-height: 491px">'
                          . '<div class="case-study-content"><h4 class="mb-0 text-white">' . $gallery->caption . '</h4></div>'
-                         . '<a href="' . $gallery->file . '" class="btn btn-primary glightbox"><i class="ti ti-arrow-up-right"></i></a>'
+                         . '<a href="' . ((!empty($gallery->ref_link)) ? $gallery->ref_link : $gallery->file) . '" class="btn btn-primary glightbox"' . ((!empty($gallery->ref_link)) ? 'target="_blank"' : '') . '><i class="ti ti-arrow-up-right"></i></a>'
                          . '</div>'
                          . '</div>';
 

@@ -110,23 +110,22 @@ if ($service->status == 'reject') {
 
                <div class="col-xl-12 mb-3">
                     <?php if ($service->status == 'waiting' and empty($service->verification_user)) { ?>
-                         <a href="javascript:void(0);" class="btn light btn-sm btn-success w-100 shadow btn-accept mb-3" data-service="<?= $service->id; ?>" data-code="<?= $service->code; ?>"><i class="fas fa-user-check me-2"></i> Setujui Permohonan</a>
+                         <a href="javascript:void(0);" class="btn btn-sm btn-success w-100 shadow btn-accept mb-3" data-service="<?= $service->id; ?>" data-code="<?= $service->code; ?>"><i class="fas fa-user-check me-2"></i> Setujui Permohonan</a>
                          <a href="javascript:void(0);" class="btn btn-sm btn-danger w-100 shadow btn-reject mb-3"><i class="fas fa-close me-2"></i> Tolak Permohonan</a>
                     <?php } ?>
 
                     <?php if (file_exists('./data/repair/' . $service->document)) { ?>
                          <a href="<?= base_url('data/repair/' . $service->document); ?>" class="btn btn-sm btn-info shadow w-100 mb-3" target="_blank"><i class="fas fa-file-download me-2"></i> Download Dokumen Pendukung</a>
                     <?php } else { ?>
-                         <a href="javascript:void(0);" class="btn btn-sm btn-outline-danger shadow w-100 mb-3 disabled"><i class="fas fa-exclamation-triangle me-2"></i> Download Dokumen Pendukung</a>
+                         <a href="javascript:void(0);" class="btn light btn-sm btn-outline-danger shadow w-100 mb-3 disabled"><i class="fas fa-exclamation-triangle me-2"></i> Download Dokumen Pendukung</a>
                     <?php } ?>
 
                     <?php if ($employee->user_username == 'lutdinar') { ?>
                          <form action="<?= base_url('v2/services/deleted') ?>" method="post">
                               <input type="hidden" class="form-control" name="service" value="<?= $service->id ?>" required readonly>
                               <input type="hidden" class="form-control" name="code" value="<?= $service->code ?>" required readonly>
-                              <button type="submit" class="btn btn-sm btn-danger shadow w-100 btn-deleted mb-3"><i class="fas fa-close me-2"></i> Hapus Permohonan</button>
+                              <button type="submit" class="btn light btn-sm btn-danger shadow w-100 btn-deleted mb-3"><i class="fas fa-close me-2"></i> Hapus Permohonan</button>
                          </form>
-<!--                         <a href="--><?php //= base_url('v2/services/deleted?' . http_build_query(array('code' => $service->code, 'service' => $service->id))); ?><!--" class="btn btn-sm btn-danger shadow w-100 mb-3"><i class="fas fa-close me-2"></i> Hapus Permohonan</a>-->
                     <?php } ?>
                </div>
           </div>
@@ -355,16 +354,16 @@ if ($service->status == 'reject') {
 
      let btn_deleted = $('.btn-deleted');
      if (btn_deleted) {
-         btn_deleted.click(function () {
-             Swal.fire({
-                 title: "Mohon tunggu",
-                 text: "Sedang mengirim data...",
-                 allowOutsideClick: false,
-                 allowEscapeKey: false,
-                 didOpen: function() {
-                     Swal.showLoading();
-                 }
-             });
-         });
+          btn_deleted.click(function() {
+               Swal.fire({
+                    title: "Mohon tunggu",
+                    text: "Sedang mengirim data...",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: function() {
+                         Swal.showLoading();
+                    }
+               });
+          });
      }
 </script>
