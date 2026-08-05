@@ -937,13 +937,13 @@ class Archieves extends MY_Controller
 
           // Stream the file down to the browser
           if ($type == 'pdf') {
-               $this->load->library('exportpdf');
+               $this->load->library('ExportPdf');
 
                $html = $this->load->view('v2/backend/export/pdf_vital_template', $data, TRUE);
 
                $this->exportpdf->generate($html, 'DAFTAR_ARSIP_VITAL_' . date('Y-m-d H:i:s'), TRUE, 'A4', 'landscape');
           } else {
-               $this->load->library('exportexcel');
+               $this->load->library('ExportExcel');
                $object = new PHPExcel();
                $object->getProperties()->setCreator("Prasasti")
                     ->setLastModifiedBy("Prasasti")
