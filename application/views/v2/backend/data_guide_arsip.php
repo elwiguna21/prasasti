@@ -54,7 +54,7 @@
                          </div>
                          <div class="mb-3">
                               <label class="form-label">File PDF</label>
-                              <input type="file" class="dropify" name="file" data-height="200" data-allowed-file-extensions=".pdf">
+                              <input type="file" class="dropify" name="file" data-height="200" data-allowed-file-extensions="pdf" accept="application/pdf" data-show-errors="true" />
                          </div>
                     </form>
                </div>
@@ -69,11 +69,11 @@
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 
 <!-- Dropify -->
-<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/dropify/css/dropify.min.css') ?>" />
-<script src="<?= base_url('assets/v3/backend/vendor/dropify/js/dropify.min.js') ?>"></script>
+<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/dropify/css/dropify.css') ?>" />
+<script src="<?= base_url('assets/v3/backend/vendor/dropify/js/dropify.js') ?>"></script>
 
 <script type="text/javascript">
-     var save_method, table;
+     var save_method, table, dropify;
      var base_url = '<?php echo base_url(); ?>';
 
      // $(document).ready(function() {
@@ -94,14 +94,15 @@
           $(this).closest('.mb-3').find('.help-block').empty();
           $(this).removeClass('is-invalid');
      });
+
      try {
-          $('.dropify').dropify({
+          dropify = $('.dropify').dropify({
                messages: {
-                    default: '<h6>Pilih File PDF<br>Format: PDF</h6>',
+                    default: '<h6>Pilih dokumen! Anda juga bisa tarik & taruh dokumen kesini<br>Format: PDF</h6>',
                     replace: 'Ganti',
                     remove: 'Hapus',
-                    error: 'Error'
-               }
+                    error: 'Kesalahan'
+               },
           });
      } catch (e) {
           console.error("Dropify init error:", e);
@@ -116,9 +117,12 @@
           var myModal = new bootstrap.Modal(document.getElementById('modal_form'));
           myModal.show();
           $('.modal-title').text('Tambah Guide Arsip');
-          var drEvent = $('.dropify').dropify();
-          drEvent = drEvent.data('dropify');
-          if (drEvent) drEvent.resetPreview();
+
+          dropifyData = dropify.data('dropify');
+          if (dropifyData) {
+               dropifyData.resetPreview();
+               dropifyData.clearElement();
+          }
      }
 
      function edit_data(id) {
@@ -135,6 +139,13 @@
                     if (data.file) {
                          $('#file-preview div').html('File lama: <a href="' + base_url + 'assets/upload/' + data.file + '" target="_blank" class="btn btn-sm btn-info"><i class="fas fa-file-pdf me-1"></i> ' + data.file + '</a><input type="hidden" name="fileold" value="' + data.file + '">');
                     }
+
+                    dropifyData = dropify.data('dropify');
+                    if (dropifyData) {
+                         dropifyData.resetPreview();
+                         dropifyData.clearElement();
+                    }
+
                     var myModal = new bootstrap.Modal(document.getElementById('modal_form'));
                     myModal.show();
                     $('.modal-title').text('Edit Guide Arsip');
@@ -162,6 +173,7 @@
                dataType: "JSON",
                success: function(data) {
                     if (data.status) {
+                         Swal.fire('Berhasil!', 'Data berhasil disimpan.', 'success');
                          bootstrap.Modal.getInstance(document.getElementById('modal_form')).hide();
                          reload_table();
                     } else {

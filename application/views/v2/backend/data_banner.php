@@ -54,7 +54,7 @@
                          </div>
                          <div class="mb-3">
                               <label class="form-label">File Gambar</label>
-                              <input type="file" class="form-control dropify" name="file" data-height="200">
+                              <input type="file" class="form-control dropify" name="file" data-height="200" data-allowed-file-extensions="jpg png jpeg" />
                          </div>
                     </form>
                </div>
@@ -70,11 +70,11 @@
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 
 <!-- Dropify -->
-<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/dropify/css/dropify.min.css') ?>" />
-<script src="<?= base_url('assets/v3/backend/vendor/dropify/js/dropify.min.js') ?>"></script>
+<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/dropify/css/dropify.css') ?>" />
+<script src="<?= base_url('assets/v3/backend/vendor/dropify/js/dropify.js') ?>"></script>
 
 <script type="text/javascript">
-     var save_method, table;
+     var save_method, table, dropify;
      var base_url = '<?php echo base_url(); ?>';
 
      table = $('#dataTable').DataTable({
@@ -94,13 +94,18 @@
           $(this).closest('.mb-3').find('.help-block').empty();
           $(this).removeClass('is-invalid');
      });
+
      try {
-          $('.dropify').dropify({
+          dropify = $('.dropify').dropify({
                messages: {
-                    default: '<h6>Pilih Gambar Banner<br>Format: JPG, PNG</h6>',
+                    default: '<h6>Pilih gambar! Anda juga bisa tarik & taruh gambar kesini<br>Format: JPG, PNG</h6>',
                     replace: 'Ganti',
                     remove: 'Hapus',
-                    error: 'Error'
+                    error: 'Kesalahan'
+               },
+               error: {
+                    'fileSize': 'Ukuran file terlalu besar! (maks. {{ value }}).',
+                    'imageFormat': 'Format gambar tidak diizinkan (hanya {{ value }}).'
                }
           });
      } catch (e) {
@@ -115,9 +120,12 @@
           var myModal = new bootstrap.Modal(document.getElementById('modal_form'));
           myModal.show();
           $('.modal-title').text('Tambah Banner');
-          var drEvent = $('.dropify').dropify();
-          drEvent = drEvent.data('dropify');
-          if (drEvent) drEvent.resetPreview();
+
+          dropifyData = dropify.data('dropify');
+          if (dropifyData) {
+               dropifyData.resetPreview();
+               dropifyData.clearElement();
+          }
      }
 
      function edit_banner(id) {
@@ -133,6 +141,12 @@
                     $('[name="judul"]').val(data.caption);
                     if (data.file) {
                          $('#photo-preview div').html('File lama: <img src="' + base_url + 'assets/upload/' + data.file + '" alt="" width="200" class="img-thumbnail"><input type="hidden" name="fileold" value="' + data.file + '">');
+                    }
+
+                    dropifyData = dropify.data('dropify');
+                    if (dropifyData) {
+                         dropifyData.resetPreview();
+                         dropifyData.clearElement();
                     }
                     var myModal = new bootstrap.Modal(document.getElementById('modal_form'));
                     myModal.show();
@@ -161,6 +175,7 @@
                dataType: "JSON",
                success: function(data) {
                     if (data.status) {
+                         Swal.fire('Berhasil!', 'Data berhasil disimpan.', 'success');
                          bootstrap.Modal.getInstance(document.getElementById('modal_form')).hide();
                          reload_table();
                     } else {

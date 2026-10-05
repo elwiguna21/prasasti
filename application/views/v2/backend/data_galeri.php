@@ -103,13 +103,18 @@
           $(this).closest('.mb-3').find('.help-block').empty();
           $(this).removeClass('is-invalid');
      });
+
      try {
-          $('.dropify').dropify({
+          dropify = $('.dropify').dropify({
                messages: {
-                    default: '<h6>Pilih Gambar Galeri<br>Format: JPG, PNG</h6>',
+                    default: '<h6>Pilih gambar! Anda juga bisa tarik & taruh gambar kesini<br>Format: JPG, PNG</h6>',
                     replace: 'Ganti',
                     remove: 'Hapus',
-                    error: 'Error'
+                    error: 'Kesalahan'
+               },
+               error: {
+                    'fileSize': 'Ukuran file terlalu besar! (maks. {{ value }}).',
+                    'imageFormat': 'Format gambar tidak diizinkan (hanya {{ value }}).'
                }
           });
      } catch (e) {
@@ -124,9 +129,12 @@
           var myModal = new bootstrap.Modal(document.getElementById('modal_form'));
           myModal.show();
           $('.modal-title').text('Tambah Galeri');
-          var drEvent = $('.dropify').dropify();
-          drEvent = drEvent.data('dropify');
-          if (drEvent) drEvent.resetPreview();
+
+          dropifyData = dropify.data('dropify');
+          if (dropifyData) {
+               dropifyData.resetPreview();
+               dropifyData.clearElement();
+          }
      }
 
      function edit_galeri(id) {
@@ -144,6 +152,13 @@
                     if (data.file) {
                          $('#photo-preview div').html('File lama: <img src="' + base_url + 'assets/upload/' + data.file + '" alt="" width="200" class="img-thumbnail"><input type="hidden" name="fileold" value="' + data.file + '">');
                     }
+
+                    dropifyData = dropify.data('dropify');
+                    if (dropifyData) {
+                         dropifyData.resetPreview();
+                         dropifyData.clearElement();
+                    }
+
                     var myModal = new bootstrap.Modal(document.getElementById('modal_form'));
                     myModal.show();
                     $('.modal-title').text('Edit Galeri');
@@ -171,6 +186,7 @@
                dataType: "JSON",
                success: function(data) {
                     if (data.status) {
+                         Swal.fire('Berhasil!', 'Data berhasil disimpan.', 'success');
                          bootstrap.Modal.getInstance(document.getElementById('modal_form')).hide();
                          reload_table();
                     } else {
@@ -181,7 +197,8 @@
                     $('#btnSave').text('Simpan').attr('disabled', false);
                },
                error: function() {
-                    alert('Error menyimpan data');
+                    // alert('Error menyimpan data');
+                    Swal.fire('Gagal!', 'Error menyimpan data.', 'error');
                     $('#btnSave').text('Simpan').attr('disabled', false);
                }
           });
