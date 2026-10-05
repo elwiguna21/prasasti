@@ -108,6 +108,9 @@
                                    <li>
                                         <a href="<?= base_url('v2/services') ?>">Perbaikan Arsip</a>
                                    </li>
+                                   <li>
+                                        <a href="<?= base_url('v2/services/loan') ?>">Peminjaman Arsip</a>
+                                   </li>
                               </ul>
                          </li>
                          <li class=" softora-dd">

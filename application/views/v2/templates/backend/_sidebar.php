@@ -24,7 +24,8 @@
                               <span class="nav-text">Daftar SKPD</span>
                          </a>
                     </li>
-                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <li>
+                         <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                               <i class="flaticon-381-notepad"></i>
                               <span class="nav-text">Data Umum</span>
                          </a>
@@ -46,13 +47,9 @@
                                                                                 ?><!--">Inventaris Arsip</a></li>-->
                               <!--                              <li><a href="--><?php //= base_url('v2/backend/arsipstatiss')
                                                                                 ?><!--">Daftar Arsip Statis</a></li>-->
-                              <li><a href="<?= base_url('v2/guides/list') ?>">
-                                        Guide Arsip
-                                   </a></li>
+                              <li><a href="<?= base_url('v2/guides/list') ?>">Guide Arsip</a></li>
                               <li><a href="<?= base_url('v2/materi') ?>">Materi/Paparan</a></li>
-                              <li><a href="<?= base_url('v2/profiles/list') ?>">
-                                        Profil
-                                   </a></li>
+                              <li><a href="<?= base_url('v2/profiles/list') ?>">Profil</a></li>
                          </ul>
                     </li>
                     <li>
@@ -62,6 +59,7 @@
                          </a>
                          <ul aria-expanded="false">
                               <li><a href="<?= base_url('v2/services/list') ?>">Permohonan Perbaikan</a></li>
+                              <li><a href="<?= base_url('v2/services/list_loan') ?>">Peminjaman Arsip</a></li>
                          </ul>
                     </li>
                <?php endif; ?>
