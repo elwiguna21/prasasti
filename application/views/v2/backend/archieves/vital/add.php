@@ -379,13 +379,13 @@
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-md-6">
-                                             <label class="form-label fw-semibold">Jumlah Dokumen <span
+                                             <label class="form-label fw-semibold">Jumlah Berkas <span
                                                        class="text-danger">*</span></label>
                                              <div class="input-group">
                                                   <input type="number" id="jumlah" name="jumlah" class="form-control"
                                                        placeholder="0" min="1" autocomplete="off"
                                                        value="<?= (!empty($archieve)) ? $archieve->jumlah : '' ?>">
-                                                  <span class="input-group-text">dok</span>
+                                                  <span class="input-group-text">berkas</span>
                                              </div>
                                              <span class="help-block text-danger small"></span>
                                         </div>
@@ -397,55 +397,55 @@
                                                   value="<?= (!empty($archieve)) ? date('Y-m-d', strtotime($archieve->tanggal)) : '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div> -->
-                                         <div class="col-md-6">
-                                              <label class="form-label fw-semibold">Media Rekam <span
-                                                        class="text-danger">*</span></label>
-                                              <select id="media" name="media" class="form-control select2">
-                                                   <option value="">Pilih Media Rekam</option>
-                                                   <option value="Tekstual / Kertas" <?= (!empty($archieve) && $archieve->media == 'Tekstual / Kertas') ? 'selected' : '' ?>>Tekstual / Kertas</option>
-                                                   <option value="Elektronik / Digital" <?= (!empty($archieve) && $archieve->media == 'Elektronik / Digital') ? 'selected' : '' ?>>Elektronik / Digital</option>
-                                                   <option value="Mikrofilm / Microform" <?= (!empty($archieve) && $archieve->media == 'Mikrofilm / Microform') ? 'selected' : '' ?>>Mikrofilm / Microform</option>
-                                                   <option value="Audio / Visual / Magnetik" <?= (!empty($archieve) && $archieve->media == 'Audio / Visual / Magnetik') ? 'selected' : '' ?>>Audio / Visual / Magnetik</option>
-                                              </select>
-                                              <span class="help-block text-danger small"></span>
-                                         </div>
-                                         <div class="col-md-6">
-                                              <label class="form-label fw-semibold">Jangka Simpan <span
-                                                        class="text-danger">*</span></label>
-                                              <input type="text" id="jangka_simpan" name="jangka_simpan" class="form-control"
-                                                   placeholder="Contoh: Permanen / 10 Tahun" autocomplete="off"
-                                                   value="<?= (!empty($archieve)) ? $archieve->jangka_simpan : '' ?>">
-                                              <span class="help-block text-danger small"></span>
-                                         </div>
-                                         <div class="col-md-6">
-                                              <label class="form-label fw-semibold">Metode Perlindungan <span
-                                                        class="text-danger">*</span></label>
-                                              <select id="metode_perlindungan" name="metode_perlindungan" class="form-control select2">
-                                                   <option value="">Pilih Metode Perlindungan</option>
-                                                   <option value="Duplikasi dan Pemencaran (Dispersal)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Pemencaran (Dispersal)') ? 'selected' : '' ?>>Duplikasi dan Pemencaran (Dispersal)</option>
-                                                   <option value="Peralatan Khusus (Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Peralatan Khusus (Vaulting)') ? 'selected' : '' ?>>Peralatan Khusus (Vaulting)</option>
-                                                   <option value="Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)') ? 'selected' : '' ?>>Duplikasi & Peralatan Khusus (Dispersal & Vaulting)</option>
-                                              </select>
-                                              <span class="help-block text-danger small"></span>
-                                         </div>
-                                         <div class="col-md-6">
-                                              <label class="form-label fw-semibold">Lokasi Simpan</label>
-                                              <input type="text" id="ruang_penyimpanan" name="ruang_penyimpanan" class="form-control"
-                                                   placeholder="Contoh: Depo Arsip, Ruang Vault, Box 01" autocomplete="off"
-                                                   value="<?= (!empty($archieve)) ? $archieve->ruang_penyimpanan : '' ?>">
-                                         </div>
-                                         <div class="col-12">
-                                              <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
-                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta"
-                                                   class="form-control" placeholder="Nama unit kerja pencipta arsip"
-                                                   autocomplete="off"
-                                                   value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>">
-                                         </div>
-                                         <div class="col-12">
-                                              <label class="form-label fw-semibold">Keterangan</label>
-                                              <textarea id="keterangan" name="keterangan" class="form-control" rows="2"
-                                                   placeholder="Keterangan tambahan" required><?= (!empty($archieve)) ? $archieve->deskripsi : '' ?></textarea>
-                                         </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Media Rekam <span
+                                                       class="text-danger">*</span></label>
+                                             <select id="media" name="media" class="form-control select2">
+                                                  <option value="">Pilih Media Rekam</option>
+                                                  <option value="Tekstual / Kertas" <?= (!empty($archieve) && $archieve->media == 'Tekstual / Kertas') ? 'selected' : '' ?>>Tekstual / Kertas</option>
+                                                  <option value="Elektronik / Digital" <?= (!empty($archieve) && $archieve->media == 'Elektronik / Digital') ? 'selected' : '' ?>>Elektronik / Digital</option>
+                                                  <option value="Mikrofilm / Microform" <?= (!empty($archieve) && $archieve->media == 'Mikrofilm / Microform') ? 'selected' : '' ?>>Mikrofilm / Microform</option>
+                                                  <option value="Audio / Visual / Magnetik" <?= (!empty($archieve) && $archieve->media == 'Audio / Visual / Magnetik') ? 'selected' : '' ?>>Audio / Visual / Magnetik</option>
+                                             </select>
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Jangka Simpan <span
+                                                       class="text-danger">*</span></label>
+                                             <input type="text" id="jangka_simpan" name="jangka_simpan" class="form-control"
+                                                  placeholder="Contoh: Permanen / 10 Tahun" autocomplete="off"
+                                                  value="<?= (!empty($archieve)) ? $archieve->jangka_simpan : '' ?>">
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Metode Perlindungan <span
+                                                       class="text-danger">*</span></label>
+                                             <select id="metode_perlindungan" name="metode_perlindungan" class="form-control select2">
+                                                  <option value="">Pilih Metode Perlindungan</option>
+                                                  <option value="Duplikasi dan Pemencaran (Dispersal)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Pemencaran (Dispersal)') ? 'selected' : '' ?>>Duplikasi dan Pemencaran (Dispersal)</option>
+                                                  <option value="Peralatan Khusus (Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Peralatan Khusus (Vaulting)') ? 'selected' : '' ?>>Peralatan Khusus (Vaulting)</option>
+                                                  <option value="Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)') ? 'selected' : '' ?>>Duplikasi & Peralatan Khusus (Dispersal & Vaulting)</option>
+                                             </select>
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Lokasi Simpan</label>
+                                             <input type="text" id="ruang_penyimpanan" name="ruang_penyimpanan" class="form-control"
+                                                  placeholder="Contoh: Depo Arsip, Ruang Vault, Box 01" autocomplete="off"
+                                                  value="<?= (!empty($archieve)) ? $archieve->ruang_penyimpanan : '' ?>">
+                                        </div>
+                                        <div class="col-12">
+                                             <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
+                                             <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta"
+                                                  class="form-control" placeholder="Nama unit kerja pencipta arsip"
+                                                  autocomplete="off"
+                                                  value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>">
+                                        </div>
+                                        <div class="col-12">
+                                             <label class="form-label fw-semibold">Keterangan</label>
+                                             <textarea id="keterangan" name="keterangan" class="form-control" rows="2"
+                                                  placeholder="Keterangan tambahan" required><?= (!empty($archieve)) ? $archieve->deskripsi : '' ?></textarea>
+                                        </div>
                                    </div>
                               </div>
 
