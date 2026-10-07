@@ -50,16 +50,19 @@ class Logs extends MY_Controller
           $columns = array(
                0 => 'id',
                1 => 'user',
-               3 => 'ip_address',
-               4 => 'signed',
-               5 => 'status',
-               6 => 'description',
+               2 => 'ip_address',
+               3 => 'signed',
+               4 => 'status',
+               5 => 'description',
+               6 => 'response_code',
+               7 => 'response_body',
           );
 
           $limit = $this->input->post('length');
           $start = $this->input->post('start');
-          $order = (!empty($this->input->post('order'))) ? $columns[$this->input->post('order')[0]['column']] : "id";
-          $dir = (!empty($this->input->post('order'))) ? $this->input->post('order')[0]['dir'] : "asc";
+          $order_col_index = !empty($this->input->post('order')) ? $this->input->post('order')[0]['column'] : 0;
+          $order = isset($columns[$order_col_index]) ? $columns[$order_col_index] : "id";
+          $dir = (!empty($this->input->post('order'))) ? $this->input->post('order')[0]['dir'] : "desc";
           // $search     = (!empty($this->input->post('search')['value'])) ? $this->input->post('search')['value'] : null;
           $search = $this->input->post('search');
 
@@ -92,6 +95,8 @@ class Logs extends MY_Controller
                     $nested['signed']        = full_tgl_indo($d->signed);
                     $nested['description']   = $d->description;
                     $nested['status']        = ($d->status == 'success') ? '<span class="badge badge-success">Berhasil</span>' : '<span class="badge badge-danger">Gagal</span>';
+                    $nested['response_code'] = !empty($d->response_code) ? '<span class="badge badge-info">' . htmlspecialchars($d->response_code) . '</span>' : '<span class="badge badge-light">-</span>';
+                    $nested['response_body'] = !empty($d->response_body) ? $d->response_body : '-';
 
                     $logs[]                  = $nested;
                }

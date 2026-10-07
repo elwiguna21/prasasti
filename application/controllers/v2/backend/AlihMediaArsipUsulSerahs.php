@@ -494,15 +494,19 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                @unlink($watermarked_pdf);
           }
 
+          $log_user_id = !empty($emp->id) ? $emp->id : $uid;
+
           if ($result['error']) {
                // Catat log TTE gagal
                $this->db->insert('log_tte', array(
-                    'user'        => $uid,
-                    'ip_address'  => $this->input->ip_address(),
-                    'signed'      => date('Y-m-d H:i:s'),
-                    'action'      => 'sign',
-                    'status'      => 'failed',
-                    'description' => 'Gagal TTE berkas ID #' . $id . ' - ' . $result['message'],
+                    'user'          => $log_user_id,
+                    'ip_address'    => $this->input->ip_address(),
+                    'signed'        => date('Y-m-d H:i:s'),
+                    'action'        => 'sign',
+                    'status'        => 'failed',
+                    'description'   => 'Gagal TTE berkas ID #' . $id . ' - ' . $result['message'],
+                    'response_code' => $result['response_code'] ?? null,
+                    'response_body' => $result['response_body'] ?? null,
                ));
 
                echo json_encode(array(
@@ -522,12 +526,14 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
           // Catat log TTE
           $this->db->insert('log_tte', array(
-               'user'        => $uid,
-               'ip_address'  => $this->input->ip_address(),
-               'signed'      => date('Y-m-d H:i:s'),
-               'action'      => 'sign',
-               'status'      => 'success',
-               'description' => 'TTE dokumen berkas ID #' . $id . ' (' . ($berkas->uraian_informasi_arsip ?? '') . ') - File: ' . $result['file_ttd'],
+               'user'          => $log_user_id,
+               'ip_address'    => $this->input->ip_address(),
+               'signed'        => date('Y-m-d H:i:s'),
+               'action'        => 'sign',
+               'status'        => 'success',
+               'description'   => 'TTE dokumen berkas ID #' . $id . ' (' . ($berkas->uraian_informasi_arsip ?? '') . ') - File: ' . $result['file_ttd'],
+               'response_code' => $result['response_code'] ?? null,
+               'response_body' => $result['response_body'] ?? null,
           ));
 
           // Catat monitoring TTE

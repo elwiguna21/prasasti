@@ -785,13 +785,16 @@ class Archieves extends MY_Controller
           @unlink($output_pdf);
           if ($result['error']) {
                // Catat log TTE gagal
+               $user_id_log = !empty($this->user_auth->id) ? $this->encryption->decrypt($this->user_auth->id) : $this->encryption->decrypt($this->session->userdata('next-uid'));
                $this->db->insert('log_tte', array(
-                    'user' => $this->session->userdata('next-uid'),
-                    'ip_address' => $this->input->ip_address(),
-                    'signed' => date('Y-m-d H:i:s'),
-                    'action' => 'sign',
-                    'status' => 'failed',
-                    'description' => 'Gagal TTE berkas ID #' . $archieve->id . ' - ' . $result['message'],
+                    'user'          => $user_id_log,
+                    'ip_address'    => $this->input->ip_address(),
+                    'signed'        => date('Y-m-d H:i:s'),
+                    'action'        => 'sign',
+                    'status'        => 'failed',
+                    'description'   => 'Gagal TTE berkas ID #' . $archieve->id . ' - ' . $result['message'],
+                    'response_code' => $result['response_code'] ?? null,
+                    'response_body' => $result['response_body'] ?? null,
                ));
 
                $this->session->set_flashdata(array('status' => 500, 'message' => "Maaf, terjadi kesalahan saat proses TTE! " . $result['message']));
@@ -809,12 +812,14 @@ class Archieves extends MY_Controller
           if ($update > 0) {
                // Catat log TTE
                $this->db->insert('log_tte', array(
-                    'user' => $this->encryption->decrypt($this->user_auth->user_id),
-                    'ip_address' => $this->input->ip_address(),
-                    'signed' => date('Y-m-d H:i:s'),
-                    'action' => 'sign',
-                    'status' => 'success',
-                    'description' => 'TTE dokumen berkas ID #' . $archieve->id . ' (' . ($archieve->uraian_informasi_arsip ?? '') . ') - File: ' . $result['file_ttd'],
+                    'user'          => $this->encryption->decrypt($this->user_auth->user_id),
+                    'ip_address'    => $this->input->ip_address(),
+                    'signed'        => date('Y-m-d H:i:s'),
+                    'action'        => 'sign',
+                    'status'        => 'success',
+                    'description'   => 'TTE dokumen berkas ID #' . $archieve->id . ' (' . ($archieve->uraian_informasi_arsip ?? '') . ') - File: ' . $result['file_ttd'],
+                    'response_code' => $result['response_code'] ?? null,
+                    'response_body' => $result['response_body'] ?? null,
                ));
 
                $monitoring = array(

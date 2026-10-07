@@ -47,7 +47,11 @@ class LogsTte extends CI_Model
           if (!empty($results)) {
                foreach ($results as $result) {
                     $result->id         = $this->encryption->encrypt($result->id);
-                    $result->user       = $this->db->select('email, fullname, jabatan')->where(['id' => $result->user])->get('employee')->row();
+                    $emp = $this->db->select('email, fullname, jabatan')->where(['id' => $result->user])->get('employee')->row();
+                    if (empty($emp)) {
+                         $emp = $this->db->select('email, fullname, jabatan')->where(['user' => $result->user])->get('employee')->row();
+                    }
+                    $result->user = $emp;
                     // $result->user->id   = $this->encryption->encrypt($result->user->id);
                     // $result->user  = $this->encryption->encrypt($result->user->user);
                }
@@ -65,9 +69,13 @@ class LogsTte extends CI_Model
           unset($where['dirs']);
 
           if (!empty($where['search'])) {
+               $this->db->group_start();
                $this->db->like('ip_address', $where['search']);
                $this->db->or_like('description', $where['search']);
                $this->db->or_like('signed', $where['search']);
+               $this->db->or_like('response_code', $where['search']);
+               $this->db->or_like('response_body', $where['search']);
+               $this->db->group_end();
                unset($where['search']);
           }
 

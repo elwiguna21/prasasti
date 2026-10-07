@@ -277,15 +277,26 @@ if (!function_exists('tanda_tangan_cloud')) {
             }
         }
 
+        // Construct response body representation for logging
+        if ($curl_error) {
+            $response_body = 'cURL Error: ' . $curl_message;
+        } elseif ($is_pdf_content || $is_pdf_magic || ($is_octet_stream && strlen($result) > 1000)) {
+            $response_body = '[PDF Document Binary Data - Size: ' . strlen($result) . ' bytes]';
+        } else {
+            $response_body = (string)$result;
+        }
+
         // Hapus file PDF sementara (footer)
         if (!empty($converted_path) && file_exists($converted_path)) {
             @unlink($converted_path);
         }
 
         return array(
-            'error'    => $error,
-            'message'  => $message,
-            'file_ttd' => $file_ttd
+            'error'         => $error,
+            'message'       => $message,
+            'file_ttd'      => $file_ttd,
+            'response_code' => $http_code ? (string)$http_code : '0',
+            'response_body' => $response_body
         );
     }
 }
