@@ -40,14 +40,14 @@ class Dashboards extends MY_Controller
           $data['employee'] = $this->user_auth;
 
           // Cek apakah user adalah admin — jika ya, query lintas SKPD (tanpa filter company)
-          $is_admin = ($this->user_auth->user_role == 'admin');
+          $is_admin = (in_array('admin', $this->user_auth->user_role));
 
           if ($is_admin) {
                // Admin: data seluruh sistem
                $data['total_users'] = $this->user->get_all_where_count(array('role !=' => 'kepala_skpd'));
                $data['total_users_operator'] = $this->user->get_all_where_count(array('role' => 'operator'));
-               $data['total_users_verificator'] = $this->user->get_all_where_count(array('role IN ("verifikator_skpd", "verifikator_lkd")' => null));
-               $data['total_users_evaluator'] = $this->user->get_all_where_count(array('role' => 'admin'));
+               $data['total_users_verificator'] = $this->user->get_all_where_count(array('role' => array("verifikator_skpd", "verifikator_lkd")));
+               // $data['total_users_evaluator'] = $this->user->get_all_where_count(array('role' => 'penilai'));
                $data['total_skpd'] = $this->company->get_all_where_count(array());
 
                $data['total_archieves'] = $this->archieve->get_all_where_count(array());
@@ -103,10 +103,10 @@ class Dashboards extends MY_Controller
                );
           } else {
                // User/Operator: data per company
-               $data['total_users'] = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role !=' => 'kepala_skpd'));
-               $data['total_users_operator'] = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => 'operator'));
-               $data['total_users_verificator'] = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role IN ("verifikator_skpd", "verifikator_lkd")' => null));
-               $data['total_users_evaluator'] = $this->user->get_all_where_count(array('company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => 'admin'));
+               $data['total_users'] = $this->user->get_all_where_count(array('user.company' => $this->encryption->decrypt($this->user_auth->company_id), 'role !=' => 'kepala_skpd'));
+               $data['total_users_operator'] = $this->user->get_all_where_count(array('user.company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => 'operator'));
+               $data['total_users_verificator'] = $this->user->get_all_where_count(array('user.company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => array("verifikator_skpd", "verifikator_lkd")));
+               $data['total_users_evaluator'] = $this->user->get_all_where_count(array('user.company' => $this->encryption->decrypt($this->user_auth->company_id), 'role' => 'penilai'));
 
                $data['total_archieves'] = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company));
                $data['total_archieves_inactives'] = $this->archieve->get_all_where_count(array('nomor_skpd' => $this->user_auth->no_company, 'jenis_arsip is null OR jenis_arsip NOT IN ("vital", "usul_serah")' => null));
@@ -215,7 +215,7 @@ class Dashboards extends MY_Controller
           $where         = array();
 
           // Admin melihat data seluruh SKPD, user hanya melihat data SKPD-nya
-          if ($this->user_auth->user_role != 'admin') {
+          if (!in_array('admin', $this->user_auth->user_role)) {
                $company = $this->encryption->decrypt($this->user_auth->company_id);
                $where['nomor_skpd'] = $company;
           }

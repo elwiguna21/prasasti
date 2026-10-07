@@ -80,7 +80,7 @@ $route['v2/backend/alih_media_arsip_usul_serah/ajax_link_berkas']               
 $route['v2/backend/alih_media_arsip_usul_serah/ajax_unlink_berkas/(:num)/(:num)'] = 'v2/backend/AlihMediaArsipUsulSerahs/ajax_unlink_berkas/$1/$2';
 
 // Verifikasi Dokumen Publik Route
-$route['v2/frontend/verifikasi_dokumen/index/(:num)']                           = 'v2/frontend/VerifikasiDokumen/index/$1';
+$route['v2/frontend/verifikasi_dokumen/index/(:any)']                           = 'v2/frontend/VerifikasiDokumen/index/$1';
 
 // Alih Media Arsip Vital Route
 $route['v2/alih_media_arsip_vital']                                             = 'v2/archieves/vital_list';

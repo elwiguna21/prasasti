@@ -1,3 +1,20 @@
+<?php
+$badge_colors = [
+     'admin'            => 'badge-success',
+     'verifikator_skpd' => 'badge-dark',
+     'verifikator_lkd'  => 'badge-info',
+     'kepala_skpd'      => 'badge-primary',
+     'kepala_lkd'       => 'badge-warning',
+     'operator'         => 'badge-danger'
+];
+$badge_html    = '';
+foreach ($employee->user_role as $role) {
+     $class = isset($badge_colors[$role]) ? $badge_colors[$role] : 'badge-secondary';
+     $label = strtoupper(str_replace('_', ' ', $role));
+
+     $badge_html    .= '<span class="badge badge-sm light ' . $class . ' me-1">' . $label . '</span>';
+}
+?>
 <link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/@form-validation/umd/styles/index.min.css') ?>" />
 <div class="row page-titles">
      <ol class="breadcrumb">
@@ -20,7 +37,9 @@
                          <div class="profile-details">
                               <div class="profile-name px-3 pt-2">
                                    <h4 class="text-primary mb-0"><?= $employee->fullname; ?></h4>
-                                   <p><?= strtoupper($employee->user_role); ?></p>
+                                   <p>
+                                        <?= $employee->phone; ?>
+                                   </p>
                               </div>
                               <div class="profile-email px-2 pt-2">
                                    <h4 class="text-muted mb-0"><?= $employee->email; ?></h4>
@@ -87,28 +106,7 @@
                                         </div>
                                         <div class="profile-skills mb-5">
                                              <h4 class="text-primary mb-2">Hak akses</h4>
-                                             <?php switch ($employee->user_role) {
-                                                  case 'operator':
-                                                       $btn_color     = 'btn-danger light';
-                                                       break;
-                                                  case 'verifikator_skpd':
-                                                       $btn_color     = 'btn-info light';
-                                                       break;
-                                                  case 'verifikator_lkd':
-                                                       $btn_color     = 'btn-warning light';
-                                                       break;
-                                                  case 'kepala_skpd':
-                                                       $btn_color     = 'btn-success light';
-                                                       break;
-                                                  case 'kepala_lkd':
-                                                       $btn_color     = 'btn-primary';
-                                                       break;
-
-                                                  default:
-                                                       $btn_color     = 'btn-primary light';
-                                                       break;
-                                             } ?>
-                                             <a href="javascript:void(0);" class="btn <?= $btn_color; ?> btn-xs mb-1"><?= strtoupper($employee->user_role); ?></a>
+                                             <p><?= $badge_html; ?></p>
                                         </div>
                                         <div class="profile-personal-info">
                                              <h4 class="text-primary mb-4">Informasi Personal</h4>
@@ -191,7 +189,7 @@
                                                        <div hidden>
                                                             <input type="text" name="user" class="form-control" value="<?= $employee->user_id ?>" required readonly>
                                                             <input type="text" name="skpd" class="form-control" value="<?= $this->encryption->decrypt($employee->company_id); ?>" required readonly>
-                                                            <input type="text" name="role" class="form-control" value="<?= $employee->user_role; ?>" required readonly>
+                                                            <input type="text" name="role" class="form-control" value="<?= implode(',', $employee->user_role); ?>" required readonly>
                                                             <input type="text" class="form-control" name="profiles" value="true" required readonly>
                                                        </div>
 
@@ -210,21 +208,21 @@
                                                             </div>
                                                        </div>
 
-	                                                  <?php if (in_array($employee->user_role, array('kepala_skpd', 'kepala_lkd'))) { ?>
-                                                       <div class="row">
-                                                            <div class="mb-3 col-md-6">
-                                                                 <label class="form-label">NIK</label>
-                                                                 <input type="text" placeholder="NIK" class="form-control" name="nik" value="<?= $employee->nik; ?>" maxlength="16" required autocomplete="off">
+                                                       <?php if (in_array($employee->user_role, array('kepala_skpd', 'kepala_lkd'))) { ?>
+                                                            <div class="row">
+                                                                 <div class="mb-3 col-md-6">
+                                                                      <label class="form-label">NIK</label>
+                                                                      <input type="text" placeholder="NIK" class="form-control" name="nik" value="<?= $employee->nik; ?>" maxlength="16" required autocomplete="off">
+                                                                 </div>
+                                                                 <div class="mb-3 col-md-6">
+                                                                      <label class="form-label">NIP</label>
+                                                                      <input type="text" placeholder="NIP" class="form-control" name="nip" value="<?= $employee->nip; ?>" maxlength="20" required autocomplete="off">
+                                                                 </div>
                                                             </div>
-                                                            <div class="mb-3 col-md-6">
-                                                                 <label class="form-label">NIP</label>
-                                                                 <input type="text" placeholder="NIP" class="form-control" name="nip" value="<?= $employee->nip; ?>" maxlength="20" required autocomplete="off">
+                                                            <div class="mb-3 col-md-12">
+                                                                 <label class="form-label">Jabatan</label>
+                                                                 <input type="text" placeholder="Masukan jabatan" class="form-control" name="position" value="<?= $employee->jabatan; ?>" maxlength="100" required autocomplete="off">
                                                             </div>
-                                                       </div>
-                                                       <div class="mb-3 col-md-12">
-                                                            <label class="form-label">Jabatan</label>
-                                                            <input type="text" placeholder="Masukan jabatan" class="form-control" name="position" value="<?= $employee->jabatan; ?>" maxlength="100" required autocomplete="off">
-                                                       </div>
                                                        <?php } ?>
 
                                                        <h4 class="text-primary mt-3">Pengaturan Akun</h4>
@@ -514,47 +512,47 @@
                          },
                     }
                },
-              nik: {
-                   validators: {
-                       notEmpty: {
-                           message: 'NIK harus diisi dan tidak boleh kosong!'
-                       },
-                       stringLength: {
-                           max: 16,
-                           message: 'Panjang NIK maksimal 16 karakter'
-                       },
-                       regexp: {
-                           regexp: /^[0-9]+$/,
-                           message: 'Hanya angka yang diperbolehkan!'
-                       },
-                   }
-              },
-              nip: {
-                  validators: {
-                      notEmpty: {
-                          message: 'NIP harus diisi dan tidak boleh kosong!'
-                      },
-                      stringLength: {
-                          max: 20,
-                          message: 'Panjang NIP maksimal 20 karakter'
-                      },
-                      regexp: {
-                          regexp: /^[0-9]+$/,
-                          message: 'Hanya angka yang diperbolehkan!'
-                      },
-                  }
-              },
-              position: {
-                  validators: {
-                      notEmpty: {
-                          message: 'Jabatan harus diisi dan tidak boleh kosong!'
-                      },
-                      stringLength: {
-                          max: 200,
-                          message: 'Panjang jabatan maksimal 200 karakter'
-                      },
-                  }
-              }
+               nik: {
+                    validators: {
+                         notEmpty: {
+                              message: 'NIK harus diisi dan tidak boleh kosong!'
+                         },
+                         stringLength: {
+                              max: 16,
+                              message: 'Panjang NIK maksimal 16 karakter'
+                         },
+                         regexp: {
+                              regexp: /^[0-9]+$/,
+                              message: 'Hanya angka yang diperbolehkan!'
+                         },
+                    }
+               },
+               nip: {
+                    validators: {
+                         notEmpty: {
+                              message: 'NIP harus diisi dan tidak boleh kosong!'
+                         },
+                         stringLength: {
+                              max: 20,
+                              message: 'Panjang NIP maksimal 20 karakter'
+                         },
+                         regexp: {
+                              regexp: /^[0-9]+$/,
+                              message: 'Hanya angka yang diperbolehkan!'
+                         },
+                    }
+               },
+               position: {
+                    validators: {
+                         notEmpty: {
+                              message: 'Jabatan harus diisi dan tidak boleh kosong!'
+                         },
+                         stringLength: {
+                              max: 200,
+                              message: 'Panjang jabatan maksimal 200 karakter'
+                         },
+                    }
+               }
           },
           plugins: {
                trigger: new FormValidation.plugins.Trigger(),

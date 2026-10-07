@@ -25,8 +25,6 @@ class Employee extends CI_Model
 
           if (!empty($where)) {
                $this->db->where($where);
-          } else {
-               return null;
           }
 
           $this->db->join('company', 'company.id = employee.company', 'left');
@@ -37,6 +35,7 @@ class Employee extends CI_Model
                $result->company_id      = $this->encryption->encrypt($result->company_id);
                $result->user_id         = $this->encryption->encrypt($result->user_id);
                $result->user_password   = 'SECRET';
+               $result->user_role = explode(';', $result->user_role);
                unset($result->company);
                unset($result->user);
           }

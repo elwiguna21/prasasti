@@ -137,6 +137,15 @@ if ($archieve->verifikasi_status == 'Y') {
 }
 
 ?>
+
+<?php
+if (file_exists('./assets/upload/berkas/' . $archieve->file)) {
+     $filepath = base_url('assets/upload/berkas/' . $archieve->file);
+} else if (file_exists('./assets/data/' . $archieve->file)) {
+     $filepath = base_url('assets/data/' . $archieve->file);
+} else {
+     $filepath = null;
+} ?>
 <div class="page-titles">
      <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
@@ -274,7 +283,7 @@ if ($archieve->verifikasi_status == 'Y') {
 
                <!-- action button -->
                <div class="col-xl-12 mb-3">
-                    <?php if ($this->session->userdata('next-role') == 'operator') {
+                    <?php if (in_array('operator', $employee->user_role)) {
                          $params = array('archieve' => $archieve->id, 'company' => $archieve->nomor_skpd);
                     ?>
                          <a href="<?= base_url('v2/alih_media_arsip_vital/add?' . http_build_query($params)); ?>"
@@ -288,16 +297,18 @@ if ($archieve->verifikasi_status == 'Y') {
                          </a>
                     <?php } ?>
 
-                    <?php if ($archieve->verifikasi_status == 'R' and $this->session->userdata('next-role') == 'operator') { ?>
+                    <?php if ($archieve->verifikasi_status == 'R' and in_array('operator', $employee->user_role)) { ?>
                          <a href="javascript:void(0);" class="btn btn-sm btn-info shadow w-100 mb-3 btn-resend"
                               data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                               <i class="fas fa-arrow-right-from-file me-1"></i> Kirim Kembali ke Verifikator
                          </a>
                     <?php } ?>
 
-                    <?php if ($this->session->userdata('next-role') == 'verifikator_skpd') {
+                    <?php if (in_array('verifikator_skpd', $employee->user_role)) {
                     ?>
                          <?php if ($archieve->verifikasi_status == 'N') { ?>
+                              <? #php if (!empty($filepath)) { 
+                              ?>
                               <a href="javascript:void(0);"
                                    class="btn btn-sm btn-success shadow btn-verification w-100 mb-3"
                                    data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
@@ -306,18 +317,23 @@ if ($archieve->verifikasi_status == 'Y') {
                                    <?php } else { ?>
                                         <i class="fas fa-user-check me-1"></i> Teruskan ke Kepala SKPD
                                    <?php } ?>
-
                               </a>
+                              <? #php } 
+                              ?>
+
                               <a href="javascript:void(0);" class="btn btn-sm btn-danger shadow w-100 mb-3 btn-reject"
                                    data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                                    <i class="fas fa-close me-1"></i> Tolak Pengajuan
                               </a>
 
                          <?php } else if ($archieve->tte_status == 'R') { ?>
-                              <a href="javascript:void(0);" class="btn btn-sm btn-info shadow btn-resend w-100 mb-3"
-                                   data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
-                                   <i class="fas fa-arrow-right-from-file me-1"></i> Kirim ulang ke Kepala SKPD
-                              </a>
+                              <?php if (!empty($filepath)) { ?>
+                                   <a href="javascript:void(0);" class="btn btn-sm btn-info shadow btn-resend w-100 mb-3"
+                                        data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
+                                        <i class="fas fa-arrow-right-from-file me-1"></i> Kirim ulang ke Kepala SKPD
+                                   </a>
+                              <?php } ?>
+
                               <a href="javascript:void(0);" class="btn btn-sm btn-danger shadow w-100 mb-3 btn-reject"
                                    data-archieve="<?= $archieve->id; ?>" data-company="<?= $archieve->nomor_skpd; ?>">
                                    <i class="fas fa-arrow-left-rotate me-1"></i> Kembalikan ke Operator
@@ -325,8 +341,8 @@ if ($archieve->verifikasi_status == 'Y') {
                          <?php } ?>
                     <?php } ?>
 
-                    <?php if ($archieve->tte_status == 'N' and $this->session->userdata('next-role') == 'kepala_skpd') { ?>
-                         <?php if (file_exists('./assets/upload/berkas/' . $archieve->file)) { ?>
+                    <?php if ($archieve->tte_status == 'N' and in_array('kepala_skpd', $employee->user_role)) { ?>
+                         <?php if (!empty($filepath)) { ?>
                               <a href="javascript:void(0);" class="btn btn-sm btn-success shadow btn-sign w-100 mb-3">
                                    <i class="fas fa-file-signature me-1"></i> Tandatangani Dokumen
                               </a>
@@ -337,14 +353,6 @@ if ($archieve->verifikasi_status == 'Y') {
                          </a>
                     <?php } ?>
 
-                    <?php
-                    if (file_exists('./assets/upload/berkas/' . $archieve->file)) {
-                         $filepath = base_url('assets/upload/berkas/' . $archieve->file);
-                    } else if (file_exists('./assets/data/' . $archieve->file)) {
-                         $filepath = base_url('assets/data/' . $archieve->file);
-                    } else {
-                         $filepath = null;
-                    } ?>
                     <a href="<?= $filepath; ?>" <?= (!empty($filepath)) ? 'target="_blank"' : ''; ?>
                          class="btn light btn-info btn-sm shadow w-100 mb-3 <?= (empty($filepath)) ? 'disabled' : ''; ?>">
                          <i class="fas fa-file-pdf me-1"></i> Unduh Draf
@@ -481,7 +489,6 @@ if ($archieve->verifikasi_status == 'Y') {
                </div>
           </div>
 
-
           <?php if (!empty($archieve->file) || !empty($archieve->tte_dokumen)) { ?>
                <?php
                // Selalu gunakan route proxy IDM bypass
@@ -598,14 +605,14 @@ if ($archieve->verifikasi_status == 'Y') {
      </div>
 </div>
 
-<?php if (in_array($employee->user_role, array('verifikator_skpd', 'kepala_skpd'))) { ?>
+<?php if (array_intersect(array('verifikator_skpd', 'kepala_skpd'), $employee->user_role)) { ?>
      <div class="modal fade reject-modal" id="reject-modal" data-bs-backdrop="static" data-bs-keyboard="false"
           role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-lg">
                <div class="modal-content">
                     <div class="modal-header">
                          <h5 class="modal-title"
-                              id="modal-title"><?= ($employee->user_role == 'verifikator_skpd') ? 'Tolak Verifikasi' : 'Tolak Penandatanganan'; ?></h5>
+                              id="modal-title"><?= (in_array('verifikator_skpd', $employee->user_role)) ? 'Tolak Verifikasi' : 'Tolak Penandatanganan'; ?></h5>
                          <button type="button" class="btn-close" data-bs-dismiss="modal">
                          </button>
                     </div>
@@ -645,7 +652,7 @@ if ($archieve->verifikasi_status == 'Y') {
           </div>
      </div>
 
-     <?php if ($employee->user_role == 'kepala_skpd') { ?>
+     <?php if (in_array('kepala_skpd', $employee->user_role)) { ?>
           <div class="modal fade passphrase-modal" id="passphrase-modal" data-bs-backdrop="static"
                data-bs-keyboard="false"
                role="dialog" aria-hidden="true">
@@ -827,7 +834,7 @@ if ($archieve->verifikasi_status == 'Y') {
           });
      })();
 
-     <?php if ($employee->user_role == 'operator' and in_array($archieve->verifikasi_status, array('N', 'R', null))) { ?>
+     <?php if (in_array('operator', $employee->user_role) and in_array($archieve->verifikasi_status, array('N', 'R', null))) { ?>
           $('.btn-delete').click(function() {
                let archieve = $(this).data('archieve');
                let company = $(this).data('company');
@@ -897,7 +904,9 @@ if ($archieve->verifikasi_status == 'Y') {
                     }
                });
           });
-     <?php } else if ($employee->user_role == 'verifikator_skpd') { ?>
+     <?php } ?>
+
+     <?php if (in_array('verifikator_skpd', $employee->user_role) and $archieve->verifikasi_status == 'N') { ?>
           $('.btn-verification').click(function() {
                let archieve = $(this).data('archieve');
                let company = $(this).data('company');
@@ -964,7 +973,7 @@ if ($archieve->verifikasi_status == 'Y') {
                let company = $(this).data('company');
 
                Swal.fire({
-                    title: "Verifikasi Arsip",
+                    title: "Tolak Arsip",
                     text: "Apakah anda akan menolak arsip tersebut?",
                     icon: "warning",
                     showCancelButton: !0,
@@ -1001,7 +1010,9 @@ if ($archieve->verifikasi_status == 'Y') {
                     }
                });
           });
-     <?php } else if ($employee->user_role == 'kepala_skpd') { ?>
+     <?php } ?>
+
+     <?php if (in_array('kepala_skpd', $employee->user_role)) { ?>
           $('.btn-unsign').click(function() {
                let archieve = $(this).data('archieve');
                let company = $(this).data('company');
@@ -1128,7 +1139,7 @@ if ($archieve->verifikasi_status == 'Y') {
           }
      <?php } ?>
 
-     <?php if (in_array($employee->user_role, array('operator', 'verifikator_skpd'))) { ?>
+     <?php if (in_array(array('operator', 'verifikator_skpd'), $employee->user_role)) { ?>
           $('.btn-resend').click(function() {
                let archieve = $(this).data('archieve');
                let company = $(this).data('company');

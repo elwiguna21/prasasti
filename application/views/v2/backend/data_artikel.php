@@ -1,92 +1,92 @@
 <!-- Page Title -->
 <div class="page-titles">
-     <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
-          <li class="breadcrumb-item active">Artikel</li>
-     </ol>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="<?= base_url('v2/dashboards') ?>">Dashboard</a></li>
+        <li class="breadcrumb-item active">Artikel</li>
+    </ol>
 </div>
 
 
 <div class="row">
-     <div class="col-12">
-          <div class="card">
-               <div class="card-header">
-                    <h4 class="card-title">Artikel</h4>
-                    <button class="btn btn-primary btn-sm" onclick="add_artikel()"><i class="fas fa-plus me-1"></i>
-                         Tambah Data
-                    </button>
-               </div>
-               <div class="card-body">
-                    <div class="table-responsive">
-                         <table id="dataTable" class="display" style="min-width: 845px">
-                              <thead>
-                              <tr>
-                                   <th>No</th>
-                                   <th>Judul</th>
-                                   <th class="text-nowrap">Tanggal</th>
-                                   <th>Isi</th>
-                                   <th>Action</th>
-                              </tr>
-                              </thead>
-                              <tbody></tbody>
-                         </table>
-                    </div>
-               </div>
-          </div>
-     </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Artikel</h4>
+                <button class="btn btn-primary btn-sm" onclick="add_artikel()"><i class="fas fa-plus me-1"></i>
+                    Tambah Data
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="dataTable" class="display" style="min-width: 845px">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Judul</th>
+                                <th class="text-nowrap">Tanggal</th>
+                                <th>Isi</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <!-- Bootstrap 5 Modal -->
 <div class="modal fade" id="modal_form" tabindex="-1" aria-hidden="true">
-     <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-               <div class="modal-header">
-                    <h5 class="modal-title">Artikel Form</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body">
-                    <form action="#" id="form" class="form-horizontal">
-                         <input type="hidden" value="" name="idartikel"/>
-                         <div class="mb-3">
-                              <label class="form-label">Judul</label>
-                              <input type="text" name="judul" class="form-control" placeholder="Masukkan judul artikel">
-                              <span class="help-block text-danger"></span>
-                         </div>
-                         <div class="mb-3">
-                              <label class="form-label">Isi</label>
-                              <textarea name="isi" class="form-control" rows="6"
-                                        placeholder="Masukkan isi artikel"></textarea>
-                              <span class="help-block text-danger"></span>
-                         </div>
-                         <div class="mb-3" id="photo-preview">
-                              <div></div>
-                         </div>
-                         <div class="mb-3">
-                              <label class="form-label">Gambar</label>
-                              <input type="file" class="form-control dropify" name="file" data-height="200">
-                         </div>
-                    </form>
-               </div>
-               <div class="modal-footer">
-                    <button type="button" id="btnSave" onclick="save()" class="btn btn-primary"><i
-                                 class="fas fa-save me-1"></i> Simpan
-                    </button>
-                    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Batal</button>
-               </div>
-          </div>
-     </div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Artikel Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" id="form" class="form-horizontal">
+                    <input type="hidden" value="" name="idartikel" />
+                    <div class="mb-3">
+                        <label class="form-label">Judul</label>
+                        <input type="text" name="judul" class="form-control" placeholder="Masukkan judul artikel">
+                        <span class="help-block text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Isi</label>
+                        <textarea name="isi" class="form-control" rows="6"
+                            placeholder="Masukkan isi artikel"></textarea>
+                        <span class="help-block text-danger"></span>
+                    </div>
+                    <div class="mb-3" id="photo-preview">
+                        <div></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Gambar</label>
+                        <input type="file" class="form-control dropify" name="file" data-height="200" data-allowed-file-extensions="jpg png jpeg" data-show-errors="true" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" onclick="save()" class="btn btn-primary"><i
+                        class="fas fa-save me-1"></i> Simpan
+                </button>
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Batal</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 
 <!-- Dropify -->
-<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/dropify/css/dropify.min.css') ?>"/>
-<script src="<?= base_url('assets/v3/backend/vendor/dropify/js/dropify.min.js') ?>"></script>
+<link rel="stylesheet" href="<?= base_url('assets/v3/backend/vendor/dropify/css/dropify.css') ?>" />
+<script src="<?= base_url('assets/v3/backend/vendor/dropify/js/dropify.js') ?>"></script>
 
 <script type="text/javascript">
     var save_method;
-    var table;
+    var table, dropify;
     var base_url = '<?php echo base_url(); ?>';
 
     table = $('#dataTable').DataTable({
@@ -97,8 +97,7 @@
             "url": "<?php echo base_url('v2/articles/list/ajax') ?>",
             "type": "POST"
         },
-        "columnDefs": [
-            {
+        "columnDefs": [{
                 "targets": [-1],
                 "orderable": false,
             },
@@ -109,18 +108,22 @@
         ],
     });
 
-    $("input, textarea, select").change(function () {
+    $("input, textarea, select").change(function() {
         $(this).closest('.mb-3').find('.help-block').empty();
         $(this).removeClass('is-invalid');
     });
 
     try {
-        $('.dropify').dropify({
+        dropify = $('.dropify').dropify({
             messages: {
-                default: '<h6>Pilih Gambar. Anda juga bisa drag file kesini<br>Format: JPG, PNG</h6>',
+                default: '<h6>Pilih gambar! Anda juga bisa tarik & taruh gambar kesini<br>Format: JPG, PNG</h6>',
                 replace: 'Ganti',
                 remove: 'Hapus',
-                error: 'Error'
+                error: 'Kesalahan'
+            },
+            error: {
+                'fileSize': 'Ukuran file terlalu besar! (maks. {{ value }}).',
+                'imageFormat': 'Format gambar tidak diizinkan (hanya {{ value }}).'
             }
         });
     } catch (e) {
@@ -135,9 +138,12 @@
         var myModal = new bootstrap.Modal(document.getElementById('modal_form'));
         myModal.show();
         $('.modal-title').text('Tambah Artikel');
-        var drEvent = $('.dropify').dropify();
-        drEvent = drEvent.data('dropify');
-        if (drEvent) drEvent.resetPreview();
+
+        dropifyData = dropify.data('dropify');
+        if (dropifyData) {
+            dropifyData.resetPreview();
+            dropifyData.clearElement();
+        }
     }
 
     function edit_artikel(id) {
@@ -149,7 +155,7 @@
             url: "<?php echo site_url('v2/articles/manage/edit/') ?>" + id,
             type: "GET",
             dataType: "JSON",
-            success: function (data) {
+            success: function(data) {
                 $('[name="idartikel"]').val(data.idartikel);
                 $('[name="judul"]').val(data.judul);
                 $('[name="isi"]').val(data.isi);
@@ -158,11 +164,17 @@
                     $('#photo-preview div').html('Gambar lama: <img src="' + base_url + 'assets/upload/' + data.gambar + '" alt="" width="200" class="img-thumbnail"><input type="hidden" name="fileold" value="' + data.gambar + '">');
                 }
 
+                dropifyData = dropify.data('dropify');
+                if (dropifyData) {
+                    dropifyData.resetPreview();
+                    dropifyData.clearElement();
+                }
+
                 var myModal = new bootstrap.Modal(document.getElementById('modal_form'));
                 myModal.show();
                 $('.modal-title').text('Edit Artikel');
             },
-            error: function () {
+            error: function() {
                 alert('Error mengambil data');
             }
         });
@@ -189,8 +201,9 @@
             contentType: false,
             processData: false,
             dataType: "JSON",
-            success: function (data) {
+            success: function(data) {
                 if (data.status) {
+                    Swal.fire('Berhasil!', 'Data berhasil disimpan.', 'success');
                     bootstrap.Modal.getInstance(document.getElementById('modal_form')).hide();
                     reload_table();
                 } else {
@@ -201,7 +214,7 @@
                 }
                 $('#btnSave').text('Simpan').attr('disabled', false);
             },
-            error: function () {
+            error: function() {
                 alert('Error menyimpan data');
                 $('#btnSave').text('Simpan').attr('disabled', false);
             }
@@ -224,11 +237,11 @@
                     url: "<?php echo site_url('v2/articles/manage/delete/') ?>" + id,
                     type: "POST",
                     dataType: "JSON",
-                    success: function (data) {
+                    success: function(data) {
                         Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success');
                         reload_table();
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire('Error!', 'Gagal menghapus data.', 'error');
                     }
                 });

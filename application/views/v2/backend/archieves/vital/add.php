@@ -125,6 +125,12 @@
           margin-top: 20px;
      }
 
+     .sw>.tab-content {
+          height: auto !important;
+          overflow: visible !important;
+          /* Mencegah konten terpotong */
+     }
+
      /* ===== Step 3: PDF Viewer ===== */
      #pdf-container {
           position: relative;
@@ -379,13 +385,13 @@
                                              <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-md-6">
-                                             <label class="form-label fw-semibold">Jumlah Dokumen <span
+                                             <label class="form-label fw-semibold">Jumlah Berkas <span
                                                        class="text-danger">*</span></label>
                                              <div class="input-group">
                                                   <input type="number" id="jumlah" name="jumlah" class="form-control"
                                                        placeholder="0" min="1" autocomplete="off"
                                                        value="<?= (!empty($archieve)) ? $archieve->jumlah : '' ?>">
-                                                  <span class="input-group-text">dok</span>
+                                                  <span class="input-group-text">berkas</span>
                                              </div>
                                              <span class="help-block text-danger small"></span>
                                         </div>
@@ -397,55 +403,59 @@
                                                   value="<?= (!empty($archieve)) ? date('Y-m-d', strtotime($archieve->tanggal)) : '' ?>">
                                              <span class="help-block text-danger small"></span>
                                         </div> -->
-                                         <div class="col-md-6">
-                                              <label class="form-label fw-semibold">Media Rekam <span
-                                                        class="text-danger">*</span></label>
-                                              <select id="media" name="media" class="form-control select2">
-                                                   <option value="">Pilih Media Rekam</option>
-                                                   <option value="Tekstual / Kertas" <?= (!empty($archieve) && $archieve->media == 'Tekstual / Kertas') ? 'selected' : '' ?>>Tekstual / Kertas</option>
-                                                   <option value="Elektronik / Digital" <?= (!empty($archieve) && $archieve->media == 'Elektronik / Digital') ? 'selected' : '' ?>>Elektronik / Digital</option>
-                                                   <option value="Mikrofilm / Microform" <?= (!empty($archieve) && $archieve->media == 'Mikrofilm / Microform') ? 'selected' : '' ?>>Mikrofilm / Microform</option>
-                                                   <option value="Audio / Visual / Magnetik" <?= (!empty($archieve) && $archieve->media == 'Audio / Visual / Magnetik') ? 'selected' : '' ?>>Audio / Visual / Magnetik</option>
-                                              </select>
-                                              <span class="help-block text-danger small"></span>
-                                         </div>
-                                         <div class="col-md-6">
-                                              <label class="form-label fw-semibold">Jangka Simpan <span
-                                                        class="text-danger">*</span></label>
-                                              <input type="text" id="jangka_simpan" name="jangka_simpan" class="form-control"
-                                                   placeholder="Contoh: Permanen / 10 Tahun" autocomplete="off"
-                                                   value="<?= (!empty($archieve)) ? $archieve->jangka_simpan : '' ?>">
-                                              <span class="help-block text-danger small"></span>
-                                         </div>
-                                         <div class="col-md-6">
-                                              <label class="form-label fw-semibold">Metode Perlindungan <span
-                                                        class="text-danger">*</span></label>
-                                              <select id="metode_perlindungan" name="metode_perlindungan" class="form-control select2">
-                                                   <option value="">Pilih Metode Perlindungan</option>
-                                                   <option value="Duplikasi dan Pemencaran (Dispersal)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Pemencaran (Dispersal)') ? 'selected' : '' ?>>Duplikasi dan Pemencaran (Dispersal)</option>
-                                                   <option value="Peralatan Khusus (Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Peralatan Khusus (Vaulting)') ? 'selected' : '' ?>>Peralatan Khusus (Vaulting)</option>
-                                                   <option value="Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)') ? 'selected' : '' ?>>Duplikasi & Peralatan Khusus (Dispersal & Vaulting)</option>
-                                              </select>
-                                              <span class="help-block text-danger small"></span>
-                                         </div>
-                                         <div class="col-md-6">
-                                              <label class="form-label fw-semibold">Lokasi Simpan</label>
-                                              <input type="text" id="ruang_penyimpanan" name="ruang_penyimpanan" class="form-control"
-                                                   placeholder="Contoh: Depo Arsip, Ruang Vault, Box 01" autocomplete="off"
-                                                   value="<?= (!empty($archieve)) ? $archieve->ruang_penyimpanan : '' ?>">
-                                         </div>
-                                         <div class="col-12">
-                                              <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
-                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta"
-                                                   class="form-control" placeholder="Nama unit kerja pencipta arsip"
-                                                   autocomplete="off"
-                                                   value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>">
-                                         </div>
-                                         <div class="col-12">
-                                              <label class="form-label fw-semibold">Keterangan</label>
-                                              <textarea id="keterangan" name="keterangan" class="form-control" rows="2"
-                                                   placeholder="Keterangan tambahan" required><?= (!empty($archieve)) ? $archieve->deskripsi : '' ?></textarea>
-                                         </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Media Rekam <span
+                                                       class="text-danger">*</span></label>
+                                             <select id="media" name="media" class="form-control select2">
+                                                  <option value="">Pilih Media Rekam</option>
+                                                  <option value="Tekstual / Kertas" <?= (!empty($archieve) && $archieve->media == 'Tekstual / Kertas') ? 'selected' : '' ?>>Tekstual / Kertas</option>
+                                                  <option value="Elektronik / Digital" <?= (!empty($archieve) && $archieve->media == 'Elektronik / Digital') ? 'selected' : '' ?>>Elektronik / Digital</option>
+                                                  <option value="Mikrofilm / Microform" <?= (!empty($archieve) && $archieve->media == 'Mikrofilm / Microform') ? 'selected' : '' ?>>Mikrofilm / Microform</option>
+                                                  <option value="Audio / Visual / Magnetik" <?= (!empty($archieve) && $archieve->media == 'Audio / Visual / Magnetik') ? 'selected' : '' ?>>Audio / Visual / Magnetik</option>
+                                             </select>
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Jangka Simpan <span
+                                                       class="text-danger">*</span></label>
+                                             <input type="text" id="jangka_simpan" name="jangka_simpan" class="form-control"
+                                                  placeholder="Contoh: Permanen / 10 Tahun" autocomplete="off"
+                                                  value="<?= (!empty($archieve)) ? $archieve->jangka_simpan : '' ?>">
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Metode Perlindungan <span
+                                                       class="text-danger">*</span></label>
+                                             <select id="metode_perlindungan" name="metode_perlindungan" class="form-control select2">
+                                                  <option value="">Pilih Metode Perlindungan</option>
+                                                  <option value="Duplikasi dan Pemencaran (Dispersal)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Pemencaran (Dispersal)') ? 'selected' : '' ?>>Duplikasi dan Pemencaran (Dispersal)</option>
+                                                  <option value="Peralatan Khusus (Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Peralatan Khusus (Vaulting)') ? 'selected' : '' ?>>Peralatan Khusus (Vaulting)</option>
+                                                  <option value="Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)" <?= (!empty($archieve) && $archieve->metode_perlindungan == 'Duplikasi dan Peralatan Khusus (Dispersal & Vaulting)') ? 'selected' : '' ?>>Duplikasi & Peralatan Khusus (Dispersal & Vaulting)</option>
+                                             </select>
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                             <label class="form-label fw-semibold">Lokasi Simpan</label>
+                                             <input type="text" id="ruang_penyimpanan" name="ruang_penyimpanan" class="form-control"
+                                                  placeholder="Contoh: Depo Arsip, Ruang Vault, Box 01" autocomplete="off"
+                                                  value="<?= (!empty($archieve)) ? $archieve->ruang_penyimpanan : '' ?>">
+                                        </div>
+                                        <div class="col-12">
+                                             <label class="form-label fw-semibold">Unit Kerja Pencipta <span
+                                                       class="text-danger">*</span></label>
+                                             <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta"
+                                                  class="form-control" placeholder="Nama unit kerja pencipta arsip"
+                                                  autocomplete="off"
+                                                  value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>" required>
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
+                                        <div class="col-12">
+                                             <label class="form-label fw-semibold">Keterangan <span
+                                                       class="text-danger">*</span></label>
+                                             <textarea id="keterangan" name="keterangan" class="form-control" rows="2"
+                                                  placeholder="Keterangan tambahan" required><?= (!empty($archieve)) ? $archieve->deskripsi : '' ?></textarea>
+                                             <span class="help-block text-danger small"></span>
+                                        </div>
                                    </div>
                               </div>
 
@@ -567,6 +577,7 @@
           pageNum = 1,
           pageScale = 1.0,
           initialFile = $('#file_pdf_input').data('initial') ?? null,
+          tempFilename,
           hasExistingTTE = false,
           tteCheckInProgress = false,
           tteVerifyStatus = false;
@@ -608,43 +619,6 @@
      $('#smartwizard').on('leaveStep', function(e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
           if (stepDirection === 'forward') {
                if (currentStepIndex === 0) {
-                    const fileInitialElement = document.querySelector('#file_pdf_input');
-                    if (fileInitialElement.hasAttribute('data-initial') && fileInitialElement.getAttribute('data-initial').trim() !== "") {
-                         Swal.fire({
-                              title: "Mohon tunggu...",
-                              allowOutsideClick: false,
-                              allowEscapeKey: false,
-                              didOpen: function() {
-                                   Swal.showLoading();
-                              }
-                         });
-
-                         fetch("<?= base_url('assets/upload/berkas/') ?>" + initialFile)
-                              .then(response => response.blob())
-                              .then(data => {
-                                   const myFile = new File([data], initialFile, {
-                                        type: 'application/pdf',
-                                   });
-                                   if (myFile != null || myFile != '') {
-                                        // 2. Wrap the file in a DataTransfer object
-                                        const dataTransfer = new DataTransfer();
-                                        dataTransfer.items.add(myFile);
-
-                                        // 3. Set the input's files property
-                                        const fileInput = document.querySelector('#file_pdf_input');
-                                        fileInput.files = dataTransfer.files;
-
-                                        fileInput.dispatchEvent(new Event('change', {
-                                             bubbles: true
-                                        }));
-                                        // console.log("File loaded and change event fired.");
-                                        Swal.close();
-                                   } else {
-                                        Swal.fire("Kesalahan", `Gagal memuat draf pdf dengan nama: ${tempFileJSON}! Silahkan upload ulang.`, "error");
-                                   }
-                              });
-                    }
-
                     return validateStep1();
                }
 
@@ -670,9 +644,47 @@
           if (stepIndex === 2) {
                if (tempFilename) renderPdfPage(pageNum);
                $('#btnSimpan').removeClass('d-none');
-          } else if (stepIndex === 1 && hasExistingTTE) {
+          } else if (stepIndex === 1) {
+               const fileInitialElement = document.querySelector('#file_pdf_input');
+               if (fileInitialElement.hasAttribute('data-initial') && fileInitialElement.getAttribute('data-initial').trim() !== "") {
+                    Swal.fire({
+                         title: "Mohon tunggu...",
+                         allowOutsideClick: false,
+                         allowEscapeKey: false,
+                         didOpen: function() {
+                              Swal.showLoading();
+                         }
+                    });
+
+                    fetch("<?= base_url('assets/upload/berkas/') ?>" + initialFile)
+                         .then(response => response.blob())
+                         .then(data => {
+                              const myFile = new File([data], initialFile, {
+                                   type: 'application/pdf',
+                              });
+                              if (myFile != null || myFile != '') {
+                                   // 2. Wrap the file in a DataTransfer object
+                                   const dataTransfer = new DataTransfer();
+                                   dataTransfer.items.add(myFile);
+
+                                   // 3. Set the input's files property
+                                   const fileInput = document.querySelector('#file_pdf_input');
+                                   fileInput.files = dataTransfer.files;
+
+                                   fileInput.dispatchEvent(new Event('change', {
+                                        bubbles: true
+                                   }));
+                                   // console.log("File loaded and change event fired.");
+                                   Swal.close();
+                              } else {
+                                   Swal.fire("Kesalahan", `Gagal memuat draf pdf dengan nama: ${tempFileJSON}! Silahkan upload ulang.`, "error");
+                              }
+                         });
+               }
                // Tampilkan tombol Simpan di Step 2 jika sudah ada TTE
-               $('#btnSimpan').removeClass('d-none');
+               if (hasExistingTTE) {
+                    $('#btnSimpan').removeClass('d-none');
+               }
           } else {
                $('#btnSimpan').addClass('d-none');
           }
@@ -712,6 +724,10 @@
                {
                     id: 'metode_perlindungan',
                     label: 'Metode Perlindungan'
+               },
+               {
+                    id: 'unit_kerja_pencipta',
+                    label: 'Unit kerja pencipta'
                },
                {
                     id: 'keterangan',

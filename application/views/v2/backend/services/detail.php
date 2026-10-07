@@ -20,7 +20,12 @@ if ($service->status == 'reject') {
 <div class="page-titles">
      <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?= base_url('v2/backend/dashboards') ?>">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="<?= base_url('v2/services/list') ?>">Daftar Permohonan Perbaikan</a></li>
+          <?php if ($service->type == 'loan') { ?>
+               <li class="breadcrumb-item"><a href="<?= base_url('v2/services/list_loan') ?>">Daftar Permohonan Peminjaman Arsip</a></li>
+          <?php } else { ?>
+               <li class="breadcrumb-item"><a href="<?= base_url('v2/services/list') ?>">Daftar Permohonan Perbaikan</a></li>
+          <?php } ?>
+
           <li class="breadcrumb-item active"><a href="javascript:void(0);">Detail</a></li>
      </ol>
 </div>
@@ -114,10 +119,12 @@ if ($service->status == 'reject') {
                          <a href="javascript:void(0);" class="btn btn-sm btn-danger w-100 shadow btn-reject mb-3"><i class="fas fa-close me-2"></i> Tolak Permohonan</a>
                     <?php } ?>
 
-                    <?php if (file_exists('./data/repair/' . $service->document)) { ?>
+                    <?php if (file_exists(base_url('data/loan/' . $service->document))) { ?>
+                         <a href="<?= base_url('data/loan/' . $service->document); ?>" class="btn btn-sm btn-info shadow w-100 mb-3" target="_blank"><i class="fas fa-file-download me-2"></i> Download Dokumen Pendukung</a>
+                    <?php } else if (file_exists(base_url('data/repair/' . $service->document))) { ?>
                          <a href="<?= base_url('data/repair/' . $service->document); ?>" class="btn btn-sm btn-info shadow w-100 mb-3" target="_blank"><i class="fas fa-file-download me-2"></i> Download Dokumen Pendukung</a>
                     <?php } else { ?>
-                         <a href="javascript:void(0);" class="btn light btn-sm btn-outline-danger shadow w-100 mb-3 disabled"><i class="fas fa-exclamation-triangle me-2"></i> Download Dokumen Pendukung</a>
+                         <button type="button" class="btn light btn-sm btn-outline-danger shadow w-100 mb-3 disabled"><i class="fas fa-exclamation-triangle me-2"></i> Download Dokumen Pendukung</button>
                     <?php } ?>
 
                     <?php if ($employee->user_username == 'lutdinar') { ?>
@@ -136,9 +143,16 @@ if ($service->status == 'reject') {
                <div class="card-header">
                     <div class="media-body">
                          <div class="pull-end">
-                              <a href="<?= base_url('v2/services/list') ?>" class="btn btn-primary btn-sm">
-                                   <i class="fas fa-arrow-left me-1"></i> Kembali
-                              </a>
+                              <?php if ($service->type == 'repair') { ?>
+                                   <a href="<?= base_url('v2/services/list') ?>" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                                   </a>
+                              <?php } else { ?>
+                                   <a href="<?= base_url('v2/services/list_loan') ?>" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                                   </a>
+                              <?php } ?>
+
                          </div>
                          <h5 class="my-1"><?= $service->fullname ?? '-'; ?></h5>
                          <p class="read-content-email mb-0">#<span class="text-primary"><?= $service->code; ?></span></p>
@@ -159,21 +173,43 @@ if ($service->status == 'reject') {
                               <div><?= $service->description; ?></div>
                          </div>
 
+                         <?php if ($service->type == 'loan') { ?>
+                              <div class="mb-4 col-xl-6 col-sm-12">
+                                   <h6>Nama Arsip:</h6>
+                                   <div><?= $service->loan_archive_name ?? '-'; ?></div>
+                              </div>
+                              <div class="mb-4 col-xl-6 col-sm-12">
+                                   <h6>Periode Peminjaman:</h6>
+                                   <div><?= tgl_indo($service->loan_start_date) . ' s/d ' . tgl_indo($service->loan_end_date); ?></div>
+                              </div>
+                         <?php } ?>
+
                          <div class="col-xl-12">
                               <h6>Dokumen Pendukung:</h6>
-                              <?php if (file_exists('./data/repair/' . $service->document)) { ?>
+                              <?php if (file_exists(base_url('data/repair/' . $service->document))) { ?>
                                    <iframe src="<?= base_url('data/repair/' . $service->document); ?>" frameborder="0" width="100%" height="600px"></iframe>
                               <?php } else { ?>
-                                   <div class="alert alert-warning fade show">
-                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-                                             <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                                             <line x1="12" y1="9" x2="12" y2="13"></line>
-                                             <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                                        </svg>
-                                        <strong>Kesalahan!</strong> Terjadi kesalahan saat memuat dokumen pendukung atau dokumen pendukung tidak dapat ditemukan.
-                                   </div>
-                              <?php } ?>
+                                   <?php if (!empty($service->document)) { ?>
+                                        <div class="alert alert-danger fade show">
+                                             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                                                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                                                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                             </svg>
+                                             <strong>Kesalahan!</strong> Terjadi kesalahan saat memuat dokumen pendukung atau dokumen pendukung rusak.
+                                        </div>
+                                   <?php } else { ?>
+                                        <div class="alert alert-warning fade show">
+                                             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                                                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                                                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                             </svg>
+                                             <strong>Pemberitahuan!</strong> Dokumen pendukung tidak di unggah oleh pemohon atau dokumen pendukung tidak dapat ditemukan.
+                                        </div>
+                                   <?php } ?>
 
+                              <?php } ?>
                          </div>
                     </div>
                </div>
