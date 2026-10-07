@@ -11,7 +11,7 @@
                          <!-- <span class="badge badge-xs badge-success">New</span> -->
                     </a>
                </li>
-               <?php if ($this->session->userdata('next-role') === 'admin') : ?>
+               <?php if (in_array('admin', $employee->user_role)) : ?>
                     <li>
                          <a class="ai-icon" href="<?= base_url('v2/users') ?>">
                               <i class="flaticon-381-user-9"></i>
@@ -64,7 +64,7 @@
                     </li>
                <?php endif; ?>
 
-               <?php if (!in_array($this->session->userdata('next-role'), ['kepala_lkd', 'verifikator_lkd'])): ?>
+               <?php if (!in_array($employee->user_role, ['kepala_lkd', 'verifikator_lkd'])): ?>
                     <li>
                          <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                               <i class="flaticon-381-folder-14"></i>
@@ -77,7 +77,7 @@
                          </ul>
                     </li>
                <?php endif; ?>
-               <?php if (in_array($this->session->userdata('next-role'), ['kepala_lkd', 'verifikator_lkd'])): ?>
+               <?php if (in_array($employee->user_role, ['kepala_lkd', 'verifikator_lkd'])): ?>
                     <li>
                          <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                               <i class="flaticon-381-folder-14"></i>
@@ -98,7 +98,7 @@
                     </li>
                <?php endif; ?>
 
-               <?php if ($this->session->userdata('next-role') == 'operator') { ?>
+               <?php if (in_array('operator', $employee->user_role)) { ?>
                     <li>
                          <a class="ai-icon" href="<?= base_url('v2/archieves/inactives') ?>">
                               <i class="flaticon-381-folder-14"></i>
@@ -107,7 +107,7 @@
                     </li>
                <?php } ?>
 
-               <?php if ($this->session->userdata('next-role') == 'admin') { ?>
+               <?php if (in_array('admin', $employee->user_role)) { ?>
                     <li>
                          <a class="ai-icon" href="<?= base_url('v2/Logs/tte') ?>">
                               <i class="flaticon-381-file-2"></i>

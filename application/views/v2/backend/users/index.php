@@ -21,10 +21,10 @@
                     <div class="card-body">
                          <div class="row">
                               <div class="col-xl-3 col-sm-6">
-                                   <input type="text" class="form-control mb-3 mb-xl-0" id="search" placeholder="Cari username" autocomplete="off">
+                                   <input type="search" class="form-control mb-3 mb-xl-0" id="search" placeholder="Cari username" autocomplete="off">
                               </div>
                               <div class="col-xl-3 col-sm-6 mb-3 mb-xl-0">
-                                   <select id="role">
+                                   <select id="role_filter" multiple>
                                         <option value="">Pilih Hak Akses</option>
                                         <option value="admin">ADMIN</option>
                                         <option value="verifikator_skpd">VERIFIKATOR SKPD</option>
@@ -150,7 +150,7 @@
                               <small class="text-danger mb-3" id="note-pwd">*) Kosongkan <strong>Password & Konfirmasi Password</strong> apabila tidak akan diubah!</small>
                               <div class="mb-3 col-md-12">
                                    <label>Hak Akses <span class="text-danger">*</span></label>
-                                   <select name="role" id="add_role" class="" required>
+                                   <select name="role[]" id="role" class="" multiple="multiple" required>
                                         <option value="">Pilih Hak Akses</option>
                                         <option value="admin">ADMIN</option>
                                         <option value="verifikator_skpd">VERIFIKATOR SKPD</option>
@@ -185,8 +185,6 @@
           </div>
      </div>
 </div>
-<!-- REQUIRED VENDORS! -->
-<!-- <script src="<?= base_url('assets/v3/backend/') ?>vendor/global/global.min.js"></script> -->
 
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/select2/js/select2.full.min.js"></script>
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
@@ -198,16 +196,74 @@
 <script>
      $('#profile-employee').hide();
      var edit_modal = false;
-     let filter_role = $('#role').select2({
+     let filter_role = $('#role_filter').select2({
           width: "100%",
           debug: true,
           placeholder: 'Pilih Hak Akses'
      });
 
-     let add_role = $('#add_role').select2({
+     var $formProfileEmployee = $('#profile-employee');
+     var $add_role = $('#role');
+     $add_role.select2({
           width: "100%",
           dropdownParent: $('#add-user-modal .modal-content'),
-          placeholder: 'Pilih Hak Akses'
+          placeholder: 'Pilih Hak Akses',
+          // allowClear: true,
+          multiple: true,
+          required: true
+     });
+
+     var employeeRoles = ['kepala_skpd', 'kepala_lkd'];
+     var adminValue = 'admin';
+
+     function toggleFormProfileEmployee(currentValues) {
+          // Cek apakah ada value dalam array currentValues yang cocok dengan array pejabatRoles
+          var showForm = false;
+          if (currentValues && currentValues.length > 0) {
+               showForm = currentValues.some(function(val) {
+                    return employeeRoles.includes(val);
+               });
+          }
+
+          if (showForm) {
+               $formProfileEmployee.slideDown('fast'); // Tampilkan dengan efek transisi
+               addFv.enableValidator('nik');
+               addFv.enableValidator('nip');
+               addFv.enableValidator('position');
+               $('input[name="nik"]').prop('required', true);
+               $('input[name="nip"]').prop('required', true);
+               $('input[name="position"]').prop('required', true);
+          } else {
+               addFv.disableValidator('nik');
+               addFv.disableValidator('nip');
+               addFv.disableValidator('position');
+               $formProfileEmployee.slideUp('fast'); // Sembunyikan dengan efek transisi
+               // Opsional: Bersihkan input saat disembunyikan
+               $formProfileEmployee.find('input').val('');
+          }
+     }
+
+     $add_role.on('select2:selecting', function(e) {
+          var selectedValue = e.params.args.data.id;
+          var currentValues = $add_role.val() || [];
+
+          if (selectedValue === adminValue) {
+               e.preventDefault();
+               $add_role.val([adminValue]).trigger('change');
+               $add_role.select2('close');
+
+               // Karena jadi admin saja, sembunyikan form pejabat
+               toggleFormProfileEmployee([adminValue]);
+
+          } else if (currentValues.includes(adminValue)) {
+               e.preventDefault();
+               $add_role.val([selectedValue]).trigger('change');
+
+               // Cek apakah yang baru dipilih memicu form
+               toggleFormProfileEmployee([selectedValue]);
+          }
+
+          addFv.revalidateField('role[]');
      });
 
      let filter_skpd = $('#skpd').select2({
@@ -345,7 +401,7 @@
                zeroRecords: '<div class="alert alert-danger content-center" role="alert"><div class="alert-content"><p>Maaf, data tidak ditemukan...</p></div></div>',
                searchPlaceholder: 'Cari nama atau ticket pengaduan...',
                sSearch: '',
-              lengthMenu: "Tampilkan _MENU_ data",
+               lengthMenu: "Tampilkan _MENU_ data",
                paginate: {
                     next: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
                     previous: '<i class="fa fa-angle-left" aria-hidden="true"></i>'
@@ -359,24 +415,24 @@
                }
           }, {
                data: "username",
-              className: 'text-center'
+               className: 'text-center'
           }, {
                bSortable: !1,
-               data: "employee.fullname"
+               data: "fullname"
           }, {
                bSortable: !1,
-               data: "employee.phone",
-              className: 'text-center'
+               data: "phone",
+               className: 'text-center'
           }, {
-               data: "company.name",
-              className: 'text-center'
+               data: "company",
+               className: 'text-center'
           }, {
                data: "role",
-              className: 'text-center'
+               className: 'text-center'
           }, {
                data: "action",
                bSortable: !1,
-              className: 'text-center'
+               className: 'text-center'
           }]
      });
      $(".dataTables_paginate").addClass("pagination-rounded");
@@ -401,32 +457,35 @@
                     swal.close();
                     if (dao.status == 200) {
                          edit_modal = true;
-                         $('input[name="user"]').val(dao.data.user_id);
+                         $('input[name="user"]').val(dao.data.id);
                          $('input[name="fullname"]').val(dao.data.fullname);
                          $('input[name="email"]').val(dao.data.email);
                          $('input[name="phone"]').val(dao.data.phone);
-                         $('input[name="username"]').val(dao.data.user_username);
+                         $('input[name="username"]').val(dao.data.username);
 
-                         var companyOpt = new Option(dao.data.company_name, dao.data.company_id, true, true);
-                         $('select[name="skpd"]').append(companyOpt).trigger('change');
-                         add_role.val(dao.data.user_role).trigger('change');
-                         if (dao.data.user_role == 'kepala_skpd' || dao.data.user_role == 'kepala_lkd') {
-                              $('input[name="nik"]').val(dao.data.nik);
-                              $('input[name="nip"]').val(dao.data.nip);
-                              $('input[name="position"]').val(dao.data.jabatan);
-                              $('#profile-employee').show();
+                         if (dao.data.role != null && dao.data.role != "") {
+                              $add_role.val(dao.data.role).trigger('change');
+                              if (dao.data.role.includes('kepala_skpd') || dao.data.role.includes('kepala_lkd')) {
+                                   $('input[name="nik"]').val(dao.data.nik);
+                                   $('input[name="nip"]').val(dao.data.nip);
+                                   $('input[name="position"]').val(dao.data.jabatan);
+                                   $('#profile-employee').show();
+                              }
                          }
+
+                         var companyOpt = new Option(dao.data.name, dao.data.company_id, true, true);
+                         $('select[name="skpd"]').append(companyOpt).trigger('change');
                          document.querySelector('#modal-title').innerHTML = 'Ubah Pengguna';
                          $('.add-user-modal').modal('show');
                     } else {
-                         swal({
+                         Swal.fire({
                               title: 'Kesalahan',
                               text: dao.message,
                               icon: 'error'
                          });
                     }
                } else {
-                    swal({
+                    Swal.fire({
                          title: 'Kesalahan',
                          text: 'Terjadi kesalahan saat menghubungkan ke server...',
                          icon: 'error'
@@ -691,7 +750,7 @@
                          },
                     }
                },
-               role: {
+               'role[]': {
                     validators: {
                          notEmpty: {
                               message: 'Hak akses harus dipilih dan tidak boleh kosong!'
@@ -856,33 +915,14 @@
           }
      });
 
-     add_role.change(function() {
-          if (this.value == 'kepala_skpd' || this.value == 'kepala_lkd') {
-               addFv.enableValidator('nik');
-               addFv.enableValidator('nip');
-               addFv.enableValidator('position');
-               $('input[name="nik"]').prop('required', true);
-               $('input[name="nip"]').prop('required', true);
-               $('input[name="position"]').prop('required', true);
-               $('#profile-employee').show();
-          } else {
-               addFv.disableValidator('nik');
-               addFv.disableValidator('nip');
-               addFv.disableValidator('position');
-               $('#profile-employee').hide();
-               $('input[name="nik"]').val(null);
-               $('input[name="nip"]').val(null);
-               $('input[name="position"]').val(null);
-          }
-
-          addFv.revalidateField('nik');
-          addFv.revalidateField('nip');
-          addFv.revalidateField('position');
+     $add_role.on('change', function() {
+          var currentValues = $(this).val() || [];
+          toggleFormProfileEmployee(currentValues);
      });
 
      let add_company_modal = document.querySelector('.add-user-modal');
      add_company_modal.addEventListener('hide.bs.modal', function(e) {
-          add_role.val(null).trigger('change');
+          $add_role.val(null).trigger('change');
           add_skpd.val(null).trigger('change');
           $('#add-form')[0].reset();
           addFv.resetField('fullname', true);
@@ -891,7 +931,7 @@
           addFv.resetField('username', true);
           addFv.resetField('password', true);
           addFv.resetField('conf_password', true);
-          addFv.resetField('role', true);
+          addFv.resetField('role[]', true);
           addFv.resetField('skpd', true);
           addFv.resetField('nik', true);
           addFv.resetField('nip', true);

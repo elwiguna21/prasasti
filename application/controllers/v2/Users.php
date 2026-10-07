@@ -46,9 +46,12 @@ class Users extends MY_Controller
                die;
           }
 
+          $roles    = $this->input->post('role');
+          $roles_str     = implode(';', $roles);
+
           $data_user     = array(
                'username'          => strtolower($this->input->post('username')),
-               'role'              => strtolower($this->input->post('role')),
+               'role'              => strtolower($roles_str),
                'company'           => $this->input->post('skpd'),
           );
 
@@ -126,16 +129,16 @@ class Users extends MY_Controller
           }
 
           $columns        = array(
-               0 => 'id',
-               1 => 'username',
+               0 => 'user.id',
+               1 => 'user.username',
                // 3 => 'role',
-               4 => 'company',
-               5 => 'role'
+               4 => 'user.company',
+               5 => 'user.role'
           );
 
           $limit      = $this->input->post('length');
           $start      = $this->input->post('start');
-          $order      = (!empty($this->input->post('order'))) ? $columns[$this->input->post('order')[0]['column']] : "id";
+          $order      = (!empty($this->input->post('order'))) ? $columns[$this->input->post('order')[0]['column']] : "user.id";
           $dir        = (!empty($this->input->post('order'))) ? $this->input->post('order')[0]['dir'] : "asc";
           // $search     = (!empty($this->input->post('search')['value'])) ? $this->input->post('search')['value'] : null;
           $search        = $this->input->post('search');
@@ -152,11 +155,13 @@ class Users extends MY_Controller
           // $where['username !='] = 'Admin';
 
           if (!empty($role)) {
-               $where['role']      = $role;
+               // $where['user.role']      = $role;
+               $role_arr = explode(',', $role);
+               $where['role']           = $role_arr;
           }
 
           if (!empty($company)) {
-               $where['company']   = $company;
+               $where['user.company']   = $company;
           }
 
           $total_rows         = $this->user->get_all_where_count($where);
@@ -175,45 +180,43 @@ class Users extends MY_Controller
                     $btn_delete    = '<a href="javascript:void(0);" class="btn btn-danger shadow btn-xs sharp btn-delete" data-user="' . $user->id . '" data-uname="' . $user->username . '"><i class="fa fa-trash"></i></a>';
                     $action        = '<div class="d-flex">' . $btn_edit . $btn_delete . '</div>';
 
-                    // <span class="badge badge-sm light badge-secondary">Secondary</span>
-                    $roles = '';
-                    switch ($user->role) {
-                         case 'admin':
-                              $roles    = '<span class="badge badge-sm light badge-success">ADMIN</span>';
-                              break;
-                         case 'verifikator_skpd':
-                              $roles    = '<span class="badge badge-sm light badge-dark">VERIFIKATOR SKPD</span>';
-                              break;
-                         case 'verifikator_lkd':
-                              $roles    = '<span class="badge badge-sm light badge-info">VERIFIKATOR LKD</span>';
-                              break;
-                         case 'kepala_skpd':
-                              $roles    = '<span class="badge badge-sm light badge-primary">KEPALA SKPD</span>';
-                              break;
-                         case 'kepala_lkd':
-                              $roles    = '<span class="badge badge-sm light badge-warning">KEPALA LKD</span>';
-                              break;
-                         case 'operator':
-                              $roles    = '<span class="badge badge-sm light badge-danger">OPERATOR</span>';
-                              break;
-                         default:
-                              $roles    = '-';
-                              break;
+                    $badge_colors = [
+                         'admin'            => 'badge-success',
+                         'verifikator_skpd' => 'badge-dark',
+                         'verifikator_lkd'  => 'badge-info',
+                         'kepala_skpd'      => 'badge-primary',
+                         'kepala_lkd'       => 'badge-warning',
+                         'operator'         => 'badge-danger'
+                    ];
+                    $roles_arr = explode(';', $user->role);
+                    $badge_html    = '';
+                    foreach ($roles_arr as $role) {
+                         $class = isset($badge_colors[$role]) ? $badge_colors[$role] : 'badge-secondary';
+                         $label = strtoupper(str_replace('_', ' ', $role));
+
+                         $badge_html    .= '<span class="badge badge-sm light ' . $class . ' me-1">' . $label . '</span>';
                     }
 
-                    if (empty($user->employee)) {
-                         $user->employee->fullname     = '-';
-                         $user->employee->phone        = '-';
-                    }
+                    // if (empty($user->employee)) {
+                    //      $user->employee->fullname     = '-';
+                    //      $user->employee->phone        = '-';
+                    // }
 
-                    if (empty($user->company)) {
-                         $user->company = new stdClass();
-                         $user->company->name          = '-';
-                    }
+                    // if (empty($user->company)) {
+                    //      $user->company = new stdClass();
+                    //      $user->company->name          = '-';
+                    // }
+                    $nested['id']       = $user->id;
+                    $nested['username'] = $user->username;
+                    $nested['fullname'] = $user->fullname;
+                    $nested['phone']    = $user->phone;
+                    $nested['company']  = $user->name;
+                    $nested['role']     = $badge_html;
+                    $nested['action']   = $action;
 
-                    $user->role         = $roles;
-                    $user->action       = $action;
-                    $data[]             = $user;
+                    // $user->role         = $role;
+                    // $user->action       = $action;
+                    $data[]             = $nested;
                }
           }
 
@@ -229,26 +232,45 @@ class Users extends MY_Controller
 
      public function get_user_json()
      {
+          $is_ajax = $this->input->is_ajax_request();
+          $respond = function ($status, $payload, $message, $heading) use ($is_ajax) {
+               if ($is_ajax) {
+                    $this->output
+                         ->set_status_header($status)
+                         ->set_content_type('application/json')
+                         ->set_output(json_encode($payload));
+                    return;
+               }
+
+               show_error($message, $status, $heading);
+          };
+
           if ($this->input->method() != 'post') {
-               echo json_encode(array('status' => 403, 'message' => 'Your request is not allowed!'));
-               die;
+               $respond(405, array('status' => 405, 'message' => 'Your request is not allowed!'), 'Your request is not allowed!', 'Method Not Allowed');
+               return;
           }
+
           if (empty($_POST)) {
-               echo json_encode(array('status' => 500, 'message' => 'Please fill a form and try again!'));
-               die;
+               $respond(500, array('status' => 500, 'message' => 'Please fill a form and try again!'), 'Please fill a form and try again!', 'Method Not Allowed');
+               return;
           }
 
           $where    = array(
                'employee.user'     => $this->encryption->decrypt($this->input->post('user')),
                'user.username'     => $this->input->post('uname')
           );
-          $user     = $this->employee->get_single_where($where);
+
+          $user     = $this->user->get_single_where($where);
           if (!empty($user)) {
-               $user->company_id   = $this->encryption->decrypt($user->company_id);
-               echo json_encode(array('status' => 200, 'message' => 'Pengguna berhasil ditemukan', 'data' => $user));
+               // $user->company_id   = $this->encryption->decrypt($user->company_id);
+               $status             = 200;
+               $message            = 'Pengguna berhasil ditemukan.';
           } else {
-               echo json_encode(array('status' => 404, 'message' => 'Pengguna gagal ditemukan!', 'data' => $user));
+               $status             = 503;
+               $message            = 'Pengguna gagal ditemukan! Silahkan coba kembali.';
           }
+
+          echo json_encode(array('status' => $status, 'message' => $message, 'data' => $user));
      }
 
      public function get_skpd_json()

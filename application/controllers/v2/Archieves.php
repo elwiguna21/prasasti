@@ -2,6 +2,8 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Ramsey\Uuid\Uuid;
+
 class Archieves extends MY_Controller
 {
      public $user_auth = null;
@@ -331,7 +333,7 @@ class Archieves extends MY_Controller
 
           $kondisi_arsip = "(jenis_arsip = 'vital')";
           $where[$kondisi_arsip] = NULL;
-          if ($this->session->userdata('next-role') != 'admin') {
+          if (!in_array('admin', $this->user_auth->user_role)) {
                $where['nomor_skpd'] = $this->user_auth->no_company;
           } else {
                $where['nomor_skpd !='] = null;
@@ -360,7 +362,7 @@ class Archieves extends MY_Controller
                die;
           }
 
-          if ($this->user_auth->user_role != 'operator') {
+          if (!in_array('operator', $this->user_auth->user_role)) {
                show_error('Anda tidak dapat mengakses halaman ini!', 500);
                die;
           }
@@ -388,7 +390,7 @@ class Archieves extends MY_Controller
           if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
                show_error('Not Authorize!', 403);
                die;
-          } else if ($this->user_auth->user_role != 'operator') {
+          } else if (!in_array('operator', $this->user_auth->user_role)) {
                show_error('Anda tidak dapat mengakses halaman ini!', 403);
                die;
           }
@@ -630,7 +632,7 @@ class Archieves extends MY_Controller
           if (empty($this->user_auth) && $this->session->userdata('next-state') != 'logged_in') {
                show_error('Not Authorize!', 403);
                die;
-          } else if (!in_array($this->user_auth->user_role, array('kepala_skpd'))) {
+          } else if (!in_array('kepala_skpd', $this->user_auth->user_role)) {
                show_error('Anda tidak dapat mengakses halaman ini!', 403);
                die;
           }
@@ -663,6 +665,16 @@ class Archieves extends MY_Controller
                redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
           }
 
+          $hash     = Uuid::uuid7(new DateTimeImmutable("now", new DateTimeZone('Asia/Jakarta')));
+          $where    = array('id' => $archieve->id);
+          $update_hash_data   = array('hash' => $hash);
+
+          $update_archieve = $this->archieve->update_entry($update_hash_data, $where);
+          if (!$update_archieve && $update_archieve == 0) {
+               $this->session->set_flashdata(array('status' => 500, 'message' => "Terjadi kesalahan saat engkripsi!"));
+               redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
+          }
+
           // load library Watermark
           $this->load->library('pdf_watermark');
           $source_pdf    = $path_pdf;
@@ -687,7 +699,14 @@ class Archieves extends MY_Controller
           $jabatan = !empty($this->user_auth->jabatan) ? $this->user_auth->jabatan : '-';
 
           // Link QR = URL halaman publik verifikasi dokumen (tanpa login)
-          $linkQR = base_url('v2/frontend/verifikasi_dokumen/index/' . $archieve->id);
+          // $linkQR = base_url('v2/frontend/verifikasi_dokumen/index/' . $archieve->id);
+          $linkQR = base_url('v2/frontend/verifikasi_dokumen/index/' . $hash);
+
+
+          if (!extension_loaded('gd') && !function_exists('imagecreatefrompng')) {
+               show_error('GD Extension inactive!', 500);
+               die;
+          }
 
           // Generate image TTE (base64 PNG)
           $image_ttd_base64 = $this->imagettd->generate(
@@ -827,7 +846,7 @@ class Archieves extends MY_Controller
 
                $this->session->set_flashdata(array('status' => 200, 'message' => 'Dokumen arsip berhasil di TTE oleh Anda.'));
           } else {
-               $this->session->set_flashdata(array('status' => 200, 'message' => "Dokumen arsip gagal di TTE oleh Anda! {$result['message']}"));
+               $this->session->set_flashdata(array('status' => 500, 'message' => "Dokumen arsip gagal di TTE oleh Anda! {$result['message']}"));
           }
 
           redirect('v2/alih_media_arsip_vital/detail?' . http_build_query($params));
@@ -1086,27 +1105,50 @@ class Archieves extends MY_Controller
           //	     $where["berkas.jenis_arsip IN ('vital', 'usul_serah')"] = null;
           $where["berkas.jenis_arsip IN ('vital')"] = null;
 
-          switch ($this->session->userdata('next-role')) {
-               case 'operator':
-                    $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
-                    break;
-               case 'verifikator_skpd':
-                    $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
-                    $where['berkas.verifikator'] = 'SKPD';
-                    $where['berkas.verifikasi_status !='] = null;
-                    break;
-               case 'kepala_skpd':
-                    $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
-                    // $kondisi_tte_status                       = "(berkas.tte_status = 'Y' OR berkas.tte_status = 'N' OR berkas.tte_status IS NULL)";
-                    // $where[$kondisi_tte_status]               = NULL;
-                    $where['berkas.tte_status !='] = null;
-                    $where['berkas.verifikasi_status'] = 'Y';
-                    break;
-               default:
-                    $where['berkas.nomor_skpd !='] = null;
-                    // $where['berkas.tte_status']               = 'Y';
-                    break;
+          foreach ($this->session->userdata('next-role') as $role) {
+               switch ($role) {
+                    case 'operator':
+                         $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
+                         break;
+                    case 'verifikator_skpd':
+                         $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
+                         $where['berkas.verifikator'] = 'SKPD';
+                         $where['berkas.verifikasi_status !='] = null;
+                         break;
+                    case 'kepala_skpd':
+                         $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
+                         // $kondisi_tte_status                       = "(berkas.tte_status = 'Y' OR berkas.tte_status = 'N' OR berkas.tte_status IS NULL)";
+                         // $where[$kondisi_tte_status]               = NULL;
+                         $where['berkas.tte_status !='] = null;
+                         $where['berkas.verifikasi_status'] = 'Y';
+                         break;
+                    default:
+                         $where['berkas.nomor_skpd !='] = null;
+                         // $where['berkas.tte_status']               = 'Y';
+                         break;
+               }
           }
+          // switch ($this->session->userdata('next-role')) {
+          //      case 'operator':
+          //           $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
+          //           break;
+          //      case 'verifikator_skpd':
+          //           $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
+          //           $where['berkas.verifikator'] = 'SKPD';
+          //           $where['berkas.verifikasi_status !='] = null;
+          //           break;
+          //      case 'kepala_skpd':
+          //           $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
+          //           // $kondisi_tte_status                       = "(berkas.tte_status = 'Y' OR berkas.tte_status = 'N' OR berkas.tte_status IS NULL)";
+          //           // $where[$kondisi_tte_status]               = NULL;
+          //           $where['berkas.tte_status !='] = null;
+          //           $where['berkas.verifikasi_status'] = 'Y';
+          //           break;
+          //      default:
+          //           $where['berkas.nomor_skpd !='] = null;
+          //           // $where['berkas.tte_status']               = 'Y';
+          //           break;
+          // }
 
           if (!empty($status)) {
                switch ($status) {
@@ -2223,7 +2265,7 @@ class Archieves extends MY_Controller
 
      public function inactives()
      {
-          if (empty($this->user_auth) or $this->user_auth->user_role != 'operator') {
+          if (empty($this->user_auth) or !in_array('operator', $this->user_auth->user_role)) {
                show_error('Not Authorize!', 401);
                die;
           }
@@ -2270,7 +2312,7 @@ class Archieves extends MY_Controller
 
           $where["(berkas.jenis_arsip = 'inaktif' OR berkas.jenis_arsip IS NULL)"] = null;
 
-          if ($this->user_auth->user_role == 'operator') {
+          if (in_array('operator', $this->user_auth->user_role)) {
                $where['berkas.nomor_skpd'] = $this->user_auth->no_company;
           } else {
                $where['berkas.nomor_skpd !='] = null;

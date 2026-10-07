@@ -125,6 +125,12 @@
           margin-top: 20px;
      }
 
+     .sw>.tab-content {
+          height: auto !important;
+          overflow: visible !important;
+          /* Mencegah konten terpotong */
+     }
+
      /* ===== Step 3: PDF Viewer ===== */
      #pdf-container {
           position: relative;
@@ -435,16 +441,20 @@
                                                   value="<?= (!empty($archieve)) ? $archieve->ruang_penyimpanan : '' ?>">
                                         </div>
                                         <div class="col-12">
-                                             <label class="form-label fw-semibold">Unit Kerja Pencipta</label>
+                                             <label class="form-label fw-semibold">Unit Kerja Pencipta <span
+                                                       class="text-danger">*</span></label>
                                              <input type="text" id="unit_kerja_pencipta" name="unit_kerja_pencipta"
                                                   class="form-control" placeholder="Nama unit kerja pencipta arsip"
                                                   autocomplete="off"
-                                                  value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>">
+                                                  value="<?= (!empty($archieve)) ? $archieve->unit_kerja_pencipta : '' ?>" required>
+                                             <span class="help-block text-danger small"></span>
                                         </div>
                                         <div class="col-12">
-                                             <label class="form-label fw-semibold">Keterangan</label>
+                                             <label class="form-label fw-semibold">Keterangan <span
+                                                       class="text-danger">*</span></label>
                                              <textarea id="keterangan" name="keterangan" class="form-control" rows="2"
                                                   placeholder="Keterangan tambahan" required><?= (!empty($archieve)) ? $archieve->deskripsi : '' ?></textarea>
+                                             <span class="help-block text-danger small"></span>
                                         </div>
                                    </div>
                               </div>
@@ -567,6 +577,7 @@
           pageNum = 1,
           pageScale = 1.0,
           initialFile = $('#file_pdf_input').data('initial') ?? null,
+          tempFilename,
           hasExistingTTE = false,
           tteCheckInProgress = false,
           tteVerifyStatus = false;
@@ -608,43 +619,6 @@
      $('#smartwizard').on('leaveStep', function(e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
           if (stepDirection === 'forward') {
                if (currentStepIndex === 0) {
-                    const fileInitialElement = document.querySelector('#file_pdf_input');
-                    if (fileInitialElement.hasAttribute('data-initial') && fileInitialElement.getAttribute('data-initial').trim() !== "") {
-                         Swal.fire({
-                              title: "Mohon tunggu...",
-                              allowOutsideClick: false,
-                              allowEscapeKey: false,
-                              didOpen: function() {
-                                   Swal.showLoading();
-                              }
-                         });
-
-                         fetch("<?= base_url('assets/upload/berkas/') ?>" + initialFile)
-                              .then(response => response.blob())
-                              .then(data => {
-                                   const myFile = new File([data], initialFile, {
-                                        type: 'application/pdf',
-                                   });
-                                   if (myFile != null || myFile != '') {
-                                        // 2. Wrap the file in a DataTransfer object
-                                        const dataTransfer = new DataTransfer();
-                                        dataTransfer.items.add(myFile);
-
-                                        // 3. Set the input's files property
-                                        const fileInput = document.querySelector('#file_pdf_input');
-                                        fileInput.files = dataTransfer.files;
-
-                                        fileInput.dispatchEvent(new Event('change', {
-                                             bubbles: true
-                                        }));
-                                        // console.log("File loaded and change event fired.");
-                                        Swal.close();
-                                   } else {
-                                        Swal.fire("Kesalahan", `Gagal memuat draf pdf dengan nama: ${tempFileJSON}! Silahkan upload ulang.`, "error");
-                                   }
-                              });
-                    }
-
                     return validateStep1();
                }
 
@@ -670,9 +644,47 @@
           if (stepIndex === 2) {
                if (tempFilename) renderPdfPage(pageNum);
                $('#btnSimpan').removeClass('d-none');
-          } else if (stepIndex === 1 && hasExistingTTE) {
+          } else if (stepIndex === 1) {
+               const fileInitialElement = document.querySelector('#file_pdf_input');
+               if (fileInitialElement.hasAttribute('data-initial') && fileInitialElement.getAttribute('data-initial').trim() !== "") {
+                    Swal.fire({
+                         title: "Mohon tunggu...",
+                         allowOutsideClick: false,
+                         allowEscapeKey: false,
+                         didOpen: function() {
+                              Swal.showLoading();
+                         }
+                    });
+
+                    fetch("<?= base_url('assets/upload/berkas/') ?>" + initialFile)
+                         .then(response => response.blob())
+                         .then(data => {
+                              const myFile = new File([data], initialFile, {
+                                   type: 'application/pdf',
+                              });
+                              if (myFile != null || myFile != '') {
+                                   // 2. Wrap the file in a DataTransfer object
+                                   const dataTransfer = new DataTransfer();
+                                   dataTransfer.items.add(myFile);
+
+                                   // 3. Set the input's files property
+                                   const fileInput = document.querySelector('#file_pdf_input');
+                                   fileInput.files = dataTransfer.files;
+
+                                   fileInput.dispatchEvent(new Event('change', {
+                                        bubbles: true
+                                   }));
+                                   // console.log("File loaded and change event fired.");
+                                   Swal.close();
+                              } else {
+                                   Swal.fire("Kesalahan", `Gagal memuat draf pdf dengan nama: ${tempFileJSON}! Silahkan upload ulang.`, "error");
+                              }
+                         });
+               }
                // Tampilkan tombol Simpan di Step 2 jika sudah ada TTE
-               $('#btnSimpan').removeClass('d-none');
+               if (hasExistingTTE) {
+                    $('#btnSimpan').removeClass('d-none');
+               }
           } else {
                $('#btnSimpan').addClass('d-none');
           }
@@ -712,6 +724,10 @@
                {
                     id: 'metode_perlindungan',
                     label: 'Metode Perlindungan'
+               },
+               {
+                    id: 'unit_kerja_pencipta',
+                    label: 'Unit kerja pencipta'
                },
                {
                     id: 'keterangan',

@@ -1,11 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Ramsey\Uuid\Uuid;
+
 class VerifikasiDokumen extends MY_Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('v2/Archieve', 'archieve');
 		$this->load->model('v2/Berkas', 'berkas');
 	}
 
@@ -20,7 +23,13 @@ class VerifikasiDokumen extends MY_Controller
 			return;
 		}
 
-		$berkas = $this->berkas->get_by_id($id);
+		$checked = Uuid::isValid($id);
+		if (Uuid::isValid($id)) {
+			$berkas = $this->archieve->get_single_where(array('hash' => $id));
+		} else {
+			$berkas = $this->berkas->get_by_id($id);
+		}
+
 		if (empty($berkas)) {
 			$data['title'] = 'Dokumen Tidak Ditemukan';
 			$data['berkas'] = null;
@@ -44,7 +53,7 @@ class VerifikasiDokumen extends MY_Controller
 			$data['berkas'] = $berkas;
 		}
 
-//	   echo json_encode($data);die;
+		//	   echo json_encode($data);die;
 
 		$this->frontend('v2/frontend/verifikasi_dokumen', $data);
 	}

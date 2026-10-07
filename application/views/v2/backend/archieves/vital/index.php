@@ -105,11 +105,11 @@
                <div class="cm-content-body form excerpt">
                     <div class="card-body">
                          <div class="row">
-                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-3' : 'col-xl-4' ?> col-sm-12">
-                                   <input type="text" class="form-control mb-xl-0 mb-3" id="search"
+                              <div class="<?= (in_array('admin', $employee->user_role)) ? 'col-xl-3' : 'col-xl-4' ?> col-sm-12 mb-xl-0 mb-3">
+                                   <input type="text" class="form-control" id="search"
                                         placeholder="Cari klasifikasi atau indeks arsip..." autocomplete="off">
                               </div>
-                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-2' : 'col-xl-3' ?> col-sm-12">
+                              <div class="<?= (in_array('admin', $employee->user_role)) ? 'col-xl-2' : 'col-xl-3' ?> col-sm-12 mb-xl-0 mb-3">
                                    <select id="status">
                                         <option value="">Semua Status</option>
                                         <option value="verify_waiting">Menunggu Verifikasi</option>
@@ -120,7 +120,7 @@
                                         <option value="tte_reject">Tandatangan Ditolak</option>
                                    </select>
                               </div>
-                              <div class="col-xl-2 col-sm-12">
+                              <div class="col-xl-2 col-sm-12 mb-xl-0 mb-3">
                                    <select name="" id="year">
                                         <option value="">Semua Tahun</option>
                                         <?php foreach ($years as $year) { ?>
@@ -129,8 +129,8 @@
                                    </select>
                               </div>
 
-                              <?php if ($this->session->userdata('next-role') == 'admin') { ?>
-                                   <div class="col-xl-2 col-sm-12">
+                              <?php if (in_array('admin', $employee->user_role)) { ?>
+                                   <div class="col-xl-2 col-sm-12 mb-xl-0 mb-3">
                                         <select id="company">
                                              <option value="">Semua SKPD</option>
                                         </select>
@@ -164,7 +164,7 @@
                                    (BAST)</a>
 					<?php } ?> -->
 
-                         <?php if ($employee->user_role == 'operator') { ?>
+                         <?php if (in_array('operator', $employee->user_role)) { ?>
                               <a href="<?= base_url('v2/alih_media_arsip_vital/add') ?>" class="btn btn-primary btn-sm shadow"><i
                                         class="fal fa-plus me-1"></i> Tambah Arsip Vital</a>
                          <?php } ?>
@@ -186,7 +186,7 @@
                                              <th class="text-center">Kurun Waktu</th>
                                              <th class="text-center">Jumlah</th>
                                              <th class="text-center">Status</th>
-                                             <?php if ($employee->user_role == 'admin') { ?>
+                                             <?php if (in_array('admin', $employee->user_role)) { ?>
                                                   <th class="text-center">SKPD</th>
                                              <?php } ?>
                                              <th class="text-center">Aksi</th>
@@ -205,7 +205,7 @@
 <script src="<?= base_url('assets/v3/backend/') ?>vendor/datatables/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url('assets/v3/backend/vendor/select2/js/select2.full.min.js') ?>"></script>
 <script>
-     <?php if ($employee->user_role == 'admin') { ?>
+     <?php if (in_array('admin', $employee->user_role)) { ?>
           let company = $('#company').select2({
                width: '100%',
                placeholder: 'Pilih SKPD',
@@ -323,7 +323,7 @@
                     data: "status",
                     className: 'text-center'
                },
-               <?php if ($employee->user_role == 'admin') { ?> {
+               <?php if (in_array('admin', $employee->user_role)) { ?> {
                          bSortable: !1,
                          data: "company",
                          className: 'text-center'
