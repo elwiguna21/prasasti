@@ -45,13 +45,34 @@ class Berkas extends CI_Model
         $this->filter_tahun = $tahun;
     }
 
+    /**
+     * Join untuk menentukan SKPD pemilik berkas.
+     * Utama: berkas.nomor_skpd -> company.no_company
+     * Fallback (data lama dengan nomor_skpd kosong): berkas.user -> user.company -> company.id
+     */
+    private function _join_skpd()
+    {
+        $this->db->join('company as skpd', 'skpd.no_company = berkas.nomor_skpd', 'left');
+        $this->db->join('user as pembuat_user', 'pembuat_user.id = berkas.user', 'left');
+        $this->db->join('company as pembuat_company', 'pembuat_company.id = pembuat_user.company', 'left');
+    }
+
+    private function _apply_filter_skpd()
+    {
+        if ($this->filter_skpd !== null && $this->filter_skpd !== '') {
+            $skpd = $this->db->escape($this->filter_skpd);
+            $this->db->where("(berkas.nomor_skpd = {$skpd} OR ((berkas.nomor_skpd IS NULL OR berkas.nomor_skpd = '') AND pembuat_company.no_company = {$skpd}))", null, false);
+        }
+    }
+
     private function _get_datatables_query()
     {
         // Select kolom yang membedakan dengan id dari tabel lain
-        $this->db->select('berkas.*, company.name as nama_skpd_inputter');
+        $this->db->select('berkas.*, company.name as nama_skpd_inputter, COALESCE(skpd.name, pembuat_company.name) as nama_skpd', false);
         $this->db->from($this->table);
         $this->db->join('user', 'berkas.verifikasi_user = user.id', 'left');
         $this->db->join('company', 'user.company = company.id', 'left');
+        $this->_join_skpd();
         
         $this->db->where('berkas.deleted_at', null);
 
@@ -59,9 +80,7 @@ class Berkas extends CI_Model
             $this->db->where('berkas.jenis_arsip', $this->jenis_arsip);
         }
 
-        if ($this->filter_skpd !== null && $this->filter_skpd !== '') {
-            $this->db->where('berkas.nomor_skpd', $this->filter_skpd);
-        }
+        $this->_apply_filter_skpd();
 
         if ($this->filter_tahun !== null && $this->filter_tahun !== '') {
             $this->db->where('berkas.tahun', $this->filter_tahun);
@@ -135,15 +154,14 @@ class Berkas extends CI_Model
         $this->db->from($this->table);
         $this->db->join('user', 'berkas.verifikasi_user = user.id', 'left');
         $this->db->join('company', 'user.company = company.id', 'left');
+        $this->_join_skpd();
         
         $this->db->where('berkas.deleted_at', null);
         
         if ($this->jenis_arsip !== null) {
             $this->db->where('berkas.jenis_arsip', $this->jenis_arsip);
         }
-        if ($this->filter_skpd !== null && $this->filter_skpd !== '') {
-            $this->db->where('berkas.nomor_skpd', $this->filter_skpd);
-        }
+        $this->_apply_filter_skpd();
         if ($this->filter_tahun !== null && $this->filter_tahun !== '') {
             $this->db->where('berkas.tahun', $this->filter_tahun);
         }

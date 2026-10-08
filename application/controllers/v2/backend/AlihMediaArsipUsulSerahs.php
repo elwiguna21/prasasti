@@ -48,10 +48,62 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
      }
 
+     /**
+      * Cek apakah user login memiliki role tertentu.
+      * Role di session/user_auth bisa berupa string atau array.
+      */
+     private function has_role($role)
+     {
+          $roles = !empty($this->user_auth->user_role)
+               ? $this->user_auth->user_role
+               : $this->session->userdata('next-role');
+          return is_array($roles) ? in_array($role, $roles) : ($roles === $role);
+     }
+
+     /**
+      * Operator (non-admin) hanya boleh melihat data SKPD-nya sendiri.
+      */
+     private function is_skpd_scoped()
+     {
+          return $this->has_role('operator') && !$this->has_role('admin');
+     }
+
+     /**
+      * Ambil no_company SKPD milik user yang login.
+      */
+     private function get_user_skpd()
+     {
+          if (!empty($this->user_auth->no_company)) {
+               return $this->user_auth->no_company;
+          }
+          if (!empty($this->user_auth->company_no)) {
+               return $this->user_auth->company_no;
+          }
+          $uid = $this->encryption->decrypt($this->session->userdata('next-uid'));
+          $row = $this->db->select('company.no_company')
+               ->from('user')
+               ->join('company', 'company.id = user.company', 'left')
+               ->where('user.id', $uid)
+               ->get()->row();
+          // Nilai yang tidak mungkin cocok agar operator tanpa SKPD tidak melihat data apa pun
+          return !empty($row->no_company) ? $row->no_company : '__no_skpd__';
+     }
+
+     /**
+      * Kondisi WHERE (tanpa join) untuk membatasi query berkas ke SKPD user login.
+      * Data lama dengan nomor_skpd kosong dicocokkan lewat SKPD user pembuatnya.
+      */
+     private function skpd_scope_where()
+     {
+          $skpd = $this->db->escape($this->get_user_skpd());
+          return "(nomor_skpd = {$skpd} OR ((nomor_skpd IS NULL OR nomor_skpd = '') AND `user` IN (SELECT u.id FROM `user` u JOIN company c ON c.id = u.company WHERE c.no_company = {$skpd})))";
+     }
+
      public function index()
      {
           // Ambil daftar SKPD (company) untuk dropdown filter
-          $this->db->select('id, name as nama_skpd');
+          // Gunakan no_company karena berkas.nomor_skpd mengacu ke company.no_company
+          $this->db->select('no_company as id, name as nama_skpd');
           $this->db->from('company');
           $this->db->where('deleted_at', null);
           $this->db->order_by('name', 'ASC');
@@ -67,19 +119,24 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           );
 
           // Total semua arsip usul serah
+          $scoped = $this->is_skpd_scoped();
+          if ($scoped) $this->db->where($this->skpd_scope_where(), null, false);
           $data['total_arsip'] = $this->db->where($base_where)->count_all_results('berkas');
 
           // Sudah diverifikasi (verifikasi_status = Y)
           $where_verif = array_merge($base_where, array('verifikasi_status' => 'Y'));
+          if ($scoped) $this->db->where($this->skpd_scope_where(), null, false);
           $data['total_diverifikasi'] = $this->db->where($where_verif)->count_all_results('berkas');
 
           // Menunggu TTE (verifikasi Y, tte belum Y)
+          if ($scoped) $this->db->where($this->skpd_scope_where(), null, false);
           $this->db->where($where_verif);
           $this->db->where('(tte_status IS NULL OR tte_status != \'Y\')', null, false);
           $data['total_menunggu_tte'] = $this->db->count_all_results('berkas');
 
           // Sudah di TTE
           $where_tte = array_merge($base_where, array('tte_status' => 'Y'));
+          if ($scoped) $this->db->where($this->skpd_scope_where(), null, false);
           $data['total_tte'] = $this->db->where($where_tte)->count_all_results('berkas');
 
           $data['title']    = 'Alih Media Arsip Usul Serah';
@@ -604,6 +661,9 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
           }
 
           $filter_skpd    = $this->input->post('filter_skpd');
+          if ($this->is_skpd_scoped()) {
+               $filter_skpd = $this->get_user_skpd();
+          }
           $filter_status  = $this->input->post('filter_status');
           $filter_tahun   = $this->input->post('filter_tahun');
           $search_keyword = $this->input->post('search_keyword');
@@ -654,13 +714,15 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                // Hanya role operator yang memiliki aksi edit dan hapus
                $btn_edit = '';
                $btn_delete = '';
-               $role = $this->session->userdata('next-role');
-
-               if ($role === 'operator') {
+               if ($this->has_role('operator')) {
                     if ($penilaian === null || $penilaian === 'N' || $is_ditolak_verifikator) {
                          $btn_edit = '<a class="btn btn-primary btn-xs sharp" href="javascript:void(0)" title="Edit" onclick="edit_data(\'' . $item->id . '\')"><i class="fas fa-pencil-alt"></i></a>';
                          $btn_delete = '<a class="btn btn-danger btn-xs sharp" href="javascript:void(0)" title="Hapus" onclick="delete_data(\'' . $item->id . '\')"><i class="fas fa-trash"></i></a>';
                     }
+               }
+
+               if ($this->has_role('admin')) {
+                    $row[] = !empty($item->nama_skpd) ? $item->nama_skpd : (!empty($item->unit_kerja_pencipta) ? $item->unit_kerja_pencipta : '-');
                }
 
                $row[] = '<div class="d-flex gap-1">'
@@ -740,7 +802,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                'tanggal'                => date('d-m-Y'),
                'deskripsi'              => htmlentities($this->input->post('keterangan')),
                'keterangan_tk_perkembangan' => htmlentities($this->input->post('keterangan_tk_perkembangan')),
-               'nomor_skpd'             => htmlentities($this->input->post('nomor_skpd')),
+               'nomor_skpd'             => $this->get_user_skpd() !== '__no_skpd__' ? $this->get_user_skpd() : null,
                'unit_kerja_pencipta'    => htmlentities($this->input->post('unit_kerja_pencipta')),
                'tte_posisi'             => $this->input->post('tte_posisi'),
                'user'                   => $this->encryption->decrypt($this->session->userdata('next-uid')),
@@ -819,7 +881,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
 
      public function edit($id)
      {
-          if ($this->session->userdata('next-role') !== 'operator') {
+          if (!$this->has_role('operator')) {
                show_error('Akses ditolak. Hanya operator yang dapat mengedit data ini.', 403);
           }
 
@@ -848,7 +910,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                redirect('v2/backend/dashboards');
           }
 
-          if ($this->session->userdata('next-role') !== 'operator') {
+          if (!$this->has_role('operator')) {
                echo json_encode(array('status' => FALSE, 'message' => 'Akses ditolak. Hanya operator yang dapat mengedit.'));
                return;
           }
@@ -939,7 +1001,7 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
                redirect('v2/backend/dashboards');
           }
 
-          if ($this->session->userdata('next-role') !== 'operator') {
+          if (!$this->has_role('operator')) {
                echo json_encode(array('status' => FALSE, 'message' => 'Akses ditolak. Hanya operator yang dapat menghapus.'));
                return;
           }
@@ -1116,6 +1178,9 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
      public function export_excel()
      {
           $filter_skpd    = $this->input->get('filter_skpd');
+          if ($this->is_skpd_scoped()) {
+               $filter_skpd = $this->get_user_skpd();
+          }
           $filter_status  = $this->input->get('filter_status');
           $filter_tahun   = $this->input->get('filter_tahun');
           $search_keyword = $this->input->get('search_keyword');
@@ -1227,6 +1292,9 @@ class AlihMediaArsipUsulSerahs extends MY_Controller
      public function export_pdf()
      {
           $filter_skpd    = $this->input->get('filter_skpd');
+          if ($this->is_skpd_scoped()) {
+               $filter_skpd = $this->get_user_skpd();
+          }
           $filter_status  = $this->input->get('filter_status');
           $filter_tahun   = $this->input->get('filter_tahun');
           $search_keyword = $this->input->get('search_keyword');
