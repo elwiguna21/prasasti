@@ -9,9 +9,9 @@
                <div class="col-12 col-sm-6 col-lg-4 mb-5">
                     <div class="footer-card pe-lg-5">
                          <a href="<?= base_url('v2') ?>" class="d-block mb-4">
-                              <img src="<?= base_url('assets/v3/frontend/v2/img/logo-prasasti2.png') ?>" alt="" height="36px"
-                                   style="height: 36px;">
-                              <img src="<?= base_url('assets/v3/frontend/v2/img/teks-prasasti2.png') ?>" alt=""
+                              <img src="<?= base_url('assets/v3/frontend/v2/img/logo-prasasti2.png') ?>" alt=""
+                                   height="50px" style="height: 50px;">
+                              <img src="<?= base_url('assets/v3/frontend/v2/img/logo-text-prasasti.png') ?>" alt=""
                                    style="width: 156px;">
                          </a>
                          <p class="mb-0">Penerapan Sistem Arsip Statis Terintegrasi.</p>
@@ -31,12 +31,19 @@
                                    <i class="ti ti-brand-instagram"></i>
                               </a>
                          </div>
-                         
+
                          <h6 class="mb-2 text-white">Statistik Pengunjung</h6>
-                         <ul class="list-unstyled mb-0 text-white" style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">
-                              <li class="mb-1"><i class="ti ti-user me-2"></i> Hari ini: <?= isset($visitor_stats) ? number_format($visitor_stats['today']) : 0 ?></li>
-                              <li class="mb-1"><i class="ti ti-calendar-event me-2"></i> Bulan ini: <?= isset($visitor_stats) ? number_format($visitor_stats['month']) : 0 ?></li>
-                              <li><i class="ti ti-chart-bar me-2"></i> Total: <?= isset($visitor_stats) ? number_format($visitor_stats['total']) : 0 ?></li>
+                         <ul class="list-unstyled mb-0 text-white"
+                              style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">
+                              <li class="mb-1"><i class="ti ti-user me-2"></i> Hari ini:
+                                   <?= isset($visitor_stats) ? number_format($visitor_stats['today']) : 0 ?>
+                              </li>
+                              <li class="mb-1"><i class="ti ti-calendar-event me-2"></i> Bulan ini:
+                                   <?= isset($visitor_stats) ? number_format($visitor_stats['month']) : 0 ?>
+                              </li>
+                              <li><i class="ti ti-chart-bar me-2"></i> Total:
+                                   <?= isset($visitor_stats) ? number_format($visitor_stats['total']) : 0 ?>
+                              </li>
                          </ul>
                     </div>
                </div>
@@ -48,11 +55,16 @@
 
                          <!-- Footer Nav -->
                          <ul class="footer-nav">
-                              <li><a href="https://goo.gl/maps/ipGn1bfYdFrj4VGj9" target="_blank">Lokasi Depo Arsip Sumedang</a></li>
-                              <li><a href="https://anri.go.id" target="_blank">Arsip Nasional Republik Indonesia (ANRI) </a></li>
-                              <li><a href="https://dispusipda.jabarprov.go.id" target="_blank">Dinas Perpustakaan dan Kearsipan Daerah Provinsi Jawa Barat (DISPUSIPDA JABAR)</a></li>
-                              <li><a href="https://sumedangkab.go.id" target="_blank">Pemerintah Daerah Kabupaten Sumedang</a></li>
-                              <li><a href="https://sikn.sumedangkab.go.id" target="_blank">Sistem Informasi Kearsipan Kabupaten Sumedang (SIKN)</a></li>
+                              <li><a href="https://goo.gl/maps/ipGn1bfYdFrj4VGj9" target="_blank">Lokasi Depo Arsip
+                                        Sumedang</a></li>
+                              <li><a href="https://anri.go.id" target="_blank">Arsip Nasional Republik Indonesia (ANRI)
+                                   </a></li>
+                              <li><a href="https://dispusipda.jabarprov.go.id" target="_blank">Dinas Perpustakaan dan
+                                        Kearsipan Daerah Provinsi Jawa Barat (DISPUSIPDA JABAR)</a></li>
+                              <li><a href="https://sumedangkab.go.id" target="_blank">Pemerintah Daerah Kabupaten
+                                        Sumedang</a></li>
+                              <li><a href="https://sikn.sumedangkab.go.id" target="_blank">Sistem Informasi Kearsipan
+                                        Kabupaten Sumedang (SIKN)</a></li>
                          </ul>
                     </div>
                </div>
@@ -88,7 +100,7 @@
      </div>
 
      <!-- Divider -->
-<!--     <div class="divider-sm"></div>-->
+     <!--     <div class="divider-sm"></div>-->
 
      <!-- Copyright Wrapper -->
      <div class="copyright-wrapper">
@@ -96,7 +108,9 @@
                <div class="row align-items-center">
                     <!-- Copyright -->
                     <div class="col-12 col-md-6">
-                         <p class="mb-3 mb-md-0 copyright">Copyright © <span id="year">2026</span> <a href="https://disarpus.sumedangkab.go.id">Dinas Arsip dan Perpustakaan Kabupaten Sumedang.</a> Design & Develop by PRAKOM.</p>
+                         <p class="mb-3 mb-md-0 copyright">Copyright © <span id="year">2026</span> <a
+                                   href="https://disarpus.sumedangkab.go.id">Dinas Arsip dan Perpustakaan Kabupaten
+                                   Sumedang.</a> Design & Develop by PRAKOM.</p>
                     </div>
 
                     <!-- Footer Bottom Nav -->

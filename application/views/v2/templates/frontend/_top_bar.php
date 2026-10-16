@@ -44,8 +44,8 @@
           <div class="container">
                <!-- Navbar Brand -->
                <a class="navbar-brand" href="<?= base_url() ?>">
-                    <img src="<?= base_url('assets/v3/frontend/v2/img/logo-prasasti2.png') ?>" alt="" height="36px"
-                         style="height: 36px;">
+                    <img src="<?= base_url('assets/v3/frontend/v2/img/logo-prasasti2.png') ?>" alt="" height="50px"
+                         style="height: 50px;">
                     <img src="<?= base_url('assets/v3/frontend/v2/img/teks-prasasti.png') ?>" alt=""
                          style="width: 156px;">
                </a>
@@ -142,7 +142,8 @@
                                    Dashboard <i class="ti ti-home-2 ms-2"></i>
                               </a>
                          <?php } else { ?>
-                              <a href="<?= base_url('v2/authentications') ?>" class="btn btn-primary btn-sm px-4">Sign In <i class="ti ti-login-2 ms-2"></i></a>
+                              <a href="<?= base_url('v2/authentications') ?>" class="btn btn-primary btn-sm px-4">Sign In <i
+                                        class="ti ti-login-2 ms-2"></i></a>
                          <?php } ?>
 
                     </div>
