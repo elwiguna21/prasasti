@@ -73,6 +73,8 @@
                                              <th class="text-start">Tanggal TTE</th>
                                              <th class="text-center">Status TTE</th>
                                              <th class="text-center">Deskripsi</th>
+                                             <th class="text-center">Response Code</th>
+                                             <th class="text-center">Response Body</th>
                                         </tr>
                                    </thead>
                                    <tbody>
@@ -80,6 +82,24 @@
                               </table>
                          </div>
                     </div>
+               </div>
+          </div>
+     </div>
+</div>
+
+<!-- Modal Detail Response Body BSrE -->
+<div class="modal fade" id="modalResponseBody" tabindex="-1" aria-hidden="true">
+     <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa fa-code text-primary me-2"></i>Detail Response Body BSrE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                    <pre id="responseBodyContent" class="bg-dark text-light p-3 rounded" style="max-height: 400px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 12px;"></pre>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
                </div>
           </div>
      </div>
@@ -149,8 +169,36 @@
                bSortable: !1,
                data: "description",
                className: 'text-center'
+          }, {
+               data: "response_code",
+               className: 'text-center'
+          }, {
+               bSortable: !1,
+               data: "response_body",
+               className: 'text-start',
+               render: function(data, type, row) {
+                    if (!data || data === '-') return '<span class="badge badge-light">-</span>';
+                    let safeData = $('<div>').text(data).html();
+                    if (data.length > 50) {
+                         let shortText = $('<div>').text(data.substring(0, 50) + '...').html();
+                         return '<code>' + shortText + '</code> ' +
+                                '<button type="button" class="btn btn-xs btn-outline-primary ms-1 btn-view-body" data-body="' + encodeURIComponent(data) + '"><i class="fa fa-eye me-1"></i>Detail</button>';
+                    }
+                    return '<code>' + safeData + '</code>';
+               }
           }]
      });
      $(".dataTables_paginate").addClass("pagination-rounded");
      $(".dataTables_filter").hide();
+
+     $(document).on('click', '.btn-view-body', function() {
+          let rawBody = decodeURIComponent($(this).data('body'));
+          try {
+               let parsed = JSON.parse(rawBody);
+               $('#responseBodyContent').text(JSON.stringify(parsed, null, 2));
+          } catch(e) {
+               $('#responseBodyContent').text(rawBody);
+          }
+          $('#modalResponseBody').modal('show');
+     });
 </script>
