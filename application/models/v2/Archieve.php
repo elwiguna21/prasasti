@@ -106,6 +106,23 @@ class Archieve extends CI_Model
           unset($where['orders']);
           unset($where['dirs']);
 
+          if (isset($where['nomor_skpd']) && $where['nomor_skpd'] !== null) {
+               $skpd = $this->db->escape($where['nomor_skpd']);
+               $this->db->where("(nomor_skpd = {$skpd} OR ((nomor_skpd IS NULL OR nomor_skpd = '') AND `user` IN (SELECT u.id FROM `user` u JOIN company c ON c.id = u.company WHERE c.no_company = {$skpd})))", null, false);
+               unset($where['nomor_skpd']);
+          }
+
+          if (!empty($where['raw_where'])) {
+               if (is_array($where['raw_where'])) {
+                    foreach ($where['raw_where'] as $rw) {
+                         $this->db->where($rw, null, false);
+                    }
+               } else {
+                    $this->db->where($where['raw_where'], null, false);
+               }
+               unset($where['raw_where']);
+          }
+
           if (!empty($where)) {
                $this->db->where($where);
           }
@@ -221,6 +238,12 @@ class Archieve extends CI_Model
           $this->db->where('tanggal !=', '');
           $this->db->where("tanggal REGEXP '^[0-9]{2}-[0-9]{2}-[0-9]{4}'", NULL, FALSE);
           $this->db->where('deleted_at is null');
+
+          if (isset($where['nomor_skpd']) && $where['nomor_skpd'] !== null) {
+               $skpd = $this->db->escape($where['nomor_skpd']);
+               $this->db->where("(nomor_skpd = {$skpd} OR ((nomor_skpd IS NULL OR nomor_skpd = '') AND `user` IN (SELECT u.id FROM `user` u JOIN company c ON c.id = u.company WHERE c.no_company = {$skpd})))", null, false);
+               unset($where['nomor_skpd']);
+          }
 
           $this->db->where($where);
 

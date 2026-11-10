@@ -79,21 +79,20 @@ class Dashboards extends MY_Controller
                $data['total_archieve_musnah_waiting_verification'] = $this->archieve->get_all_where_count(
                     array(
                          'jenis_arsip' => 'usul_serah',
-                         'verifikasi_status' => 'N'
+                         'raw_where'   => '(verifikasi_status IS NULL OR verifikasi_status != \'Y\')'
                     )
                );
                $data['total_archieve_musnah_waiting_signed'] = $this->archieve->get_all_where_count(
                     array(
-                         'jenis_arsip' => 'usul_serah',
+                         'jenis_arsip'       => 'usul_serah',
                          'verifikasi_status' => 'Y',
-                         'tte_status'     => 'N'
+                         'raw_where'         => '(tte_status IS NULL OR tte_status != \'Y\')'
                     )
                );
                $data['total_archieve_musnah_signed'] = $this->archieve->get_all_where_count(
                     array(
                          'jenis_arsip' => 'usul_serah',
-                         'verifikasi_status' => 'Y',
-                         'tte_status'     => 'Y'
+                         'tte_status'  => 'Y'
                     )
                );
 
@@ -139,25 +138,24 @@ class Dashboards extends MY_Controller
 
                $data['total_archieve_musnah_waiting_verification'] = $this->archieve->get_all_where_count(
                     array(
-                         'nomor_skpd' => $this->user_auth->no_company,
+                         'nomor_skpd'  => $this->user_auth->no_company,
                          'jenis_arsip' => 'usul_serah',
-                         'verifikasi_status' => 'N'
+                         'raw_where'   => '(verifikasi_status IS NULL OR verifikasi_status != \'Y\')'
                     )
                );
                $data['total_archieve_musnah_waiting_signed'] = $this->archieve->get_all_where_count(
                     array(
-                         'nomor_skpd' => $this->user_auth->no_company,
-                         'jenis_arsip' => 'usul_serah',
+                         'nomor_skpd'        => $this->user_auth->no_company,
+                         'jenis_arsip'       => 'usul_serah',
                          'verifikasi_status' => 'Y',
-                         'tte_status'     => 'N'
+                         'raw_where'         => '(tte_status IS NULL OR tte_status != \'Y\')'
                     )
                );
                $data['total_archieve_musnah_signed'] = $this->archieve->get_all_where_count(
                     array(
-                         'nomor_skpd' => $this->user_auth->no_company,
+                         'nomor_skpd'  => $this->user_auth->no_company,
                          'jenis_arsip' => 'usul_serah',
-                         'verifikasi_status' => 'Y',
-                         'tte_status'     => 'Y'
+                         'tte_status'  => 'Y'
                     )
                );
           }
@@ -216,8 +214,7 @@ class Dashboards extends MY_Controller
 
           // Admin melihat data seluruh SKPD, user hanya melihat data SKPD-nya
           if (!in_array('admin', $this->user_auth->user_role)) {
-               $company = $this->encryption->decrypt($this->user_auth->company_id);
-               $where['nomor_skpd'] = $company;
+               $where['nomor_skpd'] = $this->user_auth->no_company;
           }
 
           $tanggal_bersih = "STR_TO_DATE(LEFT(tanggal, 10), '%d-%m-%Y')";
