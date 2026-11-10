@@ -107,10 +107,10 @@
                <div class="cm-content-body form excerpt">
                     <div class="card-body">
                          <div class="row">
-                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-3' : 'col-xl-4' ?> col-sm-12">
+                              <div class="<?= (in_array('admin', $employee->user_role)) ? 'col-xl-3' : 'col-xl-4' ?> col-sm-12">
                                    <input type="text" class="form-control mb-xl-0 mb-3" id="search" placeholder="Cari kode klasifikasi atau indeks arsip..." autocomplete="off">
                               </div>
-                              <div class="<?= ($this->session->userdata('next-role') == 'admin') ? 'col-xl-2' : 'col-xl-3' ?> col-sm-12">
+                              <div class="<?= (in_array('admin', $employee->user_role)) ? 'col-xl-2' : 'col-xl-3' ?> col-sm-12">
                                    <select id="filter_status">
                                         <option value="">Semua Status</option>
                                         <option value="verify_waiting">Menunggu Verifikasi</option>
@@ -129,7 +129,7 @@
                                         <?php endforeach; endif; ?>
                                    </select>
                               </div>
-                              <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+                              <?php if (in_array('admin', $employee->user_role)): ?>
                                    <div class="col-xl-2 col-sm-12">
                                         <select id="filter_skpd_adv">
                                              <option value="">-- Pilih SKPD --</option>
@@ -166,7 +166,7 @@
                          <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/berita_acara') ?>" class="btn btn-info btn-sm me-2">
                               <i class="fas fa-file-signature me-1"></i> Berita Acara (BAST)
                          </a>
-                         <?php if ($this->session->userdata('next-role') == 'operator'): ?>
+                         <?php if (in_array('operator', $employee->user_role)): ?>
                               <a href="<?= base_url('v2/backend/alih_media_arsip_usul_serah/tambah') ?>" class="btn btn-primary btn-sm">
                                    <i class="fas fa-plus me-1"></i> Tambah Data
                               </a>
@@ -186,6 +186,9 @@
                                              <th>Jumlah</th>
                                              <th>Waktu</th>
                                              <th width="150">Status</th>
+                                             <?php if (in_array('admin', $employee->user_role)): ?>
+                                                  <th width="150">SKPD</th>
+                                             <?php endif; ?>
                                              <th width="120">Aksi</th>
                                         </tr>
                                    </thead>
@@ -214,7 +217,7 @@
           width: '100%',
      });
 
-     <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+     <?php if (in_array('admin', $employee->user_role)): ?>
           var skpdSelect = $('#filter_skpd_adv').select2({
                width: '100%',
                placeholder: 'Pilih SKPD',
@@ -277,7 +280,7 @@
           $('#search').val('');
           if (statusSelect) statusSelect.val(null).trigger('change');
           if (tahunSelect) tahunSelect.val(null).trigger('change');
-          <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+          <?php if (in_array('admin', $employee->user_role)): ?>
                if (skpdSelect) {
                     skpdSelect.val(null).trigger('change');
                }
@@ -291,7 +294,7 @@
 
      function export_excel() {
           var filter_skpd = '';
-          <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+          <?php if (in_array('admin', $employee->user_role)): ?>
                filter_skpd = $('#filter_skpd_adv').val() || '';
           <?php endif; ?>
           var search_keyword = $('#search').val() || '';
@@ -304,7 +307,7 @@
 
      function export_pdf() {
           var filter_skpd = '';
-          <?php if ($this->session->userdata('next-role') == 'admin'): ?>
+          <?php if (in_array('admin', $employee->user_role)): ?>
                filter_skpd = $('#filter_skpd_adv').val() || '';
           <?php endif; ?>
           var search_keyword = $('#search').val() || '';
